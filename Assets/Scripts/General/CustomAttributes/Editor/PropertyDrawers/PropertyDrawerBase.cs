@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     public abstract class PropertyDrawerBase : PropertyDrawer
     {

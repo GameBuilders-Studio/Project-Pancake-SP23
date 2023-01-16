@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     [CustomPropertyDrawer(typeof(MinMaxSliderAttribute))]
     public class MinMaxSliderPropertyDrawer : PropertyDrawerBase

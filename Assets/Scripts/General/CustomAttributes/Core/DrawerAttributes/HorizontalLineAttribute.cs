@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NaughtyAttributes
+namespace CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = true)]
     public class HorizontalLineAttribute : DrawerAttribute

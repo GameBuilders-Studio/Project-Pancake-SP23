@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NaughtyAttributes
+namespace CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class DropdownAttribute : DrawerAttribute

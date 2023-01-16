@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NaughtyAttributes
+namespace CustomAttributes
 {
     public abstract class EnableIfAttributeBase : MetaAttribute
     {

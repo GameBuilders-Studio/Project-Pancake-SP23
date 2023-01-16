@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     [CustomPropertyDrawer(typeof(SortingLayerAttribute))]
     public class SortingLayerPropertyDrawer : PropertyDrawerBase

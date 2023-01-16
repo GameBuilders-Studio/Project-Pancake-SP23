@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     [CustomPropertyDrawer(typeof(ShowAssetPreviewAttribute))]
     public class ShowAssetPreviewPropertyDrawer : PropertyDrawerBase

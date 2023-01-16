@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Text.RegularExpressions;
 using System;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     [CustomPropertyDrawer(typeof(ResizableTextAreaAttribute))]
     public class ResizableTextAreaPropertyDrawer : PropertyDrawerBase

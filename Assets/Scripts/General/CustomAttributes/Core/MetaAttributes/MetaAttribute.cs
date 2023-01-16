@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NaughtyAttributes
+namespace CustomAttributes
 {
     public class MetaAttribute : Attribute, INaughtyAttribute
     {

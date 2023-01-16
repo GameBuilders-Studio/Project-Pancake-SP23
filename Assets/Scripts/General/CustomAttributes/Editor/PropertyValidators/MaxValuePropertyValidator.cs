@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace NaughtyAttributes.Editor
+namespace CustomAttributes.Editor
 {
     public class MaxValuePropertyValidator : PropertyValidatorBase
     {
