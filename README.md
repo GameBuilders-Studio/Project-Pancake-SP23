@@ -19,7 +19,7 @@ You'll get a link to create a merge request (to merge your branch into developme
 Once your branch has been merged, do not continue working on it. Switch back to development and make a new branch.
 
 Branch names follow this pattern:
-<\type of branch>/<\related pod>/<\branch title>
+<type of branch>/<branch title>
 feat/player/easier-wall-jump
 bug/level-design/music-duplication
 art/ui/new-selection-sprites
