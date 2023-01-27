@@ -6,17 +6,17 @@ namespace GameBuilders.Collections
 {
     public class ObjectPool<T>
     {
-        private List<ObjectPoolContainer<T>> list;
-        private Dictionary<T, ObjectPoolContainer<T>> lookup;
-        private Func<T> factoryFunc;
-        private int lastIndex = 0;
+        private readonly List<ObjectPoolContainer<T>> _list;
+        private readonly Dictionary<T, ObjectPoolContainer<T>> _lookup;
+        private readonly Func<T> _factoryFunc;
+        private int _lastIndex = 0;
 
         public ObjectPool(Func<T> factoryFunc, int initialSize)
         {
-            this.factoryFunc = factoryFunc;
+            _factoryFunc = factoryFunc;
 
-            list = new List<ObjectPoolContainer<T>>(initialSize);
-            lookup = new Dictionary<T, ObjectPoolContainer<T>>(initialSize);
+            _list = new List<ObjectPoolContainer<T>>(initialSize);
+            _lookup = new Dictionary<T, ObjectPoolContainer<T>>(initialSize);
 
             Warm(initialSize);
         }
@@ -32,30 +32,30 @@ namespace GameBuilders.Collections
         private ObjectPoolContainer<T> CreateContainer()
         {
             var container = new ObjectPoolContainer<T>();
-            container.Item = factoryFunc();
-            list.Add(container);
+            container.Item = _factoryFunc();
+            _list.Add(container);
             return container;
         }
 
         public T GetItem()
         {
             ObjectPoolContainer<T> container = null;
-            
-            for (int i = 0; i < list.Count; i++)
+
+            for (int i = 0; i < _list.Count; i++)
             {
-                lastIndex++;
-                if (lastIndex > list.Count - 1) 
+                _lastIndex++;
+                if (_lastIndex > _list.Count - 1)
                 {
-                    lastIndex = 0;
+                    _lastIndex = 0;
                 }
-                
-                if (list[lastIndex].Used)
+
+                if (_list[_lastIndex].Used)
                 {
                     continue;
                 }
                 else
                 {
-                    container = list[lastIndex];
+                    container = _list[_lastIndex];
                     break;
                 }
             }
@@ -66,22 +66,22 @@ namespace GameBuilders.Collections
             }
 
             container.Consume();
-            lookup.Add(container.Item, container);
+            _lookup.Add(container.Item, container);
             return container.Item;
         }
 
         public void ReleaseItem(object item)
         {
-            ReleaseItem((T) item);
+            ReleaseItem((T)item);
         }
 
         public void ReleaseItem(T item)
         {
-            if (lookup.ContainsKey(item))
+            if (_lookup.ContainsKey(item))
             {
-                var container = lookup[item];
+                var container = _lookup[item];
                 container.Release();
-                lookup.Remove(item);
+                _lookup.Remove(item);
             }
             else
             {
@@ -91,12 +91,12 @@ namespace GameBuilders.Collections
 
         public int Count
         {
-            get { return list.Count; }
+            get { return _list.Count; }
         }
 
         public int CountUsedItems
         {
-            get { return lookup.Count; }
+            get { return _lookup.Count; }
         }
     }
 }
