@@ -1,11 +1,6 @@
 name: dotnet format
 
-on:
-  pull_request:
-    paths:
-      - "**.cs"
-      - ".editorconfig"
-
+on: pull_request
 jobs:
   check-format:
     runs-on: windows-latest
