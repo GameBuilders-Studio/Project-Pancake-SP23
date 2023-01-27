@@ -9,7 +9,7 @@ namespace GameBuilders.Collections
         private readonly List<ObjectPoolContainer<T>> _list;
         private readonly Dictionary<T, ObjectPoolContainer<T>> _lookup;
         private readonly Func<T> _factoryFunc;
-        private int _lastIndex = 0;
+        private int lastIndex = 0;
 
         public ObjectPool(Func<T> factoryFunc, int initialSize)
         {
@@ -43,19 +43,19 @@ namespace GameBuilders.Collections
 
             for (int i = 0; i < _list.Count; i++)
             {
-                _lastIndex++;
-                if (_lastIndex > _list.Count - 1)
+                lastIndex++;
+                if (lastIndex > _list.Count - 1)
                 {
-                    _lastIndex = 0;
+                    lastIndex = 0;
                 }
 
-                if (_list[_lastIndex].Used)
+                if (_list[lastIndex].Used)
                 {
                     continue;
                 }
                 else
                 {
-                    container = _list[_lastIndex];
+                    container = _list[lastIndex];
                     break;
                 }
             }
