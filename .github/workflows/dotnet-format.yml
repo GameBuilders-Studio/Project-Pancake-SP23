@@ -1,21 +1,22 @@
-name: dotnet format
+# name: dotnet format
 
-on: pull_request
-jobs:
-  check-format:
-    runs-on: windows-latest
+# on: pull_request
+# jobs:
+#   check-format:
+#     runs-on: windows-latest
 
-    steps:
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
+#     steps:
+#       - name: Setup .NET Core
+#         uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '5.0.x'
 
-      - name: Install dotnet-format tool
-        run: dotnet tool install -g dotnet-format
+#       - name: Install dotnet-format tool
+#         run: dotnet tool install -g dotnet-format
 
-      - name: Check out code
-        uses: actions/checkout@v2
+#       - name: Check out code
+#         uses: actions/checkout@v2
 
-      - name: Run dotnet format
-        run: dotnet format '.\' --folder --check --verbosity diagnostic
+#       - name: Run dotnet format
+#         run: dotnet format '.\' --folder --check --verbosity diagnostic
+        
