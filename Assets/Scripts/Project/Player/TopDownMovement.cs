@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using CustomAttributes;
 
+public enum MovementState { Dash, Walk }
+
 [RequireComponent(typeof(CharacterController))]
 public class TopDownMovement : MonoBehaviour
 {
@@ -24,10 +26,27 @@ public class TopDownMovement : MonoBehaviour
     [SerializeField]
     private float _brakingFriction;
 
+    [Space(15f)]
     [CurveRange(0f, 0f, 1f, 1f)]
     [SerializeField]
     private AnimationCurve _dashCurve;
 
+    [SerializeField]
+    private float _dashDuration;
+
+    [SerializeField]
+    private float _dashDistance;
+
+    [SerializeField]
+    private float _gravity;
+
+    [Space(15f)]
+    [SerializeField]
+    [Tooltip("Turn speed in degrees/second")]
+    private float _turnSpeed;
+
+    private float _dashTime = 0.0f;
+    private float _dashProgress = 0.0f;
 
     public InputActionAsset InputActions
     {
@@ -39,6 +58,8 @@ public class TopDownMovement : MonoBehaviour
     protected InputAction interactInputAction { get; set; }
 
     private CharacterController _character;
+    private MovementState _movementState = MovementState.Walk;
+    private int platformMask;
 
     private Vector3 _velocity;
     public Vector3 Velocity
@@ -53,7 +74,7 @@ public class TopDownMovement : MonoBehaviour
     {
         if (InputActions == null)
             return;
-        
+
         // Movement input action (no handler, this is polled, e.g. GetMovementInput())
         movementInputAction = InputActions.FindAction("Movement");
         movementInputAction?.Enable();
@@ -83,7 +104,7 @@ public class TopDownMovement : MonoBehaviour
             movementInputAction?.Disable();
             movementInputAction = null;
         }
-        
+
         if (dashInputAction != null)
         {
             dashInputAction.started -= OnDash;
@@ -127,7 +148,8 @@ public class TopDownMovement : MonoBehaviour
     /// Apply friction and braking deceleration to given velocity.
     /// Returns modified input velocity.
     /// </summary>
-    protected virtual Vector3 ApplyVelocityBraking(Vector3 velocity, float friction, float deceleration, float deltaTime)
+    protected virtual Vector3 ApplyVelocityBraking(
+        Vector3 velocity, float friction, float deceleration, float deltaTime)
     {
         // If no friction or no deceleration, return
         bool isZeroFriction = friction == 0.0f;
@@ -212,12 +234,25 @@ public class TopDownMovement : MonoBehaviour
 
     void Dash()
     {
-        // something here
+        _dashTime = 0.0f;
+        _dashProgress = 0.0f;
+        _movementState = MovementState.Dash;
     }
 
     void Interact()
     {
         // something here
+    }
+
+    public bool IsGrounded()
+    {
+        return _character.isGrounded;
+    }
+
+    void Move(Vector3 velocity)
+    {
+        velocity.y -= _gravity * Time.deltaTime;
+        _character.Move(velocity);
     }
 
     #region MONOBEHAVIOUR
@@ -235,11 +270,36 @@ public class TopDownMovement : MonoBehaviour
     void Awake()
     {
         _character = GetComponent<CharacterController>();
+        platformMask = ~LayerMask.NameToLayer("Platform");
     }
 
     protected virtual Vector2 GetMovementInput()
     {
         return movementInputAction?.ReadValue<Vector2>() ?? Vector2.zero;
+    }
+
+    public MovementState GetMovementState()
+    {
+        return _movementState;
+    }
+
+    public void SetMovementState(MovementState state)
+    {
+        _movementState = state;
+    }
+
+    public void FaceTowards(Vector3 direction, float degreesPerSecond, bool instant = false)
+    {
+        direction.y = 0.0f;
+
+        if (direction == Vector3.zero) 
+            return;
+    
+        var radiansPerSecond = Mathf.Deg2Rad * degreesPerSecond * Time.deltaTime;
+
+        var targetDirection = Vector3.RotateTowards(transform.forward, direction, radiansPerSecond, 0.0f);
+        
+        transform.rotation = Quaternion.LookRotation(targetDirection);
     }
 
     void Update()
@@ -250,9 +310,33 @@ public class TopDownMovement : MonoBehaviour
 
         movementDirection += Vector3.right * movementInput.x;
         movementDirection += Vector3.forward * movementInput.y;
+        movementDirection.Normalize();
 
-        Velocity = CalcVelocity(Velocity, movementDirection * _maxRunSpeed, _friction, Time.deltaTime);
-        _character.Move(Velocity * Time.deltaTime);
+        if (movementDirection != Vector3.zero)
+            FaceTowards(movementDirection, _turnSpeed);
+
+        if (_movementState == MovementState.Walk)
+        {
+            Velocity = CalcVelocity(Velocity, movementDirection * _maxRunSpeed, _friction, Time.deltaTime);
+            Move(Velocity * Time.deltaTime);
+        }
+        else if (_movementState == MovementState.Dash)
+        {
+            _dashTime += Time.deltaTime;
+
+            var previousDashProgress = _dashProgress;
+
+            _dashProgress = _dashCurve.Evaluate(_dashTime / _dashDuration);
+
+            Velocity = transform.forward * (_dashProgress - previousDashProgress) * _dashDistance;
+            
+            if (_dashProgress >= 1.0f)
+            {
+                SetMovementState(MovementState.Walk);
+            }
+
+            Move(Velocity);
+        }
     }
 
     #endregion
