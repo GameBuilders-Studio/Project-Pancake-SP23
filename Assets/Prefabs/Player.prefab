@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5239743441632227119}
   - component: {fileID: 5239743441632227120}
   - component: {fileID: 5239743441632227123}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,10 +81,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActions: {fileID: -944628639613478452, guid: cad220ce01d017140a8c7f26a5e75052, type: 3}
-  _maxRunSpeed: 9
+  _maxRunSpeed: 7.5
   _maxAcceleration: 60
   _friction: 20
-  _brakingFriction: 10
+  _brakingFriction: 0
   _dashCurve:
     serializedVersion: 2
     m_Curve:
@@ -109,10 +109,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _dashDuration: 0.2
+  _dashDuration: 0.26
   _dashDistance: 3.3
   _gravity: 9.81
-  _turnSpeed: 700
+  _turnSpeed: 1100
 --- !u!143 &5239743441632227119
 CharacterController:
   m_ObjectHideFlags: 0

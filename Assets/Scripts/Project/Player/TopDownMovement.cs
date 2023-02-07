@@ -7,6 +7,8 @@ public enum MovementState { Dash, Walk }
 [RequireComponent(typeof(CharacterController))]
 public class TopDownMovement : MonoBehaviour
 {
+    #region FIELDS
+
     [Space(15f)]
     [Tooltip("Input actions associated with this Character")]
     [SerializeField]
@@ -59,7 +61,7 @@ public class TopDownMovement : MonoBehaviour
 
     private CharacterController _character;
     private MovementState _movementState = MovementState.Walk;
-    private int platformMask;
+    private int _platformMask;
 
     private Vector3 _velocity;
     public Vector3 Velocity
@@ -68,7 +70,115 @@ public class TopDownMovement : MonoBehaviour
         set => _velocity = value;
     }
 
-    #region INPUT
+    private Vector3 _lastInputDirection;
+    public Vector3 LastInputDirection
+    {
+        get => _lastInputDirection;
+        set => _lastInputDirection = value;
+    }
+
+    #endregion
+
+    #region MONOBEHAVIOUR
+
+    void OnEnable()
+    {
+        EnablePlayerInput();
+    }
+
+    void OnDisable()
+    {
+        DisablePlayerInput();
+    }
+
+    void Awake()
+    {
+        _character = GetComponent<CharacterController>();
+        _platformMask = ~LayerMask.NameToLayer("Platform");
+    }
+
+    void Update()
+    {
+        Vector2 movementInput = GetMovementInput();
+
+        Vector3 movementDirection = Vector3.zero;
+
+        movementDirection += Vector3.right * movementInput.x;
+        movementDirection += Vector3.forward * movementInput.y;
+        movementDirection.Normalize();
+
+        if (movementDirection != Vector3.zero)
+            LastInputDirection = movementDirection;
+            FaceTowards(movementDirection, _turnSpeed);
+
+        if (_movementState == MovementState.Walk)
+        {
+            Velocity = CalcVelocity(Velocity, movementDirection * _maxRunSpeed, _friction, Time.deltaTime);
+            Move(Velocity * Time.deltaTime);
+        }
+        else if (_movementState == MovementState.Dash)
+        {
+            _dashTime += Time.deltaTime;
+
+            var previousDashProgress = _dashProgress;
+
+            _dashProgress = _dashCurve.Evaluate(_dashTime / _dashDuration);
+
+            Velocity = transform.forward * (_dashProgress - previousDashProgress) * _dashDistance;
+            
+            if (_dashProgress >= 1.0f)
+            {
+                SetMovementState(MovementState.Walk);
+            }
+
+            Move(Velocity);
+        }
+    }
+
+    #endregion
+
+    #region PUBLIC METHODS
+
+    public float GetMaxSpeed()
+    {
+        return _maxRunSpeed;
+    }
+
+    public virtual float GetMaxAcceleration()
+    {
+        return _maxAcceleration;
+    }
+
+    public bool IsGrounded()
+    {
+        return _character.isGrounded;
+    }
+
+    public MovementState GetMovementState()
+    {
+        return _movementState;
+    }
+
+    public void SetMovementState(MovementState state)
+    {
+        _movementState = state;
+    }
+
+    public void FaceTowards(Vector3 direction, float degreesPerSecond = 360f, bool instant = false)
+    {
+        direction.y = 0.0f;
+
+        if (direction == Vector3.zero) 
+            return;
+    
+        var radiansPerSecond = Mathf.Deg2Rad * degreesPerSecond * Time.deltaTime;
+
+        var targetDirection = Vector3.RotateTowards(transform.forward, direction, radiansPerSecond, 0.0f);
+        
+        transform.rotation = Quaternion.LookRotation(targetDirection);
+    }
+
+    #endregion
 
     protected virtual void EnablePlayerInput()
     {
@@ -86,7 +196,7 @@ public class TopDownMovement : MonoBehaviour
             dashInputAction.Enable();
         }
 
-        interactInputAction = InputActions.FindAction("Dash");
+        interactInputAction = InputActions.FindAction("Interact");
         if (interactInputAction != null)
         {
             interactInputAction.started += OnInteract;
@@ -130,18 +240,6 @@ public class TopDownMovement : MonoBehaviour
     {
         if (context.started || context.performed)
             Interact();
-    }
-
-    #endregion
-
-    public float GetMaxSpeed()
-    {
-        return _maxRunSpeed;
-    }
-
-    public virtual float GetMaxAcceleration()
-    {
-        return _maxAcceleration;
     }
 
     /// <summary>
@@ -188,11 +286,10 @@ public class TopDownMovement : MonoBehaviour
         Vector3 desiredMoveDirection = desiredSpeed > 0.0f ? desiredVelocity / desiredSpeed : Vector3.zero;
 
         // Requested acceleration (factoring analog input?)
-        float analogInputModifier = 1f;
-        Vector3 requestedAcceleration = GetMaxAcceleration() * analogInputModifier * desiredMoveDirection;
+        Vector3 requestedAcceleration = GetMaxAcceleration() * desiredMoveDirection;
 
         // Actual max speed (factoring analog input)
-        float actualMaxSpeed = GetMaxSpeed() * analogInputModifier;
+        float actualMaxSpeed = GetMaxSpeed();
 
         // Friction
         // Only apply braking if there is no input acceleration,
@@ -231,6 +328,10 @@ public class TopDownMovement : MonoBehaviour
         return velocity;
     }
 
+    protected virtual Vector2 GetMovementInput()
+    {
+        return movementInputAction?.ReadValue<Vector2>() ?? Vector2.zero;
+    }
 
     void Dash()
     {
@@ -244,100 +345,9 @@ public class TopDownMovement : MonoBehaviour
         // something here
     }
 
-    public bool IsGrounded()
-    {
-        return _character.isGrounded;
-    }
-
     void Move(Vector3 velocity)
     {
         velocity.y -= _gravity * Time.deltaTime;
         _character.Move(velocity);
     }
-
-    #region MONOBEHAVIOUR
-
-    void OnEnable()
-    {
-        EnablePlayerInput();
-    }
-
-    void OnDisable()
-    {
-        DisablePlayerInput();
-    }
-
-    void Awake()
-    {
-        _character = GetComponent<CharacterController>();
-        platformMask = ~LayerMask.NameToLayer("Platform");
-    }
-
-    protected virtual Vector2 GetMovementInput()
-    {
-        return movementInputAction?.ReadValue<Vector2>() ?? Vector2.zero;
-    }
-
-    public MovementState GetMovementState()
-    {
-        return _movementState;
-    }
-
-    public void SetMovementState(MovementState state)
-    {
-        _movementState = state;
-    }
-
-    public void FaceTowards(Vector3 direction, float degreesPerSecond, bool instant = false)
-    {
-        direction.y = 0.0f;
-
-        if (direction == Vector3.zero) 
-            return;
-    
-        var radiansPerSecond = Mathf.Deg2Rad * degreesPerSecond * Time.deltaTime;
-
-        var targetDirection = Vector3.RotateTowards(transform.forward, direction, radiansPerSecond, 0.0f);
-        
-        transform.rotation = Quaternion.LookRotation(targetDirection);
-    }
-
-    void Update()
-    {
-        Vector2 movementInput = GetMovementInput();
-
-        Vector3 movementDirection = Vector3.zero;
-
-        movementDirection += Vector3.right * movementInput.x;
-        movementDirection += Vector3.forward * movementInput.y;
-        movementDirection.Normalize();
-
-        if (movementDirection != Vector3.zero)
-            FaceTowards(movementDirection, _turnSpeed);
-
-        if (_movementState == MovementState.Walk)
-        {
-            Velocity = CalcVelocity(Velocity, movementDirection * _maxRunSpeed, _friction, Time.deltaTime);
-            Move(Velocity * Time.deltaTime);
-        }
-        else if (_movementState == MovementState.Dash)
-        {
-            _dashTime += Time.deltaTime;
-
-            var previousDashProgress = _dashProgress;
-
-            _dashProgress = _dashCurve.Evaluate(_dashTime / _dashDuration);
-
-            Velocity = transform.forward * (_dashProgress - previousDashProgress) * _dashDistance;
-            
-            if (_dashProgress >= 1.0f)
-            {
-                SetMovementState(MovementState.Walk);
-            }
-
-            Move(Velocity);
-        }
-    }
-
-    #endregion
 }
