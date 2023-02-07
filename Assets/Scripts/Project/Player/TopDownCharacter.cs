@@ -12,15 +12,14 @@ namespace EasyCharacterMovement
         #region EDITOR EXPOSED FIELDS
 
         [Space(15f)]
-        [Tooltip("Input actions associated with this Character." +
+        [Tooltip("Player Input associated with this Character." +
                  " If not assigned, this Character wont process any input so you can externally take control of this Character (e.g. a Controller).")]
         [SerializeField]
-        private InputActionAsset _inputActions;
+        private PlayerInput _playerInput;
 
-        [Space(15f)]
-        [Tooltip("Character's current rotation mode.")]
         private RotationMode _rotationMode = RotationMode.None;
 
+        [Space(15f)]
         [Tooltip("Change in rotation per second (Deg / s).")]
         [SerializeField]
         private float _rotationRate;
@@ -637,10 +636,10 @@ namespace EasyCharacterMovement
         /// InputActions assets.
         /// </summary>
 
-        public InputActionAsset inputActions
+        public PlayerInput PlayerInput
         {
-            get => _inputActions;
-            set => _inputActions = value;
+            get => _playerInput;
+            set => _playerInput = value;
         }
 
         /// <summary>
@@ -2040,17 +2039,17 @@ namespace EasyCharacterMovement
         {
             // Attempts to cache Character InputActions (if any)
 
-            if (inputActions == null)
+            if (PlayerInput == null)
                 return;
 
             // Movement input action (no handler, this is polled, e.g. GetMovementInput())
 
-            movementInputAction = inputActions.FindAction("Movement");
+            movementInputAction = PlayerInput.currentActionMap.FindAction("Movement");
             movementInputAction?.Enable();
 
             // Setup Dash input action handlers
 
-            dashInputAction = inputActions.FindAction("Dash");
+            dashInputAction = PlayerInput.currentActionMap.FindAction("Dash");
             if (dashInputAction != null)
             {
                 dashInputAction.started += OnDash;
@@ -2088,7 +2087,7 @@ namespace EasyCharacterMovement
         {
             // Should this character handle input ?
 
-            if (inputActions == null)
+            if (PlayerInput == null)
                 return;
 
             // Poll movement InputAction
@@ -2139,7 +2138,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnReset()
         {
-            _inputActions = null;
+            _playerInput = null;
 
             _defaultMovementMode = MovementMode.Walking;
 
