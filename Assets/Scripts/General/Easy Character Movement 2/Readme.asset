@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 44a17a5b205fcd349a24700e6f5615bd, type: 3}
+  title: Easy Character Movement 2
+  sections:
+  - heading: Preface
+    text: Thank you for purchasing ECM2, I sincerely appreciate your support and hope this helps you to make awesome games!
+    linkText: 
+    url: 
+  - heading: What's New?
+    text: Since version 1.1.0 ECM2 includes the newly Character Movement component, a fully kinematic AAA Character Controller as such the folders structure has been modified.
+    linkText: 
+    url: 
+  - heading:
+    text: The Character Movement folder includes the whole Character Movement package (Docs, examples, source code, etc), so users who decide could import only this folder.
+    linkText: 
+    url: 
+  - heading: 
+    text: 
+    linkText: 'Character Movement'
+    url: https://u3d.as/2Jx7
+  - heading: 
+    text: The Characters folder contains the Easy Character Movement 2 package (Docs, examples, source code, etc), a higher level characters layer built on top of the Character Movement component.
+    linkText:
+    url:
+  - heading: 
+    text: 
+    linkText: 'Easy Character Movement 2'
+    url: https://u3d.as/2u5v  
+  - heading: Documentation
+    text: You can find the complete ECM2 documentation in the Easy Character Movement 2\Characters\Docs\ folder along with the complete API reference.
+    linkText: 
+    url: 
+  - heading:
+    text: Additionally, you will find over 40+ fully commented examples to help you get the most of it.
+    linkText: 
+    url:
+  - heading: Help and Support
+    text: If you have any comments, need some help or have a feature you would like to see added, please dont hesitate to contact me at ogracian@gmail.com Ill be happy to help you!
+    linkText: 
+    url: 
+  - heading: 
+    text:
+    linkText: 
+    url: 
+  loadedLayout: 1
