@@ -25,6 +25,7 @@ namespace EasyCharacterMovement
         Falling,
         Swimming,
         Flying,
+        Dash,
         Custom
     }
 
