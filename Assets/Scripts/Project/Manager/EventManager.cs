@@ -10,6 +10,7 @@ public class EventDictionary : SerializableDictionary<string, UnityEvent>
 public class EventManager : Singleton<EventManager>
 {
     [SerializeField]
+    [Tooltip("key is the event name, value is the listners that will be invoked when the event is invoked")]
     private EventDictionary eventDictionary;
     
     private void OnDisable()
@@ -24,18 +25,17 @@ public class EventManager : Singleton<EventManager>
     /// <summary>
     /// Register event to the event diciotnary
     /// </summary>
-    /// <param name="eventName"></param>
+    /// <param name="listenerName"></param>
     /// <param name="listener"></param>
-    public static void AddEvent(string eventName, UnityAction listener)
+    public static void AddListener(string listenerName, UnityAction listener)
     {
         if (Instance == null)
         {
-            Debug.LogWarning("EventManager does not init");
+            Debug.LogError("EventManager does not init");
             return;
         }
-        // Debug.Log(Instance);
         UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
         {
             thisEvent.AddListener(listener);
         }
@@ -43,30 +43,30 @@ public class EventManager : Singleton<EventManager>
         {
             thisEvent = new UnityEvent();
             thisEvent.AddListener(listener);
-            Instance.eventDictionary.Add(eventName, thisEvent);
+            Instance.eventDictionary.Add(listenerName, thisEvent);
         }
     }
 
     /// <summary>
     /// Remove event to the event dictionary
     /// </summary>
-    /// <param name="eventName"></param>
+    /// <param name="listenerName"></param>
     /// <param name="listener"></param>
 
-    public static void RemoveEvent(string eventName, UnityAction listener)
+    public static void RemoveListener(string listenerName, UnityAction listener)
     {
         if (Instance == null)
         {
-            Debug.LogWarning("EventManager does not init");
+            Debug.LogError("EventManager does not init");
             return;
         }
         if (!Instance.enabled)
         {
-            Debug.LogWarning("EventManager disabled");
+            Debug.LogError("EventManager disabled");
             return;
         }
         UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
         {
             thisEvent.RemoveListener(listener);
         }
@@ -75,21 +75,21 @@ public class EventManager : Singleton<EventManager>
     /// <summary>
     /// Remove All Events
     /// </summary>
-    /// <param name="eventName"></param>
-    public static void RemoveAllEvent(string eventName)
+    /// <param name="listenerName"></param>
+    public static void RemoveAllListener(string listenerName)
     {
         if (Instance == null)
         {
-            //Debug.LogWarning("EventManager does not init");
+            Debug.LogError("EventManager does not init");
             return;
         }
         if (!Instance.enabled)
         {
-            Debug.LogWarning("EventManager disabled");
+            Debug.LogError("EventManager disabled");
             return;
         }
         UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
         {
             thisEvent.RemoveAllListeners();
         }
