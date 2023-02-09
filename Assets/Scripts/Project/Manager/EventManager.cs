@@ -12,7 +12,12 @@ public class EventManager : Singleton<EventManager>
     [SerializeField]
     [Tooltip("key is the event name, value is the listners that will be invoked when the event is invoked")]
     private EventDictionary eventDictionary;
-    
+    void Awake(){
+        if (Instance.eventDictionary == null)
+        {
+            Instance.eventDictionary = new EventDictionary();
+        }
+    }
     private void OnDisable()
     {
         foreach (var item in eventDictionary)
@@ -31,7 +36,7 @@ public class EventManager : Singleton<EventManager>
     {
         if (Instance == null)
         {
-            Debug.LogError("EventManager does not init");
+            Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
             return;
         }
         UnityEvent thisEvent = null;
@@ -57,7 +62,7 @@ public class EventManager : Singleton<EventManager>
     {
         if (Instance == null)
         {
-            Debug.LogError("EventManager does not init");
+            Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
             return;
         }
         if (!Instance.enabled)
@@ -80,7 +85,8 @@ public class EventManager : Singleton<EventManager>
     {
         if (Instance == null)
         {
-            Debug.LogError("EventManager does not init");
+            Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
+            
             return;
         }
         if (!Instance.enabled)
@@ -102,10 +108,6 @@ public class EventManager : Singleton<EventManager>
     public static void Invoke(string eventName)
     {
         UnityEvent thisEvent = null;
-        if (Instance.eventDictionary == null)
-        {
-            Instance.eventDictionary = new EventDictionary();
-        }
         if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent.Invoke();
