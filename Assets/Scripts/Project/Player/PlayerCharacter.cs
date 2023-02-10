@@ -723,6 +723,9 @@ namespace EasyCharacterMovement
         {
             if (context.started || context.performed)
                 _playerInteraction.TryInteract();
+
+            if (context.canceled)
+                _playerInteraction.TryCancelInteract();
         }
 
         #endregion
@@ -2104,6 +2107,7 @@ namespace EasyCharacterMovement
             if (interactInputAction != null)
             {
                 interactInputAction.started += OnInteract;
+                interactInputAction.canceled += OnInteract;
                 interactInputAction.Enable();
             }
         }
@@ -2127,6 +2131,21 @@ namespace EasyCharacterMovement
                 dashInputAction.started -= OnDash;
                 dashInputAction.Disable();
                 dashInputAction = null;
+            }
+
+            if (pickUpInputAction != null)
+            {
+                pickUpInputAction.started -= OnPickUp;
+                pickUpInputAction.Disable();
+                pickUpInputAction = null;
+            }
+
+            if (interactInputAction != null)
+            {
+                interactInputAction.started -= OnInteract;
+                interactInputAction.canceled -= OnInteract;
+                interactInputAction.Disable();
+                interactInputAction = null;
             }
         }
 

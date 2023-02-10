@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -20,6 +19,12 @@ public class PlayerInteraction : MonoBehaviour
         set => _nearby = value;
     }
 
+    public Selectable HoverTarget
+    {
+        get => _hoverTarget;
+        set => _hoverTarget = value;
+    }
+
     void Awake()
     {
         Nearby = new();
@@ -29,32 +34,56 @@ public class PlayerInteraction : MonoBehaviour
     {
         var selectable = GetBestSelectable();
 
+        if (HoverTarget != null)
+            HoverTarget.SetHoverState(HoverState.Deselected);
+
         if (selectable != null)
         {
-            _hoverTarget = selectable;
-            _hoverTarget.SetHoverState(HoverState.Selected);
+            HoverTarget = selectable;
+            HoverTarget.SetHoverState(HoverState.Selected);
         }
         else
         {
-            if (_hoverTarget != null)
-                _hoverTarget.SetHoverState(HoverState.Deselected);
-
-            _hoverTarget = null;
+            HoverTarget = null;
         }
     }
 
     public void TryPickUp()
     {
-        if (_hoverTarget != null)
-            Debug.Log("tried to pick up this", _hoverTarget);
+        if (HoverTarget == null)
+            return;
+
+        Debug.Log("tried to pick up this", HoverTarget);
+
+        if (!HoverTarget.IsCarryable)
+            return;
+
+        // do something with HoverTarget
     }
 
     public void TryInteract()
     {
-        if (_hoverTarget != null)
-            Debug.Log("tried to interact with this", _hoverTarget);
+        if (HoverTarget == null)
+            return;
+
+        Debug.Log("tried to interact with this", HoverTarget);
+
+        if (HoverTarget.Interactable == null)
+            return;
+
+        // do something with HoverTarget.Interactable
+        HoverTarget.Interactable.Interact();
     }
 
+    public void TryCancelInteract()
+    {
+        if (HoverTarget != null && HoverTarget.Interactable != null)
+            HoverTarget.Interactable.CancelInteract();
+    }
+
+    /// <summary>
+    /// Gets a selectable that the player is facing
+    /// </summary>
     private Selectable GetBestSelectable()
     {
         Selectable nearest = null;
@@ -72,13 +101,6 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return nearest;
-    }
-
-    float Distance2D(Vector3 from, Vector3 to)
-    {
-        from.y = 0f;
-        to.y = 0f;
-        return Vector3.Distance(to, from);
     }
 
     float Angle2D(Vector3 a, Vector3 b)
