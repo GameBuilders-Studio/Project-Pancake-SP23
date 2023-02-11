@@ -7,7 +7,7 @@ public enum HoverState {Selected, Deselected}
 public class Selectable : MonoBehaviour
 {
     [SerializeField]
-    private ProxyTriggerVolume _nearbyTrigger;
+    private ProxyTrigger _nearbyTrigger;
 
     [SerializeField]
     private Interactable _interactable;
@@ -25,6 +25,7 @@ public class Selectable : MonoBehaviour
     private bool _isSelectable = true;
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
+    // TODO: remove
     private Renderer _renderer;
 
     public bool IsSelectable
@@ -48,13 +49,19 @@ public class Selectable : MonoBehaviour
     void Awake()
     {
         if (_nearbyTrigger == null)
-            _nearbyTrigger = GetComponentInChildren<ProxyTriggerVolume>();
+        {
+            _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
+        }
 
         if (_nearbyTrigger == null)
-            Debug.LogError("No proxy trigger volume");
+        {
+            Debug.LogError("No proxy trigger");
+        }
 
         if (_interactable == null)
+        {
             _interactable = GetComponent<Interactable>();
+        }
 
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
@@ -84,7 +91,9 @@ public class Selectable : MonoBehaviour
     public void SetHoverState(HoverState state)
     {
         if (!IsSelectable || !_highlightOnHover)
+        {
             state = HoverState.Deselected;
+        }
 
         // TODO: highlight shader
         if (state == HoverState.Selected)

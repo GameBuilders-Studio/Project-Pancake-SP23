@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ProxyTriggerVolume : MonoBehaviour
+public class ProxyTrigger : MonoBehaviour
 {
     [SerializeField]
     private Collider _triggerCollider;
@@ -17,7 +17,9 @@ public class ProxyTriggerVolume : MonoBehaviour
     void Awake()
     {
         if (_triggerCollider == null)
+        {
             _triggerCollider = GetComponent<Collider>();
+        }
             
         _triggerCollider.isTrigger = true;
     }

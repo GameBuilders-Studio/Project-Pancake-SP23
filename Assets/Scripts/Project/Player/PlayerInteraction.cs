@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
     private List<Selectable> _nearby;
 
     [Tooltip("Angle range in front of player to check for selectables")]
+    [Range(0f, 180f)]
     [SerializeField]
     private float _selectAngleRange;
 
@@ -35,8 +36,10 @@ public class PlayerInteraction : MonoBehaviour
         var selectable = GetBestSelectable();
 
         if (HoverTarget != null)
+        {
             HoverTarget.SetHoverState(HoverState.Deselected);
-
+        }
+            
         if (selectable != null)
         {
             HoverTarget = selectable;
@@ -50,26 +53,22 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPickUp()
     {
-        if (HoverTarget == null)
-            return;
+        if (HoverTarget == null) { return; }
 
         Debug.Log("tried to pick up this", HoverTarget);
 
-        if (!HoverTarget.IsCarryable)
-            return;
+        if (!HoverTarget.IsCarryable) { return; }
 
         // do something with HoverTarget
     }
 
     public void TryInteract()
     {
-        if (HoverTarget == null)
-            return;
+        if (HoverTarget == null) { return; }
 
         Debug.Log("tried to interact with this", HoverTarget);
 
-        if (HoverTarget.Interactable == null)
-            return;
+        if (HoverTarget.Interactable == null) { return; }
 
         // do something with HoverTarget.Interactable
         HoverTarget.Interactable.Interact();
@@ -78,7 +77,9 @@ public class PlayerInteraction : MonoBehaviour
     public void TryCancelInteract()
     {
         if (HoverTarget != null && HoverTarget.Interactable != null)
+        {
             HoverTarget.Interactable.CancelInteract();
+        }
     }
 
     /// <summary>

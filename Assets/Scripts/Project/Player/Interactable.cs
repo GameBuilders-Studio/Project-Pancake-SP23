@@ -9,17 +9,13 @@ public class Interactable : MonoBehaviour
 
     public void Interact()
     {
-        if (!_interacting)
-            OnInteractBegin();
-
+        if (!_interacting) { OnInteractBegin(); }
         _interacting = true;
     }
 
     public void CancelInteract()
     {
-        if (_interacting)
-            OnInteractEnd();
-
+        if (_interacting) { OnInteractEnd(); }
         _interacting = false;
     }
 
