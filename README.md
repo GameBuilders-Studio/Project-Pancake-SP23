@@ -10,7 +10,7 @@ If you removed a file, use "rm" instead of "add". If you don't know what files y
 
 Commit messages should summarize all changes made. They should not describe the state of the code, (i.e. “flying enemy second version”). They should stand alone, so anyone could read just the message and have a general idea of what changes are contained in it.
 
-Once you're completely finished working, push your changes on your local branch to the remote version of that branch (DON'T PUSH TO DEVELOPMENT!)
+Once you're completely finished working, push your changes on your local branch to the remote version of that branch (DON'T PUSH TO MAIN!)
 
 Once your PR has been merged, do not continue working on it. Switch back to development and make a new branch.
 
