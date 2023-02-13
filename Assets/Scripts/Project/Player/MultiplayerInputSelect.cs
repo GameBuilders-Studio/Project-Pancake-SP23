@@ -1,23 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem; 
 
 public class MultiplayerInputSelect : MonoBehaviour
 {
-    public List <GameObject> playerList;
-    
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private List <GameObject> _playerList;
+    [SerializeField] private PlayerInputManager _playerInputManager; 
+
+    public void OnPlayerJoined() 
     {
-        playerList = new List<GameObject>(Resources.LoadAll<GameObject>("Player"));
+        if(_playerInputManager.playerCount > _playerList.Count) return; // Don't set new player prefab if there aren't any left
 
-        int playerTotal = 0;
-
-        //if the player presses a key, we instaniate, and move position in List
-        if(playerTotal < playerList.Count && (Input.GetKeyDown(KeyCode.Space) /* || get gamepad button is pressed*/))
-        { 
-            Instantiate(playerList[playerTotal], new Vector3(0,0,0), Quaternion.identity);
-            playerTotal++; //if we select the player 1 and want player 2, we will move to the next character  
-        }
+        _playerInputManager.playerPrefab = _playerList[_playerInputManager.playerCount]; 
     }
 }
