@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace EasyCharacterMovement
 {
     [RequireComponent(typeof(CharacterMovement))]
-    public class TopDownCharacter : MonoBehaviour
+    public class PlayerCharacter : MonoBehaviour
     {
         #region EDITOR EXPOSED FIELDS
 
@@ -16,6 +16,9 @@ namespace EasyCharacterMovement
                  " If not assigned, this Character wont process any input so you can externally take control of this Character (e.g. a Controller).")]
         [SerializeField]
         private PlayerInput _playerInput;
+
+        [SerializeField]
+        private PlayerInteraction _playerInteraction;
 
         private RotationMode _rotationMode = RotationMode.None;
 
@@ -188,7 +191,6 @@ namespace EasyCharacterMovement
         private float _dashTime = 0.0f;
         private float _dashProgress = 0.0f;
         private float _dashCooldownTime = 0.0f;
-        private bool _canDash = true;
 
         private float _deltaTime;
 
@@ -371,6 +373,11 @@ namespace EasyCharacterMovement
         {
             get => _groundFriction;
             set => _groundFriction = Mathf.Max(0.0f, value);
+        }
+
+        public bool canDash
+        {
+            get => _dashCooldown < 0.0f;
         }
 
         /// <summary>
@@ -666,6 +673,18 @@ namespace EasyCharacterMovement
 
         protected InputAction dashInputAction { get; set; }
 
+        /// <summary>
+        /// Pick Up InputAction.
+        /// </summary>
+
+        protected InputAction pickUpInputAction { get; set; }
+
+        /// <summary>
+        /// Interact InputAction.
+        /// </summary>
+
+        protected InputAction interactInputAction { get; set; }
+
         #endregion
 
         #region INPUT ACTION HANDLERS
@@ -688,6 +707,25 @@ namespace EasyCharacterMovement
         {
             if (context.started || context.performed)
                 BeginDash();
+        }
+
+        /// <summary>
+        /// Pick up input action handler.
+        /// </summary>
+
+        protected virtual void OnPickUp(InputAction.CallbackContext context)
+        {
+            if (context.started || context.performed)
+                _playerInteraction.TryPickUp();
+        }
+
+        protected virtual void OnInteract(InputAction.CallbackContext context)
+        {
+            if (context.started || context.performed)
+                _playerInteraction.TryInteract();
+
+            if (context.canceled)
+                _playerInteraction.TryCancelInteract();
         }
 
         #endregion
@@ -1792,6 +1830,8 @@ namespace EasyCharacterMovement
             _dashProgress = 0.0f;
             _dashCooldownTime = _dashCooldown;
 
+            Dashed?.Invoke();
+
             if (GetMovementDirection() != Vector3.zero)
                 SetRotation(Quaternion.LookRotation(GetMovementDirection().normalized, GetUpVector()));
 
@@ -2055,6 +2095,21 @@ namespace EasyCharacterMovement
                 dashInputAction.started += OnDash;
                 dashInputAction.Enable();
             }
+
+            pickUpInputAction = PlayerInput.currentActionMap.FindAction("PickUp");
+            if (pickUpInputAction != null)
+            {
+                pickUpInputAction.started += OnPickUp;
+                pickUpInputAction.Enable();
+            }
+
+            interactInputAction = PlayerInput.currentActionMap.FindAction("Interact");
+            if (interactInputAction != null)
+            {
+                interactInputAction.started += OnInteract;
+                interactInputAction.canceled += OnInteract;
+                interactInputAction.Enable();
+            }
         }
 
         /// <summary>
@@ -2076,6 +2131,21 @@ namespace EasyCharacterMovement
                 dashInputAction.started -= OnDash;
                 dashInputAction.Disable();
                 dashInputAction = null;
+            }
+
+            if (pickUpInputAction != null)
+            {
+                pickUpInputAction.started -= OnPickUp;
+                pickUpInputAction.Disable();
+                pickUpInputAction = null;
+            }
+
+            if (interactInputAction != null)
+            {
+                interactInputAction.started -= OnInteract;
+                interactInputAction.canceled -= OnInteract;
+                interactInputAction.Disable();
+                interactInputAction = null;
             }
         }
 
