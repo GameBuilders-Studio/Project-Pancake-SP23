@@ -10,8 +10,11 @@ public class MultiplayerInputSelect : MonoBehaviour
 
     public void OnPlayerJoined() 
     {
-        if(_playerInputManager.playerCount > _playerList.Count) return; // Don't set new player prefab if there aren't any left
-
+        if(_playerInputManager.playerCount >= _playerList.Count) 
+        {
+        Debug.Log("Here");
+        return; // Don't set new player prefab if there aren't any left
+        }
         _playerInputManager.playerPrefab = _playerList[_playerInputManager.playerCount]; 
     }
 }
