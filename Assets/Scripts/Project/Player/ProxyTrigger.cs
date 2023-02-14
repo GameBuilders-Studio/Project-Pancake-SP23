@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,9 @@ public class ProxyTrigger : MonoBehaviour
     [SerializeField]
     private Collider _triggerCollider;
 
-    public delegate void OnProxyEnter(Collider other);
-    public OnProxyEnter OnEnter;
+    public Action<Collider> OnEnter;
 
-    public delegate void OnProxyExit(Collider other);
-    public OnProxyExit OnExit;
+    public Action<Collider> OnExit;
 
     void Awake()
     {
