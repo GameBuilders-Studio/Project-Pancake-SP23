@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum HoverState {Selected, Deselected}
-
+[RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
     [SerializeField]
