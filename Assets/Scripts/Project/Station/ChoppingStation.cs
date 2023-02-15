@@ -31,8 +31,8 @@ public class ChoppingStation : MonoBehaviour
 
     private IEnumerator ChoppingTimer(){
         while(_isChopping){
-            yield return new WaitForSeconds(Time.deltaTime);
-            _choppingTimeCurrent+=Time.deltaTime;
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+            _choppingTimeCurrent+=Time.fixedDeltaTime* 1.15f; //multiply 1.15f because the primitive time will not match the actual time
             if(_choppingTimeCurrent >= _choppingTimeMax){
                 _isChopping = false;
                 FinishChopping();
@@ -41,9 +41,5 @@ public class ChoppingStation : MonoBehaviour
         }
     }
     
-    //Player can't move when chopping
-    public void LockPlayer(){
-        Debug.Log("Lock Player");
 
-    }
 }
