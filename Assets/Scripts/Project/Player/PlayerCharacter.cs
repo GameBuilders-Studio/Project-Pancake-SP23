@@ -722,9 +722,13 @@ namespace EasyCharacterMovement
         protected virtual void OnInteract(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
+                //Player can not move while interacting with an object
+                SetMovementMode(MovementMode.None);
                 _playerInteraction.TryInteract();
 
             if (context.canceled)
+                //Player can move again after interacting with an object
+                SetMovementMode(MovementMode.Walking);
                 _playerInteraction.TryCancelInteract();
         }
 
