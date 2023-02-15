@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
     [SerializeField]
     private bool _interacting = false;
+    public UnityEvent interactBeginEvent;
+    public UnityEvent interactCancelEvent;
 
     public void Interact()
     {
@@ -21,11 +24,13 @@ public class Interactable : MonoBehaviour
 
     protected void OnInteractBegin()
     {
-        Debug.Log("interact begin!");
+        //Debug.Log("interact begin!");
+        interactBeginEvent?.Invoke();
     }
 
     protected void OnInteractEnd()
     {
-        Debug.Log("interact end");
+        //Debug.Log("interact end");
+        interactCancelEvent?.Invoke();
     }
 }
