@@ -722,17 +722,15 @@ namespace EasyCharacterMovement
         protected virtual void OnInteract(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
-                //TODO: I believe the following code can lock the player, however, 
-                //it will interact twice for no reason (once when started and once when canceled)
                 //Player cannot move while interacting with an object
                 //Debug.Log("Interact started");
-                //SetMovementMode(MovementMode.None);
+                SetMovementMode(MovementMode.None);
                 _playerInteraction.TryInteract();
 
             if (context.canceled)
                 //Player can move again after interacting with an object
                 //Debug.Log("Interact canceled");
-                //SetMovementMode(MovementMode.Walking);
+                SetMovementMode(MovementMode.Walking);
                 _playerInteraction.TryCancelInteract();
         }
 

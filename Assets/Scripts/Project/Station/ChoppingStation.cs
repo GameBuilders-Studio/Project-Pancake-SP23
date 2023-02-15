@@ -13,17 +13,17 @@ public class ChoppingStation : MonoBehaviour
     private bool _isChopping = false;
     
     public void StartChopping(){
-        Debug.Log("Start Chopping");
+        //Debug.Log("Start Chopping");
         _isChopping = true;
         StartCoroutine("ChoppingTimer");
     }
     public void StopChopping(){
-        Debug.Log("Stop Chopping");
+        //Debug.Log("Stop Chopping");
         _isChopping = false;
         StopCoroutine("ChoppingTimer");
     }
     public void FinishChopping(){
-        Debug.Log("Finish Chopping");
+        //Debug.Log("Finish Chopping");
         _isChopping = false;;
         StopCoroutine("ChoppingTimer");
         _choppingTimeCurrent = 0f;
