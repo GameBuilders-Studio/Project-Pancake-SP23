@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///  Handles the visual behaviour of food items
+///  Handles the visual behaviour of ingredients
 /// </summary>
 public class IngredientStateBehaviour : MonoBehaviour
 {

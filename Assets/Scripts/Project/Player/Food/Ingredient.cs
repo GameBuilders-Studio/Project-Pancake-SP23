@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///  Stores information about the 
+///  Handles ingredient state
 /// </summary>
 public class Ingredient : MonoBehaviour
 {
@@ -25,6 +25,7 @@ public class Ingredient : MonoBehaviour
 
     void Awake()
     {
+        // associate each IngredientStateData with an IngredientStateBehaviour
         foreach (IngredientStateBehaviour behaviour in _allowedFoodStates)
         {
             _stateBehaviours.Add(behaviour.FoodState, behaviour);
