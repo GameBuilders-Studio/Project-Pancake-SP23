@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodStateBehaviour : MonoBehaviour
+/// <summary>
+///  Handles the visual behaviour of food items
+/// </summary>
+public class IngredientStateBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private FoodStateData _foodState;
+    private IngredientStateData _state;
 
     [SerializeField]
     private Renderer _renderer;
 
     private float _progress;
 
-    public FoodStateData FoodState
+    public IngredientStateData FoodState
     {
-        get => _foodState;
-        set => _foodState = value;
+        get => _state;
+        set => _state = value;
     }
 
     void Awake()
@@ -34,6 +37,7 @@ public class FoodStateBehaviour : MonoBehaviour
 
     public void HideAndReset()
     {
+        _renderer.enabled = false;
         _progress = 0.0f;
     }
 
