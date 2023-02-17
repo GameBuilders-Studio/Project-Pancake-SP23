@@ -9,10 +9,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Station : Ab_Container
-{
+{   
+    
+    protected GameObject _item;  
+
+    [Tooltip("should be container or food only")]
+    [SerializeField]
+    public GameObject Item
+    {
+        get => _item;
+        set => _item = value;
+    }
+
     private void Awake() {
-        IsCarryable = false;
-        items = new List<GameObject>();
+        _isCarryable = false;
+        _item = null;
     }
 
     // Start is called before the first frame update
@@ -27,16 +38,21 @@ public class Station : Ab_Container
         
     }
 
-    //TODO: implementation needed
-    public override bool PlaceItemIntoHolder() {
-
-
-        return false;
+    public override bool PlaceItemIntoContaier(GameObject gameObject) {
+        if (!this.IsEmpty()) {
+            return false;
+        }
+        _item = gameObject;
+        return true;
     }
 
     //TODO: implementation needed
-    public override void OnRemovingObjectFromHolder() {
-
+    public override void OnPickup(GameObject gameObject) {
+        _item = null;
         return;
+    }
+
+    public override bool IsEmpty() {
+        return _item == null;
     }
 }

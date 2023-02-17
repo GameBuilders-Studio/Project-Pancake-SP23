@@ -14,21 +14,18 @@ using UnityEngine;
 ///</summary> 
 public abstract class Ab_Container : MonoBehaviour     
 {   
-    protected List<GameObject> items;
-    protected bool IsCarryable;
-
-    public List<GameObject> getPickableItemsList() {
-        return items;
+    
+    protected bool _isCarryable;
+    public bool IsCarryable
+    {
+        get => _isCarryable;
+        set => _isCarryable = value;
     }
 
-    public bool isCarryable() {
-        return IsCarryable;
-    }
-
-    public abstract bool PlaceItemIntoHolder(); 
-    public abstract void OnRemovingObjectFromHolder();
-
-    public virtual bool IsEmpty() { return items == null || items.Count == 0;}
+    public abstract bool IsEmpty();
+    public abstract bool PlaceItemIntoContaier(GameObject gameObject); 
+    //should envoke by pickuper to delete reference
+    public abstract void OnPickup(GameObject gameObject);
 }
 
 // object.transform.SetParent(gameObject.transform);
