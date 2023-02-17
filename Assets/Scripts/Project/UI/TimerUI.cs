@@ -9,16 +9,10 @@ public class TimerUI : MonoBehaviour
     [SerializeField] public TextMeshProUGUI TimeText;
 
     [Tooltip("Time Duration in seconds")]
-    [SerializeField] public float StartTime;
 
     private float _timeRemaining = 0;
     private bool _timerIsRunning;
     private bool _timerUp; //Bool to check if timer has hit zero already
-    void Start()
-    {
-        StartTimer();
-    }
-
     void Update()
     {
         if (_timerIsRunning)
@@ -28,14 +22,14 @@ public class TimerUI : MonoBehaviour
             if (_timeRemaining == 0 && !_timerUp)
             {
                 _timerUp = true;
-                EventManager.Invoke("OnTimerEnd");
+                EventManager.Invoke("TimerEnded");
             }
         }
     }
-    public void StartTimer()
+    public void StartTimer(float startTime)
     {
-        EventManager.Invoke("OnTimerStart");
-        _timeRemaining = StartTime;
+        EventManager.Invoke("TimerStarted");
+        _timeRemaining = startTime;
         _timerIsRunning = true;
         _timerUp = false;
     }
