@@ -14,10 +14,10 @@ using UnityEngine;
 ///</summary> 
 public abstract class Ab_Container : MonoBehaviour     
 {   
-    protected List<Pickable> items;
+    protected List<GameObject> items;
     public abstract bool PlaceItemIntoHolder(); 
     public abstract void OnRemovingObjectFromHolder();
-    public abstract List<Pickable> getPickableItemsList();
+    public abstract List<GameObject> getPickableItemsList();
     public virtual bool IsEmpty() { return items == null || items.Count == 0;}
 }
 
