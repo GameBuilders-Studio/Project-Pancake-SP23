@@ -15,9 +15,15 @@ using UnityEngine;
 public abstract class Ab_Container : MonoBehaviour     
 {   
     protected List<GameObject> items;
+    protected bool IsCarryable;
+
+    public List<GameObject> getPickableItemsList() {
+        return items;
+    }
+
     public abstract bool PlaceItemIntoHolder(); 
     public abstract void OnRemovingObjectFromHolder();
-    public abstract List<GameObject> getPickableItemsList();
+
     public virtual bool IsEmpty() { return items == null || items.Count == 0;}
 }
 
