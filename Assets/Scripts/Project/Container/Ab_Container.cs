@@ -21,10 +21,10 @@ public abstract class Ab_Container : MonoBehaviour
         return items;
     }
 
-    public bool IsCarryable() {
+    public bool isCarryable() {
         return IsCarryable;
     }
-    
+
     public abstract bool PlaceItemIntoHolder(); 
     public abstract void OnRemovingObjectFromHolder();
 
