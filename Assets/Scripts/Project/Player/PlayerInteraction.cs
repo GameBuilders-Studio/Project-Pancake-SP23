@@ -59,7 +59,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (!HoverTarget.IsCarryable) { return; }
 
-        // do something with HoverTarget
+        HoverTarget.PickUp();
     }
 
     public void TryInteract()
