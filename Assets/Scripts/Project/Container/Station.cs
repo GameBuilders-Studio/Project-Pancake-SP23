@@ -39,15 +39,20 @@ public class Station : Ab_Container
     }
 
     public override bool PlaceItemIntoContaier(GameObject gameObject) {
-        if (!this.IsEmpty()) {
+        Container container = this.getContainer();
+        if (!this.IsEmpty() && container == null) {             // non-container occupied
             return false;
         }
-        _item = gameObject;
-        return true;
+        else if (this.IsEmpty()) {                              // put directly if empty
+            _item = gameObject;
+            return true;
+        }
+        return  container.PlaceItemIntoContaier(gameObject);    // put into container 
+ 
     }
 
-    //TODO: implementation needed
-    public override void OnPickup(GameObject gameObject) {
+    /* either food or container, pick food from container processeded by container on it */
+    public override void OnPickup(GameObject gameObject) { 
         _item = null;
         return;
     }
@@ -55,4 +60,9 @@ public class Station : Ab_Container
     public override bool IsEmpty() {
         return _item == null;
     }
+
+    public Container getContainer() {
+        return _item.GetComponent<Container>();
+    }
+
 }

@@ -56,10 +56,13 @@ public class Container : Ab_Container
         return true;
     }
 
-    //TODO: implementation needed
     public override void OnPickup(GameObject gameObject) {
-
+    int index;
+    if ((index = _items.IndexOf(gameObject)) != - 1) {
+        _items.RemoveAt(index);
         return;
+    }
+        Debug.Log("no such food found!");
     }
 
     public override bool IsEmpty() { return _items == null || _items.Count == 0;}
