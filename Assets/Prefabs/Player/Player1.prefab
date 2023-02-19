@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6867231908584801890}
   - component: {fileID: 2819626521960616056}
   m_Layer: 0
-  m_Name: PlayerCharacter
+  m_Name: Player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 7bff14d5-641b-427f-bd2a-b50a9052c6f2
     m_ActionName: UI/TrackedDeviceOrientation
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Controls
   m_SplitScreenIndex: -1
