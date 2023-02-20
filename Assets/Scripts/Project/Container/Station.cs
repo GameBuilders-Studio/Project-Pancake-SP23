@@ -13,7 +13,7 @@ public class Station : Ab_Container
     
     protected GameObject _item;  
 
-    private MeshRenderer meshRenderer;
+    private MeshRenderer _meshRenderer;
 
     // [SerializeField]
     // public GameObject ObjectOnTheStation; for test only
@@ -27,6 +27,7 @@ public class Station : Ab_Container
     }
 
     private void Awake() {
+        _meshRenderer = GetComponent<MeshRenderer> ();
         _isCarryable = false;
         _item = null;
     }
@@ -34,7 +35,7 @@ public class Station : Ab_Container
     // Start is called before the first frame update
     void Start()
     {
-        meshRenderer = gameObject.transform.GetComponent<MeshRenderer> ();
+        
 
         // string testobjname = "CubeProp";
         // ObjectOnTheStation = GameObject.Find(testobjname);
@@ -48,7 +49,7 @@ public class Station : Ab_Container
     }
 
     public override bool PlaceItemIntoContaier(GameObject gameObject) {
-        Container container = this.getContainer();
+        Container container = this.GetContainer();
         if (!this.IsEmpty() && container == null) {             // non-container occupied
             //Debug.Log("1");
             return false;
@@ -74,7 +75,7 @@ public class Station : Ab_Container
         return _item == null;
     }
 
-    public Container getContainer() {
+    public Container GetContainer() {
         if (_item == null) {
             return null;
         }
@@ -85,10 +86,10 @@ public class Station : Ab_Container
     private void CenterItem(GameObject go) {
         GameObject gameObject = this.gameObject;
         //getting externs bond
-        Vector3 goBonds = go.GetComponent<MeshRenderer>().bounds.extents;
+        Vector3 goBounds = go.GetComponent<MeshRenderer>().bounds.extents;
  
          //Setting the positon of the object
-        go.transform.position = new Vector3 (gameObject.transform.position.x, meshRenderer.bounds.extents.y + goBonds.y + gameObject.transform.position.y, 0);
+        go.transform.position = new Vector3 (gameObject.transform.position.x, _meshRenderer.bounds.extents.y + goBounds.y + gameObject.transform.position.y, 0);
         go.transform.SetParent (gameObject.transform);
 
         //should not be collided 
