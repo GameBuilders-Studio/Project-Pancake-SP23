@@ -4,6 +4,8 @@ using UnityEngine;
 
 public enum HoverState {Selected, Deselected}
 
+public enum SelectableState {Default, Disabled}
+
 [RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
@@ -69,15 +71,18 @@ public class Selectable : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    public void Enable()
+    public void SetState(SelectableState state)
     {
-        _isEverSelectable = true;
-    }
+        if (state == SelectableState.Default)
+        {
+            _isEverSelectable = true;
+        }
 
-    public void Disable()
-    {
-        _isEverSelectable = false;
-        SetHoverState(HoverState.Deselected);
+        if (state == SelectableState.Disabled)
+        {
+            _isEverSelectable = false;
+            SetHoverState(HoverState.Deselected);
+        }
     }
 
     public virtual void SetHoverState(HoverState state)
@@ -120,14 +125,14 @@ public class Selectable : MonoBehaviour
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
-        Disable();
+        SetState(SelectableState.Disabled);
     }
 
     public virtual void OnPlace()
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
-        Disable();
+        SetState(SelectableState.Disabled);
     }
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
