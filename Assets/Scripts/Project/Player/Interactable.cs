@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 [RequireComponent(typeof(Selectable))]
 [RequireComponent(typeof(Rigidbody))]
 public class Interactable : MonoBehaviour
@@ -13,7 +14,7 @@ public class Interactable : MonoBehaviour
 
     public void Interact()
     {
-        if (!_interacting) { OnInteractBegin(); }
+        if (!_interacting) { OnInteractStart(); }
         _interacting = true;
     }
 
@@ -23,15 +24,13 @@ public class Interactable : MonoBehaviour
         _interacting = false;
     }
 
-    protected void OnInteractBegin()
+    protected void OnInteractStart()
     {
-        //Debug.Log("interact begin!");
         interactBeginEvent?.Invoke();
     }
 
     protected void OnInteractEnd()
     {
-        //Debug.Log("interact end");
         interactCancelEvent?.Invoke();
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace EasyCharacterMovement
 {
-    [RequireComponent(typeof(CharacterMovement))]
+    [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
     public class PlayerCharacter : MonoBehaviour
     {
         #region EDITOR EXPOSED FIELDS
@@ -17,7 +17,6 @@ namespace EasyCharacterMovement
         [SerializeField]
         private PlayerInput _playerInput;
 
-        [SerializeField]
         private PlayerInteraction _playerInteraction;
 
         private RotationMode _rotationMode = RotationMode.None;
@@ -716,7 +715,9 @@ namespace EasyCharacterMovement
         protected virtual void OnPickUp(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
-                _playerInteraction.TryPickUp();
+            {
+                _playerInteraction.OnPickUpPressed();
+            }
         }
 
         protected virtual void OnInteract(InputAction.CallbackContext context)
@@ -725,13 +726,13 @@ namespace EasyCharacterMovement
                 //Player cannot move while interacting with an object
                 //Debug.Log("Interact started");
                 SetMovementMode(MovementMode.None);
-                _playerInteraction.TryInteract();
+                _playerInteraction.OnInteractStay();
 
             if (context.canceled)
                 //Player can move again after interacting with an object
                 //Debug.Log("Interact canceled");
                 SetMovementMode(MovementMode.Walking);
-                _playerInteraction.TryCancelInteract();
+                _playerInteraction.OnInteractEnd();
         }
 
         #endregion
@@ -1805,16 +1806,24 @@ namespace EasyCharacterMovement
         /// Allows to implement a custom movement.
         /// </summary>
 
-        protected virtual void Dash(Vector3 desiredVelocity)
+        protected virtual void Dashing(Vector3 desiredVelocity)
         {
             _dashTime += deltaTime;
 
-            var previousDashProgress = _dashProgress;
+            float previousDashProgress = _dashProgress;
 
             _dashProgress = _dashCurve.Evaluate(_dashTime / _dashDuration);
 
-            characterMovement.velocity = GetForwardVector() * (_dashProgress - previousDashProgress) * _dashDistance;
-            characterMovement.velocity *= 1.0f / deltaTime;
+            var horizontalVelocity = GetForwardVector() * (_dashProgress - previousDashProgress) * _dashDistance;
+            horizontalVelocity *= 1.0f / deltaTime;
+
+            characterMovement.velocity = new Vector3(
+                horizontalVelocity.x,
+                characterMovement.velocity.y,
+                horizontalVelocity.z
+            );
+
+            characterMovement.velocity += GetGravityVector() * deltaTime;
             
             if (_dashProgress >= 1.0f)
             {
@@ -1903,7 +1912,7 @@ namespace EasyCharacterMovement
                     break;
 
                 case MovementMode.Dash:
-                    Dash(desiredVelocity);
+                    Dashing(desiredVelocity);
                     break;
 
                 default:
@@ -2299,6 +2308,8 @@ namespace EasyCharacterMovement
             _characterMovement = GetComponent<CharacterMovement>();
             _animator = GetComponentInChildren<Animator>();
             _rootMotionController = GetComponentInChildren<RootMotionController>();
+
+            _playerInteraction = GetComponent<PlayerInteraction>();
 
             // Enable late fixed update (default)
 
