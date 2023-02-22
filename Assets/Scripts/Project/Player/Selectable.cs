@@ -120,12 +120,14 @@ public class Selectable : MonoBehaviour
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
+        Disable();
     }
 
     public virtual void OnPlace()
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
+        Disable();
     }
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
