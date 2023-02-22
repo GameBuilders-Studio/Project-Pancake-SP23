@@ -14,7 +14,7 @@ public class Interactable : MonoBehaviour
 
     public void Interact()
     {
-        if (!_interacting) { OnInteractBegin(); }
+        if (!_interacting) { OnInteractStart(); }
         _interacting = true;
     }
 
@@ -24,8 +24,7 @@ public class Interactable : MonoBehaviour
         _interacting = false;
     }
 
-
-    protected void OnInteractBegin()
+    protected void OnInteractStart()
     {
         //Debug.Log("interact begin!");
         interactBeginEvent?.Invoke();
@@ -35,24 +34,5 @@ public class Interactable : MonoBehaviour
     {
         //Debug.Log("interact end");
         interactCancelEvent?.Invoke();
-    }
-
-    public void PickUp()
-    {
-        if (_isSelectable) 
-        {
-            if (Input.GetKeyDown(KeyCode.E)) 
-            {
-                // Not carrying an object, try to Pick
-                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycastHit, pickUpDistance, pickUpLayerMask)) 
-                {
-                    if (raycastHit.transform.TryGetComponent(out ObjectPickable)) {
-                        ObjectPickable.Pick(objectPickPointTransform);
-                    }
-                }   
-        
-            }
-
-        }
     }
 }

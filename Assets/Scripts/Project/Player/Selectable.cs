@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum HoverState {Selected, Deselected}
+
 [RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Selectable : MonoBehaviour
 
     // TODO: remove
     private Renderer _renderer;
+    private Rigidbody _rigidbody;
 
     public bool IsSelectable
     {
@@ -53,42 +55,32 @@ public class Selectable : MonoBehaviour
             _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
         }
 
-        if (_nearbyTrigger == null)
-        {
-            Debug.LogError("No proxy trigger");
-        }
-
         if (_interactable == null)
         {
             _interactable = GetComponent<Interactable>();
         }
 
+        _rigidbody = GetComponent<Rigidbody>();
+
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
 
+        // TODO: remove
         _renderer = GetComponent<Renderer>();
     }
 
-    void OnProxyTriggerEnter(Collider other)
+    public void Enable()
     {
-        if (IsSelectable && other.gameObject.TryGetComponent<PlayerInteraction>(out PlayerInteraction player))
-        {
-            _nearbyPlayers.Add(other.gameObject, player);
-            player.Nearby.Add(this);
-        }
+        _isEverSelectable = true;
     }
 
-    void OnProxyTriggerExit(Collider other)
+    public void Disable()
     {
-        if (_nearbyPlayers.ContainsKey(other.gameObject))
-        {
-            var player = _nearbyPlayers[other.gameObject];
-            player.Nearby.Remove(this);
-            _nearbyPlayers.Remove(other.gameObject);
-        }
+        _isEverSelectable = false;
+        SetHoverState(HoverState.Deselected);
     }
 
-    public void SetHoverState(HoverState state)
+    public virtual void SetHoverState(HoverState state)
     {
         if (!IsSelectable || !_highlightOnHover)
         {
@@ -105,6 +97,54 @@ public class Selectable : MonoBehaviour
         {
             // disable highlight
             _renderer.material.color = Color.white;
+        }
+    }
+
+    /// <summary>
+    /// Returns an item to be carried.
+    /// </summary>
+    public virtual Selectable GetCarryableItem()
+    {
+        return IsCarryable ? this : null;
+    }
+
+    /// <summary>
+    /// Tries to place an item on this. Returns true if successful. 
+    /// </summary>
+    public virtual bool TryPlaceItem(Selectable item)
+    {
+        return false;
+    }
+
+    public virtual void OnPickUp()
+    {
+        _rigidbody.isKinematic = true;
+        _rigidbody.detectCollisions = false;
+    }
+
+    public virtual void OnPlace()
+    {
+        _rigidbody.isKinematic = true;
+        _rigidbody.detectCollisions = false;
+    }
+
+    // TODO: change collision matrix so Selectables only detect Players (for performance)
+    void OnProxyTriggerEnter(Collider other)
+    {
+        if (IsSelectable && other.gameObject.TryGetComponent(out PlayerInteraction player))
+        {
+            _nearbyPlayers.Add(other.gameObject, player);
+            player.Nearby.Add(this);
+        }
+    }
+
+    void OnProxyTriggerExit(Collider other)
+    {
+        if (_nearbyPlayers.ContainsKey(other.gameObject))
+        {
+            var player = _nearbyPlayers[other.gameObject];
+            player.Nearby.Remove(this);
+            _nearbyPlayers.Remove(other.gameObject);
         }
     }
 }
