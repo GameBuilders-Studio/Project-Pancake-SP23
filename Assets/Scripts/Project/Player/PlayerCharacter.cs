@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace EasyCharacterMovement
 {
-    [RequireComponent(typeof(CharacterMovement))]
+    [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
     public class PlayerCharacter : MonoBehaviour
     {
         #region EDITOR EXPOSED FIELDS
@@ -17,7 +17,6 @@ namespace EasyCharacterMovement
         [SerializeField]
         private PlayerInput _playerInput;
 
-        [SerializeField]
         private PlayerInteraction _playerInteraction;
 
         private RotationMode _rotationMode = RotationMode.None;
@@ -2309,6 +2308,8 @@ namespace EasyCharacterMovement
             _characterMovement = GetComponent<CharacterMovement>();
             _animator = GetComponentInChildren<Animator>();
             _rootMotionController = GetComponentInChildren<RootMotionController>();
+
+            _playerInteraction = GetComponent<PlayerInteraction>();
 
             // Enable late fixed update (default)
 

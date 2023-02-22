@@ -77,7 +77,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        Debug.Log("tried to pick up this", HoverTarget);
         if (HoverTarget.IsCarryable)
         {
             Selectable item = HoverTarget.GetCarryableItem();
@@ -90,7 +89,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        Debug.Log("tried to place an item on this", HoverTarget);
         if (HoverTarget.TryPlaceItem(_currentHeldItem))
         {
             _currentHeldItem = null;
@@ -155,6 +153,7 @@ public class PlayerInteraction : MonoBehaviour
         return nearest;
     }
 
+    // TODO: make extension method
     private float Angle2D(Vector3 a, Vector3 b)
     {
         a.y = 0f;

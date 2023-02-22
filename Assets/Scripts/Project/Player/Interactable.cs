@@ -26,13 +26,11 @@ public class Interactable : MonoBehaviour
 
     protected void OnInteractStart()
     {
-        //Debug.Log("interact begin!");
         interactBeginEvent?.Invoke();
     }
 
     protected void OnInteractEnd()
     {
-        //Debug.Log("interact end");
         interactCancelEvent?.Invoke();
     }
 }
