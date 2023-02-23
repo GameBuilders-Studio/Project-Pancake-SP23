@@ -29,13 +29,7 @@ public class MusicManager : Singleton<MusicManager>
         if (haveDone)
         {
             return;
-        }
-        Instance.PlayMusic("Menu"); ;
-        EventManager.AddListener("StartMenu", new UnityAction(() => Instance.PlayMusic("Menu"))); //When you enter into the menu
-        EventManager.AddListener("StartTutorial", new UnityAction(() => Instance.PlayMusic("Round"))); //When you press the start button
-        EventManager.AddListener("RoundStart", new UnityAction(() => Instance.PlayMusic("Round"))); //When you press the start button
-        EventManager.AddListener("GameLost", new UnityAction(() => Instance.PlayMusic("GameLost"))); //When you press the start button
-        EventManager.AddListener("GameWon", new UnityAction(() => Instance.PlayMusic("GameWon"))); //When you press the start button
+        };
         haveDone = true;
     }
     public void SetVolume(float num)
