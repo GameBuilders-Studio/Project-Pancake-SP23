@@ -8,10 +8,9 @@ using UnityEngine;
 public class Ingredient : MonoBehaviour
 {
     [SerializeField]
-    private List<IngredientStateBehaviour> _allowedFoodStates;
-
-    [SerializeField]
     private IngredientStateData _currentState;
+
+    private IngredientStateBehaviour[] _allowedFoodStates;
 
     private Dictionary<IngredientStateData, IngredientStateBehaviour> _stateBehaviours;
 
@@ -23,12 +22,26 @@ public class Ingredient : MonoBehaviour
         set => _progress = value;
     }
 
-    void Awake()
+    public bool ProgressComplete
     {
+        get => Mathf.Approximately(_progress, 1.0f);
+    }
+
+    void Start()
+    {
+        _allowedFoodStates = GetComponentsInChildren<IngredientStateBehaviour>();
+
+        _stateBehaviours = new();
+
         // associate each IngredientStateData with an IngredientStateBehaviour
         foreach (IngredientStateBehaviour behaviour in _allowedFoodStates)
         {
             _stateBehaviours.Add(behaviour.FoodState, behaviour);
+        }
+
+        if (_currentState != null)
+        {
+            SetState(_currentState);
         }
     }
 
@@ -41,13 +54,13 @@ public class Ingredient : MonoBehaviour
     {
         if (!CanEnterState(foodState))
         {
-            Debug.LogError("Food can not enter state " + foodState.name);
+            Debug.LogError("Food cannot enter state " + foodState.name);
         }
 
         var currentStateBehaviour = _stateBehaviours[_currentState];
         if (currentStateBehaviour != null)
         {
-            currentStateBehaviour.HideAndReset();
+            currentStateBehaviour.OnTransitionExit();
         }
         
         _currentState = foodState;
@@ -55,7 +68,7 @@ public class Ingredient : MonoBehaviour
         var newStateBehaviour = _stateBehaviours[foodState];
         if (newStateBehaviour != null)
         {
-            newStateBehaviour.Show();
+            newStateBehaviour.OnTransitionEnter();
         }
     }
 
@@ -65,6 +78,11 @@ public class Ingredient : MonoBehaviour
 
         _progress = progress;
 
-        _stateBehaviours[_currentState].OnProgressUpdate(_progress);
+        _stateBehaviours[_currentState].UpdateProgress(_progress);
+    }
+
+    public void AddProgress(float progressDelta)
+    {
+        SetProgress(Progress + progressDelta);
     }
 }

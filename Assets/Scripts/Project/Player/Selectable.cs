@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum HoverState {Selected, Deselected}
 
@@ -12,13 +13,7 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private ProxyTrigger _nearbyTrigger;
 
-    [SerializeField]
-    private Interactable _interactable;
-
     [Space(15f)]
-    [SerializeField]
-    private bool _isCarryable = true;
-
     [SerializeField]
     private bool _isEverSelectable = true;
 
@@ -26,28 +21,40 @@ public class Selectable : MonoBehaviour
     private bool _highlightOnHover = true;
 
     private bool _isSelectable = true;
+
+    private bool _isCarryable = true;
+
+    private bool _isInteractable = false;
+    private bool _isInteracting = false;
+
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
     // TODO: remove
     private Renderer _renderer;
     private Rigidbody _rigidbody;
 
-    public bool IsSelectable
+    public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
         set => _isSelectable = value;
     }
 
-    public Interactable Interactable
-    {
-        get => _interactable;
-        set => _interactable = value;
-    }
-
-    public bool IsCarryable
+    public virtual bool IsCarryable
     {
         get => _isCarryable;
         set => _isCarryable = value;
+    }
+
+    public virtual bool IsInteractable
+    {
+        get => _isInteractable;
+        set => _isInteractable = value;
+    }
+
+    public virtual bool IsInteracting
+    {
+        get => _isInteracting && IsInteractable;
+        set => _isInteracting = value;
     }
 
     void Awake()
@@ -57,11 +64,6 @@ public class Selectable : MonoBehaviour
             _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
         }
 
-        if (_interactable == null)
-        {
-            _interactable = GetComponent<Interactable>();
-        }
-
         _rigidbody = GetComponent<Rigidbody>();
 
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
@@ -69,18 +71,20 @@ public class Selectable : MonoBehaviour
 
         // TODO: remove
         _renderer = GetComponent<Renderer>();
+
+        OnAwake();
     }
 
     public void SetState(SelectableState state)
     {
         if (state == SelectableState.Default)
         {
-            _isEverSelectable = true;
+            _isSelectable = true;
         }
 
         if (state == SelectableState.Disabled)
         {
-            _isEverSelectable = false;
+            _isSelectable = false;
             SetHoverState(HoverState.Deselected);
         }
     }
@@ -125,15 +129,32 @@ public class Selectable : MonoBehaviour
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
-        SetState(SelectableState.Disabled);
+        _rigidbody.interpolation = RigidbodyInterpolation.None;
+        SetState(SelectableState.Default);
     }
 
+    /// <summary>
+    /// Disables the selectable and physics by default
+    /// </summary>
     public virtual void OnPlace()
     {
         _rigidbody.isKinematic = true;
         _rigidbody.detectCollisions = false;
+        _rigidbody.interpolation = RigidbodyInterpolation.None;
         SetState(SelectableState.Disabled);
     }
+
+    public virtual void OnInteractStart() 
+    {
+        _isInteracting = true;
+    }
+
+    public virtual void OnInteractEnd() 
+    {
+        _isInteracting = false;
+    }
+
+    protected virtual void OnAwake() {}
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)

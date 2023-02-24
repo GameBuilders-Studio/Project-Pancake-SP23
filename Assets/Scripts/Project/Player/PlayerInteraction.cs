@@ -77,12 +77,13 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        if (HoverTarget.IsCarryable)
-        {
-            Selectable item = HoverTarget.GetCarryableItem();
-            item.OnPickUp();
-            PickUpItem(item);
-        }
+        Selectable item = HoverTarget.GetCarryableItem();
+
+        if (item == null) { return; }
+
+        item.OnPickUp();
+
+        PickUpItem(item);
     }
 
     public void TryPlace()
@@ -91,8 +92,8 @@ public class PlayerInteraction : MonoBehaviour
 
         if (HoverTarget.TryPlaceItem(_currentHeldItem))
         {
-            _currentHeldItem = null;
             _currentHeldItem.OnPlace();
+            _currentHeldItem = null;
         }
     }
 
@@ -105,29 +106,28 @@ public class PlayerInteraction : MonoBehaviour
         }
         _currentHeldItem = item;
 
-        item.transform.SetParent(_carryPivot);
-        
+        item.transform.parent = _carryPivot;
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
     }
 
-    public void OnInteractStay()
+    public void OnInteractStart()
     {
         if (HoverTarget == null) { return; }
 
         Debug.Log("tried to interact with this", HoverTarget);
 
-        if (HoverTarget.Interactable == null) { return; }
+        if (!HoverTarget.IsInteractable) { return; }
 
-        // do something with HoverTarget.Interactable
-        HoverTarget.Interactable.Interact();
+        // do something with HoverTarget
+        HoverTarget.OnInteractStart();
     }
 
     public void OnInteractEnd()
     {
-        if (HoverTarget != null && HoverTarget.Interactable != null)
+        if (HoverTarget != null && HoverTarget.IsInteractable)
         {
-            HoverTarget.Interactable.CancelInteract();
+            HoverTarget.OnInteractEnd();
         }
     }
 

@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Selectable))]
-[RequireComponent(typeof(Rigidbody))]
 public class Interactable : MonoBehaviour
 {
     [SerializeField]
     private bool _interacting = false;
+
     public UnityEvent interactBeginEvent;
+
     public UnityEvent interactCancelEvent;
 
     public void Interact()

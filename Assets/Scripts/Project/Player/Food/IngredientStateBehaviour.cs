@@ -10,9 +10,6 @@ public class IngredientStateBehaviour : MonoBehaviour
     [SerializeField]
     private IngredientStateData _state;
 
-    [SerializeField]
-    private Renderer _renderer;
-
     private float _progress;
 
     public IngredientStateData FoodState
@@ -20,30 +17,19 @@ public class IngredientStateBehaviour : MonoBehaviour
         get => _state;
         set => _state = value;
     }
+    
+    public void OnTransitionEnter() {}
 
-    void Awake()
-    {
-        if (_renderer == null) 
-        { 
-            _renderer = GetComponent<Renderer>(); 
-        }
-        _progress = 0.0f;
-    }
+    public void OnTransitionExit() {}
 
-    public void Show()
+    public void UpdateProgress(float progress)
     {
-        _renderer.enabled = true;
-    }
-
-    public void HideAndReset()
-    {
-        _renderer.enabled = false;
-        _progress = 0.0f;
+        _progress = progress;
+        OnProgressUpdate(progress);
     }
 
     public virtual void OnProgressUpdate(float progress)
     {
-        _progress = progress;
         // handle specific animation behaviour here!
     }
 }
