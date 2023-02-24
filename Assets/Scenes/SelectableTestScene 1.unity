@@ -404,7 +404,7 @@ MonoBehaviour:
   _nearbyTrigger: {fileID: 1909704015}
   _isEverSelectable: 1
   _highlightOnHover: 1
-  _heldItem: {fileID: 0}
+  _placedItem: {fileID: 0}
   _itemHolderPivot: {fileID: 200239053}
   _totalChopTime: 5
 --- !u!1 &536856489
@@ -537,7 +537,6 @@ GameObject:
   - component: {fileID: 564997234}
   - component: {fileID: 564997239}
   - component: {fileID: 564997241}
-  - component: {fileID: 564997242}
   m_Layer: 0
   m_Name: IngredientProp
   m_TagString: Untagged
@@ -667,20 +666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8c4a93f4b1d8843a80e6a946d75197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentState: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
---- !u!114 &564997242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564997233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12567f78713468240b6f47f48d789aa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _state: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
+  _type: 1
+  _initialState: {fileID: 0}
 --- !u!1 &636134715
 GameObject:
   m_ObjectHideFlags: 0

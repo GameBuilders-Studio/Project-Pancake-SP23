@@ -134,7 +134,7 @@ public class Selectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Disables the selectable and physics by default
+    /// Disables selection and physics by default
     /// </summary>
     public virtual void OnPlace()
     {

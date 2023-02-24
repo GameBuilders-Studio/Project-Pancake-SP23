@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Station<T> : Selectable
+public class Station<T> : Selectable where T : MonoBehaviour
 {
     [SerializeField]
-    private Selectable _heldItem;
+    private Selectable _placedItem;
 
     [SerializeField]
     private Transform _itemHolderPivot;
@@ -29,29 +29,30 @@ public class Station<T> : Selectable
 
     public override Selectable GetCarryableItem()
     {
-        var item = _heldItem;
+        var item = _placedItem;
 
-        _heldItem = null;
-        _requiredComponent = default;
+        _placedItem = null;
+        _requiredComponent = null;
 
         return item;
     }
 
     public override bool TryPlaceItem(Selectable item)
     {
-        if (_heldItem != null)
+        if (_placedItem != null)
         {
-            return _heldItem.TryPlaceItem(item);
+            return _placedItem.TryPlaceItem(item);
         }
         else
         {
-            if (item.TryGetComponent(out T component) && ValidateItem(item))
-            {
-                _requiredComponent = component;
-                PlaceItem(item);
-                return true; 
-            }
-            return false;
+            if (!ValidateItem(item)) { return false; }
+
+            item.TryGetComponent(out T component);
+            _requiredComponent = component;
+
+            PlaceItem(item);
+
+            return true; 
         }
     }
 
@@ -60,7 +61,10 @@ public class Station<T> : Selectable
         // do something with _container automatically (cooking, etc)
     }
 
-    protected virtual bool TryGetItemComponent(ref T component)
+    /// <summary>
+    /// Returns true if an item placed on the station has the required component  
+    /// </summary>
+    protected virtual bool PlacedItemHasRequiredComponent(ref T component)
     {
         if (_requiredComponent != null)
         {
@@ -69,7 +73,7 @@ public class Station<T> : Selectable
         }
         else
         {
-            component = default;
+            component = null;
             return false;
         }
     }
@@ -81,7 +85,7 @@ public class Station<T> : Selectable
 
     private void PlaceItem(Selectable item)
     {
-        _heldItem = item;
+        _placedItem = item;
 
         CenterObject(item.gameObject);
 

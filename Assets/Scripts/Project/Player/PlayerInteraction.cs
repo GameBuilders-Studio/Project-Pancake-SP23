@@ -115,8 +115,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        Debug.Log("tried to interact with this", HoverTarget);
-
         if (!HoverTarget.IsInteractable) { return; }
 
         // do something with HoverTarget
