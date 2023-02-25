@@ -152,42 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b22ef0135f5018f41a61b4b6f8bba239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliderValueOne: {x: 0.23812437, y: 0.42348385}
-  sliderValueTwo: {x: 0.4300349, y: 0.7371011}
-  curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.4874156
-      value: 0.8439907
-      inSlope: -1.3069974
-      outSlope: -1.3069974
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.05932622
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.63775265
-      outSlope: -0.63775265
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.10661504
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  flags: 7
 --- !u!4 &14751530
 Transform:
   m_ObjectHideFlags: 0
@@ -802,7 +766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_LocalPosition.x
