@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5548579e4c37e8e41a18fc96b9fd397b, type: 3}
+  m_Name: TileGroup_Autotiles3D_Castle
+  m_EditorClassIdentifier: 
+  Tiles:
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: -833635479
+    Default: {fileID: 2806378999009806390, guid: c0f9f46af1cb85146884aa43659a861e,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Solid
+    Rules:
+    - IsActive: 1
+      Object: {fileID: 141141893352694280, guid: 22c2f14ddf3f8524e8af7b9b0e4468f8,
+        type: 3}
+      Random: 0
+      Randoms: []
+      Relations: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000
+      AllowRotation: 000000
+      _ruleID: -379419316
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: 1398795420
+    Default: {fileID: 121943576394473903, guid: a909e6af751c6e2478db90348d394247,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Stairs
+    Rules:
+    - IsActive: 1
+      Object: {fileID: 486970836680231767, guid: 29dc3c36acbd161478130a39a0177d71,
+        type: 3}
+      Random: 0
+      Randoms: []
+      Relations: 000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000
+      AllowRotation: 000000
+      _ruleID: 1351777877
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: -1275594940
+    Default: {fileID: 323154791949511865, guid: c8fc10116b43ec64b97c440844d383dc,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Cross
+    Rules: []
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: 47517870
+    Default: {fileID: 8157175768671255228, guid: 7c71186021f8eb4428abc3e03279564e,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Ladder
+    Rules:
+    - IsActive: 1
+      Object: {fileID: 6729260580081912970, guid: 4ccbf3afb2dbb514cab699bd2c2bd402,
+        type: 3}
+      Random: 0
+      Randoms: []
+      Relations: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000
+      AllowRotation: 000000
+      _ruleID: 1492984090
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: 28964398
+    Default: {fileID: 1622396628165795141, guid: ac429cc8203e93547ac04bdfdb8826d4,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Trap
+    Rules: []
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: -554100646
+    Default: {fileID: 4331476889683338322, guid: 6db3f6db707b8f34f8deb22768180144,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Fence
+    Rules: []
+  - _group: TileGroup_Autotiles3D_Castle
+    _tileID: -943291725
+    Default: {fileID: 331587989816520206, guid: d1ed28e4cf1f16f4ab7f93a98caef7a7,
+      type: 3}
+    Randoms: []
+    Random: 0
+    _name: Plank
+    Rules: []
