@@ -20,41 +20,19 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private bool _highlightOnHover = true;
 
+    protected Rigidbody _rigidbody;
+
     private bool _isSelectable = true;
-
-    private bool _isCarryable = true;
-
-    private bool _isInteractable = false;
-    private bool _isInteracting = false;
 
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
     // TODO: remove
     private Renderer _renderer;
-    private Rigidbody _rigidbody;
 
     public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
         set => _isSelectable = value;
-    }
-
-    public virtual bool IsCarryable
-    {
-        get => _isCarryable;
-        set => _isCarryable = value;
-    }
-
-    public virtual bool IsInteractable
-    {
-        get => _isInteractable;
-        set => _isInteractable = value;
-    }
-
-    public virtual bool IsInteracting
-    {
-        get => _isInteracting && IsInteractable;
-        set => _isInteracting = value;
     }
 
     void Awake()
@@ -109,51 +87,6 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Returns an item to be carried.
-    /// </summary>
-    public virtual Selectable GetCarryableItem()
-    {
-        return IsCarryable ? this : null;
-    }
-
-    /// <summary>
-    /// Tries to place an item on this. Returns true if successful. 
-    /// </summary>
-    public virtual bool TryPlaceItem(Selectable item)
-    {
-        return false;
-    }
-
-    public virtual void OnPickUp()
-    {
-        _rigidbody.isKinematic = true;
-        _rigidbody.detectCollisions = false;
-        _rigidbody.interpolation = RigidbodyInterpolation.None;
-        SetState(SelectableState.Default);
-    }
-
-    /// <summary>
-    /// Disables selection and physics by default
-    /// </summary>
-    public virtual void OnPlace()
-    {
-        _rigidbody.isKinematic = true;
-        _rigidbody.detectCollisions = false;
-        _rigidbody.interpolation = RigidbodyInterpolation.None;
-        SetState(SelectableState.Disabled);
-    }
-
-    public virtual void OnInteractStart() 
-    {
-        _isInteracting = true;
-    }
-
-    public virtual void OnInteractEnd() 
-    {
-        _isInteracting = false;
-    }
-
     protected virtual void OnAwake() {}
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
@@ -175,4 +108,11 @@ public class Selectable : MonoBehaviour
             _nearbyPlayers.Remove(other.gameObject);
         }
     }
+}
+
+public interface IInteractable
+{
+    public void OnInteractStart();
+    public void OnInteractEnd();
+    public bool IsInteractable {get; set;}
 }

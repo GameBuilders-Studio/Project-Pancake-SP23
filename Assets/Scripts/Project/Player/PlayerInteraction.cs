@@ -17,7 +17,8 @@ public class PlayerInteraction : MonoBehaviour
     private float _selectAngleRange;
 
     private Selectable _hoverTarget = null;
-    private Selectable _currentHeldItem = null;
+
+    private Carryable _currentHeldItem = null;
 
     public List<Selectable> Nearby
     {
@@ -77,7 +78,17 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        Selectable item = HoverTarget.GetCarryableItem();
+        Carryable item = null;
+
+        if (HoverTarget is Carryable carryable)
+        {
+            item = carryable;
+        }
+
+        if (HoverTarget is Station station)
+        {
+            item = station.GetCarryableItem();
+        }
 
         if (item == null) { return; }
 
@@ -88,44 +99,49 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
-        if (HoverTarget == null) { return; }
+        if (!(HoverTarget is Station station)) { return; }
 
-        if (HoverTarget.TryPlaceItem(_currentHeldItem))
+        if (station.TryPlaceItem(_currentHeldItem))
         {
             _currentHeldItem.OnPlace();
             _currentHeldItem = null;
         }
     }
 
-    public void PickUpItem(Selectable item)
+    public void PickUpItem(Carryable item)
     {
         if (_currentHeldItem != null)
         {
             Debug.LogError("Tried to pick up item while already carrying one");
             return;
         }
+
         _currentHeldItem = item;
 
-        item.transform.parent = _carryPivot;
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
+        var go = item.gameObject;
+        
+        go.transform.parent = _carryPivot;
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
     }
 
     public void OnInteractStart()
     {
         if (HoverTarget == null) { return; }
 
-        if (!HoverTarget.IsInteractable) { return; }
-
-        // do something with HoverTarget
-        HoverTarget.OnInteractStart();
+        if (HoverTarget is IInteractable interactable) 
+        { 
+            interactable.OnInteractStart();
+        }
     }
 
     public void OnInteractEnd()
     {
-        if (HoverTarget != null && HoverTarget.IsInteractable)
+        if (HoverTarget != null) { return; }
+
+        if (HoverTarget is IInteractable interactable)
         {
-            HoverTarget.OnInteractEnd();
+            interactable.OnInteractEnd();
         }
     }
 

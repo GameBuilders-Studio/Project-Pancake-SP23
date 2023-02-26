@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 ///  Handles ingredient object behaviour
 /// </summary>
-public class IngredientProp : MonoBehaviour
+public class IngredientProp : Carryable
 {
     [SerializeField]
     private IngredientType _type;
@@ -27,7 +27,7 @@ public class IngredientProp : MonoBehaviour
         set => _ingredientData = value;
     }
 
-    void Awake()
+    protected override void OnAwake()
     {
         _ingredientData = new(_type, _initialState);
     }
@@ -46,9 +46,5 @@ public class IngredientProp : MonoBehaviour
     protected virtual void OnProgressUpdate(float progress)
     {
         // handle visual behaviour of ingredient
-        if (Data.ProgressComplete)
-        {
-            Debug.Log("done!");
-        }
     }
 }

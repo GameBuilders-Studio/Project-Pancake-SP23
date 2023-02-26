@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodContainer : Selectable
+public class FoodContainer : Carryable
 {
     [SerializeField]
     private int _capacity;
 
-    [SerializeField]
     private List<Ingredient> _ingredients;
 
     public int Count
@@ -32,15 +31,43 @@ public class FoodContainer : Selectable
         IsCarryable = true;
     }
 
-    public override bool TryPlaceItem(Selectable item)
+    public bool TryAddItem(Carryable item)
     {
         if (Count >= Capacity) { return false; }
 
-        if (!TryAddIngredient(item)) { return false; }
-
-        OnAddIngredient();
+        if (item is IngredientProp ingredientProp)
+        {
+            AddIngredientProp(ingredientProp);
+            OnAddIngredient();
+        }
+        
+        if (item is FoodContainer foodContainer)
+        {
+            if (TryTransferIngredients(foodContainer))
+            {
+                OnAddIngredient();
+            }
+        }
 
         return true;
+    }
+
+    public bool TryTransferIngredients(FoodContainer other)
+    {
+        bool ingredientsTransfered = false;
+
+        while (Count >= Capacity && other.Count > 0)
+        {
+            Ingredient ingredient = other.Ingredients[Count - 1];
+
+            other.Ingredients.RemoveAt(Count - 1);
+
+            Ingredients.Add(ingredient);
+            
+            ingredientsTransfered = true;
+        }
+
+        return ingredientsTransfered;
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
@@ -53,24 +80,10 @@ public class FoodContainer : Selectable
         // change visuals
     }
 
-    private bool TryAddIngredient(Selectable item)
+    private bool AddIngredientProp(IngredientProp ingredientProp)
     {
-        if (item.TryGetComponent(out IngredientProp ingredientProp))
-        {
-            Ingredients.Add(ingredientProp.Data);
-            Destroy(ingredientProp.gameObject);
-            return true;
-        }
-
-        if (item.TryGetComponent(out FoodContainer foodContainer))
-        {
-            foreach (Ingredient ingredient in foodContainer.Ingredients)
-            {
-                Ingredients.Add(ingredient);
-            }
-            return true;
-        }
-
-        return false;
+        Ingredients.Add(ingredientProp.Data);
+        Destroy(ingredientProp.gameObject);
+        return true;
     }
 }

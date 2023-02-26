@@ -2,31 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoppingStation : Station<IngredientProp>
+public class ChoppingStation : Station, IInteractable
 {
     [Space(15f)]
     [SerializeField]
     private float _totalChopTime;
 
-    private IngredientProp _ingredientProp;
+    public bool IsInteractable {get; set;} = true;
+
+    private bool _interacting = false;
 
     public void Chop()
     {
-        if (PlacedItemHasRequiredComponent(ref _ingredientProp))
+        if (PlacedItem is IngredientProp ingredient)
         {
-            _ingredientProp.AddProgress(Time.deltaTime / _totalChopTime);
+            ingredient.AddProgress(Time.deltaTime / _totalChopTime);
         }
+    }
+
+    public void OnInteractStart()
+    {
+        _interacting = true;
+    }
+
+    public void OnInteractEnd()
+    {
+        _interacting = false;
     }
 
     protected override void OnUpdate()
     {
-        if (IsInteracting)
+        if (_interacting)
         {
             Chop();
         }
     }
 
-    protected override bool ValidateItem(Selectable item)
+    protected bool ValidateItem(Selectable item)
     {
         return true;
     }
