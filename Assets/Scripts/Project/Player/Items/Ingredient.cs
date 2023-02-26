@@ -34,6 +34,11 @@ public class Ingredient
         Progress = progress;
     }
 
+    public void AddProgress(float progressDelta)
+    {
+        SetProgress(Progress + progressDelta);
+    }
+
     public void ResetState(IngredientStateData state)
     {
         State = state;

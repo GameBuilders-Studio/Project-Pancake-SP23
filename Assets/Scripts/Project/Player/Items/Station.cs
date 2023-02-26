@@ -10,7 +10,7 @@ public class Station : Selectable
     private Carryable _placedItem;
 
     public Carryable PlacedItem 
-    { 
+    {
         get => _placedItem; 
         set => _placedItem = value;
     }
@@ -20,7 +20,7 @@ public class Station : Selectable
         OnUpdate();
     }
 
-    public Carryable GetCarryableItem()
+    public virtual Carryable GetCarryableItem()
     {
         var item = _placedItem;
 
@@ -47,7 +47,7 @@ public class Station : Selectable
 
     protected virtual void OnUpdate()
     {
-        // do something with _container automatically (cooking, etc)
+        // do something with PlacedItem (cooking, etc)
     }
 
     protected virtual bool ValidateItem(Carryable item)

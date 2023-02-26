@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class FoodContainer : Carryable
 {
+    [Space(15f)]
     [SerializeField]
     private int _capacity;
 
-    private List<Ingredient> _ingredients;
+    private List<Ingredient> _ingredients = new();
 
     public int Count
     {
@@ -26,18 +27,14 @@ public class FoodContainer : Carryable
         set => _ingredients = value;
     }
 
-    protected override void OnAwake()
-    {
-        IsCarryable = true;
-    }
-
     public bool TryAddItem(Carryable item)
     {
         if (Count >= Capacity) { return false; }
 
         if (item is IngredientProp ingredientProp)
         {
-            AddIngredientProp(ingredientProp);
+            AddIngredient(ingredientProp.Data);
+            Destroy(ingredientProp.gameObject);
             OnAddIngredient();
         }
         
@@ -58,16 +55,23 @@ public class FoodContainer : Carryable
 
         while (Count >= Capacity && other.Count > 0)
         {
-            Ingredient ingredient = other.Ingredients[Count - 1];
-
-            other.Ingredients.RemoveAt(Count - 1);
-
-            Ingredients.Add(ingredient);
-            
+            AddIngredient(other.PopIngredient());
             ingredientsTransfered = true;
         }
 
         return ingredientsTransfered;
+    }
+
+    public Ingredient PopIngredient()
+    {
+        Ingredient ingredient = Ingredients[Count - 1];
+        Ingredients.RemoveAt(Count - 1);
+        return ingredient;
+    }
+
+    protected override void OnAwake()
+    {
+        IsCarryable = true;
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
@@ -80,10 +84,9 @@ public class FoodContainer : Carryable
         // change visuals
     }
 
-    private bool AddIngredientProp(IngredientProp ingredientProp)
+    private void AddIngredient(Ingredient ingredient)
     {
-        Ingredients.Add(ingredientProp.Data);
-        Destroy(ingredientProp.gameObject);
-        return true;
+        Ingredients.Add(ingredient);
+        Ingredients.Sort((a, b) => b.Progress.CompareTo(a.Progress));
     }
 }

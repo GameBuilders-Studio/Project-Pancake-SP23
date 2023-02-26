@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum HoverState {Selected, Deselected}
+public enum HoverState 
+{
+    Selected, 
+    Deselected
+}
 
-public enum SelectableState {Default, Disabled}
+public enum SelectableState 
+{
+    Default, 
+    Disabled
+}
 
 [RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
@@ -13,7 +21,6 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private ProxyTrigger _nearbyTrigger;
 
-    [Space(15f)]
     [SerializeField]
     private bool _isEverSelectable = true;
 
@@ -113,6 +120,8 @@ public class Selectable : MonoBehaviour
 public interface IInteractable
 {
     public void OnInteractStart();
+
     public void OnInteractEnd();
+    
     public bool IsInteractable {get; set;}
 }

@@ -6,13 +6,46 @@ public class CookStation : Station
 {
     [Space(15f)]
     [SerializeField]
-    private float _totalChopTime;
+    private float _cookTimePerIngredient;
+
+    [SerializeField]
+    private bool _cooking = false;
 
     protected override void OnUpdate()
     {
-        if (PlacedItem is CookContainer cookContainer)
+        if (PlacedItem is CookContainer container)
         {
-            cookContainer.Cook();
+            Cook(container);
         }
+    }
+
+    void Cook(CookContainer container)
+    {
+        for (int i = 0; i < container.Capacity; i++)
+        {
+            var ingredient = container.Ingredients[i];
+
+            if (ingredient.ProgressComplete) { continue; }
+
+            ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
+
+            _cooking = true;
+
+            if (i == container.Capacity - 1 && ingredient.ProgressComplete)
+            {
+                if (_cooking)
+                {
+                    _cooking = false;
+                    OnCookComplete();
+                }
+            }
+
+            return;
+        }
+    }
+
+    void OnCookComplete()
+    {
+
     }
 }

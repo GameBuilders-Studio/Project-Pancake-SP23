@@ -99,19 +99,25 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
-        if (HoverTarget == null)
+        if (HoverTarget is Station station) 
         {
-            DropItem();
-            return;
+            if (station.TryPlaceItem(_currentHeldItem))
+            {
+                _currentHeldItem.OnPlace();
+                _currentHeldItem = null;
+                return;
+            }
         }
 
-        if (!(HoverTarget is Station station)) { return; }
-
-        if (station.TryPlaceItem(_currentHeldItem))
+        if (HoverTarget is FoodContainer container)
         {
-            _currentHeldItem.OnPlace();
-            _currentHeldItem = null;
+            if (container.TryAddItem(_currentHeldItem)) 
+            {
+                return; 
+            }
         }
+
+        DropItem();
     }
 
     public void PickUpItem(Carryable item)
@@ -163,8 +169,15 @@ public class PlayerInteraction : MonoBehaviour
     /// </summary>
     private Selectable GetBestSelectable()
     {
-        Selectable nearest = null;
+        static float Angle2D(Vector3 a, Vector3 b)
+        {
+            a.y = 0f;
+            b.y = 0f;
+            return Vector3.Angle(a, b);
+        }
 
+        Selectable nearest = null;
+        
         float minAngle = Mathf.Infinity;
         
         for (int i = 0; i < Nearby.Count; i++)
@@ -178,13 +191,5 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return nearest;
-    }
-
-    // TODO: make extension method
-    private float Angle2D(Vector3 a, Vector3 b)
-    {
-        a.y = 0f;
-        b.y = 0f;
-        return Vector3.Angle(a, b);
     }
 }
