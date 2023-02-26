@@ -99,6 +99,12 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
+        if (HoverTarget == null)
+        {
+            DropItem();
+            return;
+        }
+
         if (!(HoverTarget is Station station)) { return; }
 
         if (station.TryPlaceItem(_currentHeldItem))
@@ -119,7 +125,7 @@ public class PlayerInteraction : MonoBehaviour
         _currentHeldItem = item;
 
         var go = item.gameObject;
-        
+
         go.transform.parent = _carryPivot;
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
@@ -143,6 +149,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             interactable.OnInteractEnd();
         }
+    }
+
+    private void DropItem()
+    {
+        _currentHeldItem.transform.parent = null;
+        _currentHeldItem.OnDrop();
+        _currentHeldItem = null;
     }
 
     /// <summary>
