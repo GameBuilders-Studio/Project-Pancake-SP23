@@ -84,7 +84,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             item = carryable;
         }
-
+        
         if (HoverTarget is Station station)
         {
             item = station.GetCarryableItem();

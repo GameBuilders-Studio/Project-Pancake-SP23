@@ -9,7 +9,7 @@ public class Station : Selectable
 
     private Carryable _placedItem;
 
-    public Carryable PlacedItem 
+    public Carryable PlacedItem
     {
         get => _placedItem; 
         set => _placedItem = value;
@@ -26,23 +26,37 @@ public class Station : Selectable
 
         _placedItem = null;
 
+        OnItemRemoved();
+
         return item;
     }
 
-    public bool TryPlaceItem(Carryable item)
+    public bool TryPlaceItem(Carryable newItem)
     {
-        if (_placedItem is FoodContainer container)
-        {
-            return container.TryAddItem(item);
-        }
-        else
-        {
-            if (!ValidateItem(item)) { return false; }
+        if (!ValidateItem(newItem)) { return false; }
 
-            PlaceItem(item);
-
+        if (PlacedItem == null)
+        {
+            PlaceItem(newItem);
             return true; 
         }
+
+        if (PlacedItem is FoodContainer container)
+        {
+            return container.TryAddItem(newItem);
+        }
+
+        if (newItem is FoodContainer newContainer)
+        {
+            // place the container if it destroys the already-placed item
+            if (newContainer.TryAddItem(PlacedItem) && PlacedItem == null)
+            {
+                PlaceItem(newItem);
+                return true;
+            }
+        }
+
+        return false; 
     }
 
     protected virtual void OnUpdate()
@@ -50,10 +64,17 @@ public class Station : Selectable
         // do something with PlacedItem (cooking, etc)
     }
 
+    /// <summary>
+    /// Returns true if the item is allowed to be placed on the station.
+    /// </summary>
     protected virtual bool ValidateItem(Carryable item)
     {
         return true;
     }
+
+    protected virtual void OnItemPlaced(Carryable item) {}
+
+    protected virtual void OnItemRemoved() {}
 
     private void PlaceItem(Carryable item)
     {
@@ -62,6 +83,8 @@ public class Station : Selectable
         CenterObject(item.gameObject);
 
         item.OnPlace();
+
+        OnItemPlaced(item);
     }
 
     private void CenterObject(GameObject go)
