@@ -1,66 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 [System.Serializable]
-public class MusicDictionary : SerializableDictionary<string, AudioClip>
-{ }
+public class MusicDictionary : SerializableDictionary<string, AudioClip> { }
+
 [RequireComponent(typeof(AudioSource))]
 public class MusicManager : Singleton<MusicManager>
 {
-    public MusicDictionary musicClips = new MusicDictionary();
-    private AudioSource audioSource1;
-    private AudioSource audioSource2;
-    private float volume = 0.5f; // TODO: Only for testing purpose
-    private static bool haveDone = false;
-    private string playName;
     [SerializeField]
-    private float fadeTime = 2f;
+    private float _fadeTime = 2f;
+
+    [SerializeField]
+    public MusicDictionary musicClips = new();
+
+    private AudioSource _audioSource1;
+    private AudioSource _audioSource2;
+
+    private float _volume = 0.5f; // TODO: Only for testing purpose
+    private string _playName;
+
     void Awake()
     {
-        audioSource1 = GetComponents<AudioSource>()[0];
-        audioSource2 = GetComponents<AudioSource>()[1];
+        var audioSources = GetComponents<AudioSource>();
+        _audioSource1 = audioSources[0];
+        _audioSource2 = audioSources[1];
     }
 
-    void Start()
-    {
-        if (haveDone)
-        {
-            return;
-        };
-        haveDone = true;
-    }
     public void SetVolume(float num)
     {
-        volume = num;
-        audioSource1.volume = volume;
-        audioSource2.volume = volume;
+        _volume = num;
+        _audioSource1.volume = _volume;
+        _audioSource2.volume = _volume;
     }
+
     public void Mute()
     {
-        audioSource1.mute = true;
-        audioSource2.mute = true;
+        _audioSource1.mute = true;
+        _audioSource2.mute = true;
     }
+
     public void UnMute()
     {
-        audioSource1.mute = false;
+        _audioSource1.mute = false;
     }
+
     public float GetVolume()
     {
-        return volume;
+        return _volume;
     }
 
     public void PlayMusic(string musicName)
     {
         if (musicClips.ContainsKey(musicName))
         {
-            if (playName == musicName)
-                //if the music is playing, don't play it again
-                return;
-            playName = musicName;
-            PlayFadeMusic(musicClips[musicName], audioSource1, audioSource2);
+            if (_playName == musicName) { return; }
+            _playName = musicName;
+            PlayFadeMusic(musicClips[musicName], _audioSource1, _audioSource2);
         }
         else
         {
@@ -70,7 +65,7 @@ public class MusicManager : Singleton<MusicManager>
 
     public void StopMusic()
     {
-        audioSource1.Stop();
+        _audioSource1.Stop();
     }
 
     public void PlayFadeMusic(AudioClip newClip, AudioSource audioSource1, AudioSource audioSource2)
@@ -97,11 +92,11 @@ public class MusicManager : Singleton<MusicManager>
     private IEnumerator FadeOut(AudioSource audioSource)
     {
         float startTime = Time.time;
-        float endTime = startTime + fadeTime;
+        float endTime = startTime + _fadeTime;
         while (Time.time < endTime)
         {
-            float t = (Time.time - startTime) / fadeTime;
-            audioSource.volume = Mathf.Lerp(volume, 0.0f, t);
+            float t = (Time.time - startTime) / _fadeTime;
+            audioSource.volume = Mathf.Lerp(_volume, 0.0f, t);
             yield return null;
         }
         audioSource.Stop();
@@ -114,13 +109,13 @@ public class MusicManager : Singleton<MusicManager>
         audioSource.volume = 0;
         audioSource.Play();
         float startTime = Time.time;
-        float endTime = startTime + fadeTime;
+        float endTime = startTime + _fadeTime;
         while (Time.time < endTime)
         {
-            float t = (Time.time - startTime) / fadeTime;
-            audioSource.volume = Mathf.Lerp(0.0f, volume, t);
+            float t = (Time.time - startTime) / _fadeTime;
+            audioSource.volume = Mathf.Lerp(0.0f, _volume, t);
             yield return null;
         }
-        audioSource.volume = volume;
+        audioSource.volume = _volume;
     }
 }

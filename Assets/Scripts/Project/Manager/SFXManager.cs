@@ -5,46 +5,48 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class SFXDictionary : SerializableDictionary<string, AudioClip>
-{}
+public class SFXDictionary : SerializableDictionary<string, AudioClip> { }
 
 [RequireComponent(typeof(AudioSource))]
 public class SFXManager : Singleton<SFXManager>
 {
     public SFXDictionary sfxClips;
-    private AudioSource audioSource;
-    private float volume = 1;
-    private static bool haveDone = false;
+    private AudioSource _audioSource;
+    private float _volume = 1;
+
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
     }
-
 
     public void SetVolume(float num)
     {
-        volume = num;
-        audioSource.volume = volume;
+        _volume = num;
+        _audioSource.volume = _volume;
     }
+
     public void Mute()
     {
-        audioSource.mute = true;
+        _audioSource.mute = true;
     }
+
     public void UnMute()
     {
-        audioSource.mute = false;
+        _audioSource.mute = false;
     }
+
     public float GetVolume()
     {
-        return volume;
+        return _volume;
     }
+
     public static void PlayMusic(string SFXName)
     {
         if (Instance.sfxClips.ContainsKey(SFXName))
         {
-            Instance.audioSource.clip = Instance.sfxClips[SFXName];
-            Instance.audioSource.loop = false;
-            Instance.audioSource.Play();
+            Instance._audioSource.clip = Instance.sfxClips[SFXName];
+            Instance._audioSource.loop = false;
+            Instance._audioSource.Play();
         }
     }
 
@@ -52,9 +54,9 @@ public class SFXManager : Singleton<SFXManager>
     {
         if (Instance.sfxClips.ContainsKey(SFXName))
         {
-            Instance.audioSource.clip = Instance.sfxClips[SFXName];
-            Instance.audioSource.loop = true;
-            Instance.audioSource.Play();
+            Instance._audioSource.clip = Instance.sfxClips[SFXName];
+            Instance._audioSource.loop = true;
+            Instance._audioSource.Play();
         }
     }
 
@@ -62,9 +64,8 @@ public class SFXManager : Singleton<SFXManager>
     {
         if (Instance.sfxClips.ContainsKey(SFXName))
         {
-            Instance.audioSource.clip = Instance.sfxClips[SFXName];
-            Instance.audioSource.Stop();
+            Instance._audioSource.clip = Instance.sfxClips[SFXName];
+            Instance._audioSource.Stop();
         }
     }
-    
 }

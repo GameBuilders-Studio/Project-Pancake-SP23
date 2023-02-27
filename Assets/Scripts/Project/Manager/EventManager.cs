@@ -1,28 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-[System.Serializable]
-public class EventDictionary : SerializableDictionary<string, UnityEvent>
-{}
 
+[System.Serializable]
+public class EventDictionary : SerializableDictionary<string, UnityEvent> { }
 
 public class EventManager : Singleton<EventManager>
 {
     [SerializeField]
     [Tooltip("key is the event name, value is the listners that will be invoked when the event is invoked")]
-    private EventDictionary eventDictionary;
-    void Awake(){
-        if (Instance.eventDictionary == null)
+    private EventDictionary _eventDictionary;
+
+    void Awake()
+    {
+        if (Instance._eventDictionary == null)
         {
-            Instance.eventDictionary = new EventDictionary();
+            Instance._eventDictionary = new EventDictionary();
         }
     }
+
     private void OnDisable()
     {
-        foreach (var item in eventDictionary)
+        foreach (var item in _eventDictionary)
         {
-            if (item.Value == null) return;
+            if (item.Value == null) { return; }
             item.Value.RemoveAllListeners();
         }
     }
@@ -39,8 +39,8 @@ public class EventManager : Singleton<EventManager>
             Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
             return;
         }
-        UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
+
+        if (Instance._eventDictionary.TryGetValue(listenerName, out UnityEvent thisEvent))
         {
             thisEvent.AddListener(listener);
         }
@@ -48,7 +48,7 @@ public class EventManager : Singleton<EventManager>
         {
             thisEvent = new UnityEvent();
             thisEvent.AddListener(listener);
-            Instance.eventDictionary.Add(listenerName, thisEvent);
+            Instance._eventDictionary.Add(listenerName, thisEvent);
         }
     }
 
@@ -57,7 +57,6 @@ public class EventManager : Singleton<EventManager>
     /// </summary>
     /// <param name="listenerName"></param>
     /// <param name="listener"></param>
-
     public static void RemoveListener(string listenerName, UnityAction listener)
     {
         if (Instance == null)
@@ -65,13 +64,14 @@ public class EventManager : Singleton<EventManager>
             Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
             return;
         }
+
         if (!Instance.enabled)
         {
             Debug.LogError("EventManager disabled");
             return;
         }
-        UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
+
+        if (Instance._eventDictionary.TryGetValue(listenerName, out UnityEvent thisEvent))
         {
             thisEvent.RemoveListener(listener);
         }
@@ -86,16 +86,17 @@ public class EventManager : Singleton<EventManager>
         if (Instance == null)
         {
             Debug.LogError("EventManager does not init. Try to use script execution order in project setting to make sure EventManager is init before other scripts");
-            
+
             return;
         }
+
         if (!Instance.enabled)
         {
             Debug.LogError("EventManager disabled");
             return;
         }
-        UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(listenerName, out thisEvent))
+
+        if (Instance._eventDictionary.TryGetValue(listenerName, out UnityEvent thisEvent))
         {
             thisEvent.RemoveAllListeners();
         }
@@ -107,8 +108,7 @@ public class EventManager : Singleton<EventManager>
     /// <param name="eventName"></param>
     public static void Invoke(string eventName)
     {
-        UnityEvent thisEvent = null;
-        if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+        if (Instance._eventDictionary.TryGetValue(eventName, out UnityEvent thisEvent))
         {
             thisEvent.Invoke();
         }
@@ -117,6 +117,4 @@ public class EventManager : Singleton<EventManager>
             Debug.LogWarning($"The event: {eventName} does not exist in the EventManager");
         }
     }
-
-
 }

@@ -1,36 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MusicVolumeSlider : MonoBehaviour
 {
-   public static Button muteButton;
-   public static Slider slider;
-   public static bool isMute= false;
-   void Awake(){
+    public static Button MuteButton;
 
-      muteButton = GetComponentInChildren<Button>();
-      slider = GetComponentInChildren<Slider>();
-      slider.value = MusicManager.Instance.GetVolume();
-   }
-   public static void MuteVoice(){
-      if(isMute){
-         MusicManager.Instance.UnMute();
-         muteButton.GetComponent<Image>().color= new Color(255, 255, 255);
-         isMute = false;
-      }
-      else{
-         MusicManager.Instance.Mute();
-         muteButton.GetComponent<Image>().color= new Color(255, 0, 0);
-         isMute = true;
-      }
-   }
-   public static void SetVoice(){
-      if(isMute){
-         MuteVoice();
-      }
-      MusicManager.Instance.SetVolume(slider.value);
+    public static Slider Slider;
 
-   }
+    public static bool IsMuted = false;
+
+    void Awake()
+    {
+        MuteButton = GetComponentInChildren<Button>();
+        Slider = GetComponentInChildren<Slider>();
+        Slider.value = MusicManager.Instance.GetVolume();
+    }
+
+    public static void MuteVoice()
+    {
+        if (IsMuted)
+        {
+            MusicManager.Instance.UnMute();
+            MuteButton.GetComponent<Image>().color = new Color(255, 255, 255);
+            IsMuted = false;
+        }
+        else
+        {
+            MusicManager.Instance.Mute();
+            MuteButton.GetComponent<Image>().color = new Color(255, 0, 0);
+            IsMuted = true;
+        }
+    }
+
+    public static void SetVoice()
+    {
+        if (IsMuted)
+        {
+            MuteVoice();
+        }
+        MusicManager.Instance.SetVolume(Slider.value);
+    }
 }
