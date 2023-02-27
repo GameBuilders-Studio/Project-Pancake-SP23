@@ -654,6 +654,7 @@ namespace Autotiles3D
 
 
             bool hasClickedDialogueBox = false;
+            hasClickedDialogueBox = false;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             {
                 var groupNames = _tileLayer.LoadedGroups.Select(g => g.name).ToList();
