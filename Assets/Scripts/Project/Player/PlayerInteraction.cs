@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,14 +98,17 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
-        if (HoverTarget is Station station) 
+        if (HoverTarget is Station station)
         {
             if (station.TryPlaceItem(_currentHeldItem))
             {
-                _currentHeldItem.OnPlace();
-                _currentHeldItem = null;
-                return;
+                if (_currentHeldItem != null)
+                {
+                    _currentHeldItem.OnPlace();
+                    _currentHeldItem = null;
+                }
             }
+            return; // keep holding item while station is hovered
         }
 
         if (HoverTarget is FoodContainer container)
