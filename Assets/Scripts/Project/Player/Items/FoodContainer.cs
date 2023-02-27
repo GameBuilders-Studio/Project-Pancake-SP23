@@ -54,6 +54,11 @@ public class FoodContainer : Carryable
         return ingredientsTransfered;
     }
 
+    public void ClearIngredients()
+    {
+        Ingredients.Clear();
+    }
+
     public Ingredient PopIngredient()
     {
         Ingredient ingredient = Ingredients[Count - 1];

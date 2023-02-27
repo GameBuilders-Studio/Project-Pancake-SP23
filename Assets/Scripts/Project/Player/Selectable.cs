@@ -85,12 +85,10 @@ public class Selectable : MonoBehaviour
         if (state == HoverState.Selected)
         {
             // enable highlight
-            _renderer.material.color = Color.red;
         }
         else
         {
             // disable highlight
-            _renderer.material.color = Color.white;
         }
     }
 

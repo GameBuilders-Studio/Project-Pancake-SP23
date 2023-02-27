@@ -29,7 +29,7 @@ public class Station : Selectable
         return item;
     }
 
-    public bool TryPlaceItem(Carryable newItem)
+    public virtual bool TryPlaceItem(Carryable newItem)
     {
         if (!ValidateItem(newItem)) { return false; }
 
@@ -76,7 +76,7 @@ public class Station : Selectable
 
     protected virtual void OnItemRemoved() {}
 
-    private void PlaceItem(Carryable item)
+    protected void PlaceItem(Carryable item)
     {
         PlacedItem = item;
 

@@ -98,13 +98,15 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
-        if (HoverTarget is Station station) 
+        if (HoverTarget is Station station)
         {
             if (station.TryPlaceItem(_currentHeldItem))
             {
-                _currentHeldItem.OnPlace();
-                _currentHeldItem = null;
-                
+                if (_currentHeldItem != null)
+                {
+                    _currentHeldItem.OnPlace();
+                    _currentHeldItem = null;
+                }
             }
             return; // keep holding item while station is hovered
         }
