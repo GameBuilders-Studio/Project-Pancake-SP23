@@ -59,11 +59,6 @@ public class Station : Selectable
         return false; 
     }
 
-    protected virtual void OnUpdate()
-    {
-        // do something with PlacedItem (cooking, etc)
-    }
-
     /// <summary>
     /// Returns true if the item is allowed to be placed on the station.
     /// </summary>
@@ -92,5 +87,10 @@ public class Station : Selectable
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
+    }
+
+    protected virtual void OnUpdate()
+    {
+        // do something with PlacedItem (cooking, etc)
     }
 }
