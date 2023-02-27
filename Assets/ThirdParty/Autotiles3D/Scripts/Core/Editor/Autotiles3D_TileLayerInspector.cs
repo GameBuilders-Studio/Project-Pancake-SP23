@@ -653,8 +653,8 @@ namespace Autotiles3D
 
 
 
-            bool hasClickedDialogueBox = false;
-            hasClickedDialogueBox = false;
+            //bool hasClickedDialogueBox = false;
+
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             {
                 var groupNames = _tileLayer.LoadedGroups.Select(g => g.name).ToList();
@@ -849,7 +849,7 @@ namespace Autotiles3D
                             if (EditorUtility.DisplayDialog($"Bake all {tile.Name} meshes?", $"Do you want to bake all {tile.Name} meshes into a single one? \nAll baked meshes will be disabled, but not deleted. You can always re-enable them later or even rebake your meshes after more changes to the layer have been made.", "Yes", "No"))
                             {
                                 Undo.RegisterCompleteObjectUndo(_tileLayer, "Bake");
-                                hasClickedDialogueBox = true;
+                                //hasClickedDialogueBox = true;
                                 if (anchor.BakedParent != null)
                                 {
                                     Undo.DestroyObjectImmediate(anchor.BakedParent);
