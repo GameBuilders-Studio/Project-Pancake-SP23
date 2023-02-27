@@ -863,7 +863,7 @@ namespace Autotiles3D
                                     anchor.BakedParent.transform.SetParent(anchor.transform);
                                     anchor.BakedParent.transform.SetSiblingIndex(0);
 
-                                    string path = "Assets/Autotiles3D/Content/CombinedMeshes";
+                                    string path = "Assets/ThirdParty/Autotiles3D/Content/CombinedMeshes";
                                     var blocks = anchor.GetBlocks();
                                     Autotiles3D_MeshCombiner.CombineMeshes(blocks.Select(c => c.gameObject).ToList(), ref anchor.BakedParent, path);
 

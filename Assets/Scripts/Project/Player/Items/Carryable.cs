@@ -29,7 +29,6 @@ public class Carryable : Selectable
         _rigidbody.isKinematic = false;
         _rigidbody.detectCollisions = true;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-        SetState(SelectableState.Default);
     }
 
     void DisablePhysics()

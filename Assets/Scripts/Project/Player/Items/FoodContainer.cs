@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,19 +33,12 @@ public class FoodContainer : Carryable
         if (item is IngredientProp ingredientProp)
         {
             AddIngredient(ingredientProp.Data);
-            Destroy(ingredientProp.gameObject);
             OnAddIngredient();
-        }
-        
-        if (item is FoodContainer foodContainer)
-        {
-            if (TryTransferIngredients(foodContainer))
-            {
-                OnAddIngredient();
-            }
+            Destroy(ingredientProp.gameObject);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public bool TryTransferIngredients(FoodContainer other)

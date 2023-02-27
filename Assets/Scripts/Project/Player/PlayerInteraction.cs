@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -105,8 +104,9 @@ public class PlayerInteraction : MonoBehaviour
             {
                 _currentHeldItem.OnPlace();
                 _currentHeldItem = null;
-                return;
+                
             }
+            return; // keep holding item while station is hovered
         }
 
         if (HoverTarget is FoodContainer container)

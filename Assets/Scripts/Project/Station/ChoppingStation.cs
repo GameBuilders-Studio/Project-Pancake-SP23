@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChoppingStation : Station, IInteractable
@@ -38,7 +36,7 @@ public class ChoppingStation : Station, IInteractable
         }
     }
 
-    protected bool ValidateItem(Selectable item)
+    protected override bool ValidateItem(Carryable item)
     {
         return true;
     }

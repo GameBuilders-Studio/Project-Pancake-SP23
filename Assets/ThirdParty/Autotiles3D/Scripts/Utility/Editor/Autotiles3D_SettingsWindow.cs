@@ -49,7 +49,7 @@ namespace Autotiles3D
             {
                 Autotiles3D_Utility.EnsureFolders();
                 var newTileGroup = CreateInstance<Autotiles3D_TileGroup>();
-                string uniquepath = AssetDatabase.GenerateUniqueAssetPath("Assets/Autotiles3D/Resources/NewTileGroup.asset");
+                string uniquepath = AssetDatabase.GenerateUniqueAssetPath("Assets/ThirdParty/Autotiles3D/Resources/NewTileGroup.asset");
                 AssetDatabase.CreateAsset(newTileGroup, uniquepath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();

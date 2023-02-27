@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Station : Selectable
@@ -38,18 +36,25 @@ public class Station : Selectable
         if (PlacedItem == null)
         {
             PlaceItem(newItem);
-            return true; 
+            return true;
         }
 
-        if (PlacedItem is FoodContainer container)
+        var newItemContainer = newItem as FoodContainer;
+
+        if (PlacedItem is FoodContainer placedContainer)
         {
-            return container.TryAddItem(newItem);
+            if (newItemContainer != null)
+            {
+                placedContainer.TryTransferIngredients(newItemContainer);
+                return false;
+            }
+            return placedContainer.TryAddItem(newItem);
         }
 
-        if (newItem is FoodContainer newContainer)
+        // place the container if it destroys the placed item
+        if (newItemContainer != null)
         {
-            // place the container if it destroys the already-placed item
-            if (newContainer.TryAddItem(PlacedItem) && PlacedItem == null)
+            if (newItemContainer.TryAddItem(PlacedItem))
             {
                 PlaceItem(newItem);
                 return true;
@@ -73,7 +78,7 @@ public class Station : Selectable
 
     private void PlaceItem(Carryable item)
     {
-        _placedItem = item;
+        PlacedItem = item;
 
         CenterObject(item.gameObject);
 

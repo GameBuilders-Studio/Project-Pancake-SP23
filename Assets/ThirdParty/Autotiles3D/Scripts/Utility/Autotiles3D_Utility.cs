@@ -220,11 +220,11 @@ namespace Autotiles3D
 
         public static void EnsureFolders()
         {
-            if (!AssetDatabase.IsValidFolder($"Assets/Autotiles3D"))
-                AssetDatabase.CreateFolder("Assets", "Autotiles3D");
+            if (!AssetDatabase.IsValidFolder($"Assets/ThirdParty/Autotiles3D"))
+                AssetDatabase.CreateFolder("Assets/ThirdParty", "Autotiles3D");
 
-            if (!AssetDatabase.IsValidFolder($"Assets/Autotiles3D/Resources"))
-                AssetDatabase.CreateFolder("Assets/Autotiles3D", "Resources");
+            if (!AssetDatabase.IsValidFolder($"Assets/ThirdParty/Autotiles3D/Resources"))
+                AssetDatabase.CreateFolder("Assets/ThirdParty/Autotiles3D", "Resources");
         }
 
         public static bool DoesTileExist(int tileId, string name, string group)
