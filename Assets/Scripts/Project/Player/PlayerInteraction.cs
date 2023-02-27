@@ -17,7 +17,8 @@ public class PlayerInteraction : MonoBehaviour
     private float _selectAngleRange;
 
     private Selectable _hoverTarget = null;
-    private Selectable _currentHeldItem = null;
+
+    private Carryable _currentHeldItem = null;
 
     public List<Selectable> Nearby
     {
@@ -77,58 +78,90 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        if (HoverTarget.IsCarryable)
+        Carryable item = null;
+
+        if (HoverTarget is Carryable carryable)
         {
-            Selectable item = HoverTarget.GetCarryableItem();
-            item.OnPickUp();
-            PickUpItem(item);
+            item = carryable;
         }
+        
+        if (HoverTarget is Station station)
+        {
+            item = station.GetCarryableItem();
+        }
+
+        if (item == null) { return; }
+
+        item.OnPickUp();
+
+        PickUpItem(item);
     }
 
     public void TryPlace()
     {
-        if (HoverTarget == null) { return; }
-
-        if (HoverTarget.TryPlaceItem(_currentHeldItem))
+        if (HoverTarget is Station station) 
         {
-            _currentHeldItem = null;
-            _currentHeldItem.OnPlace();
+            if (station.TryPlaceItem(_currentHeldItem))
+            {
+                _currentHeldItem.OnPlace();
+                _currentHeldItem = null;
+                return;
+            }
         }
+
+        if (HoverTarget is FoodContainer container)
+        {
+            if (container.TryAddItem(_currentHeldItem)) 
+            {
+                return; 
+            }
+        }
+
+        DropItem();
     }
 
-    public void PickUpItem(Selectable item)
+    public void PickUpItem(Carryable item)
     {
         if (_currentHeldItem != null)
         {
             Debug.LogError("Tried to pick up item while already carrying one");
             return;
         }
+
         _currentHeldItem = item;
 
-        item.transform.SetParent(_carryPivot);
-        
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
+        var go = item.gameObject;
+
+        go.transform.parent = _carryPivot;
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
     }
 
-    public void OnInteractStay()
+    public void OnInteractStart()
     {
         if (HoverTarget == null) { return; }
 
-        Debug.Log("tried to interact with this", HoverTarget);
-
-        if (HoverTarget.Interactable == null) { return; }
-
-        // do something with HoverTarget.Interactable
-        HoverTarget.Interactable.Interact();
+        if (HoverTarget is IInteractable interactable) 
+        { 
+            interactable.OnInteractStart();
+        }
     }
 
     public void OnInteractEnd()
     {
-        if (HoverTarget != null && HoverTarget.Interactable != null)
+        if (HoverTarget != null) { return; }
+
+        if (HoverTarget is IInteractable interactable)
         {
-            HoverTarget.Interactable.CancelInteract();
+            interactable.OnInteractEnd();
         }
+    }
+
+    private void DropItem()
+    {
+        _currentHeldItem.transform.parent = null;
+        _currentHeldItem.OnDrop();
+        _currentHeldItem = null;
     }
 
     /// <summary>
@@ -136,8 +169,15 @@ public class PlayerInteraction : MonoBehaviour
     /// </summary>
     private Selectable GetBestSelectable()
     {
-        Selectable nearest = null;
+        static float Angle2D(Vector3 a, Vector3 b)
+        {
+            a.y = 0f;
+            b.y = 0f;
+            return Vector3.Angle(a, b);
+        }
 
+        Selectable nearest = null;
+        
         float minAngle = Mathf.Infinity;
         
         for (int i = 0; i < Nearby.Count; i++)
@@ -151,13 +191,5 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return nearest;
-    }
-
-    // TODO: make extension method
-    private float Angle2D(Vector3 a, Vector3 b)
-    {
-        a.y = 0f;
-        b.y = 0f;
-        return Vector3.Angle(a, b);
     }
 }
