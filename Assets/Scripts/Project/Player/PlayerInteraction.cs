@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using EasyCharacterMovement;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -15,9 +16,11 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private float _selectAngleRange;
 
-    private Selectable _hoverTarget = null;
+    private CharacterMovement _character;
 
+    private Selectable _hoverTarget = null;
     private Carryable _currentHeldItem = null;
+    private IInteractable _lastInteracted;
 
     public List<Selectable> Nearby
     {
@@ -39,6 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     void Awake()
     {
         Nearby = new();
+        _character = GetComponent<CharacterMovement>();
     }
 
     void Update()
@@ -58,6 +62,12 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             HoverTarget = null;
+            // stop interacting if nothing is selected
+            if (_lastInteracted != null)
+            {
+                _lastInteracted.OnInteractEnd();
+                _lastInteracted = null;
+            }
         }
     }
 
@@ -143,19 +153,25 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        if (HoverTarget is IInteractable interactable) 
-        { 
+        if (IsCarrying) { return; }
+
+        if (HoverTarget is IInteractable interactable)
+        {
             interactable.OnInteractStart();
+            _lastInteracted = interactable;
         }
     }
 
     public void OnInteractEnd()
     {
-        if (HoverTarget != null) { return; }
-
-        if (HoverTarget is IInteractable interactable)
+        if (_lastInteracted != null)
         {
-            interactable.OnInteractEnd();
+            _lastInteracted.OnInteractEnd();
+            _lastInteracted = null;
+        }
+        else if (IsCarrying && _currentHeldItem.CanThrow)
+        {
+            ThrowItem();
         }
     }
 
@@ -163,6 +179,13 @@ public class PlayerInteraction : MonoBehaviour
     {
         _currentHeldItem.transform.parent = null;
         _currentHeldItem.OnDrop();
+        _currentHeldItem = null;
+    }
+
+    private void ThrowItem()
+    {
+        _currentHeldItem.transform.parent = null;
+        _currentHeldItem.Throw(transform.forward, _character.GetFootPosition().y, _character.collider);
         _currentHeldItem = null;
     }
 

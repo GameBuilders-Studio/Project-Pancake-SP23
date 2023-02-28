@@ -832,12 +832,13 @@ GameObject:
   - component: {fileID: 1287816470}
   - component: {fileID: 1287816469}
   - component: {fileID: 1287816468}
+  - component: {fileID: 1287816471}
   m_Layer: 6
   m_Name: Step (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1287816467
 Transform:
@@ -917,6 +918,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287816466}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &1287816471
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287816466}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1393823088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,7 +1283,7 @@ Rigidbody:
   m_GameObject: {fileID: 2041899049}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 10
+  m_Drag: 5
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -1354,6 +1371,8 @@ MonoBehaviour:
   _nearbyTrigger: {fileID: 1086772652}
   _isEverSelectable: 1
   _highlightOnHover: 1
+  _throwSettings: {fileID: 0}
+  _gravityScale: 2.5
   _capacity: 2
 --- !u!136 &2041899057
 CapsuleCollider:
@@ -1394,10 +1413,6 @@ PrefabInstance:
     - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 4157403632099754787, guid: 7431efa6f57670e448350749373a7df2, type: 3}
-      propertyPath: _slopeLimitOverride
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_RootOrder

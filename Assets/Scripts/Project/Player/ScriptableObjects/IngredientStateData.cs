@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Ingredient State")]
+[CreateAssetMenu(menuName = "Props/Ingredient State")]
 public class IngredientStateData : ScriptableObject
 {
     

@@ -28,20 +28,21 @@ public class Selectable : MonoBehaviour
     private bool _highlightOnHover = true;
 
     protected Rigidbody _rigidbody;
+    protected Collider _collider;
 
     private bool _isSelectable = true;
 
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
     // TODO: remove
-    private Renderer _renderer;
+    protected Renderer _renderer;
 
     public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
         set => _isSelectable = value;
     }
-
+    
     void Awake()
     {
         if (_nearbyTrigger == null)

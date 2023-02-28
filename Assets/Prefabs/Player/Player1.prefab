@@ -89,7 +89,7 @@ MonoBehaviour:
   _stepOffset: 0.45
   _perchOffset: 0.5
   _perchAdditionalHeight: 0.4
-  _slopeLimitOverride: 0
+  _slopeLimitOverride: 1
   _useFlatTop: 0
   _useFlatBaseForGroundChecks: 1
   _collisionLayers:
@@ -121,7 +121,7 @@ MonoBehaviour:
   _playerInput: {fileID: 6867231908584801890}
   _rotationRate: 1900
   _defaultMovementMode: 1
-  _maxWalkSpeed: 7
+  _maxWalkSpeed: 6.5
   _minAnalogWalkSpeed: 0
   _maxAcceleration: 60
   _brakingDecelerationWalking: 10
