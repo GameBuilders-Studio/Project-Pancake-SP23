@@ -28,7 +28,6 @@ public class Selectable : MonoBehaviour
     private bool _highlightOnHover = true;
 
     protected Rigidbody _rigidbody;
-    protected Collider _collider;
 
     private bool _isSelectable = true;
 
@@ -41,6 +40,11 @@ public class Selectable : MonoBehaviour
     {
         get => _isSelectable && _isEverSelectable;
         set => _isSelectable = value;
+    }
+
+    public Rigidbody Rigidbody
+    {
+        get => _rigidbody;
     }
     
     void Awake()

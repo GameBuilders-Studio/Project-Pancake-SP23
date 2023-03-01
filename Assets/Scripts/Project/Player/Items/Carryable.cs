@@ -12,12 +12,12 @@ public class Carryable : Selectable
     private float _gravityScale = 2.5f;
 
     private bool _isFlying = false;
-
+    private bool _isBeingCarried = false;
     private float _currentThrowTime = 0.0f;
-
-    private Vector3 _throwDirection;
     private float _throwHeight;
-    private Collider _ignoreCollider;
+    private Vector3 _throwDirection;
+
+    private const int MaxDepenetrationIterations = 3;
 
     public bool CanThrow
     {
@@ -26,7 +26,12 @@ public class Carryable : Selectable
 
     public virtual bool IsEverThrowable 
     {
-        get => true; 
+        get => true;
+    }
+
+    public bool IsCatchable
+    {
+        get => _isFlying;
     }
 
     protected override void OnAwake()
@@ -37,7 +42,7 @@ public class Carryable : Selectable
     void FixedUpdate()
     {
         var gravity = Physics.gravity * _gravityScale;
-        _rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        Rigidbody.AddForce(gravity, ForceMode.Acceleration);
 
         if (!_isFlying) { return; }
         
@@ -46,54 +51,55 @@ public class Carryable : Selectable
 
     void OnCollisionStay(Collision collision)
     {
-        var col = collision.contacts[0];
-        if (_isFlying && col.otherCollider != _ignoreCollider)
+        var firstContact = collision.contacts[0];
+        // prevent instigator from canceling throw
+        if (_isFlying)
         {
             CancelThrow();
-            Debug.DrawRay(col.point, col.normal, Color.green, 3.0f);
+            Debug.DrawRay(firstContact.point, firstContact.normal, Color.green, 3.0f);
         }
     }
 
     public void OnPickUp()
     {
+        _isBeingCarried = true;
         SetState(SelectableState.Disabled);
         DisablePhysics();
     }
 
     public void OnPlace()
     {
+        _isBeingCarried = false;
         SetState(SelectableState.Disabled);
         DisablePhysics();
     }
 
     public void OnDrop()
     {
+        _isBeingCarried = false;
         SetState(SelectableState.Default);
         EnablePhysics();
     }
 
-    public void Throw(Vector3 direction, float footHeight, Collider ignoreCollider)
+    public void OnThrow(Vector3 direction, float footHeight)
     {
         _isFlying = true;
+        _isBeingCarried = false;
+        transform.parent = null;
 
         _throwDirection = direction;
         _throwHeight = transform.position.y - footHeight;
-        _ignoreCollider = ignoreCollider;
 
         var throwTarget = transform.position + _throwDirection * _throwSettings.Distance;
         throwTarget.y = footHeight;
         Debug.DrawRay(throwTarget, Vector3.up, Color.red, 3.0f);
-
-        transform.parent = null;
         
-        _rigidbody.isKinematic = true;
-        _rigidbody.detectCollisions = true;
-        _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        Rigidbody.isKinematic = true;
+        Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        _rigidbody.MovePosition(transform.position);
+        Rigidbody.MovePosition(transform.position);
 
         SetState(SelectableState.Disabled);
-
         _renderer.material.color = Color.red;
     }
 
@@ -109,16 +115,14 @@ public class Carryable : Selectable
     
     void EnablePhysics()
     {
-        _rigidbody.isKinematic = false;
-        _rigidbody.detectCollisions = true;
-        _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        Rigidbody.isKinematic = false;
+        Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     void DisablePhysics()
     {
-        _rigidbody.isKinematic = true;
-        _rigidbody.detectCollisions = false;
-        _rigidbody.interpolation = RigidbodyInterpolation.None;
+        Rigidbody.isKinematic = true;
+        Rigidbody.interpolation = RigidbodyInterpolation.None;
     }
 
     void ThrowUpdate()
@@ -135,9 +139,9 @@ public class Carryable : Selectable
         float verticalDelta = _throwHeight * (trajectory.Evaluate(newProgress) - trajectory.Evaluate(oldProgress));
         Vector3 velocity = (_throwDirection * horizontalDelta) + (Vector3.up * verticalDelta);
 
-        Debug.DrawRay(_rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
+        Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
 
-        _rigidbody.MovePosition(transform.position + velocity);
+        Rigidbody.MovePosition(transform.position + velocity);
 
         if (Mathf.Approximately(newProgress, 1.0f) && !Mathf.Approximately(newProgress, oldProgress))
         {

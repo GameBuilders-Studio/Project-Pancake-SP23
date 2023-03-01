@@ -11,6 +11,10 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private Transform _carryPivot;
 
+    [Tooltip("Radius used to depenetrate carried item from walls")]
+    [SerializeField]
+    private float _carryPivotRadius;
+
     [Tooltip("Angle range in front of player to check for selectables")]
     [Range(0f, 180f)]
     [SerializeField]
@@ -21,6 +25,8 @@ public class PlayerInteraction : MonoBehaviour
     private Selectable _hoverTarget = null;
     private Carryable _currentHeldItem = null;
     private IInteractable _lastInteracted;
+
+    RaycastHit[] _results = new RaycastHit[1];
 
     public List<Selectable> Nearby
     {
@@ -47,6 +53,11 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        if (IsCarrying)
+        {
+            DepenetrateHeldItem();
+        }
+
         var selectable = GetBestSelectable();
 
         if (HoverTarget != null)
@@ -118,12 +129,12 @@ public class PlayerInteraction : MonoBehaviour
                     _currentHeldItem = null;
                 }
             }
-            return; // keep holding item while station is hovered
+            return; // keep holding items if a station is selected
         }
 
         if (HoverTarget is FoodContainer container)
         {
-            if (container.TryAddItem(_currentHeldItem)) 
+            if (container.TryAddItem(_currentHeldItem))
             {
                 return; 
             }
@@ -141,6 +152,7 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         _currentHeldItem = item;
+        _character.IgnoreCollision(item.Rigidbody);
 
         var go = item.gameObject;
 
@@ -177,15 +189,20 @@ public class PlayerInteraction : MonoBehaviour
 
     private void DropItem()
     {
-        _currentHeldItem.transform.parent = null;
         _currentHeldItem.OnDrop();
-        _currentHeldItem = null;
+        ReleaseItem();
     }
 
     private void ThrowItem()
     {
+        _currentHeldItem.OnThrow(transform.forward, _character.GetFootPosition().y);
+        ReleaseItem();
+    }
+
+    private void ReleaseItem()
+    {
         _currentHeldItem.transform.parent = null;
-        _currentHeldItem.Throw(transform.forward, _character.GetFootPosition().y, _character.collider);
+        _character.IgnoreCollision(_currentHeldItem.Rigidbody, false);
         _currentHeldItem = null;
     }
 
@@ -216,5 +233,25 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return nearest;
+    }
+
+    private void DepenetrateHeldItem()
+    {
+        var startPosition = transform.position;
+        startPosition.y = _carryPivot.position.y + 0.4f;
+
+        float maxDistance = Vector3.Distance(startPosition, _carryPivot.position);
+
+        // if (Physics.SphereCastNonAlloc(startPosition, _character.radius, transform.forward, _results, maxDistance) > 0)
+        // {
+        //     float overlapDistance = maxDistance - _results[0].distance;
+        //     _character.SetPosition(transform.position + (-transform.forward * overlapDistance));
+        // }
+
+        if (_character.MovementSweepTest(transform.position + Vector3.up, transform.forward, maxDistance, out CollisionResult result))
+        {
+            float overlapDistance = maxDistance - result.displacementToHit.magnitude;
+            _character.SetPosition(transform.position + -transform.forward * overlapDistance);
+        }
     }
 }
