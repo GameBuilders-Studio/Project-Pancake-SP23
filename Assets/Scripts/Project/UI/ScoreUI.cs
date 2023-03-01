@@ -31,7 +31,7 @@ public class ScoreUI : MonoBehaviour
     {
         EventManager.RemoveListener("IncrementingScore", OnScoreIncremented);
         EventManager.RemoveListener("DecrementingScore", OnScoreDecremented);
-        EventManager.AddListener("TimerEnded", OnTimerEnded);
+        EventManager.RemoveListener("TimerEnded", OnTimerEnded);
     }
 
     /// <summary>
@@ -66,8 +66,6 @@ public class ScoreUI : MonoBehaviour
     private void UpdateScoreText()
     {
         ScoreText.text = $"Score: {_score}";
-
     }
-
 
 }

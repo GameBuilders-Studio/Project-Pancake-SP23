@@ -28,7 +28,6 @@ public class TimerUI : MonoBehaviour
     }
     public void StartTimer(float startTime)
     {
-        EventManager.Invoke("TimerStarted");
         _timeRemaining = startTime;
         _timerIsRunning = true;
         _timerUp = false;
