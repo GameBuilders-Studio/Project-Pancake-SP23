@@ -21,8 +21,6 @@ public class ServingStation : Station
             }
             container.ClearIngredients();
             Destroy(container.gameObject);
-            container.ClearIngredients();
-            Destroy(container.gameObject);
             return true;
         }
         return false;
