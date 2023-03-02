@@ -80,6 +80,6 @@ public class CookStation : Station
 
     void OnCookComplete()
     {
-
+        
     }
 }
