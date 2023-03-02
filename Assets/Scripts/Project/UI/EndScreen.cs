@@ -6,15 +6,15 @@ using TMPro;
 [RequireComponent(typeof(CanvasGroup))]
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] public TextMeshProUGUI EndText;
-    [SerializeField] public ScoreUI scoreUI;
+    [SerializeField] private TextMeshProUGUI _endText;
+    [SerializeField] private ScoreUI _scoreUI;
 
     private CanvasGroup _canvasGroup;
 
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        if (EndText == null)
+        if (_endText == null)
         {
             Debug.LogError("EndText is not assigned in EndScreen.cs");
         }
@@ -38,13 +38,13 @@ public class EndScreen : MonoBehaviour
     }
     private void OnWon()
     {
-        EndText.text = string.Format("Time's Up! The score was {0}. You passed!", scoreUI.Score);
+        _endText.text = string.Format("Time's Up! The score was {0}. You passed!", _scoreUI.Score);
         _canvasGroup.alpha = 1f;
     }
 
     private void OnLost()
     {
-        EndText.text = string.Format("Time's Up! Your score was {0}. You failed!", scoreUI.Score);
+        _endText.text = string.Format("Time's Up! Your score was {0}. You failed!", _scoreUI.Score);
         _canvasGroup.alpha = 1f;
     }
 }
