@@ -11,6 +11,8 @@ public class ScoreUI : MonoBehaviour
 
     [Tooltip("Score to win the game")]
     [SerializeField] public int ScoreToWin;
+
+    [SerializeField] private GameObject _endScreen;
     private int _score;
 
     private CanvasGroup _canvasGroup;
@@ -42,19 +44,12 @@ public class ScoreUI : MonoBehaviour
         EventManager.AddListener("TimerEnded", OnTimerEnded);
     }
 
-    private void OnDisable()
-    {
-        EventManager.RemoveListener("StartingLevel", OnStartLevel);
-        EventManager.RemoveListener("IncrementingScore", OnScoreIncremented);
-        EventManager.RemoveListener("DecrementingScore", OnScoreDecremented);
-        EventManager.RemoveListener("TimerEnded", OnTimerEnded);
-    }
-
     private void OnStartLevel()
     {
         _score = 0;
         UpdateScoreText();
         _canvasGroup.alpha = 1f;
+        _endScreen.SetActive(false);
     }
 
     /// <summary>
@@ -78,6 +73,7 @@ public class ScoreUI : MonoBehaviour
 
     private void OnTimerEnded()
     {
+        _endScreen.SetActive(true);
         if (GetIsWin())
         {
             EventManager.Invoke("Won");

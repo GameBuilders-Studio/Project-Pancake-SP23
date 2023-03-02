@@ -57,13 +57,6 @@ public class TimerUI : MonoBehaviour
         EventManager.AddListener("StoppingTimer", OnStopTimer);
     }
 
-    private void OnDisable()
-    {
-        EventManager.RemoveListener("StartingLevel", OnStartLevel);
-        EventManager.RemoveListener("ResumingTimer", OnResumeTimer);
-        EventManager.RemoveListener("StoppingTimer", OnStopTimer);
-    }
-
     void Update()
     {
         if (_timerIsRunning)

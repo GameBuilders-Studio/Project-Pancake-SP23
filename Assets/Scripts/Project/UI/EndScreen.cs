@@ -32,13 +32,6 @@ public class EndScreen : MonoBehaviour
         EventManager.AddListener("Lost", OnLost);
     }
 
-    private void OnDisable()
-    {
-        EventManager.RemoveListener("StartingLevel", OnStartLevel);
-        EventManager.RemoveListener("Won", OnWon);
-        EventManager.RemoveListener("Lost", OnLost);
-    }
-
     private void OnStartLevel()
     {
         _canvasGroup.alpha = 0f;
