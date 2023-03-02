@@ -29,9 +29,9 @@ public class ScoreUI : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.RemoveListener("IncrementingScore", OnScoreIncremented);
-        EventManager.RemoveListener("DecrementingScore", OnScoreDecremented);
-        EventManager.AddListener("TimerEnded", OnTimerEnded);
+        //EventManager.RemoveListener("IncrementingScore", OnScoreIncremented);
+        //EventManager.RemoveListener("DecrementingScore", OnScoreDecremented);
+        //EventManager.AddListener("TimerEnded", OnTimerEnded); //You should not addlistener after OnDisable
     }
 
     /// <summary>

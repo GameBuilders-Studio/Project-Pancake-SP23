@@ -15,19 +15,19 @@ public class ServingStation : Station
         //Only Accept dish, don't accept ingredient
         if (item is FoodContainer container)
         {
-            container.ClearIngredients();
-            Destroy(container.gameObject);
-            if (OrderMatch())
+            if (isOrderCorrect(container))
             {
                 EventManager.Invoke("IncrementingScore");
             }
+            container.ClearIngredients();
+            Destroy(container.gameObject);
             return true;
         }
         return false;
 
     }
 
-    public bool OrderMatch()
+    public bool isOrderCorrect(FoodContainer container)
     {
         return true;
     }
