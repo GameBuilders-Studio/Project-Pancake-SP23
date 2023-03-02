@@ -13,6 +13,7 @@ public class Carryable : Selectable
 
     private bool _isFlying = false;
     private bool _isBeingCarried = false;
+
     private float _currentThrowTime = 0.0f;
     private float _throwHeight;
     private Vector3 _throwDirection;
@@ -31,7 +32,7 @@ public class Carryable : Selectable
 
     public bool IsCatchable
     {
-        get => _isFlying;
+        get => _isFlying && !_isBeingCarried;
     }
 
     protected override void OnAwake()
@@ -52,7 +53,6 @@ public class Carryable : Selectable
     void OnCollisionStay(Collision collision)
     {
         var firstContact = collision.contacts[0];
-        // prevent instigator from canceling throw
         if (_isFlying)
         {
             CancelThrow();
@@ -63,6 +63,7 @@ public class Carryable : Selectable
     public void OnPickUp()
     {
         _isBeingCarried = true;
+        _isFlying = false;
         SetState(SelectableState.Disabled);
         DisablePhysics();
     }
@@ -94,10 +95,9 @@ public class Carryable : Selectable
         throwTarget.y = footHeight;
         Debug.DrawRay(throwTarget, Vector3.up, Color.red, 3.0f);
         
-        Rigidbody.isKinematic = true;
+        Rigidbody.drag = 0.0f;
+        Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-
-        Rigidbody.MovePosition(transform.position);
 
         SetState(SelectableState.Disabled);
         _renderer.material.color = Color.red;
@@ -141,9 +141,9 @@ public class Carryable : Selectable
 
         Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
 
-        Rigidbody.MovePosition(transform.position + velocity);
-
-        if (Mathf.Approximately(newProgress, 1.0f) && !Mathf.Approximately(newProgress, oldProgress))
+        Rigidbody.velocity = velocity / Time.deltaTime;
+    
+        if (Mathf.Approximately(newProgress, 1.0f))
         {
             CancelThrow();
         }
