@@ -83,6 +83,6 @@ public class TimerUI : MonoBehaviour
     {
         float minutes = Mathf.FloorToInt(time / 60);
         float seconds = Mathf.FloorToInt(time % 60);
-        TimeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        TimeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
     }
 }
