@@ -26,6 +26,11 @@ public class FoodContainer : Carryable
         set => _ingredients = value;
     }
 
+    public override bool IsEverThrowable 
+    {
+        get => false; 
+    }
+
     public bool TryAddItem(Carryable item)
     {
         if (Count >= Capacity) { return false; }
@@ -45,7 +50,7 @@ public class FoodContainer : Carryable
     {
         bool ingredientsTransfered = false;
 
-        while (Count >= Capacity && other.Count > 0)
+        while (Count < Capacity && other.Count > 0)
         {
             AddIngredient(other.PopIngredient());
             ingredientsTransfered = true;
@@ -64,11 +69,6 @@ public class FoodContainer : Carryable
         Ingredient ingredient = Ingredients[Count - 1];
         Ingredients.RemoveAt(Count - 1);
         return ingredient;
-    }
-
-    protected override void OnAwake()
-    {
-        IsCarryable = true;
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)

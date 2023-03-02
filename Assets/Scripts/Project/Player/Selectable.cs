@@ -34,7 +34,7 @@ public class Selectable : MonoBehaviour
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
     // TODO: remove
-    private Renderer _renderer;
+    protected Renderer _renderer;
 
     public virtual bool IsSelectable
     {
@@ -42,6 +42,11 @@ public class Selectable : MonoBehaviour
         set => _isSelectable = value;
     }
 
+    public Rigidbody Rigidbody
+    {
+        get => _rigidbody;
+    }
+    
     void Awake()
     {
         if (_nearbyTrigger == null)

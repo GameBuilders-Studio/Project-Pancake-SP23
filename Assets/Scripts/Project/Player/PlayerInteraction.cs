@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using EasyCharacterMovement;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -10,39 +11,52 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private Transform _carryPivot;
 
+    [Tooltip("Radius used to depenetrate carried item from walls")]
+    [SerializeField]
+    private float _carryPivotRadius;
+
     [Tooltip("Angle range in front of player to check for selectables")]
     [Range(0f, 180f)]
     [SerializeField]
     private float _selectAngleRange;
 
+    private CharacterMovement _character;
     private Selectable _hoverTarget = null;
+    private IInteractable _lastInteracted;
+    
+    private bool _isCarrying = false;
+    private Carryable _heldItem = null;
 
-    private Carryable _currentHeldItem = null;
+    public bool IsCarrying
+    {
+        get => _isCarrying;
+    }
 
     public List<Selectable> Nearby
     {
         get => _nearby;
-        set => _nearby = value;
+        private set => _nearby = value;
     }
 
     public Selectable HoverTarget
     {
         get => _hoverTarget;
-        set => _hoverTarget = value;
-    }
-
-    public bool IsCarrying
-    {
-        get => _currentHeldItem != null;
+        private set => _hoverTarget = value;
     }
 
     void Awake()
     {
         Nearby = new();
+        _character = GetComponent<CharacterMovement>();
     }
 
     void Update()
     {
+        if (IsCarrying)
+        {
+            DepenetrateHeldItem();
+        }
+
         var selectable = GetBestSelectable();
 
         if (HoverTarget != null)
@@ -58,6 +72,12 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             HoverTarget = null;
+            // stop interacting if nothing is selected
+            if (_lastInteracted != null)
+            {
+                _lastInteracted.OnInteractEnd();
+                _lastInteracted = null;
+            }
         }
     }
 
@@ -100,21 +120,19 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget is Station station)
         {
-            if (station.TryPlaceItem(_currentHeldItem))
+            if (IsCarrying && station.TryPlaceItem(_heldItem))
             {
-                if (_currentHeldItem != null)
-                {
-                    _currentHeldItem.OnPlace();
-                    _currentHeldItem = null;
-                }
+                _heldItem.OnPlace();
+                ReleaseItem();
             }
-            return; // keep holding item while station is hovered
+            return; // keep holding items if a station is selected
         }
 
         if (HoverTarget is FoodContainer container)
         {
-            if (container.TryAddItem(_currentHeldItem)) 
+            if (container.TryAddItem(_heldItem))
             {
+                ReleaseItem();
                 return; 
             }
         }
@@ -124,13 +142,16 @@ public class PlayerInteraction : MonoBehaviour
 
     public void PickUpItem(Carryable item)
     {
-        if (_currentHeldItem != null)
+        if (IsCarrying)
         {
             Debug.LogError("Tried to pick up item while already carrying one");
             return;
         }
 
-        _currentHeldItem = item;
+        _isCarrying = true;
+
+        _heldItem = item;
+        _character.IgnoreCollision(item.Rigidbody);
 
         var go = item.gameObject;
 
@@ -143,27 +164,47 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (HoverTarget == null) { return; }
 
-        if (HoverTarget is IInteractable interactable) 
-        { 
+        if (IsCarrying) { return; }
+
+        if (HoverTarget is IInteractable interactable)
+        {
             interactable.OnInteractStart();
+            _lastInteracted = interactable;
         }
     }
 
     public void OnInteractEnd()
     {
-        if (HoverTarget != null) { return; }
-
-        if (HoverTarget is IInteractable interactable)
+        if (_lastInteracted != null)
         {
-            interactable.OnInteractEnd();
+            _lastInteracted.OnInteractEnd();
+            _lastInteracted = null;
+        }
+        else if (IsCarrying && _heldItem.CanThrow)
+        {
+            ThrowItem();
         }
     }
 
     private void DropItem()
     {
-        _currentHeldItem.transform.parent = null;
-        _currentHeldItem.OnDrop();
-        _currentHeldItem = null;
+        _heldItem.OnDrop();
+        _heldItem.transform.parent = null;
+        ReleaseItem();
+    }
+
+    private void ThrowItem()
+    {
+        _heldItem.OnThrow(transform.forward, _character.GetFootPosition().y);
+        _heldItem.transform.parent = null;
+        ReleaseItem();
+    }
+
+    private void ReleaseItem()
+    {
+        _character.IgnoreCollision(_heldItem.Rigidbody, false);
+        _isCarrying = false;
+        _heldItem = null;
     }
 
     /// <summary>
@@ -193,5 +234,10 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return nearest;
+    }
+
+    private void DepenetrateHeldItem()
+    {
+        // use _character to resolve collision between _heldItem and walls
     }
 }

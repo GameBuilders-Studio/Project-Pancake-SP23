@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class IngredientProp : Carryable
 {
+    [Space(15f)]
     [SerializeField]
     private IngredientType _type;
 
