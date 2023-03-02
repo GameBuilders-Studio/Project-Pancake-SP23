@@ -123,7 +123,7 @@ public class PlayerInteraction : MonoBehaviour
             if (IsCarrying && station.TryPlaceItem(_heldItem))
             {
                 _heldItem.OnPlace();
-                _heldItem = null;
+                ReleaseItem();
             }
             return; // keep holding items if a station is selected
         }
@@ -132,6 +132,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (container.TryAddItem(_heldItem))
             {
+                ReleaseItem();
                 return; 
             }
         }
@@ -201,8 +202,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ReleaseItem()
     {
-        _isCarrying = false;
         _character.IgnoreCollision(_heldItem.Rigidbody, false);
+        _isCarrying = false;
         _heldItem = null;
     }
 

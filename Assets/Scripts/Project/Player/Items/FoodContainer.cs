@@ -50,7 +50,7 @@ public class FoodContainer : Carryable
     {
         bool ingredientsTransfered = false;
 
-        while (Count >= Capacity && other.Count > 0)
+        while (Count < Capacity && other.Count > 0)
         {
             AddIngredient(other.PopIngredient());
             ingredientsTransfered = true;

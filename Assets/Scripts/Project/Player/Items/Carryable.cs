@@ -18,8 +18,6 @@ public class Carryable : Selectable
     private float _throwHeight;
     private Vector3 _throwDirection;
 
-    private const int MaxDepenetrationIterations = 3;
-
     public bool CanThrow
     {
         get => IsEverThrowable && _throwSettings != null;
@@ -32,7 +30,7 @@ public class Carryable : Selectable
 
     public bool IsCatchable
     {
-        get => _isFlying && !_isBeingCarried;
+        get => _isFlying;
     }
 
     protected override void OnAwake()
@@ -95,7 +93,6 @@ public class Carryable : Selectable
         throwTarget.y = footHeight;
         Debug.DrawRay(throwTarget, Vector3.up, Color.red, 3.0f);
         
-        Rigidbody.drag = 0.0f;
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
@@ -103,7 +100,7 @@ public class Carryable : Selectable
         _renderer.material.color = Color.red;
     }
 
-    public void CancelThrow()
+    protected void CancelThrow()
     {
         _isFlying = false;
         SetState(SelectableState.Default);
