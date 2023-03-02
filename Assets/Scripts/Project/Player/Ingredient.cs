@@ -9,6 +9,7 @@ public enum IngredientType
     Sphere
 }
 
+[System.Serializable]
 public class Ingredient
 {
     public IngredientType Type;
