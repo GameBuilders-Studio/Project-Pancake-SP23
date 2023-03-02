@@ -12,6 +12,26 @@ public class ServingStation : Station
 
     public override bool TryPlaceItem(Carryable item)
     {
+        if(OrderMatch()) {
+            EventManager.Invoke("IncrementingScore");
+        }
+        if (item is FoodContainer container)
+        {
+            container.ClearIngredients();
+            return false;
+        }
+
+        if (item is IngredientProp ingredientProp)
+        {
+            Destroy(ingredientProp.gameObject);
+            return true;
+        }
+
+        return false;
+    
+    }
+
+    public bool OrderMatch(){
         return true;
     }
 }
