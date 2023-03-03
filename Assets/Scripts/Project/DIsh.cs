@@ -6,9 +6,8 @@ public class Dish : FoodContainer
 {
     protected override bool ValidateIngredient(Ingredient ingredient)
     {
-        return (base.ValidateIngredient(ingredient)) && ingredient.ProgressComplete;
+        return ingredient.ProgressComplete;
     }
-
 
 
 }
