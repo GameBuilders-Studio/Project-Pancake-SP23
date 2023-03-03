@@ -49,7 +49,7 @@ public class CookStation : Station
     {
         _totalProgress = 0.0f;
 
-        for (int i = 0; i < container.Capacity; i++)
+        for (int i = 0; i < container.Count; i++)
         {
             var ingredient = container.Ingredients[i];
 

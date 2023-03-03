@@ -6,6 +6,7 @@ public class FoodContainer : Carryable
     [Space(15f)]
     [SerializeField]
     private int _capacity;
+    
     [SerializeField]
     private List<Ingredient> _ingredients = new();
 
