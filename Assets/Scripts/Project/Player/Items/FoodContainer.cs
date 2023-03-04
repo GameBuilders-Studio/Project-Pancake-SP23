@@ -10,16 +10,11 @@ public class FoodContainer : Carryable
     [SerializeField]
     private List<Ingredient> _ingredients = new();
 
-    public int Count
-    {
-        get => _ingredients.Count;
-    }
+    public int Count => _ingredients.Count;
 
-    public int Capacity
-    {
-        get => _capacity;
-        set => _capacity = value;
-    }
+    public int Capacity => _capacity;
+
+    public bool IsFull => _ingredients.Count == _capacity;
 
     public List<Ingredient> Ingredients
     {
@@ -27,26 +22,43 @@ public class FoodContainer : Carryable
         set => _ingredients = value;
     }
 
-    public override bool IsEverThrowable
-    {
-        get => false; 
-    }
+    public override bool IsEverThrowable => false;
 
+    /// <summary>
+    /// Returns true if the item is destroyed when added to this container
+    /// </summary>
     public bool TryAddItem(Carryable item)
     {
         if (Count >= Capacity) { return false; }
 
         if (item.TryGetComponent(out IngredientProp ingredientProp))
         {
-            AddIngredient(ingredientProp.Data);
-            OnAddIngredient();
-            Destroy(ingredientProp.gameObject);
-            return true;
+            return TryAddIngredient(ingredientProp);
         }
 
+        if (item is FoodContainer foodContainer)
+        {
+            TryTransferIngredients(foodContainer);
+            return false;
+        }
+        
         return false;
     }
 
+    public bool TryAddIngredient(IngredientProp ingredient)
+    {
+        if (!ValidateIngredient(ingredient.Data)) { return false; }
+
+        AddIngredient(ingredient.Data);
+        OnAddIngredient();
+        Destroy(ingredient.gameObject);
+        
+        return true;
+    }
+
+    /// <summary>
+    /// Try to transfer ingredients from the other container to this container
+    /// </summary>
     public bool TryTransferIngredients(FoodContainer other)
     {
         if (!ValidateTransfer(other)) { return false; }
@@ -79,8 +91,16 @@ public class FoodContainer : Carryable
         return ingredient != null;
     }
 
+    /// <summary>
+    /// Returns true if ingredient transfer from another container to this container is allowed
+    /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
+        // validate each ingredient by default
+        for (int i = 0; i < other.Count; i++)
+        {
+            if (!ValidateIngredient(other.Ingredients[i])) { return false; }
+        }
         return true;
     }
 

@@ -21,25 +21,18 @@ public class Carryable : Selectable
     private float _throwHeight;
     private Vector3 _throwDirection;
 
-    public Rigidbody Rigidbody
-    {
-        get => _rigidbody;
-    }
+    public Rigidbody Rigidbody => _rigidbody;
 
     public bool CanThrow
     {
         get => IsEverThrowable && _throwSettings != null;
     }
 
-    public virtual bool IsEverThrowable 
-    {
-        get => true;
-    }
+    public virtual bool IsEverThrowable => true;
 
-    public bool IsCatchable
-    {
-        get => _isFlying;
-    }
+    public bool IsCatchable => _isFlying;
+
+    public bool IsBeingCarried => _isBeingCarried;
 
     protected override void OnAwake()
     {

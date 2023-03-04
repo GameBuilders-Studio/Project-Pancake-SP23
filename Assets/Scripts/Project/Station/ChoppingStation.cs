@@ -27,7 +27,7 @@ public class ChoppingStation : Station, IInteractable
         _interacting = false;
     }
 
-    protected override bool ValidateItem(Carryable item)
+    protected override bool ValidatePlacedItem(Carryable item)
     {
         return true;
     }
@@ -52,7 +52,7 @@ public class ChoppingStation : Station, IInteractable
 
     void Chop()
     {
-        _ingredient.SetIngredientState(_newIngredientState);
+        _ingredient.Data.SetState(_newIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }
 }

@@ -7,10 +7,10 @@ public class Station : Selectable
 
     private Carryable _placedItem;
 
-    public Carryable PlacedItem
+    public Carryable PlacedItem 
     {
-        get => _placedItem; 
-        set => _placedItem = value;
+        get => _placedItem;
+        protected set => _placedItem = value;
     }
 
     void Update()
@@ -20,43 +20,35 @@ public class Station : Selectable
 
     public virtual Carryable GetCarryableItem()
     {
-        var item = _placedItem;
+        var item = PlacedItem;
 
-        _placedItem = null;
+        PlacedItem = null;
 
         OnItemRemoved();
 
         return item;
     }
 
-    public virtual bool TryPlaceItem(Carryable newItem)
+    public virtual bool TryPlaceItem(Carryable item)
     {
-        if (!ValidateItem(newItem)) { return false; }
-
         if (PlacedItem == null)
         {
-            PlaceItem(newItem);
+            if (!ValidatePlacedItem(item)) { return false; }
+            PlaceItem(item);
             return true;
         }
 
-        var newItemContainer = newItem as FoodContainer;
-
         if (PlacedItem is FoodContainer placedContainer)
         {
-            if (newItemContainer != null)
-            {
-                placedContainer.TryTransferIngredients(newItemContainer);
-                return false;
-            }
-            return placedContainer.TryAddItem(newItem);
+            return placedContainer.TryAddItem(item);
         }
 
         // place the container if it destroys the placed item
-        if (newItemContainer != null)
+        if (item is FoodContainer container)
         {
-            if (newItemContainer.TryAddItem(PlacedItem))
+            if (container.TryAddItem(PlacedItem))
             {
-                PlaceItem(newItem);
+                PlaceItem(item);
                 return true;
             }
         }
@@ -67,7 +59,7 @@ public class Station : Selectable
     /// <summary>
     /// Returns true if the item is allowed to be placed on the station.
     /// </summary>
-    protected virtual bool ValidateItem(Carryable item)
+    protected virtual bool ValidatePlacedItem(Carryable item)
     {
         return true;
     }

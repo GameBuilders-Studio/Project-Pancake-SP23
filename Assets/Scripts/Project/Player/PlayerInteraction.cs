@@ -141,8 +141,8 @@ public class PlayerInteraction : MonoBehaviour
             if (container.TryAddItem(_heldItem))
             {
                 ReleaseItem();
-                return; 
             }
+            return; // keep holding item if a container is selected
         }
 
         DropItem();

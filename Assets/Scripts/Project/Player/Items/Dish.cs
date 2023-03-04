@@ -6,6 +6,19 @@ public class Dish : FoodContainer
 {
     protected override bool ValidateIngredient(Ingredient ingredient)
     {
-        return ingredient.ProgressComplete;
+        return false;
+    }
+
+    protected override bool ValidateTransfer(FoodContainer other)
+    {
+        if (!other.IsFull) { return false; }
+
+        for (int i = 0; i < other.Count; i++)
+        {
+            var ingredient = other.Ingredients[i];
+            if (!ingredient.ProgressComplete) { return false; }
+        }
+
+        return true;
     }
 }
