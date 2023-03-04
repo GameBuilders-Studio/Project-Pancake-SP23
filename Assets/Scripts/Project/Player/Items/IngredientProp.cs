@@ -5,12 +5,11 @@ using UnityEngine;
 /// </summary>
 public class IngredientProp : Carryable
 {
-    [Space(15f)]
     [SerializeField]
     private IngredientType _type;
 
     [SerializeField]
-    private IngredientStateData _initialState;
+    private IngredientStateData _state;
 
     private Ingredient _ingredientData;
 
@@ -18,6 +17,11 @@ public class IngredientProp : Carryable
     {
         get => _ingredientData.Progress;
         set => _ingredientData.Progress = value;
+    }
+
+    public bool ProgressComplete
+    {
+        get => _ingredientData.ProgressComplete;
     }
 
     public Ingredient Data
@@ -28,7 +32,8 @@ public class IngredientProp : Carryable
 
     protected override void OnAwake()
     {
-        _ingredientData = new(_type, _initialState);
+        base.OnAwake();
+        _ingredientData = new(_type, _state);
     }
 
     public void AddProgress(float progressDelta)
@@ -38,8 +43,21 @@ public class IngredientProp : Carryable
 
     public void SetProgress(float progress)
     {
+        progress = Mathf.Clamp01(progress);
         _ingredientData.SetProgress(progress);
         OnProgressUpdate(progress);
+    }
+    
+    /// <summary>
+    ///  Resets ingredient progress if state is changed
+    /// </summary>
+    public void SetIngredientState(IngredientStateData state)
+    {
+        if (state != _state)
+        {
+            _state = state;
+            Data.ResetState(state);
+        }
     }
 
     protected virtual void OnProgressUpdate(float progress)

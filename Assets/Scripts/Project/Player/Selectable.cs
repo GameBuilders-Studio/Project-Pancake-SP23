@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public enum HoverState 
 {
@@ -15,7 +13,6 @@ public enum SelectableState
     Disabled
 }
 
-[RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
     [SerializeField]
@@ -27,14 +24,9 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private bool _highlightOnHover = true;
 
-    protected Rigidbody _rigidbody;
-
     private bool _isSelectable = true;
 
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
-
-    // TODO: remove
-    protected Renderer _renderer;
 
     public virtual bool IsSelectable
     {
@@ -42,11 +34,6 @@ public class Selectable : MonoBehaviour
         set => _isSelectable = value;
     }
 
-    public Rigidbody Rigidbody
-    {
-        get => _rigidbody;
-    }
-    
     void Awake()
     {
         if (_nearbyTrigger == null)
@@ -54,13 +41,8 @@ public class Selectable : MonoBehaviour
             _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
         }
 
-        _rigidbody = GetComponent<Rigidbody>();
-
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
-
-        // TODO: remove
-        _renderer = GetComponent<Renderer>();
 
         OnAwake();
     }
@@ -126,5 +108,5 @@ public interface IInteractable
 
     public void OnInteractEnd();
     
-    public bool IsInteractable {get; set;}
+    public bool Enabled {get;}
 }

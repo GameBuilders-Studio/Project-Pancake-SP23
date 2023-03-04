@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Carryable : Selectable
 {
     [Space(15f)]
@@ -11,12 +12,19 @@ public class Carryable : Selectable
     [SerializeField]
     private float _gravityScale = 2.5f;
 
+    protected Rigidbody _rigidbody;
+
     private bool _isFlying = false;
     private bool _isBeingCarried = false;
 
     private float _currentThrowTime = 0.0f;
     private float _throwHeight;
     private Vector3 _throwDirection;
+
+    public Rigidbody Rigidbody
+    {
+        get => _rigidbody;
+    }
 
     public bool CanThrow
     {
@@ -35,6 +43,7 @@ public class Carryable : Selectable
 
     protected override void OnAwake()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         EnablePhysics();
     }
     
@@ -97,7 +106,6 @@ public class Carryable : Selectable
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
         SetState(SelectableState.Disabled);
-        _renderer.material.color = Color.red;
     }
 
     protected void CancelThrow()
@@ -106,8 +114,6 @@ public class Carryable : Selectable
         SetState(SelectableState.Default);
         EnablePhysics();
         _currentThrowTime = 0.0f;
-
-        _renderer.material.color = Color.cyan;
     }
     
     void EnablePhysics()

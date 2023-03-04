@@ -31,7 +31,10 @@ public class Ingredient
 
     public void SetProgress(float progress)
     {
-        progress = Mathf.Clamp01(progress);
+        if (progress > 1.0f || progress < 0.0f)
+        {
+            Debug.LogError("Progress must be between 0 and 1");
+        }
         Progress = progress;
     }
 

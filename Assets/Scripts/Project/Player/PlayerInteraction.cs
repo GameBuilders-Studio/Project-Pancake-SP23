@@ -58,12 +58,13 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         var selectable = GetBestSelectable();
-
+        
+        // deselect previous target
         if (HoverTarget != null)
         {
             HoverTarget.SetHoverState(HoverState.Deselected);
         }
-            
+        
         if (selectable != null)
         {
             HoverTarget = selectable;
@@ -78,6 +79,14 @@ public class PlayerInteraction : MonoBehaviour
                 _lastInteracted.OnInteractEnd();
                 _lastInteracted = null;
             }
+        }
+
+        // stop interacting if interactable is disabled
+        if (_lastInteracted != null && !_lastInteracted.Enabled)
+        {
+            _lastInteracted.OnInteractEnd();
+            Debug.Log("interact canceled");
+            _lastInteracted = null;
         }
     }
 
@@ -168,6 +177,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (HoverTarget is IInteractable interactable)
         {
+            if (!interactable.Enabled) { return; }
             interactable.OnInteractStart();
             _lastInteracted = interactable;
         }

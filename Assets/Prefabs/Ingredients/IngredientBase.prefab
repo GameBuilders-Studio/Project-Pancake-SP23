@@ -57,7 +57,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.55
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7605582599296834493
 GameObject:
@@ -72,8 +72,8 @@ GameObject:
   - component: {fileID: 7605582599296834488}
   - component: {fileID: 7605582599296834495}
   - component: {fileID: 7605582599296834494}
-  - component: {fileID: 7605582599296834485}
   - component: {fileID: 7605582599296834486}
+  - component: {fileID: 79977836911095686}
   m_Layer: 0
   m_Name: IngredientBase
   m_TagString: Untagged
@@ -168,33 +168,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7605582599296834493}
   serializedVersion: 2
-  m_Mass: 0.2
-  m_Drag: 5
-  m_AngularDrag: 5
+  m_Mass: 0.01
+  m_Drag: 3
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &7605582599296834485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7605582599296834493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a8c4a93f4b1d8843a80e6a946d75197, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 7605582599255157724}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _throwSettings: {fileID: 11400000, guid: b190fc41700cdff4d93a2f993db2b0ab, type: 2}
-  _gravityScale: 2.5
-  _type: 1
-  _initialState: {fileID: 0}
 --- !u!114 &7605582599296834486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,3 +191,24 @@ MonoBehaviour:
   _slopeBehaviour: 2
   _slopeLimit: 0
   _slopeLimitCos: 1
+--- !u!114 &79977836911095686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605582599296834493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c3bc3b03aa5694ca44475d0da2118a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nearbyTrigger: {fileID: 7605582599255157724}
+  _isEverSelectable: 1
+  _highlightOnHover: 1
+  _throwSettings: {fileID: 11400000, guid: b190fc41700cdff4d93a2f993db2b0ab, type: 2}
+  _gravityScale: 2.5
+  _type: 1
+  _initialState: {fileID: 0}
+  _startColor: {r: 0, g: 0.4431373, b: 0.30588236, a: 0}
+  _endColor: {r: 0.100138426, g: 1, b: 0, a: 0}
