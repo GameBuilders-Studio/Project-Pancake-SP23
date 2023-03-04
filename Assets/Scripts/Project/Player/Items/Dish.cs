@@ -8,6 +8,4 @@ public class Dish : FoodContainer
     {
         return ingredient.ProgressComplete;
     }
-
-
 }
