@@ -36,7 +36,7 @@ public class FoodContainer : Carryable
     {
         if (Count >= Capacity) { return false; }
 
-        if (item is IngredientProp ingredientProp)
+        if (item.TryGetComponent(out IngredientProp ingredientProp))
         {
             AddIngredient(ingredientProp.Data);
             OnAddIngredient();

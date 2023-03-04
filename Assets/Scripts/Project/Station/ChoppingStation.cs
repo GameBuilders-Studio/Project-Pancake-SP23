@@ -17,15 +17,9 @@ public class ChoppingStation : Station, IInteractable
         get => _ingredient != null && !_ingredient.ProgressComplete;
     }
 
-    public void Chop()
-    {
-        _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
-    }
-
     public void OnInteractStart()
     {
         _interacting = true;
-        _ingredient.SetIngredientState(_newIngredientState);
     }
 
     public void OnInteractEnd()
@@ -33,9 +27,17 @@ public class ChoppingStation : Station, IInteractable
         _interacting = false;
     }
 
+    protected override bool ValidateItem(Carryable item)
+    {
+        return true;
+    }
+
     protected override void OnItemPlaced(Carryable item)
     {
-        _ingredient = PlacedItem as IngredientProp;
+        if (PlacedItem.TryGetComponent(out IngredientProp ingredientProp))
+        {
+            _ingredient = ingredientProp;
+        }
     }
 
     protected override void OnItemRemoved()
@@ -51,8 +53,9 @@ public class ChoppingStation : Station, IInteractable
         }
     }
 
-    protected override bool ValidateItem(Carryable item)
+    void Chop()
     {
-        return true;
+        _ingredient.SetIngredientState(_newIngredientState);
+        _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }
 }

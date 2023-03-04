@@ -17,7 +17,7 @@ public class GarbageDisposal : Station
             return false;
         }
 
-        if (item is IngredientProp ingredientProp)
+        if (item.TryGetComponent(out IngredientProp ingredientProp))
         {
             Destroy(ingredientProp.gameObject);
             return true;

@@ -14,7 +14,6 @@ public class CubeIngredient : IngredientProp
 
     protected override void OnAwake()
     {
-        base.OnAwake();
         _renderer = GetComponent<Renderer>();
     }
 

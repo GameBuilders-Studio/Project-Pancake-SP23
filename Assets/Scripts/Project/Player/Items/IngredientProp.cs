@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 ///  Handles ingredient object behaviour
 /// </summary>
-public class IngredientProp : Carryable
+public class IngredientProp : MonoBehaviour
 {
     [SerializeField]
     private IngredientType _type;
@@ -30,10 +30,10 @@ public class IngredientProp : Carryable
         set => _ingredientData = value;
     }
 
-    protected override void OnAwake()
+    void Awake()
     {
-        base.OnAwake();
         _ingredientData = new(_type, _state);
+        OnAwake();
     }
 
     public void AddProgress(float progressDelta)
@@ -49,7 +49,7 @@ public class IngredientProp : Carryable
     }
     
     /// <summary>
-    ///  Resets ingredient progress if state is changed
+    ///  Resets progress if state is changed
     /// </summary>
     public void SetIngredientState(IngredientStateData state)
     {
@@ -64,4 +64,6 @@ public class IngredientProp : Carryable
     {
         // handle visual behaviour of ingredient
     }
+
+    protected virtual void OnAwake() {}
 }
