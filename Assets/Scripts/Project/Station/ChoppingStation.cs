@@ -34,10 +34,7 @@ public class ChoppingStation : Station, IInteractable
 
     protected override void OnItemPlaced(Carryable item)
     {
-        if (PlacedItem.TryGetComponent(out IngredientProp ingredientProp))
-        {
-            _ingredient = ingredientProp;
-        }
+        item.TryGetComponent(out _ingredient);
     }
 
     protected override void OnItemRemoved()

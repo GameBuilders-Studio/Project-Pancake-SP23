@@ -112,8 +112,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             item = carryable;
         }
-        
-        if (HoverTarget is Station station)
+        else if (HoverTarget is Station station)
         {
             item = station.GetCarryableItem();
         }

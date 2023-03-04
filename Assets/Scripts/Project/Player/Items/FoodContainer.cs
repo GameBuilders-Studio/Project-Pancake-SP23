@@ -27,7 +27,7 @@ public class FoodContainer : Carryable
         set => _ingredients = value;
     }
 
-    public override bool IsEverThrowable 
+    public override bool IsEverThrowable
     {
         get => false; 
     }
@@ -49,6 +49,8 @@ public class FoodContainer : Carryable
 
     public bool TryTransferIngredients(FoodContainer other)
     {
+        if (!ValidateTransfer(other)) { return false; }
+        
         bool ingredientsTransfered = false;
 
         while (Count < Capacity && other.Count > 0)
@@ -75,6 +77,11 @@ public class FoodContainer : Carryable
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
         return ingredient != null;
+    }
+
+    protected virtual bool ValidateTransfer(FoodContainer other)
+    {
+        return true;
     }
 
     protected virtual void OnAddIngredient()
