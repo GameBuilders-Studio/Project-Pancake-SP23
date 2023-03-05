@@ -9,16 +9,15 @@ public class CookStation : Station
     private float _cookTimePerIngredient;
 
     [SerializeField]
-    private IngredientStateData _newIngredientState;
+    private IngredientStateData _targetIngredientState;
 
     [SerializeField]
     private bool _cooking = false;
 
     private float _totalProgress = 0.0f;
+    private CookContainer _container;
 
     public float TotalProgress => _totalProgress;
-
-    private CookContainer _container;
 
     protected override bool ValidatePlacedItem(Carryable item)
     {
@@ -53,7 +52,7 @@ public class CookStation : Station
         {
             var ingredient = container.Ingredients[i];
 
-            ingredient.SetState(_newIngredientState);
+            ingredient.SetState(_targetIngredientState);
 
             if (ingredient.ProgressComplete) 
             {

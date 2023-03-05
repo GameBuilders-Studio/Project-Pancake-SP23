@@ -63,7 +63,7 @@ public class Selectable : MonoBehaviour
 
     public virtual void SetHoverState(HoverState state)
     {
-        if (!IsSelectable || !_highlightOnHover)
+        if (!(IsSelectable && _highlightOnHover))
         {
             state = HoverState.Deselected;
         }
@@ -84,7 +84,7 @@ public class Selectable : MonoBehaviour
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)
     {
-        if (IsSelectable && other.gameObject.TryGetComponent(out PlayerInteraction player))
+        if (other.gameObject.TryGetComponent(out PlayerInteraction player))
         {
             _nearbyPlayers.Add(other.gameObject, player);
             player.Nearby.Add(this);

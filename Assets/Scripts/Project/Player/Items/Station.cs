@@ -1,10 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Station : Selectable
 {
     [SerializeField]
     private Transform _itemHolderPivot;
 
+    [SerializeField]
     private Carryable _placedItem;
 
     public Carryable PlacedItem 
@@ -13,9 +15,18 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    void Update()
+    void Update() => OnUpdate();
+
+    void OnValidate()
     {
-        OnUpdate();
+        if (_placedItem == null) { return; }
+        CenterObject(_placedItem.gameObject);
+    }
+
+    void Start()
+    {
+        if (_placedItem == null) { return; }
+        PlaceItem(_placedItem);
     }
 
     public virtual Carryable GetCarryableItem()
@@ -59,10 +70,7 @@ public class Station : Selectable
     /// <summary>
     /// Returns true if the item is allowed to be placed on the station.
     /// </summary>
-    protected virtual bool ValidatePlacedItem(Carryable item)
-    {
-        return true;
-    }
+    protected virtual bool ValidatePlacedItem(Carryable item) => true;
 
     protected virtual void OnItemPlaced(Carryable item) {}
 

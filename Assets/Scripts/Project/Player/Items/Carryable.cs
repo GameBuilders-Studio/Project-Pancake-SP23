@@ -23,10 +23,7 @@ public class Carryable : Selectable
 
     public Rigidbody Rigidbody => _rigidbody;
 
-    public bool CanThrow
-    {
-        get => IsEverThrowable && _throwSettings != null;
-    }
+    public bool CanThrow => IsEverThrowable && _throwSettings != null;
 
     public virtual bool IsEverThrowable => true;
 

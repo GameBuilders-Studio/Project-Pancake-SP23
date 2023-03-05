@@ -83,8 +83,9 @@ MonoBehaviour:
   _isEverSelectable: 1
   _highlightOnHover: 1
   _itemHolderPivot: {fileID: 2977219313586498496}
+  _placedItem: {fileID: 0}
   _totalChopTime: 4
-  _newIngredientState: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
+  _targetIngredientState: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
 --- !u!4 &2977219313586498496 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}

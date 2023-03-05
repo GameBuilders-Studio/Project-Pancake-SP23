@@ -11,10 +11,12 @@ public class FoodContainer : Carryable
     private List<Ingredient> _ingredients = new();
 
     public int Count => _ingredients.Count;
-
     public int Capacity => _capacity;
 
     public bool IsFull => _ingredients.Count == _capacity;
+    public bool IsEmpty => _ingredients.Count == 0;
+
+    public override bool IsEverThrowable => false;
 
     public List<Ingredient> Ingredients
     {
@@ -22,15 +24,11 @@ public class FoodContainer : Carryable
         set => _ingredients = value;
     }
 
-    public override bool IsEverThrowable => false;
-
     /// <summary>
     /// Returns true if the item is destroyed when added to this container
     /// </summary>
     public bool TryAddItem(Carryable item)
     {
-        if (Count >= Capacity) { return false; }
-
         if (item.TryGetComponent(out IngredientProp ingredientProp))
         {
             return TryAddIngredient(ingredientProp);
@@ -38,7 +36,19 @@ public class FoodContainer : Carryable
 
         if (item is FoodContainer foodContainer)
         {
-            TryTransferIngredients(foodContainer);
+            if (IsEmpty && !foodContainer.IsEmpty)
+            {
+                TryTransferIngredients(foodContainer);
+            }
+            else if (!IsEmpty && foodContainer.IsEmpty)
+            {
+                foodContainer.TryTransferIngredients(this);
+            }
+            else
+            {
+                TryTransferIngredients(foodContainer);
+            }
+
             return false;
         }
         
@@ -57,21 +67,23 @@ public class FoodContainer : Carryable
     }
 
     /// <summary>
-    /// Try to transfer ingredients from the other container to this container
+    /// Transfer ingredients from the given container to this container 
     /// </summary>
     public bool TryTransferIngredients(FoodContainer other)
     {
+        if (Count >= Capacity) { return false; }
+        
         if (!ValidateTransfer(other)) { return false; }
         
-        bool ingredientsTransfered = false;
+        bool didTransfer = false;
 
         while (Count < Capacity && other.Count > 0)
         {
             AddIngredient(other.PopIngredient());
-            ingredientsTransfered = true;
+            didTransfer = true;
         }
 
-        return ingredientsTransfered;
+        return didTransfer;
     }
 
     public void ClearIngredients()
@@ -106,7 +118,7 @@ public class FoodContainer : Carryable
 
     protected virtual void OnAddIngredient()
     {
-        // change visuals
+        // modify visuals
     }
 
     private void AddIngredient(Ingredient ingredient)

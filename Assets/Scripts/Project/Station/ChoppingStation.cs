@@ -7,25 +7,20 @@ public class ChoppingStation : Station, IInteractable
     private float _totalChopTime;
 
     [SerializeField]
-    private IngredientStateData _newIngredientState;
+    private IngredientStateData _targetIngredientState;
 
     private bool _interacting = false;
+    private bool _ingredientExists = false;
     private IngredientProp _ingredient;
 
-    public bool Enabled 
+    bool IInteractable.Enabled
     {
-        get => _ingredient != null && !_ingredient.ProgressComplete;
+        get => _ingredientExists && !_ingredient.ProgressComplete;
     }
 
-    public void OnInteractStart()
-    {
-        _interacting = true;
-    }
+    public void OnInteractStart() => _interacting = true;
 
-    public void OnInteractEnd()
-    {
-        _interacting = false;
-    }
+    public void OnInteractEnd() => _interacting = false;
 
     protected override bool ValidatePlacedItem(Carryable item)
     {
@@ -35,24 +30,23 @@ public class ChoppingStation : Station, IInteractable
     protected override void OnItemPlaced(Carryable item)
     {
         item.TryGetComponent(out _ingredient);
+        _ingredientExists = _ingredient != null;
     }
 
     protected override void OnItemRemoved()
     {
         _ingredient = null;
+        _ingredientExists = false;
     }
 
     protected override void OnUpdate()
     {
-        if (_interacting)
-        {
-            Chop();
-        }
+        if (_interacting) { Chop(); }
     }
 
     void Chop()
     {
-        _ingredient.Data.SetState(_newIngredientState);
+        _ingredient.Data.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }
 }

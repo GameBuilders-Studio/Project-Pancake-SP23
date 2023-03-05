@@ -27,10 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool _isCarrying = false;
     private Carryable _heldItem = null;
 
-    public bool IsCarrying
-    {
-        get => _isCarrying;
-    }
+    public bool IsCarrying => _isCarrying;
 
     public List<Selectable> Nearby
     {
@@ -234,7 +231,10 @@ public class PlayerInteraction : MonoBehaviour
         
         for (int i = 0; i < Nearby.Count; i++)
         {
+            if (!Nearby[i].IsSelectable) { continue; }
+
             float angle = Angle2D(transform.forward, Nearby[i].transform.position - transform.position);
+
             if (angle < minAngle && angle < _selectAngleRange)
             {
                 nearest = Nearby[i];
