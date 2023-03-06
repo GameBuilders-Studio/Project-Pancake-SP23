@@ -61,21 +61,21 @@ public class Carryable : Selectable
     {
         _isBeingCarried = true;
         _isFlying = false;
-        SetState(SelectableState.Disabled);
+        SetState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnPlace()
     {
         _isBeingCarried = false;
-        SetState(SelectableState.Disabled);
+        SetState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnDrop()
     {
         _isBeingCarried = false;
-        SetState(SelectableState.Default);
+        SetState(SelectState.Default);
         EnablePhysics();
     }
 
@@ -95,13 +95,13 @@ public class Carryable : Selectable
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        SetState(SelectableState.Disabled);
+        SetState(SelectState.Disabled);
     }
 
     protected void CancelThrow()
     {
         _isFlying = false;
-        SetState(SelectableState.Default);
+        SetState(SelectState.Default);
         EnablePhysics();
         _currentThrowTime = 0.0f;
     }
@@ -123,22 +123,25 @@ public class Carryable : Selectable
         float throwDuration = _throwSettings.ThrowDurationSeconds;
         AnimationCurve trajectory = _throwSettings.Trajectory;
 
-        float oldProgress = _currentThrowTime / throwDuration;
+        float previousProgress = _currentThrowTime / throwDuration;
+
         _currentThrowTime += Time.deltaTime;
         _currentThrowTime = Mathf.Clamp(_currentThrowTime, 0.0f, throwDuration);
-        float newProgress = _currentThrowTime / throwDuration;
-        
-        float horizontalDelta = _throwSettings.Distance * (newProgress - oldProgress);
-        float verticalDelta = _throwHeight * (trajectory.Evaluate(newProgress) - trajectory.Evaluate(oldProgress));
-        Vector3 velocity = (_throwDirection * horizontalDelta) + (Vector3.up * verticalDelta);
 
-        Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
+        float currentProgress = _currentThrowTime / throwDuration;
+        
+        float horizontalDelta = _throwSettings.Distance * (currentProgress - previousProgress);
+        float verticalDelta = _throwHeight * (trajectory.Evaluate(currentProgress) - trajectory.Evaluate(previousProgress));
+        
+        Vector3 velocity = (_throwDirection * horizontalDelta) + (Vector3.up * verticalDelta);
 
         Rigidbody.velocity = velocity / Time.deltaTime;
     
-        if (Mathf.Approximately(newProgress, 1.0f))
+        if (Mathf.Approximately(currentProgress, 1.0f))
         {
             CancelThrow();
         }
+
+        Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
     }
 }

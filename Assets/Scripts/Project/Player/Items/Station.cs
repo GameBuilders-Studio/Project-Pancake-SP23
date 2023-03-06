@@ -29,17 +29,17 @@ public class Station : Selectable
         PlaceItem(_placedItem);
     }
 
-    public virtual Carryable GetCarryableItem()
+    public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
-
         PlacedItem = null;
-
-        OnItemRemoved();
-
+        OnItemRemoved(item);
         return item;
     }
 
+    /// <summary>
+    /// Returns true if the item is placed succesfully
+    /// </summary>
     public virtual bool TryPlaceItem(Carryable item)
     {
         if (PlacedItem == null)
@@ -72,18 +72,17 @@ public class Station : Selectable
     /// </summary>
     protected virtual bool ValidatePlacedItem(Carryable item) => true;
 
+    protected virtual void OnUpdate() {}
+
     protected virtual void OnItemPlaced(Carryable item) {}
 
-    protected virtual void OnItemRemoved() {}
+    protected virtual void OnItemRemoved(Carryable item) {}
 
     protected void PlaceItem(Carryable item)
     {
         PlacedItem = item;
-
         CenterObject(item.gameObject);
-
         item.OnPlace();
-
         OnItemPlaced(item);
     }
 
@@ -92,10 +91,5 @@ public class Station : Selectable
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
-    }
-
-    protected virtual void OnUpdate()
-    {
-        // do something with PlacedItem (cooking, etc)
     }
 }

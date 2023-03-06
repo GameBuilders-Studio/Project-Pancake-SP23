@@ -16,6 +16,7 @@ public class CookStation : Station
 
     private float _totalProgress = 0.0f;
     private CookContainer _container;
+    private bool _containerExists = false;
 
     public float TotalProgress => _totalProgress;
 
@@ -28,19 +29,19 @@ public class CookStation : Station
     {
         // limit type casting by caching CookContainer reference
         _container = item as CookContainer;
+        _containerExists = _container != null;
     }
 
-    protected override void OnItemRemoved()
+    protected override void OnItemRemoved(Carryable item)
     {
         _container = null;
+        _containerExists = false;
     }
 
     protected override void OnUpdate()
     {
-        if (_container != null)
-        {
-            Cook(_container);
-        }
+        if (!_containerExists) { return; }
+        Cook(_container);
     }
 
     // we need to cook jesse

@@ -33,7 +33,7 @@ public class ChoppingStation : Station, IInteractable
         _ingredientExists = _ingredient != null;
     }
 
-    protected override void OnItemRemoved()
+    protected override void OnItemRemoved(Carryable item)
     {
         _ingredient = null;
         _ingredientExists = false;

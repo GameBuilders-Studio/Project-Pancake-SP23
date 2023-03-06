@@ -111,7 +111,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (HoverTarget is Station station)
         {
-            item = station.GetCarryableItem();
+            item = station.PopCarryableItem();
         }
 
         if (item == null) { return; }

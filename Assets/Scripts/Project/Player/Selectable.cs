@@ -7,7 +7,7 @@ public enum HoverState
     Deselected
 }
 
-public enum SelectableState 
+public enum SelectState 
 {
     Default, 
     Disabled
@@ -25,13 +25,12 @@ public class Selectable : MonoBehaviour
     private bool _highlightOnHover = true;
 
     private bool _isSelectable = true;
-
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
     public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
-        set => _isSelectable = value;
+        protected set => _isSelectable = value;
     }
 
     void Awake()
@@ -47,14 +46,14 @@ public class Selectable : MonoBehaviour
         OnAwake();
     }
 
-    public void SetState(SelectableState state)
+    public void SetState(SelectState state)
     {
-        if (state == SelectableState.Default)
+        if (state == SelectState.Default)
         {
             _isSelectable = true;
         }
 
-        if (state == SelectableState.Disabled)
+        if (state == SelectState.Disabled)
         {
             _isSelectable = false;
             SetHoverState(HoverState.Deselected);
