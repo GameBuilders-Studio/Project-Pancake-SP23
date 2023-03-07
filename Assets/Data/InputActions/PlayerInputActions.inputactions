@@ -112,7 +112,7 @@
                 {
                     "name": "",
                     "id": "aa7482c8-c35e-4bad-988a-4254d3153f13",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard And Mouse",
@@ -123,7 +123,7 @@
                 {
                     "name": "",
                     "id": "c28edee6-6706-4247-a3ea-7bef5c57100a",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -156,10 +156,21 @@
                 {
                     "name": "",
                     "id": "1f469221-9e48-411d-8a8e-f0c0dc8b02e5",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard And Mouse",
+                    "action": "PickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "813e4171-4c58-480e-a5f8-c0430d30ed26",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false

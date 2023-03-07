@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,133 +19,104 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private ProxyTrigger _nearbyTrigger;
 
-    [SerializeField]
-    private Interactable _interactable;
+[SerializeField]
+private bool _isEverSelectable = true;
 
-    [Space(15f)]
-    [SerializeField]
-    private bool _isCarryable = true;
+[SerializeField]
+private bool _highlightOnHover = true;
 
-    [SerializeField]
-    private bool _isEverSelectable = true;
+private bool _isSelectable = true;
+private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
 
-    [SerializeField]
-    private bool _highlightOnHover = true;
+// TODO: remove
+private Renderer _renderer;
 
-    private bool _isSelectable = true;
-    private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
+protected Material _material;
 
-    // TODO: remove
-    private Renderer _renderer;
+public Material _selectMaterial;
 
-    protected Material _material;
+public virtual bool IsSelectable
+{
+    get => _isSelectable && _isEverSelectable;
+    protected set => _isSelectable = value;
+}
 
-    public Material _selectMaterial;
-
-    public virtual bool IsSelectable
+void Awake()
+{
+    if (_nearbyTrigger == null)
     {
-        get => _isSelectable && _isEverSelectable;
-        set => _isSelectable = value;
+        _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
     }
 
-    public Interactable Interactable
+    _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
+    _nearbyTrigger.OnExit += OnProxyTriggerExit;
+
+    _renderer = GetComponent<Renderer>();
+    _material = _renderer.material;
+
+    if (_selectMaterial is null)
     {
-        get => _interactable;
-        set => _interactable = value;
+        _selectMaterial = (Material)Resources.Load("HighlightMaterial", typeof(Material));
     }
 
-    public bool IsCarryable
+    OnAwake();
+}
+
+public void SetState(SelectState state)
+{
+    if (state == SelectState.Default)
     {
-        get => _isCarryable;
-        set => _isCarryable = value;
+        _isSelectable = true;
     }
 
-    void Awake()
+    if (state == SelectState.Disabled)
     {
-        if (_nearbyTrigger == null)
-        {
-            _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
-        }
+        _isSelectable = false;
+        SetHoverState(HoverState.Deselected);
+    }
+}
 
-        if (_nearbyTrigger == null)
-        {
-            Debug.LogError("No proxy trigger");
-        }
-
-        if (_interactable == null)
-        {
-            _interactable = GetComponent<Interactable>();
-        }
-
-        _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
-        _nearbyTrigger.OnExit += OnProxyTriggerExit;
-
-        _renderer = GetComponent<Renderer>();
-        _material = _renderer.material;
-
-        if (_selectMaterial is null)
-        {
-            _selectMaterial = (Material)Resources.Load("HighlightMaterial", typeof(Material));
-        }
-
-        OnAwake();
+public virtual void SetHoverState(HoverState state)
+{
+    if (!(IsSelectable && _highlightOnHover))
+    {
+        state = HoverState.Deselected;
     }
 
-    public void SetState(SelectState state)
+    // TODO: highlight shader
+    if (state == HoverState.Selected)
     {
-        if (state == SelectState.Default)
-        {
-            _isSelectable = true;
-        }
-
-        if (state == SelectState.Disabled)
-        {
-            _isSelectable = false;
-            SetHoverState(HoverState.Deselected);
-        }
+        // enable highlight
+        _renderer.material = _selectMaterial;
     }
-
-    public virtual void SetHoverState(HoverState state)
+    else
     {
-        if (!IsSelectable || !_highlightOnHover)
-        {
-            state = HoverState.Deselected;
-        }
-
-        // TODO: highlight shader
-        if (state == HoverState.Selected)
-        {
-            // enable highlight
-            _renderer.material = _selectMaterial;
-        }
-        else
-        {
-            _renderer.material = _material;
-            // disable highlight
-        }
+        // disable highlight
+        _renderer.material = _material;
     }
+}
 
-    protected virtual void OnAwake() { }
+protected virtual void OnAwake() { }
 
-    // TODO: change collision matrix so Selectables only detect Players (for performance)
-    void OnProxyTriggerEnter(Collider other)
+// TODO: change collision matrix so Selectables only detect Players (for performance)
+void OnProxyTriggerEnter(Collider other)
+{
+    if (other.gameObject.TryGetComponent(out PlayerInteraction player))
     {
-        if (other.gameObject.TryGetComponent(out PlayerInteraction player))
-        {
-            _nearbyPlayers.Add(other.gameObject, player);
-            player.Nearby.Add(this);
-        }
+        _nearbyPlayers.Add(other.gameObject, player);
+        player.Nearby.Add(this);
     }
+}
 
-    void OnProxyTriggerExit(Collider other)
+void OnProxyTriggerExit(Collider other)
+{
+    if (_nearbyPlayers.ContainsKey(other.gameObject))
     {
-        if (_nearbyPlayers.ContainsKey(other.gameObject))
-        {
-            var player = _nearbyPlayers[other.gameObject];
-            player.Nearby.Remove(this);
-            _nearbyPlayers.Remove(other.gameObject);
-        }
+        var player = _nearbyPlayers[other.gameObject];
+        player.Nearby.Remove(this);
+        _nearbyPlayers.Remove(other.gameObject);
     }
+}
 }
 
 public interface IInteractable
@@ -154,6 +124,6 @@ public interface IInteractable
     public void OnInteractStart();
 
     public void OnInteractEnd();
-    
-    public bool IsInteractable {get; set; }
+
+    public bool IsInteractable { get; set; }
 }

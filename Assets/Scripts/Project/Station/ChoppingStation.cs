@@ -1,45 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoppingStation : MonoBehaviour
+public class ChoppingStation : Station, IInteractable
 {
-    [Tooltip("When choppingTimeCurrent reaches choppingTimeMax, the chopping is done")]
+    [Space(15f)]
     [SerializeField]
-    private float _choppingTimeCurrent = 0f;
+    private float _totalChopTime;
+
     [SerializeField]
-    private float _choppingTimeMax = 3f;
-    [SerializeField]
-    private bool _isChopping = false;
-    
-    public void StartChopping(){
-        //Debug.Log("Start Chopping");
-        _isChopping = true;
-        StartCoroutine("ChoppingTimer");
-    }
-    public void StopChopping(){
-        //Debug.Log("Stop Chopping");
-        _isChopping = false;
-        StopCoroutine("ChoppingTimer");
-    }
-    public void FinishChopping(){
-        //Debug.Log("Finish Chopping");
-        _isChopping = false;;
-        StopCoroutine("ChoppingTimer");
-        _choppingTimeCurrent = 0f;
+    private IngredientStateData _targetIngredientState;
+
+    private bool _interacting = false;
+    private bool _ingredientExists = false;
+    private IngredientProp _ingredient;
+
+    bool IInteractable.Enabled
+    {
+        get => _ingredientExists && !_ingredient.ProgressComplete;
     }
 
-    private IEnumerator ChoppingTimer(){
-        while(_isChopping){
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-            _choppingTimeCurrent+=Time.fixedDeltaTime* 1.15f; //multiply 1.15f because the primitive time will not match the actual time
-            if(_choppingTimeCurrent >= _choppingTimeMax){
-                _isChopping = false;
-                FinishChopping();
-                yield break;
-            }
-        }
-    }
-    
+    public void OnInteractStart() => _interacting = true;
 
+    public void OnInteractEnd() => _interacting = false;
+
+    protected override bool ValidatePlacedItem(Carryable item)
+    {
+        return true;
+    }
+
+    protected override void OnItemPlaced(Carryable item)
+    {
+        item.TryGetComponent(out _ingredient);
+        _ingredientExists = _ingredient != null;
+    }
+
+    protected override void OnItemRemoved(Carryable item)
+    {
+        _ingredient = null;
+        _ingredientExists = false;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (_interacting) { Chop(); }
+    }
+
+    void Chop()
+    {
+        _ingredient.Data.SetState(_targetIngredientState);
+        _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
+    }
 }

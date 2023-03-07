@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class ScoreUI : MonoBehaviour
 {
     [Tooltip("Score text to display the score")]
@@ -10,28 +11,45 @@ public class ScoreUI : MonoBehaviour
 
     [Tooltip("Score to win the game")]
     [SerializeField] public int ScoreToWin;
-    [SerializeField] public GameObject WinText;
+
+    [SerializeField] private GameObject _endScreen;
     private int _score;
 
+    private CanvasGroup _canvasGroup;
+
     public bool GetIsWin() => _score >= ScoreToWin;
+
+    public int Score { get => _score; }
+
     private void Awake()
     {
         _score = 0;
         UpdateScoreText();
-        WinText.SetActive(false);
+        _canvasGroup = GetComponent<CanvasGroup>();
+        if (ScoreText == null)
+        {
+            Debug.LogError("ScoreText is not assigned in ScoreUI.cs");
+        }
+        if (_canvasGroup == null)
+        {
+            Debug.LogError("CanvasGroup is not assigned in ScoreUI.cs");
+        }
+        _canvasGroup.alpha = 0f;
     }
     private void OnEnable()
     {
+        EventManager.AddListener("StartingLevel", OnStartLevel);
         EventManager.AddListener("IncrementingScore", OnScoreIncremented);
         EventManager.AddListener("DecrementingScore", OnScoreDecremented);
         EventManager.AddListener("TimerEnded", OnTimerEnded);
     }
 
-    private void OnDisable()
+    private void OnStartLevel()
     {
-        EventManager.RemoveListener("IncrementingScore", OnScoreIncremented);
-        EventManager.RemoveListener("DecrementingScore", OnScoreDecremented);
-        EventManager.AddListener("TimerEnded", OnTimerEnded);
+        _score = 0;
+        UpdateScoreText();
+        _canvasGroup.alpha = 1f;
+        _endScreen.SetActive(false);
     }
 
     /// <summary>
@@ -55,19 +73,19 @@ public class ScoreUI : MonoBehaviour
 
     private void OnTimerEnded()
     {
+        _endScreen.SetActive(true);
         if (GetIsWin())
         {
             EventManager.Invoke("Won");
-            WinText.SetActive(true);
         }
-        else EventManager.Invoke("Lost");
+        else { EventManager.Invoke("Lost"); }
+
+        _canvasGroup.alpha = 0f;
     }
 
     private void UpdateScoreText()
     {
         ScoreText.text = $"Score: {_score}";
-
     }
-
 
 }

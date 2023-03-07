@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8776706128838990088
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_Name
+      value: Stove
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277124, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f2127e9281cf4fb4db60d1899ba96b8e, type: 2}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+--- !u!114 &3656883382528517788 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5436622889255518100, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 8776706128838990088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65998c8c7ca0ff14e82e1844ba9e733e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &6270819285653955741 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 8776706128838990088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8533694510245877386 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 8776706128838990088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6233733899822971758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8533694510245877386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83252f1fd1dce448a12b02a4bcfa84b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nearbyTrigger: {fileID: 3656883382528517788}
+  _isEverSelectable: 1
+  _highlightOnHover: 1
+  _itemHolderPivot: {fileID: 6270819285653955741}
+  _placedItem: {fileID: 0}
+  _cookTimePerIngredient: 5
+  _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
+  _cooking: 0
