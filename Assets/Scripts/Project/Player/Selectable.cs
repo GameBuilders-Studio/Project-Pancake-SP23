@@ -2,7 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HoverState {Selected, Deselected}
+public enum HoverState
+{
+    Selected,
+    Deselected
+}
+
+public enum SelectState
+{
+    Default,
+    Disabled
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
@@ -28,7 +39,11 @@ public class Selectable : MonoBehaviour
     // TODO: remove
     private Renderer _renderer;
 
-    public bool IsSelectable
+    protected Material _material;
+
+    public Material _selectMaterial;
+
+    public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
         set => _isSelectable = value;
@@ -67,11 +82,56 @@ public class Selectable : MonoBehaviour
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
 
         _renderer = GetComponent<Renderer>();
+        _material = _renderer.material;
+
+        if (_selectMaterial is null)
+        {
+            _selectMaterial = (Material)Resources.Load("HighlightMaterial", typeof(Material));
+        }
+
+        OnAwake();
     }
 
+    public void SetState(SelectState state)
+    {
+        if (state == SelectState.Default)
+        {
+            _isSelectable = true;
+        }
+
+        if (state == SelectState.Disabled)
+        {
+            _isSelectable = false;
+            SetHoverState(HoverState.Deselected);
+        }
+    }
+
+    public virtual void SetHoverState(HoverState state)
+    {
+        if (!IsSelectable || !_highlightOnHover)
+        {
+            state = HoverState.Deselected;
+        }
+
+        // TODO: highlight shader
+        if (state == HoverState.Selected)
+        {
+            // enable highlight
+            _renderer.material = _selectMaterial;
+        }
+        else
+        {
+            _renderer.material = _material;
+            // disable highlight
+        }
+    }
+
+    protected virtual void OnAwake() { }
+
+    // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)
     {
-        if (IsSelectable && other.gameObject.TryGetComponent<PlayerInteraction>(out PlayerInteraction player))
+        if (other.gameObject.TryGetComponent(out PlayerInteraction player))
         {
             _nearbyPlayers.Add(other.gameObject, player);
             player.Nearby.Add(this);
@@ -87,24 +147,13 @@ public class Selectable : MonoBehaviour
             _nearbyPlayers.Remove(other.gameObject);
         }
     }
+}
 
-    public void SetHoverState(HoverState state)
-    {
-        if (!IsSelectable || !_highlightOnHover)
-        {
-            state = HoverState.Deselected;
-        }
+public interface IInteractable
+{
+    public void OnInteractStart();
 
-        // TODO: highlight shader
-        if (state == HoverState.Selected)
-        {
-            // enable highlight
-            _renderer.material.color = Color.red;
-        }
-        else
-        {
-            // disable highlight
-            _renderer.material.color = Color.white;
-        }
-    }
+    public void OnInteractEnd();
+    
+    public bool IsInteractable {get; set; }
 }
