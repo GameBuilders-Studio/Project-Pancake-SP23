@@ -9,19 +9,18 @@ public class CookStation : Station
     private float _cookTimePerIngredient;
 
     [SerializeField]
+    private IngredientStateData _targetIngredientState;
+
+    [SerializeField]
     private bool _cooking = false;
 
     private float _totalProgress = 0.0f;
-
-    public float TotalProgress
-    {
-        get => _totalProgress;
-        set => _totalProgress = value;
-    }
-
     private CookContainer _container;
+    private bool _containerExists = false;
 
-    protected override bool ValidateItem(Carryable item)
+    public float TotalProgress => _totalProgress;
+
+    protected override bool ValidatePlacedItem(Carryable item)
     {
         return item is CookContainer;
     }
@@ -30,21 +29,22 @@ public class CookStation : Station
     {
         // limit type casting by caching CookContainer reference
         _container = item as CookContainer;
+        _containerExists = _container != null;
     }
 
-    protected override void OnItemRemoved()
+    protected override void OnItemRemoved(Carryable item)
     {
         _container = null;
+        _containerExists = false;
     }
 
     protected override void OnUpdate()
     {
-        if (_container != null)
-        {
-            Cook(_container);
-        }
+        if (!_containerExists) { return; }
+        Cook(_container);
     }
 
+    // we need to cook jesse
     void Cook(CookContainer container)
     {
         _totalProgress = 0.0f;
@@ -52,6 +52,8 @@ public class CookStation : Station
         for (int i = 0; i < container.Count; i++)
         {
             var ingredient = container.Ingredients[i];
+
+            ingredient.SetState(_targetIngredientState);
 
             if (ingredient.ProgressComplete) 
             {

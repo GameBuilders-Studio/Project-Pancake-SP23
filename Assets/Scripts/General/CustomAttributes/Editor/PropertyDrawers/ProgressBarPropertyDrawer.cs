@@ -32,11 +32,12 @@ namespace CustomAttributes.Editor
             var value = property.propertyType == SerializedPropertyType.Integer ? property.intValue : property.floatValue;
             var valueFormatted = property.propertyType == SerializedPropertyType.Integer ? value.ToString() : string.Format("{0:0.00}", value);
             var maxValue = GetMaxValue(property, progressBarAttribute);
+            var maxValueFormatted = string.Format("{0:0.00}", maxValue);
 
             if (maxValue != null && IsNumber(maxValue))
             {
                 var fillPercentage = value / CastToFloat(maxValue);
-                var barLabel = (!string.IsNullOrEmpty(progressBarAttribute.Name) ? "[" + progressBarAttribute.Name + "] " : "") + valueFormatted + "/" + maxValue;
+                var barLabel = (!string.IsNullOrEmpty(progressBarAttribute.Name) ? "[" + progressBarAttribute.Name + "]  " : "") + valueFormatted + " / " + maxValueFormatted;
                 var barColor = progressBarAttribute.Color.GetColor();
                 var labelColor = Color.white;
 

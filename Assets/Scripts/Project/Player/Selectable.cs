@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public enum HoverState 
 {
@@ -9,13 +7,12 @@ public enum HoverState
     Deselected
 }
 
-public enum SelectableState 
+public enum SelectState 
 {
     Default, 
     Disabled
 }
 
-[RequireComponent(typeof(Rigidbody))]
 public class Selectable : MonoBehaviour
 {
     [SerializeField]
@@ -27,26 +24,15 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private bool _highlightOnHover = true;
 
-    protected Rigidbody _rigidbody;
-
     private bool _isSelectable = true;
-
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
-
-    // TODO: remove
-    protected Renderer _renderer;
 
     public virtual bool IsSelectable
     {
         get => _isSelectable && _isEverSelectable;
-        set => _isSelectable = value;
+        protected set => _isSelectable = value;
     }
 
-    public Rigidbody Rigidbody
-    {
-        get => _rigidbody;
-    }
-    
     void Awake()
     {
         if (_nearbyTrigger == null)
@@ -54,25 +40,20 @@ public class Selectable : MonoBehaviour
             _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
         }
 
-        _rigidbody = GetComponent<Rigidbody>();
-
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
-
-        // TODO: remove
-        _renderer = GetComponent<Renderer>();
 
         OnAwake();
     }
 
-    public void SetState(SelectableState state)
+    public void SetState(SelectState state)
     {
-        if (state == SelectableState.Default)
+        if (state == SelectState.Default)
         {
             _isSelectable = true;
         }
 
-        if (state == SelectableState.Disabled)
+        if (state == SelectState.Disabled)
         {
             _isSelectable = false;
             SetHoverState(HoverState.Deselected);
@@ -81,7 +62,7 @@ public class Selectable : MonoBehaviour
 
     public virtual void SetHoverState(HoverState state)
     {
-        if (!IsSelectable || !_highlightOnHover)
+        if (!(IsSelectable && _highlightOnHover))
         {
             state = HoverState.Deselected;
         }
@@ -102,7 +83,7 @@ public class Selectable : MonoBehaviour
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)
     {
-        if (IsSelectable && other.gameObject.TryGetComponent(out PlayerInteraction player))
+        if (other.gameObject.TryGetComponent(out PlayerInteraction player))
         {
             _nearbyPlayers.Add(other.gameObject, player);
             player.Nearby.Add(this);
@@ -126,5 +107,5 @@ public interface IInteractable
 
     public void OnInteractEnd();
     
-    public bool IsInteractable {get; set;}
+    public bool Enabled {get;}
 }

@@ -6,7 +6,7 @@ public class CookContainer : FoodContainer
 {
     protected override bool ValidateIngredient(Ingredient ingredient)
     {
-        return ingredient != null;
+        return ingredient.ProgressComplete;
     }
 
     protected override void OnAddIngredient()

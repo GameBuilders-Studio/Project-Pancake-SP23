@@ -1,62 +1,65 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Station : Selectable
 {
     [SerializeField]
     private Transform _itemHolderPivot;
 
+    [SerializeField]
     private Carryable _placedItem;
 
-    public Carryable PlacedItem
+    public Carryable PlacedItem 
     {
-        get => _placedItem; 
-        set => _placedItem = value;
+        get => _placedItem;
+        protected set => _placedItem = value;
     }
 
-    void Update()
+    void Update() => OnUpdate();
+
+    void OnValidate()
     {
-        OnUpdate();
+        if (_placedItem == null) { return; }
+        CenterObject(_placedItem.gameObject);
     }
 
-    public virtual Carryable GetCarryableItem()
+    void Start()
     {
-        var item = _placedItem;
+        if (_placedItem == null) { return; }
+        PlaceItem(_placedItem);
+    }
 
-        _placedItem = null;
-
-        OnItemRemoved();
-
+    public virtual Carryable PopCarryableItem()
+    {
+        var item = PlacedItem;
+        PlacedItem = null;
+        OnItemRemoved(item);
         return item;
     }
 
-    public virtual bool TryPlaceItem(Carryable newItem)
+    /// <summary>
+    /// Returns true if the item is placed succesfully
+    /// </summary>
+    public virtual bool TryPlaceItem(Carryable item)
     {
-        if (!ValidateItem(newItem)) { return false; }
-
         if (PlacedItem == null)
         {
-            PlaceItem(newItem);
+            if (!ValidatePlacedItem(item)) { return false; }
+            PlaceItem(item);
             return true;
         }
 
-        var newItemContainer = newItem as FoodContainer;
-
         if (PlacedItem is FoodContainer placedContainer)
         {
-            if (newItemContainer != null)
-            {
-                placedContainer.TryTransferIngredients(newItemContainer);
-                return false;
-            }
-            return placedContainer.TryAddItem(newItem);
+            return placedContainer.TryAddItem(item);
         }
 
         // place the container if it destroys the placed item
-        if (newItemContainer != null)
+        if (item is FoodContainer container)
         {
-            if (newItemContainer.TryAddItem(PlacedItem))
+            if (container.TryAddItem(PlacedItem))
             {
-                PlaceItem(newItem);
+                PlaceItem(item);
                 return true;
             }
         }
@@ -67,23 +70,19 @@ public class Station : Selectable
     /// <summary>
     /// Returns true if the item is allowed to be placed on the station.
     /// </summary>
-    protected virtual bool ValidateItem(Carryable item)
-    {
-        return true;
-    }
+    protected virtual bool ValidatePlacedItem(Carryable item) => true;
+
+    protected virtual void OnUpdate() {}
 
     protected virtual void OnItemPlaced(Carryable item) {}
 
-    protected virtual void OnItemRemoved() {}
+    protected virtual void OnItemRemoved(Carryable item) {}
 
     protected void PlaceItem(Carryable item)
     {
         PlacedItem = item;
-
         CenterObject(item.gameObject);
-
         item.OnPlace();
-
         OnItemPlaced(item);
     }
 
@@ -92,10 +91,5 @@ public class Station : Selectable
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
-    }
-
-    protected virtual void OnUpdate()
-    {
-        // do something with PlacedItem (cooking, etc)
     }
 }

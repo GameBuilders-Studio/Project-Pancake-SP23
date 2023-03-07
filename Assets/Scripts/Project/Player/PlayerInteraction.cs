@@ -27,10 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool _isCarrying = false;
     private Carryable _heldItem = null;
 
-    public bool IsCarrying
-    {
-        get => _isCarrying;
-    }
+    public bool IsCarrying => _isCarrying;
 
     public List<Selectable> Nearby
     {
@@ -58,12 +55,13 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         var selectable = GetBestSelectable();
-
+        
+        // deselect previous target
         if (HoverTarget != null)
         {
             HoverTarget.SetHoverState(HoverState.Deselected);
         }
-            
+        
         if (selectable != null)
         {
             HoverTarget = selectable;
@@ -78,6 +76,14 @@ public class PlayerInteraction : MonoBehaviour
                 _lastInteracted.OnInteractEnd();
                 _lastInteracted = null;
             }
+        }
+
+        // stop interacting if interactable is disabled
+        if (_lastInteracted != null && !_lastInteracted.Enabled)
+        {
+            _lastInteracted.OnInteractEnd();
+            Debug.Log("interact canceled");
+            _lastInteracted = null;
         }
     }
 
@@ -103,10 +109,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             item = carryable;
         }
-        
-        if (HoverTarget is Station station)
+        else if (HoverTarget is Station station)
         {
-            item = station.GetCarryableItem();
+            item = station.PopCarryableItem();
         }
 
         if (item == null) { return; }
@@ -133,8 +138,8 @@ public class PlayerInteraction : MonoBehaviour
             if (container.TryAddItem(_heldItem))
             {
                 ReleaseItem();
-                return; 
             }
+            return; // keep holding item if a container is selected
         }
 
         DropItem();
@@ -168,6 +173,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (HoverTarget is IInteractable interactable)
         {
+            if (!interactable.Enabled) { return; }
             interactable.OnInteractStart();
             _lastInteracted = interactable;
         }
@@ -225,7 +231,10 @@ public class PlayerInteraction : MonoBehaviour
         
         for (int i = 0; i < Nearby.Count; i++)
         {
+            if (!Nearby[i].IsSelectable) { continue; }
+
             float angle = Angle2D(transform.forward, Nearby[i].transform.position - transform.position);
+
             if (angle < minAngle && angle < _selectAngleRange)
             {
                 nearest = Nearby[i];

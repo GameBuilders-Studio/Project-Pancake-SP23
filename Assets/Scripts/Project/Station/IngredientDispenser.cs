@@ -7,7 +7,7 @@ public class IngredientDispenser : Station
     [SerializeField]
     private GameObject _ingredientPrefab;
 
-    public override Carryable GetCarryableItem()
+    public override Carryable PopCarryableItem()
     {
         var item = PlacedItem;
 
@@ -15,7 +15,6 @@ public class IngredientDispenser : Station
         {
             var ingredientGo = Instantiate(_ingredientPrefab, transform.position, transform.rotation);
             item = ingredientGo.GetComponent<Carryable>();
-            OnItemRemoved();
         }
 
         PlacedItem = null;

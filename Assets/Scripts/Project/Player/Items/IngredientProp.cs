@@ -1,34 +1,32 @@
 using UnityEngine;
+using CustomAttributes;
 
 /// <summary>
 ///  Handles ingredient object behaviour
 /// </summary>
-public class IngredientProp : Carryable
+public class IngredientProp : MonoBehaviour
 {
-    [Space(15f)]
+    [ProgressBar("Progress", 1.0f, EColor.Green)]
+    public float _progressIndicator = 0.0f;
+
     [SerializeField]
     private IngredientType _type;
 
     [SerializeField]
-    private IngredientStateData _initialState;
+    private IngredientStateData _state;
 
     private Ingredient _ingredientData;
 
-    public float Progress
-    {
-        get => _ingredientData.Progress;
-        set => _ingredientData.Progress = value;
-    }
+    public float Progress => _ingredientData.Progress;
 
-    public Ingredient Data
-    {
-        get => _ingredientData;
-        set => _ingredientData = value;
-    }
+    public bool ProgressComplete => _ingredientData.ProgressComplete;
 
-    protected override void OnAwake()
+    public Ingredient Data => _ingredientData;
+
+    void Awake()
     {
-        _ingredientData = new(_type, _initialState);
+        _ingredientData = new(_type, _state);
+        OnAwake();
     }
 
     public void AddProgress(float progressDelta)
@@ -38,12 +36,16 @@ public class IngredientProp : Carryable
 
     public void SetProgress(float progress)
     {
+        progress = Mathf.Clamp01(progress);
+        _progressIndicator = progress;
         _ingredientData.SetProgress(progress);
         OnProgressUpdate(progress);
     }
-
+    
     protected virtual void OnProgressUpdate(float progress)
     {
         // handle visual behaviour of ingredient
     }
+
+    protected virtual void OnAwake() {}
 }
