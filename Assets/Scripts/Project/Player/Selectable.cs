@@ -125,5 +125,5 @@ public interface IInteractable
 
     public void OnInteractEnd();
 
-    public bool IsInteractable { get; set; }
+    public bool Enabled { get; }
 }
