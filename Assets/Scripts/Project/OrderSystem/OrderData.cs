@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+//Use Order instead of recipedata
+
 [CreateAssetMenu(fileName = "New Order Data", menuName = "Order Data")]
 public class OrderData : ScriptableObject
 {
-    public LevelRecipeListDictionary orders;
+    [SerializeField]
+    private LevelOrderListDictionary _orders;
+
+    public LevelOrderListDictionary Orders
+    {
+        get { return _orders; }
+    }
 }
 
 [System.Serializable]
-public class RecipeListStorage : SerializableDictionary.Storage<List<RecipeData>> { }
+public class OrderListStorage : SerializableDictionary.Storage<List<Order>> { }
 
-[CustomPropertyDrawer(typeof(RecipeListStorage))]
+[CustomPropertyDrawer(typeof(OrderListStorage))]
 public class ListStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer { }
 
 [System.Serializable]
-public class LevelRecipeListDictionary : SerializableDictionary<int, List<RecipeData>, RecipeListStorage> { }
+public class LevelOrderListDictionary : SerializableDictionary<int, List<Order>, OrderListStorage> { }
 
-[CustomPropertyDrawer(typeof(LevelRecipeListDictionary))]
+[CustomPropertyDrawer(typeof(LevelOrderListDictionary))]
 public class ListSerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer { }
