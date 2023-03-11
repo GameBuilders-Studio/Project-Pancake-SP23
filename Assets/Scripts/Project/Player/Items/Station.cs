@@ -15,12 +15,10 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    void Update() => OnUpdate();
-
     void OnValidate()
     {
         if (_placedItem == null) { return; }
-        CenterObject(_placedItem.gameObject);
+        CenterObject(_placedItem);
     }
 
     void Start()
@@ -72,8 +70,6 @@ public class Station : Selectable
     /// </summary>
     protected virtual bool ValidatePlacedItem(Carryable item) => true;
 
-    protected virtual void OnUpdate() {}
-
     protected virtual void OnItemPlaced(Carryable item) {}
 
     protected virtual void OnItemRemoved(Carryable item) {}
@@ -81,13 +77,14 @@ public class Station : Selectable
     protected void PlaceItem(Carryable item)
     {
         PlacedItem = item;
-        CenterObject(item.gameObject);
+        CenterObject(item);
         item.OnPlace();
         OnItemPlaced(item);
     }
 
-    private void CenterObject(GameObject go)
+    private void CenterObject(Carryable item)
     {
+        var go = item.gameObject;
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;

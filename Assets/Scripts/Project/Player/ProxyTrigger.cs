@@ -1,14 +1,13 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ProxyTrigger : MonoBehaviour
 {
     [SerializeField]
     private Collider _triggerCollider;
 
-    public Action<Collider> OnEnter;
-
-    public Action<Collider> OnExit;
+    public UnityAction<Collider> OnEnter;
+    public UnityAction<Collider> OnExit;
 
     void Awake()
     {

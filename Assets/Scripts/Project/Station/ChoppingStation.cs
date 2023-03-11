@@ -18,6 +18,11 @@ public class ChoppingStation : Station, IInteractable
         get => _ingredientExists && !_ingredient.ProgressComplete;
     }
 
+    void Update()
+    {
+        if (_interacting) { Chop(); }
+    }
+
     public void OnInteractStart() => _interacting = true;
 
     public void OnInteractEnd() => _interacting = false;
@@ -39,13 +44,9 @@ public class ChoppingStation : Station, IInteractable
         _ingredientExists = false;
     }
 
-    protected override void OnUpdate()
-    {
-        if (_interacting) { Chop(); }
-    }
-
     void Chop()
     {
+        // IInteractable.Enabled check ensures _ingredient exists
         _ingredient.Data.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }

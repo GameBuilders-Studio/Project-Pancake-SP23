@@ -20,6 +20,12 @@ public class CookStation : Station
 
     public float TotalProgress => _totalProgress;
 
+    void Update()
+    {
+        if (!_containerExists) { return; }
+        Cook(_container);
+    }
+
     protected override bool ValidatePlacedItem(Carryable item)
     {
         return item is CookContainer;
@@ -36,12 +42,6 @@ public class CookStation : Station
     {
         _container = null;
         _containerExists = false;
-    }
-
-    protected override void OnUpdate()
-    {
-        if (!_containerExists) { return; }
-        Cook(_container);
     }
 
     // we need to cook jesse
@@ -62,7 +62,6 @@ public class CookStation : Station
             }
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
-
             _totalProgress += ingredient.Progress / container.Count;
 
             _cooking = true;
