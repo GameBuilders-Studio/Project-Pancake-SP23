@@ -46,7 +46,7 @@ public class ChoppingStation : Station, IInteractable
 
     void Chop()
     {
-        if (!_ingredientExists) { return; }
+        // IInteractable.Enabled check ensures _ingredient exists
         _ingredient.Data.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }
