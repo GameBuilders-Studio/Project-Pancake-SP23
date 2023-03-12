@@ -1,17 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HoverState 
-{
-    Selected, 
-    Deselected
-}
+public enum HoverState { Selected, Deselected }
 
-public enum SelectState 
-{
-    Default, 
-    Disabled
-}
+public enum SelectState { Default, Disabled }
 
 public class Selectable : MonoBehaviour
 {
@@ -35,13 +27,8 @@ public class Selectable : MonoBehaviour
 
     void OnValidate() => Validate();
 
-    void Awake()
-    {
-        _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
-        _nearbyTrigger.OnExit += OnProxyTriggerExit;
-        OnAwake();
-    }
-
+    void Awake() => OnAwake();
+    
     public void SetState(SelectState state)
     {
         if (state == SelectState.Default)
@@ -77,7 +64,11 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    protected virtual void OnAwake() {}
+    protected virtual void OnAwake() 
+    {
+        _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
+        _nearbyTrigger.OnExit += OnProxyTriggerExit;
+    }
 
     protected virtual void Validate()
     {

@@ -41,6 +41,7 @@ public class Station : Selectable
 
     protected override void OnAwake()
     {
+        base.OnAwake();
         _catchTrigger.OnEnter += TryCatchItem;
     }
 

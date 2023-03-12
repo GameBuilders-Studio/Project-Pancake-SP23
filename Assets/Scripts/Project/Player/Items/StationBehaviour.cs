@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Station))]
 public class StationBehaviour : MonoBehaviour
 {
     public virtual bool ValidateItem(Carryable item) => true;
