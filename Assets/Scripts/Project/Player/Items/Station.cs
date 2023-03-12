@@ -3,6 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Station : Selectable
 {
+    [Space(15f)]
+    [SerializeField]
+    private ProxyTrigger _catchTrigger;
+
     [SerializeField]
     private Transform _itemHolderPivot;
 
@@ -15,10 +19,22 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    void OnValidate()
+    protected override void OnOnValidate()
     {
+        base.OnOnValidate();
+
+        if (_catchTrigger == null)
+        {
+           _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
+        }
+
         if (_placedItem == null) { return; }
         CenterObject(_placedItem);
+    }
+
+    protected override void OnAwake()
+    {
+        _catchTrigger.OnEnter += TryCatchItem;
     }
 
     void Start()
@@ -66,6 +82,17 @@ public class Station : Selectable
     }
 
     /// <summary>
+    /// Returns true if the item can be caught by the Station
+    /// </summary>
+    public void TryCatchItem(Collider other)
+    {
+        if (!other.TryGetComponent(out Carryable item)) { return; }
+        if (!item.PhysicsEnabled) { return; }
+        item.CancelThrow();
+        TryPlaceItem(item);
+    }
+
+    /// <summary>
     /// Returns true if the item is allowed to be placed on the station.
     /// </summary>
     protected virtual bool ValidatePlacedItem(Carryable item) => true;
@@ -77,8 +104,8 @@ public class Station : Selectable
     protected void PlaceItem(Carryable item)
     {
         PlacedItem = item;
-        CenterObject(item);
         item.OnPlace();
+        CenterObject(item);
         OnItemPlaced(item);
     }
 

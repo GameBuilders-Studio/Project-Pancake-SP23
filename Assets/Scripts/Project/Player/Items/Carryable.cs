@@ -24,12 +24,11 @@ public class Carryable : Selectable
     public Rigidbody Rigidbody => _rigidbody;
 
     public bool CanThrow => IsEverThrowable && _throwSettings != null;
-
     public virtual bool IsEverThrowable => true;
-
-    public bool IsCatchable => _isFlying;
-
+    
     public bool IsBeingCarried => _isBeingCarried;
+    public bool IsFlying => _isFlying;
+    public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
     protected override void OnAwake()
     {
@@ -43,18 +42,13 @@ public class Carryable : Selectable
         Rigidbody.AddForce(gravity, ForceMode.Acceleration);
 
         if (!_isFlying) { return; }
-        
         ThrowUpdate();
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnCollisionStay()
     {
-        var firstContact = collision.contacts[0];
-        if (_isFlying)
-        {
-            CancelThrow();
-            Debug.DrawRay(firstContact.point, firstContact.normal, Color.green, 3.0f);
-        }
+        if (!_isFlying) { return; }
+        CancelThrow();
     }
 
     public void OnPickUp()
@@ -98,7 +92,7 @@ public class Carryable : Selectable
         SetState(SelectState.Disabled);
     }
 
-    protected void CancelThrow()
+    public void CancelThrow()
     {
         _isFlying = false;
         SetState(SelectState.Default);

@@ -36,21 +36,12 @@ public class Selectable : MonoBehaviour
         protected set => _isSelectable = value;
     }
 
+    void OnValidate() => OnOnValidate();
+
     void Awake()
     {
-        if (_nearbyTrigger == null)
-        {
-            _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
-        }
-
-        if (_highlightBehaviour == null)
-        {
-            _highlightBehaviour = GetComponent<HighlightBehaviour>();
-        }
-
         _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
         _nearbyTrigger.OnExit += OnProxyTriggerExit;
-
         OnAwake();
     }
 
@@ -90,6 +81,19 @@ public class Selectable : MonoBehaviour
     }
 
     protected virtual void OnAwake() {}
+
+    protected virtual void OnOnValidate()
+    {
+        if (_nearbyTrigger == null)
+        {
+            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume");
+        }
+        
+        if (_highlightBehaviour == null)
+        {
+            _highlightBehaviour = GetComponent<HighlightBehaviour>();
+        }
+    }
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)

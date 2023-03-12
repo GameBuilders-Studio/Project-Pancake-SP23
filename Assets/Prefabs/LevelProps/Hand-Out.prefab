@@ -41,7 +41,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2902086324749263281}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -189,9 +189,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nearbyTrigger: {fileID: 8163885969738373831}
+  _highlightBehaviour: {fileID: 0}
   _isEverSelectable: 1
   _highlightOnHover: 1
+  _catchTrigger: {fileID: 0}
   _itemHolderPivot: {fileID: 3402658423647580558}
+  _placedItem: {fileID: 0}
 --- !u!1 &5589410236307224197
 GameObject:
   m_ObjectHideFlags: 0
