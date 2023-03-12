@@ -54,7 +54,7 @@ public class Station : Selectable
     public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
-        _stationBehaviour.OnItemRemoved(ref item);
+        _stationBehaviour?.OnItemRemoved(ref item);
         PlacedItem = null;
         return item;
     }
@@ -66,7 +66,10 @@ public class Station : Selectable
     {
         if (PlacedItem == null)
         {
-            if (!_stationBehaviour.ValidateItem(item)) { return false; }
+            if (_stationBehaviour && !_stationBehaviour.ValidateItem(item)) 
+            {
+                return false; 
+            }
             PlaceItem(item);
             return true;
         }
@@ -105,7 +108,7 @@ public class Station : Selectable
         PlacedItem = item;
         item.OnPlace();
         CenterObject(item);
-        _stationBehaviour.OnItemPlaced(ref item);
+        _stationBehaviour?.OnItemPlaced(ref item);
     }
 
     private void CenterObject(Carryable item)
