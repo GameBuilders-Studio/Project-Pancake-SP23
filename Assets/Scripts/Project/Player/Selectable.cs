@@ -20,10 +20,7 @@ public class Selectable : MonoBehaviour
 
     [SerializeField]
     private HighlightBehaviour _highlightBehaviour;
-
-    [SerializeField]
-    private bool _isEverSelectable = true;
-
+    
     [SerializeField]
     private bool _highlightOnHover = true;
 
@@ -32,11 +29,11 @@ public class Selectable : MonoBehaviour
 
     public virtual bool IsSelectable
     {
-        get => _isSelectable && _isEverSelectable;
+        get => _isSelectable;
         protected set => _isSelectable = value;
     }
 
-    void OnValidate() => OnOnValidate();
+    void OnValidate() => Validate();
 
     void Awake()
     {
@@ -82,7 +79,7 @@ public class Selectable : MonoBehaviour
 
     protected virtual void OnAwake() {}
 
-    protected virtual void OnOnValidate()
+    protected virtual void Validate()
     {
         if (_nearbyTrigger == null)
         {

@@ -181,7 +181,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (IsCarrying) { return; }
 
-        if (HoverTarget is IInteractable interactable)
+        if (HoverTarget.TryGetComponent(out IInteractable interactable))
         {
             if (!interactable.Enabled) { return; }
             interactable.OnInteractStart();

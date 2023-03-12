@@ -5,6 +5,9 @@ public class Station : Selectable
 {
     [Space(15f)]
     [SerializeField]
+    private StationBehaviour _stationBehaviour;
+
+    [SerializeField]
     private ProxyTrigger _catchTrigger;
 
     [SerializeField]
@@ -19,13 +22,17 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    protected override void OnOnValidate()
+    protected override void Validate()
     {
-        base.OnOnValidate();
+        base.Validate();
 
         if (_catchTrigger == null)
         {
            _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
+        }
+        if (_stationBehaviour == null)
+        {
+            _stationBehaviour = GetComponent<StationBehaviour>();
         }
 
         if (_placedItem == null) { return; }
@@ -46,8 +53,8 @@ public class Station : Selectable
     public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
+        _stationBehaviour.OnItemRemoved(ref item);
         PlacedItem = null;
-        OnItemRemoved(item);
         return item;
     }
 
@@ -58,7 +65,7 @@ public class Station : Selectable
     {
         if (PlacedItem == null)
         {
-            if (!ValidatePlacedItem(item)) { return false; }
+            if (!_stationBehaviour.ValidateItem(item)) { return false; }
             PlaceItem(item);
             return true;
         }
@@ -92,21 +99,12 @@ public class Station : Selectable
         TryPlaceItem(item);
     }
 
-    /// <summary>
-    /// Returns true if the item is allowed to be placed on the station.
-    /// </summary>
-    protected virtual bool ValidatePlacedItem(Carryable item) => true;
-
-    protected virtual void OnItemPlaced(Carryable item) {}
-
-    protected virtual void OnItemRemoved(Carryable item) {}
-
-    protected void PlaceItem(Carryable item)
+    public void PlaceItem(Carryable item)
     {
         PlacedItem = item;
         item.OnPlace();
         CenterObject(item);
-        OnItemPlaced(item);
+        _stationBehaviour.OnItemPlaced(ref item);
     }
 
     private void CenterObject(Carryable item)
