@@ -32,6 +32,7 @@ public class Carryable : Selectable
 
     protected override void OnAwake()
     {
+        base.OnAwake();
         _rigidbody = GetComponent<Rigidbody>();
         EnablePhysics();
     }
