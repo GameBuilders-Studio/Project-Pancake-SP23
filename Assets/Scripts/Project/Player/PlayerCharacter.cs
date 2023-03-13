@@ -15,7 +15,7 @@ namespace EasyCharacterMovement
         [Tooltip("Player Input associated with this Character." +
                  " If not assigned, this Character wont process any input so you can externally take control of this Character (e.g. a Controller).")]
         [SerializeField]
-        private PlayerInput _playerInput;
+        private PlayerInputHandler _input;
 
         [SerializeField]
         private PlayerInteraction _playerInteraction;
@@ -484,12 +484,6 @@ namespace EasyCharacterMovement
         #endregion
 
         #region INPUT ACTIONS
-
-        public PlayerInput PlayerInput
-        {
-            get => _playerInput;
-            set => _playerInput = value;
-        }
 
         protected InputAction movementInputAction { get; set; }
         protected InputAction sprintInputAction { get; set; }
@@ -1544,26 +1538,28 @@ namespace EasyCharacterMovement
 
         protected virtual void InitPlayerInput()
         {
-            if (PlayerInput == null) { return; }
+            if (_input.Actions == null) { return; }
 
-            movementInputAction = PlayerInput.actions.FindAction("Movement");
+            var actions = _input.Actions;
+            
+            movementInputAction = actions.FindAction("Move");
             movementInputAction?.Enable();
 
-            dashInputAction = PlayerInput.actions.FindAction("Dash");
+            dashInputAction = actions.FindAction("Dash");
             if (dashInputAction != null)
             {
                 dashInputAction.started += OnDash;
                 dashInputAction.Enable();
             }
 
-            pickUpInputAction = PlayerInput.actions.FindAction("PickUp");
+            pickUpInputAction = actions.FindAction("PickUp");
             if (pickUpInputAction != null)
             {
                 pickUpInputAction.started += OnPickUp;
                 pickUpInputAction.Enable();
             }
 
-            interactInputAction = PlayerInput.actions.FindAction("Interact");
+            interactInputAction = actions.FindAction("Interact");
             if (interactInputAction != null)
             {
                 interactInputAction.started += OnInteract;
@@ -1617,7 +1613,7 @@ namespace EasyCharacterMovement
         {
             // Should this character handle input ?
 
-            if (PlayerInput == null) { return; }
+            if (_input == null) { return; }
 
             // Poll movement InputAction
             Vector2 movementInput = GetMovementInput();
@@ -1655,7 +1651,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnReset()
         {
-            _playerInput = null;
+            _input = null;
 
             _defaultMovementMode = MovementMode.Walking;
 
@@ -1742,6 +1738,7 @@ namespace EasyCharacterMovement
             _rootMotionController = GetComponentInChildren<RootMotionController>();
 
             _playerInteraction = GetComponent<PlayerInteraction>();
+            _input.OnActionsAssigned += InitPlayerInput;
 
             // Enable late fixed update (default)
             enableLateFixedUpdate = true;
