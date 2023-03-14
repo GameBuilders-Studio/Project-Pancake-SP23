@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 
-public class GameInputManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     [SerializeField]
     private bool _logStatus = false;
@@ -44,6 +44,8 @@ public class GameInputManager : MonoBehaviour
     public void DisablePairing()
     {
         InputUser.listenForUnpairedDeviceActivity = 0;
+        Log("PAIRING DISABLED");
+
         // remove unpaired users
         foreach (var user in s_players)
         {
@@ -52,10 +54,9 @@ public class GameInputManager : MonoBehaviour
                 RemovePlayer(user);
             }
         }
-        Log("PAIRING DISABLED");
     }
 
-    public static bool GetInputActions(int playerIndex, out PlayerInputActions inputActions)
+    public static bool GetInputActionsByIndex(int playerIndex, out PlayerInputActions inputActions)
     {
         if (playerIndex > s_players.Count - 1)
         {
@@ -73,26 +74,22 @@ public class GameInputManager : MonoBehaviour
         ConfigureControlScheme(user);
     }
 
-    public static InputUser AddAllDevicesToUser(InputUser user)
+    /// <summary>
+    /// Adds all devices to a user and returns its associated PlayerInputActions. For testing purposes only! 
+    /// </summary>
+    public static PlayerInputActions GetInputActionsAllDevices()
     {
+        var user = new InputUser();
         for (int i = 0; i < InputSystem.devices.Count; i++)
         {
             user = InputUser.PerformPairingWithDevice(InputSystem.devices[i], user);
         }
-        return user;
-    }
 
-    private void ConfigureControlScheme(InputUser user)
-    {
-        var device = user.pairedDevices[0];
-        if (device is Gamepad)
-        {
-            user.ActivateControlScheme("Gamepad");
-        }
-        else if (device is Keyboard)
-        {
-            user.ActivateControlScheme("Keyboard");
-        }
+        var actions = new PlayerInputActions();
+        user.AssociateActionsWithUser(actions);
+        actions.Enable();
+
+        return actions;
     }
 
     private void OnUnpairedDeviceUsed(InputControl control, InputEventPtr eventPtr)
@@ -100,6 +97,7 @@ public class GameInputManager : MonoBehaviour
         // ignore any control that isn't a button
         if (control is not ButtonControl) { return; }
 
+        // ignore unsupported devices
         if (control.device is not Keyboard && control.device is not Gamepad) { return; }
 
         // register device and add player
@@ -137,7 +135,21 @@ public class GameInputManager : MonoBehaviour
 
         s_players.Add(user);
         s_userToInputActions.Add(user, actions);
+
         OnPlayerJoin?.Invoke(user);
+    }
+
+    private void ConfigureControlScheme(InputUser user)
+    {
+        var device = user.pairedDevices[0];
+        if (device is Gamepad)
+        {
+            user.ActivateControlScheme("Gamepad");
+        }
+        else if (device is Keyboard)
+        {
+            user.ActivateControlScheme("Keyboard");
+        }
     }
 
     private void RemovePlayer(InputUser user)

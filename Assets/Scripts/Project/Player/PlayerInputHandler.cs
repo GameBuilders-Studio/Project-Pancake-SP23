@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.Users;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -11,18 +10,21 @@ public class PlayerInputHandler : MonoBehaviour
 
     [Tooltip("Use any connected device available to control this player. For testing purposes only!")]
     [SerializeField]
-    public bool UseAnyDevice = false;
+    private bool _useAnyDevice = false;
 
     public PlayerInputActions Actions;
 
     public UnityAction OnActionsAssigned;
 
+    private Vector2 _moveInput = Vector2.zero;
+    public Vector2 MoveInput => _moveInput;
+
     void Start()
     {
-        if (UseAnyDevice)
+        if (_useAnyDevice)
         {
-            Actions = GetAllDevicesInputActions();
-            OnActionsAssigned?.Invoke();
+            Actions = InputManager.GetInputActionsAllDevices();
+            OnActionsChanged();
         }
     }
 
@@ -30,23 +32,22 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (Actions == null)
         {
-            if (GameInputManager.GetInputActions(PlayerIndex, out Actions))
+            if (InputManager.GetInputActionsByIndex(PlayerIndex, out Actions))
             {
                 Debug.Log($"Assigned input to player {PlayerIndex}");
-                OnActionsAssigned?.Invoke();
+                OnActionsChanged();
             }
         }
     }
 
-    private PlayerInputActions GetAllDevicesInputActions()
+    public void SetCallbacks(PlayerInputActions.IPlayerControlsActions instance)
     {
-        var user = new InputUser();
-        user = GameInputManager.AddAllDevicesToUser(user);
+        if (Actions == null) { return; }
+        Actions.PlayerControls.SetCallbacks(instance);
+    }
 
-        var actions = new PlayerInputActions();
-        user.AssociateActionsWithUser(actions);
-        actions.Enable();
-
-        return actions;
+    private void OnActionsChanged()
+    {
+        OnActionsAssigned?.Invoke();
     }
 }

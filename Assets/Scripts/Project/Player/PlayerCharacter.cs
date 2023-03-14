@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace EasyCharacterMovement
 {
     [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
-    public class PlayerCharacter : MonoBehaviour
+    public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControlsActions
     {
         #region EDITOR EXPOSED FIELDS
 
@@ -186,6 +186,7 @@ namespace EasyCharacterMovement
         protected float _fallingTime;
 
         private Vector3 _movementDirection = Vector3.zero;
+        private Vector2 _moveInput = Vector2.zero;
 
         private float _dashTime = 0.0f;
         private float _dashProgress = 0.0f;
@@ -483,30 +484,20 @@ namespace EasyCharacterMovement
 
         #endregion
 
-        #region INPUT ACTIONS
-
-        protected InputAction movementInputAction { get; set; }
-        protected InputAction sprintInputAction { get; set; }
-        protected InputAction crouchInputAction { get; set; }
-        protected InputAction dashInputAction { get; set; }
-        protected InputAction pickUpInputAction { get; set; }
-        protected InputAction interactInputAction { get; set; }
-
-        #endregion
-
         #region INPUT ACTION HANDLERS
 
-        /// <summary>
-        /// Polls movement InputAction (if any).
-        /// Return its current value or zero if no valid InputAction found.
-        /// </summary>
-
-        protected virtual Vector2 GetMovementInput()
+        protected Vector2 GetMovementInput()
         {
-            return movementInputAction?.ReadValue<Vector2>() ?? Vector2.zero;
+            return _moveInput;
         }
 
-        protected virtual void OnDash(InputAction.CallbackContext context)
+        public void OnMove(InputAction.CallbackContext context) 
+        {
+            _moveInput = context.ReadValue<Vector2>();
+            Debug.Log(_moveInput);
+        }
+
+        public void OnDash(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
             {
@@ -514,15 +505,15 @@ namespace EasyCharacterMovement
             } 
         }
 
-        protected virtual void OnPickUp(InputAction.CallbackContext context)
+        public void OnPickUp(InputAction.CallbackContext context)
         {
-            if (context.started || context.performed)
+            if (context.started)
             {
                 _playerInteraction.OnPickUpPressed();
             }
         }
 
-        protected virtual void OnInteract(InputAction.CallbackContext context)
+        public void OnInteract(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
             {
@@ -537,76 +528,6 @@ namespace EasyCharacterMovement
                 SetMovementMode(MovementMode.Walking);
                 _playerInteraction.OnInteractEnd();
             }
-        }
-
-        #endregion
-
-        #region EVENTS
-
-        public delegate void MovementModeChangedEventHandler(MovementMode prevMovementMode, int prevCustomMode);
-        public delegate void DashEventHandler();
-        public delegate void WillLandEventHandler();
-        public delegate void LandedEventHandler();
-
-        /// <summary>
-        /// Event triggered after a MovementMode change.
-        /// </summary>
-        public event MovementModeChangedEventHandler MovementModeChanged;
-
-        /// <summary>
-        /// Event triggered when character dashes.
-        /// </summary>
-        public event DashEventHandler Dashed;
-
-        /// <summary>
-        /// Triggered when the Character will hit walkable ground.
-        /// </summary>
-        public event WillLandEventHandler WillLand;
-
-        /// <summary>
-        /// Event triggered when character enter isGrounded state (isOnWalkableGround AND isConstrainedToGround)
-        /// </summary>
-        public event LandedEventHandler Landed;
-
-        /// <summary>
-        /// Event triggered when characters collides with other during a Move.
-        /// Can be called multiple times.
-        /// </summary>
-        protected virtual void OnCollided(ref CollisionResult collisionResult)
-        {
-            // If found walkable ground during movement, trigger will land event
-            if (!characterMovement.wasGrounded && collisionResult.isWalkable)
-            {
-                OnWillLand();
-            }
-        }
-
-        /// <summary>
-        /// Event triggered when character find ground (walkable or non-walkable) as a result of a downcast sweep (eg: FindGround method).
-        /// </summary>
-        protected virtual void OnFoundGround(ref FindGroundResult foundGround)
-        {
-            // If found ground is walkable, trigger Landed event
-            if (foundGround.isWalkable)
-            {
-                OnLanded();
-            }
-        }
-
-        /// <summary>
-        /// Event triggered when character found walkable ground during its movement phase.
-        /// </summary>
-        protected virtual void OnWillLand()
-        {
-            WillLand?.Invoke();
-        }
-
-        /// <summary>
-        /// Event triggered when character enter isGrounded state (isOnWalkableGround AND isConstrainedToGround)
-        /// </summary>
-        protected virtual void OnLanded()
-        {
-            Landed?.Invoke();
         }
 
         #endregion
@@ -979,9 +900,6 @@ namespace EasyCharacterMovement
             {
                 _fallingTime = 0.0f;
             }
-
-            // Trigger movement mode changed event
-            MovementModeChanged?.Invoke(prevMovementMode, prevCustomMode);
         }
 
         /// <summary>
@@ -1378,8 +1296,6 @@ namespace EasyCharacterMovement
             _dashProgress = 0.0f;
             _dashCooldownTime = _dashCooldown;
 
-            Dashed?.Invoke();
-
             if (GetMovementDirection() != Vector3.zero)
                 SetRotation(Quaternion.LookRotation(GetMovementDirection().normalized, GetUpVector()));
 
@@ -1432,6 +1348,10 @@ namespace EasyCharacterMovement
             {
                 case MovementMode.None:
                     characterMovement.velocity = Vector3.zero;
+                    break;
+
+                case MovementMode.TurnInPlace:
+                    Walking(Vector3.zero);
                     break;
 
                 case MovementMode.Walking:
@@ -1532,89 +1452,19 @@ namespace EasyCharacterMovement
         }
 
         /// <summary>
-        /// Initialize player InputActions (if any).
-        /// E.g. Subscribe to input action events and enable input actions here.
+        /// Subscribe to PlayerInputHandler callbacks
         /// </summary>
-
         protected virtual void InitPlayerInput()
         {
             if (_input.Actions == null) { return; }
-
-            var actions = _input.Actions;
-            
-            movementInputAction = actions.FindAction("Move");
-            movementInputAction?.Enable();
-
-            dashInputAction = actions.FindAction("Dash");
-            if (dashInputAction != null)
-            {
-                dashInputAction.started += OnDash;
-                dashInputAction.Enable();
-            }
-
-            pickUpInputAction = actions.FindAction("PickUp");
-            if (pickUpInputAction != null)
-            {
-                pickUpInputAction.started += OnPickUp;
-                pickUpInputAction.Enable();
-            }
-
-            interactInputAction = actions.FindAction("Interact");
-            if (interactInputAction != null)
-            {
-                interactInputAction.started += OnInteract;
-                interactInputAction.canceled += OnInteract;
-                interactInputAction.Enable();
-            }
-        }
-
-        /// <summary>
-        /// Unsubscribe from input action events and disable input actions.
-        /// </summary>
-
-        protected virtual void DeinitPlayerInput()
-        {
-            // Unsubscribe from input action events and disable input actions
-
-            if (movementInputAction != null)
-            {
-                movementInputAction.Disable();
-                movementInputAction = null;
-            }
-
-            if (dashInputAction != null)
-            {
-                dashInputAction.started -= OnDash;
-                dashInputAction.Disable();
-                dashInputAction = null;
-            }
-
-            if (pickUpInputAction != null)
-            {
-                pickUpInputAction.started -= OnPickUp;
-                pickUpInputAction.Disable();
-                pickUpInputAction = null;
-            }
-
-            if (interactInputAction != null)
-            {
-                interactInputAction.started -= OnInteract;
-                interactInputAction.canceled -= OnInteract;
-                interactInputAction.Disable();
-                interactInputAction = null;
-            }
+            _input.SetCallbacks(this);
         }
 
         /// <summary>
         /// Handle Player input, only if actions are assigned (eg: actions != null).
         /// </summary>
-
         protected virtual void HandleInput()
         {
-            // Should this character handle input ?
-
-            if (_input == null) { return; }
-
             // Poll movement InputAction
             Vector2 movementInput = GetMovementInput();
 
@@ -1751,17 +1601,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnOnEnable()
         {
-            // Setup player InputActions (if any).
-
-            InitPlayerInput();
-
-            // Subscribe to CharacterMovement events
-
-            characterMovement.Collided += OnCollided;
-            characterMovement.FoundGround += OnFoundGround;
-
             // If enabled, start LateFixedUpdate coroutine
-
             if (_enableLateFixedUpdateCoroutine)
                 EnableLateFixedUpdate(true);
 
@@ -1783,13 +1623,6 @@ namespace EasyCharacterMovement
 
         protected virtual void OnOnDisable()
         {
-            // Unsubscribe from input action events and disable input actions (if any, e.g. inputActions != null)
-            DeinitPlayerInput();
-
-            // Unsubscribe from CharacterMovement events
-            characterMovement.Collided -= OnCollided;
-            characterMovement.FoundGround -= OnFoundGround;
-
             // If enabled, stops LateFixedUpdate coroutine
             if (_enableLateFixedUpdateCoroutine)
                 EnableLateFixedUpdate(false);
