@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-//Use Order instead of recipedata
+//<summary>
+//This scriptable object is a serializable dictionary used to store the Orders sequence for each level
+//</summary>
 
 [CreateAssetMenu(fileName = "New Order Data", menuName = "Order Data")]
 public class OrderData : ScriptableObject
