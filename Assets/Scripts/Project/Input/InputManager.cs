@@ -17,9 +17,9 @@ public class InputManager : MonoBehaviour
     private static List<InputUser> s_players = new();
     private static Dictionary<InputUser, PlayerInputActions> s_userToInputActions = new();
 
-    public static UnityAction<InputUser> OnPlayerJoin;
-    public static UnityAction<InputUser> OnDeviceLost;
-    public static UnityAction<InputUser> OnDeviceRegained;
+    public static event UnityAction<InputUser> OnPlayerJoin;
+    public static event UnityAction<InputUser> OnDeviceLost;
+    public static event UnityAction<InputUser> OnDeviceRegained;
 
     void Awake()
     {

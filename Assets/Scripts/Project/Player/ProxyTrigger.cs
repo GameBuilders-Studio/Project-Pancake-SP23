@@ -6,8 +6,8 @@ public class ProxyTrigger : MonoBehaviour
     [SerializeField]
     private Collider _triggerCollider;
 
-    public UnityAction<Collider> OnEnter;
-    public UnityAction<Collider> OnExit;
+    public event UnityAction<Collider> OnEnter;
+    public event UnityAction<Collider> OnExit;
 
     void Awake()
     {

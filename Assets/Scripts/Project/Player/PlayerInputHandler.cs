@@ -14,7 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public PlayerInputActions Actions;
 
-    public UnityAction OnActionsAssigned;
+    public event UnityAction OnActionsAssigned;
 
     private Vector2 _moveInput = Vector2.zero;
     public Vector2 MoveInput => _moveInput;
