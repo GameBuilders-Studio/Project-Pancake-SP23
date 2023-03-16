@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ServingStation : StationBehaviour
 {
-    public override void OnItemPlaced(ref Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         Debug.Log("Called OnItemPlaced");
         Destroy(item.gameObject);

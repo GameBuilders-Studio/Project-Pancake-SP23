@@ -28,14 +28,14 @@ public class CookStation : StationBehaviour
         return item is CookContainer;
     }
 
-    public override void OnItemPlaced(ref Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         // limit type casting by caching CookContainer reference
         _container = item as CookContainer;
         _containerExists = _container != null;
     }
 
-    public override void OnItemRemoved(ref Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         _container = null;
         _containerExists = false;

@@ -54,7 +54,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         Nearby = new();
         _character = GetComponent<CharacterMovement>();
-        _catchTrigger.OnEnter += TryCatchItem;
+        _catchTrigger.Enter += TryCatchItem;
     }
 
     void Update()

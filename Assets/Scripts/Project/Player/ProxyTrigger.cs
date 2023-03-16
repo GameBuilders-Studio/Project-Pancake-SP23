@@ -6,8 +6,8 @@ public class ProxyTrigger : MonoBehaviour
     [SerializeField]
     private Collider _triggerCollider;
 
-    public UnityAction<Collider> OnEnter;
-    public UnityAction<Collider> OnExit;
+    public UnityAction<Collider> Enter;
+    public UnityAction<Collider> Exit;
 
     void Awake()
     {
@@ -25,12 +25,12 @@ public class ProxyTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        OnEnter?.Invoke(other);
+        Enter?.Invoke(other);
     }
 
     void OnTriggerExit(Collider other)
     {
-        OnExit?.Invoke(other);
+        Exit?.Invoke(other);
     }
 
     /// <summary>

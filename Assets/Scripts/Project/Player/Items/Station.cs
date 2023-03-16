@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Station : Selectable
 {
     [Space(15f)]
@@ -22,14 +21,15 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    protected override void Validate()
+    protected override void OnValidate()
     {
-        base.Validate();
+        base.OnValidate();
 
         if (_catchTrigger == null)
         {
            _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
         }
+
         if (_stationBehaviour == null)
         {
             _stationBehaviour = GetComponent<StationBehaviour>();
@@ -39,10 +39,10 @@ public class Station : Selectable
         CenterObject(_placedItem);
     }
 
-    protected override void OnAwake()
+    protected override void Awake()
     {
-        base.OnAwake();
-        _catchTrigger.OnEnter += TryCatchItem;
+        base.Awake();
+        _catchTrigger.Enter += TryCatchItem;
     }
 
     void Start()
@@ -54,7 +54,7 @@ public class Station : Selectable
     public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
-        _stationBehaviour?.OnItemRemoved(ref item);
+        _stationBehaviour.ItemRemoved(ref item);
         PlacedItem = null;
         return item;
     }
@@ -66,7 +66,7 @@ public class Station : Selectable
     {
         if (PlacedItem == null)
         {
-            if (_stationBehaviour && !_stationBehaviour.ValidateItem(item)) 
+            if (!_stationBehaviour.ValidateItem(item))
             {
                 return false; 
             }
@@ -108,7 +108,7 @@ public class Station : Selectable
         PlacedItem = item;
         item.OnPlace();
         CenterObject(item);
-        _stationBehaviour?.OnItemPlaced(ref item);
+        _stationBehaviour.ItemPlaced(ref item);
     }
 
     private void CenterObject(Carryable item)

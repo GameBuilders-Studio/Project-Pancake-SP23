@@ -32,13 +32,13 @@ public class ChoppingStation : StationBehaviour, IInteractable
         return true;
     }
 
-    public override void OnItemPlaced(ref Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         item.TryGetComponent(out _ingredient);
         _ingredientExists = _ingredient != null;
     }
 
-    public override void OnItemRemoved(ref Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         _ingredient = null;
         _ingredientExists = false;

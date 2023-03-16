@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GarbageDisposal : StationBehaviour
 {
-    public override void OnItemPlaced(ref Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         Destroy(item.gameObject);
     }

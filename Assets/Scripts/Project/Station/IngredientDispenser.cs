@@ -5,7 +5,7 @@ public class IngredientDispenser : StationBehaviour
     [SerializeField]
     private GameObject _ingredientPrefab;
 
-    public override void OnItemRemoved(ref Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         if (item == null)
         {

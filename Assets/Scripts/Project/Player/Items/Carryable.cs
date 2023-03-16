@@ -23,16 +23,16 @@ public class Carryable : Selectable
 
     public Rigidbody Rigidbody => _rigidbody;
 
-    public bool CanThrow => IsEverThrowable && _throwSettings != null;
     public virtual bool IsEverThrowable => true;
+    public bool CanThrow => IsEverThrowable && _throwSettings != null;
     
     public bool IsBeingCarried => _isBeingCarried;
     public bool IsFlying => _isFlying;
     public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
-    protected override void OnAwake()
+    protected override void Awake()
     {
-        base.OnAwake();
+        base.Awake();
         _rigidbody = GetComponent<Rigidbody>();
         EnablePhysics();
     }
@@ -56,21 +56,21 @@ public class Carryable : Selectable
     {
         _isBeingCarried = true;
         _isFlying = false;
-        SetState(SelectState.Disabled);
+        SetSelectState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnPlace()
     {
         _isBeingCarried = false;
-        SetState(SelectState.Disabled);
+        SetSelectState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnDrop()
     {
         _isBeingCarried = false;
-        SetState(SelectState.Default);
+        SetSelectState(SelectState.Default);
         EnablePhysics();
     }
 
@@ -90,15 +90,15 @@ public class Carryable : Selectable
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        SetState(SelectState.Disabled);
+        SetSelectState(SelectState.Disabled);
     }
 
     public void CancelThrow()
     {
         _isFlying = false;
-        SetState(SelectState.Default);
-        EnablePhysics();
         _currentThrowTime = 0.0f;
+        SetSelectState(SelectState.Default);
+        EnablePhysics();
     }
     
     void EnablePhysics()
