@@ -4,42 +4,47 @@ using UnityEngine;
 
 public class OrderSystem : MonoBehaviour
 {
-    [SerializeField] private Canvas _canvasReference;
-    [SerializeField]
-    private int _currentLevel;
-    [SerializeField]
-    private OrderData _orderData;
-    [SerializeField]
-    private float _defaultOrderSpawnTime = 15f;
-    [SerializeField]
-    private int _maxConcurrentOrders = 6;
-    [SerializeField]
-    private int _minConcurrentOrders = 2;
+    [SerializeField] private OrderUI _orderUI; //UI that displays the orders
+    [SerializeField] private int _currentLevel; //Use current level to get the sequence of orders from _orderData
+    [SerializeField] private OrderData _orderData; //Serializable dictionary that stores all orders for each level
+    [SerializeField] private float _orderSpawnTime = 15f; //Time between order spawns
+    [SerializeField] private int _maxConcurrentOrders = 6; //Maximum number of orders that can be displayed at once
+    [SerializeField] private int _minConcurrentOrders = 2; //Minimum number of orders that can be displayed at once
 
     private Coroutine _orderSpawnCoroutine;
     private WaitForSeconds _orderSpawnWait;
 
-    //for displaying
-    private int _currentOrderIndex = 0;
-
-    private List<Order> _currentOrders = new List<Order>();
-    private Queue<Order> _originalSequence = new Queue<Order>();
-    public List<Order> CurrentOrders
-    {
-        get => _currentOrders;
-    }
+    private List<Order> _currentOrders = new();
+    private Queue<Order> _originalSequence = new();
+    public List<Order> CurrentOrders { get => _currentOrders; }
     public void AddOrder(Order order)
     {
         _currentOrders.Add(order);
         Debug.Log("Order added " + order.RecipeData.name);
     }
-    public void RemoveOrder(int index)
+    public Order RemoveOrder(int index)
     {
-        _currentOrders.RemoveAt(index);
+        if (index < 0 || index >= _currentOrders.Count)
+        {
+            Debug.LogError("Index out of range");
+            return null;
+        }
+
+        Order temp = _currentOrders[index];
+        _orderUI.RemoveOrder(temp); //Remove from order UI
+        _currentOrders.Remove(temp); //Remove from current orders list
+        Debug.Log("Order removed: " + temp.RecipeData.name);
+
+        //when orders drop below minimum, instantly add a new order
+        if (_currentOrders.Count < _minConcurrentOrders)
+        {
+            SpawnOrder();
+        }
+
+        return temp;
     }
     public Order GetOrder(int index)
     {
-        //todo: check if index is valid
         return _currentOrders[index];
     }
     private void OnEnable()
@@ -50,7 +55,9 @@ public class OrderSystem : MonoBehaviour
 
     private void Awake()
     {
-        _orderSpawnWait = new WaitForSeconds(_defaultOrderSpawnTime);
+        _orderSpawnWait = new WaitForSeconds(_orderSpawnTime);
+
+        //Load original sequence of orders for the current level
         foreach (Order order in _orderData.Orders[_currentLevel])
         {
             _originalSequence.Enqueue(order);
@@ -60,7 +67,7 @@ public class OrderSystem : MonoBehaviour
 
     private void OnStartLevel()
     {
-        while (_currentOrders.Count < _minConcurrentOrders)
+        while (_currentOrders.Count < _minConcurrentOrders - 1)
         {
             SpawnOrder();
         }
@@ -71,8 +78,8 @@ public class OrderSystem : MonoBehaviour
     {
         while (true)
         {
+
             SpawnOrder();
-            Debug.Log("Spawning order");
             yield return _orderSpawnWait;
         }
     }
@@ -94,39 +101,32 @@ public class OrderSystem : MonoBehaviour
         }
     }
 
-
-
     private void SpawnOrder()
     {
-        if (_currentOrderIndex >= _maxConcurrentOrders)
-        {
-            _currentOrderIndex = 0;
-        }
-
         if (_currentOrders.Count < _maxConcurrentOrders)
         {
-            if (_originalSequence.Count > 0)
+            if (_originalSequence.Count > 0)             //If there are still orders in the original sequence, spawn them first
             {
                 Order order = Instantiate(_originalSequence.Dequeue());
+                Debug.Log("Spawning order: " + order.RecipeData.name);
                 _currentOrders.Add(order);
-                order.transform.SetParent(_canvasReference.transform);
-                order.transform.Translate(new Vector3((_currentOrderIndex - _maxConcurrentOrders / 2) * 300, 200, 0)); //display test
-            }
-            else
-            {
+                _orderUI.AddOrder(order);
 
+            }
+            else                                        //If there are no more orders in the original sequence, spawn a random order
+            {
                 int randomIndex = Random.Range(0, _orderData.Orders[_currentLevel].Count);
                 Order order = Instantiate(_orderData.Orders[_currentLevel][randomIndex]);
+                Debug.Log("Spawning order: " + order.RecipeData.name);
                 _currentOrders.Add(order);
-                order.transform.SetParent(_canvasReference.transform);
-                order.transform.Translate(new Vector3((_currentOrderIndex - _maxConcurrentOrders / 2) * 300, 200, 0));  //display test
+                _orderUI.AddOrder(order);
+
             }
-            _currentOrderIndex++;
         }
     }
 
 
-    public void CheckOrderMatch(List<IngredientType> ingredients)
+    public bool CheckOrderMatch(List<IngredientType> ingredients)
     {
         //Check for a matching order with the the highest priority (lowest time remaining)
         int orderIndexToRemove = -1;
@@ -143,31 +143,28 @@ public class OrderSystem : MonoBehaviour
                 }
             }
         }
+
         if (orderIndexToRemove != -1)
         {
-            _currentOrders.RemoveAt(orderIndexToRemove);
+            Order temp = RemoveOrder(orderIndexToRemove);
+            Destroy(temp.gameObject);
             EventManager.Invoke("IncrementingScore");
-            //todo: when orders drop below 2 add a new order
-            if (_currentOrders.Count < _minConcurrentOrders)
-            {
-                SpawnOrder();
-            }
+            return true;
         }
+
+        return false;
 
     }
 
     private void OnOrderExpired()
     {
-        for (int i = 0; i < _currentOrders.Count; i++)
+        for (int i = 0; i < _currentOrders.Count; i++) //Remove all orders that have expired
         {
-            if (_currentOrders[i].TimeRemaining <= 0)
+            Order currentOrder = _currentOrders[i];
+            if (currentOrder.TimeRemaining <= 0)
             {
-                Destroy(_currentOrders[i].gameObject);
-                _currentOrders.RemoveAt(i);
-                if (_currentOrders.Count < _minConcurrentOrders)
-                {
-                    SpawnOrder();
-                }
+                Order temp = RemoveOrder(i);
+                Destroy(temp.gameObject);
             }
         }
     }
@@ -179,7 +176,6 @@ public class OrderSystem : MonoBehaviour
 
 // //todo:
 // //add a system to add orders according to specs listed on trello
-// //add a system to remove the order if the timer runs out
 
 
 

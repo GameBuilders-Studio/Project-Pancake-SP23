@@ -5,25 +5,24 @@ using TMPro;
 
 public class Order : MonoBehaviour
 {
-    [SerializeField]
-    private RecipeData _recipe;
+    [SerializeField] private RecipeData _recipe;
 
-    [SerializeField]
-    private TextMeshProUGUI _orderText;
+    [SerializeField] private TextMeshProUGUI _orderText;
+
+    [SerializeField] private OrderProgressBar _orderProgressBar;
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; set; }
 
     //todo: variable for complete time to use for points?
-    [SerializeField]
-    private float _defaultTimeRemaining = 15f;
-    public RecipeData RecipeData => _recipe;
+    [SerializeField] private float _startTime = 15f;
+    public RecipeData RecipeData { get => _recipe; }
 
     private Coroutine _timerCoroutine;
 
     //Testing
     private void Awake()
     {
-        SetTimer(_defaultTimeRemaining);
+        SetTimer(_startTime);
         StartTimer();
     }
 
@@ -34,6 +33,7 @@ public class Order : MonoBehaviour
 
     private void StartTimer()
     {
+        UpdateOrderText();
         _timerCoroutine = StartCoroutine(TimerCoroutine());
     }
 
@@ -58,7 +58,7 @@ public class Order : MonoBehaviour
     private void ResetTimer()
     {
         StopTimer();
-        SetTimer(_defaultTimeRemaining);
+        SetTimer(_startTime);
         StartTimer();
     }
 
@@ -67,7 +67,8 @@ public class Order : MonoBehaviour
         while (TimeRemaining > 0)
         {
             TimeRemaining -= Time.deltaTime;
-            UpdateOrderText();
+
+            _orderProgressBar.SetFill(TimeRemaining / _startTime);
             yield return null;
         }
         EventManager.Invoke("OrderExpired");
@@ -82,10 +83,7 @@ public class Order : MonoBehaviour
 
     private void UpdateOrderText()
     {
-        float minutes = Mathf.FloorToInt(TimeRemaining / 60);
-        float seconds = Mathf.FloorToInt(TimeRemaining % 60);
-        string time = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
-        _orderText.text = $"Recipe Name: {_recipe.RecipeName} \n Time Remaining: {time}";
+        _orderText.text = $"Recipe Name: {_recipe.RecipeName}";
     }
 
 }
