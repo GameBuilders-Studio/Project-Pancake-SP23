@@ -20,6 +20,9 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private float _selectAngleRange;
 
+    [SerializeField]
+    private ProxyTrigger _catchTrigger;
+
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
     private IInteractable _lastInteracted;
@@ -41,10 +44,17 @@ public class PlayerInteraction : MonoBehaviour
         private set => _hoverTarget = value;
     }
 
+    void OnValidate()
+    {
+        if (_catchTrigger != null) { return; }
+        _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
+    }
+
     void Awake()
     {
         Nearby = new();
         _character = GetComponent<CharacterMovement>();
+        _catchTrigger.Enter += TryCatchItem;
     }
 
     void Update()
@@ -171,7 +181,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (IsCarrying) { return; }
 
-        if (HoverTarget is IInteractable interactable)
+        if (HoverTarget.TryGetComponent(out IInteractable interactable))
         {
             if (!interactable.Enabled) { return; }
             interactable.OnInteractStart();
@@ -211,6 +221,13 @@ public class PlayerInteraction : MonoBehaviour
         _character.IgnoreCollision(_heldItem.Rigidbody, false);
         _isCarrying = false;
         _heldItem = null;
+    }
+
+    private void TryCatchItem(Collider other)
+    {
+        if (!other.TryGetComponent(out Carryable item)) { return; }
+        if (IsCarrying || !item.IsFlying) { return; }
+        PickUpItem(item);
     }
 
     /// <summary>

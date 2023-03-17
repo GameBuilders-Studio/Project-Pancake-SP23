@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CookStation : Station
+public class CookStation : StationBehaviour
 {
-    [Space(15f)]
     [SerializeField]
     private float _cookTimePerIngredient;
 
@@ -20,28 +17,28 @@ public class CookStation : Station
 
     public float TotalProgress => _totalProgress;
 
-    protected override bool ValidatePlacedItem(Carryable item)
+    void Update()
+    {
+        if (!_containerExists) { return; }
+        Cook(_container);
+    }
+
+    public override bool ValidateItem(Carryable item)
     {
         return item is CookContainer;
     }
 
-    protected override void OnItemPlaced(Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         // limit type casting by caching CookContainer reference
         _container = item as CookContainer;
         _containerExists = _container != null;
     }
 
-    protected override void OnItemRemoved(Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         _container = null;
         _containerExists = false;
-    }
-
-    protected override void OnUpdate()
-    {
-        if (!_containerExists) { return; }
-        Cook(_container);
     }
 
     // we need to cook jesse
@@ -62,7 +59,6 @@ public class CookStation : Station
             }
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
-
             _totalProgress += ingredient.Progress / container.Count;
 
             _cooking = true;
@@ -80,8 +76,5 @@ public class CookStation : Station
         }
     }
 
-    void OnCookComplete()
-    {
-        
-    }
+    void OnCookComplete() {}
 }

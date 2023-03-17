@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ServingStation : Station
+public class ServingStation : StationBehaviour
 {
     [SerializeField] private OrderSystem _orderSystem;
-    protected override void OnItemPlaced(Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         Debug.Log("Called OnItemPlaced");
         Destroy(item.gameObject);
     }
 
-    public override bool TryPlaceItem(Carryable item)
+    public override bool ValidateItem(Carryable item)
     {
         //Only Accept dish, don't accept ingredient
         if (item is FoodContainer container)
@@ -26,7 +26,6 @@ public class ServingStation : Station
             return true;
         }
         return false;
-
     }
 
     public bool isOrderCorrect(FoodContainer container)

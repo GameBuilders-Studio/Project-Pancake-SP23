@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChoppingStation : Station, IInteractable
+public class ChoppingStation : StationBehaviour, IInteractable
 {
     [Space(15f)]
     [SerializeField]
@@ -18,34 +18,35 @@ public class ChoppingStation : Station, IInteractable
         get => _ingredientExists && !_ingredient.ProgressComplete;
     }
 
+    void Update()
+    {
+        if (_interacting) { Chop(); }
+    }
+
     public void OnInteractStart() => _interacting = true;
 
     public void OnInteractEnd() => _interacting = false;
 
-    protected override bool ValidatePlacedItem(Carryable item)
+    public override bool ValidateItem(Carryable item)
     {
         return true;
     }
 
-    protected override void OnItemPlaced(Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         item.TryGetComponent(out _ingredient);
         _ingredientExists = _ingredient != null;
     }
 
-    protected override void OnItemRemoved(Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         _ingredient = null;
         _ingredientExists = false;
     }
 
-    protected override void OnUpdate()
-    {
-        if (_interacting) { Chop(); }
-    }
-
     void Chop()
     {
+        // IInteractable.Enabled check ensures _ingredient exists
         _ingredient.Data.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
@@ -22,7 +20,7 @@ public class HighlightBehaviour : MonoBehaviour
         _material = _renderer.material;
     }
 
-    public void EnableHighlight(bool enabled = true)
+    public void SetHighlight(bool enabled = true)
     {
         if (enabled)
         {

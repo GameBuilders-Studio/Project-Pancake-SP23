@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nearbyTrigger: {fileID: 9059498310111909953}
+  _highlightBehaviour: {fileID: 0}
   _isEverSelectable: 1
   _highlightOnHover: 1
   _throwSettings: {fileID: 0}
@@ -206,7 +207,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9059498310111909958}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

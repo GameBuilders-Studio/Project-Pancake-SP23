@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace EasyCharacterMovement
 {
     [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
-    public class PlayerCharacter : MonoBehaviour
+    public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControlsActions
     {
         #region EDITOR EXPOSED FIELDS
 
@@ -15,8 +15,9 @@ namespace EasyCharacterMovement
         [Tooltip("Player Input associated with this Character." +
                  " If not assigned, this Character wont process any input so you can externally take control of this Character (e.g. a Controller).")]
         [SerializeField]
-        private PlayerInput _playerInput;
+        private PlayerInputHandler _input;
 
+        [SerializeField]
         private PlayerInteraction _playerInteraction;
 
         private RotationMode _rotationMode = RotationMode.None;
@@ -159,7 +160,7 @@ namespace EasyCharacterMovement
         private bool _enableLateFixedUpdateCoroutine;
         private Coroutine _lateFixedUpdateCoroutine;
 
-        protected List<PhysicsVolume> _volumes = new List<PhysicsVolume>();
+        protected List<PhysicsVolume> _volumes = new();
 
         private Transform _transform;
         private CharacterMovement _characterMovement;
@@ -184,8 +185,8 @@ namespace EasyCharacterMovement
 
         protected float _fallingTime;
 
-        private Vector3 _rotationInput = Vector3.zero;
         private Vector3 _movementDirection = Vector3.zero;
+        private Vector2 _moveInput = Vector2.zero;
 
         private float _dashTime = 0.0f;
         private float _dashProgress = 0.0f;
@@ -197,30 +198,17 @@ namespace EasyCharacterMovement
 
         #region PROPERTIES
 
-        /// <summary>
-        /// The used deltaTime. Defaults to Time.deltaTime.
-        /// </summary>
-
         public float deltaTime
         {
             get => _deltaTime == 0.0f ? Time.deltaTime : _deltaTime;
             set => _deltaTime = value;
         }
 
-        /// <summary>
-        /// This Character's camera transform.
-        /// If assigned, the Character's movement will be relative to this, otherwise movement will be relative to world.
-        /// </summary>
-
         public new Camera camera
         {
             get => _camera;
             set => _camera = value;
         }
-
-        /// <summary>
-        /// Cached camera transform (if any).
-        /// </summary>
 
         public Transform cameraTransform
         {
@@ -232,10 +220,6 @@ namespace EasyCharacterMovement
                 return _cameraTransform;
             }
         }
-
-        /// <summary>
-        /// Cached Character transform.
-        /// </summary>
 
         public new Transform transform
         {
@@ -250,10 +234,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Cached CharacterMovement component.
-        /// </summary>
-
         protected CharacterMovement characterMovement
         {
             get
@@ -266,10 +246,6 @@ namespace EasyCharacterMovement
                 return _characterMovement;
             }
         }
-
-        /// <summary>
-        /// Cached Animator component (if any).
-        /// </summary>
 
         protected Animator animator
         {
@@ -284,10 +260,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Cached Character's RootMotionController component (if any).
-        /// </summary>
-
         protected RootMotionController rootMotionController
         {
             get
@@ -301,19 +273,11 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Change in rotation per second (Deg / s).
-        /// </summary>
-
         public float rotationRate
         {
             get => _rotationRate;
             set => _rotationRate = Mathf.Max(0.0f, value);
         }
-
-        /// <summary>
-        /// Default movement mode. Used at player startup. 
-        /// </summary>
 
         public MovementMode defaultMovementMode
         {
@@ -321,19 +285,11 @@ namespace EasyCharacterMovement
             set => _defaultMovementMode = value;
         }
 
-        /// <summary>
-        /// The maximum ground speed when walking. Also determines maximum lateral speed when falling.
-        /// </summary>
-
         public float maxWalkSpeed
         {
             get => _maxWalkSpeed;
             set => _maxWalkSpeed = Mathf.Max(0.0f, value);
         }
-
-        /// <summary>
-        /// The ground speed that we should accelerate up to when walking at minimum analog stick tilt.
-        /// </summary>
 
         public float minAnalogWalkSpeed
         {
@@ -341,20 +297,11 @@ namespace EasyCharacterMovement
             set => _minAnalogWalkSpeed = Mathf.Max(0.0f, value);
         }
 
-        /// <summary>
-        /// Max Acceleration (rate of change of velocity).
-        /// </summary>
-
         public float maxAcceleration
         {
             get => _maxAcceleration;
             set => _maxAcceleration = Mathf.Max(0.0f, value);
         }
-
-        /// <summary>
-        /// Deceleration when walking and not applying acceleration.
-        /// This is a constant opposing force that directly lowers velocity by a constant value.
-        /// </summary>
 
         public float brakingDecelerationWalking
         {
@@ -362,16 +309,10 @@ namespace EasyCharacterMovement
             set => _brakingDecelerationWalking = Mathf.Max(0.0f, value);
         }
 
-        /// <summary>
-        /// Setting that affects movement control.
-        /// Higher values allow faster changes in direction.
-        /// If useSeparateBrakingFriction is false, also affects the ability to stop more quickly when braking (whenever acceleration is zero).
-        /// </summary>
-
         public float groundFriction
         {
             get => _groundFriction;
-            set => _groundFriction = Mathf.Max(0.0f, value);
+            set => _groundFriction  = Mathf.Max(0.0f, value);
         }
 
         public bool canDash
@@ -379,20 +320,11 @@ namespace EasyCharacterMovement
             get => _dashCooldown < 0.0f;
         }
 
-        /// <summary>
-        /// The maximum vertical velocity (in m/s) a Character can reach when falling.
-        /// Eg: Terminal velocity.
-        /// </summary>
-
         public float maxFallSpeed
         {
             get => _maxFallSpeed;
             set => _maxFallSpeed = Mathf.Max(0.0f, value);
         }
-
-        /// <summary>
-        /// Lateral deceleration when falling and not applying acceleration.
-        /// </summary>
 
         public float brakingDecelerationFalling
         {
@@ -400,26 +332,13 @@ namespace EasyCharacterMovement
             set => _brakingDecelerationFalling = Mathf.Max(0.0f, value);
         }
 
-        /// <summary>
-        /// Friction to apply to lateral air movement when falling.
-        /// </summary>
-
         public float fallingLateralFriction
         {
             get => _fallingLateralFriction;
             set => _fallingLateralFriction = Mathf.Max(0.0f, value);
         }
 
-        /// <summary>
-        /// The Character's time in falling movement mode.
-        /// </summary>
-
         public float fallingTime => _fallingTime;
-
-        /// <summary>
-        /// When falling, amount of lateral movement control available to the Character.
-        /// 0 = no control, 1 = full control at max acceleration.
-        /// </summary>
 
         public float airControl
         {
@@ -427,20 +346,11 @@ namespace EasyCharacterMovement
             set => _airControl = Mathf.Clamp01(value);
         }
 
-        /// <summary>
-        /// Should use a separate braking friction ?
-        /// </summary>
-
         public bool useSeparateBrakingFriction
         {
             get => _useSeparateBrakingFriction;
             set => _useSeparateBrakingFriction = value;
         }
-
-        /// <summary>
-        /// Friction (drag) coefficient applied when braking (whenever Acceleration = 0, or if Character is exceeding max speed).
-        /// This is the value, used in all movement modes IF useSeparateBrakingFriction is True.
-        /// </summary>
 
         public float brakingFriction
         {
@@ -448,20 +358,11 @@ namespace EasyCharacterMovement
             set => _brakingFriction = Mathf.Max(0.0f, value);
         }
 
-        /// <summary>
-        /// The Character's gravity (modified by gravityScale). Defaults to Physics.gravity.
-        /// </summary>
-
         public Vector3 gravity
         {
             get => _gravity * _gravityScale;
             set => _gravity = value;
         }
-
-        /// <summary>
-        /// The degree to which this object is affected by gravity.
-        /// Can be negative allowing to change gravity direction.
-        /// </summary>
 
         public float gravityScale
         {
@@ -469,19 +370,11 @@ namespace EasyCharacterMovement
             set => _gravityScale = value;
         }
 
-        /// <summary>
-        /// Should animation determines the Character' movement ?
-        /// </summary>
-
         public bool useRootMotion
         {
             get => _useRootMotion;
             set => _useRootMotion = value;
         }
-
-        /// <summary>
-        /// If enabled, the player will interact with dynamic rigidbodies when walking into them.
-        /// </summary>
 
         public bool enablePhysicsInteraction
         {
@@ -495,10 +388,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Should apply push force to other characters when walking into them ?
-        /// </summary>
-
         public bool applyPushForceToCharacters
         {
             get => _applyPushForceToCharacters;
@@ -511,19 +400,11 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Should apply a downward force to rigidbodies we stand on ?
-        /// </summary>
-
         public bool applyStandingDownwardForce
         {
             get => _applyStandingDownwardForce;
             set => _applyStandingDownwardForce = value;
         }
-
-        /// <summary>
-        /// This Character's mass (in Kg).
-        /// </summary>
 
         public float mass
         {
@@ -537,10 +418,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Force applied to rigidbodies when walking into them (due to mass and relative velocity) is scaled by this amount.
-        /// </summary>
-
         public float pushForceScale
         {
             get => _pushForceScale;
@@ -553,19 +430,11 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Force applied to rigidbodies we stand on (due to mass and gravity) is scaled by this amount.
-        /// </summary>
-
         public float standingDownwardForceScale
         {
             get => _standingDownwardForceScale;
             set => _standingDownwardForceScale = Mathf.Max(0.0f, value);
         }
-
-        /// <summary>
-        /// If true, impart the platform's velocity when jumping or falling off it.
-        /// </summary>
 
         public bool impartPlatformVelocity
         {
@@ -579,11 +448,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// Whether the Character moves with the moving platform it is standing on.
-        /// If true, the Character moves with the moving platform.
-        /// </summary>
-
         public bool impartPlatformMovement
         {
             get => _impartPlatformMovement;
@@ -595,11 +459,6 @@ namespace EasyCharacterMovement
                     _characterMovement.impartPlatformMovement = _impartPlatformMovement;
             }
         }
-
-        /// <summary>
-        /// Whether the Character receives the changes in rotation of the platform it is standing on.
-        /// If true, the Character rotates with the moving platform.
-        /// </summary>
 
         public bool impartPlatformRotation
         {
@@ -613,17 +472,6 @@ namespace EasyCharacterMovement
             }
         }
 
-        /// <summary>
-        /// PhysicsVolume overlapping this component. NULL if none.
-        /// </summary>
-
-        public PhysicsVolume physicsVolume { get; set; }
-
-        /// <summary>
-        /// Enable / Disable the LateFixedUpdate Coroutine.
-        /// Enabled by default.
-        /// </summary>
-
         public bool enableLateFixedUpdate
         {
             get => _enableLateFixedUpdateCoroutine;
@@ -636,91 +484,36 @@ namespace EasyCharacterMovement
 
         #endregion
 
-        #region INPUT ACTIONS
-
-        /// <summary>
-        /// InputActions assets.
-        /// </summary>
-
-        public PlayerInput PlayerInput
-        {
-            get => _playerInput;
-            set => _playerInput = value;
-        }
-
-        /// <summary>
-        /// Movement InputAction.
-        /// </summary>
-
-        protected InputAction movementInputAction { get; set; }
-
-        /// <summary>
-        /// Sprint InputAction.
-        /// </summary>
-
-        protected InputAction sprintInputAction { get; set; }
-
-        /// <summary>
-        /// Crouch InputAction.
-        /// </summary>
-
-        protected InputAction crouchInputAction { get; set; }
-
-        /// <summary>
-        /// Dash InputAction.
-        /// </summary>
-
-        protected InputAction dashInputAction { get; set; }
-
-        /// <summary>
-        /// Pick Up InputAction.
-        /// </summary>
-
-        protected InputAction pickUpInputAction { get; set; }
-
-        /// <summary>
-        /// Interact InputAction.
-        /// </summary>
-
-        protected InputAction interactInputAction { get; set; }
-
-        #endregion
-
         #region INPUT ACTION HANDLERS
 
-        /// <summary>
-        /// Polls movement InputAction (if any).
-        /// Return its current value or zero if no valid InputAction found.
-        /// </summary>
-
-        protected virtual Vector2 GetMovementInput()
+        protected Vector2 GetMovementInput()
         {
-            return movementInputAction?.ReadValue<Vector2>() ?? Vector2.zero;
+            return _moveInput;
         }
 
-        /// <summary>
-        /// Dash input action handler.
-        /// </summary>
+        public void OnMove(InputAction.CallbackContext context) 
+        {
+            _moveInput = context.ReadValue<Vector2>();
+            Debug.Log(_moveInput);
+        }
 
-        protected virtual void OnDash(InputAction.CallbackContext context)
+        public void OnDash(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
+            {
                 BeginDash();
+            } 
         }
 
-        /// <summary>
-        /// Pick up input action handler.
-        /// </summary>
-
-        protected virtual void OnPickUp(InputAction.CallbackContext context)
+        public void OnPickUp(InputAction.CallbackContext context)
         {
-            if (context.started || context.performed)
+            if (context.started)
             {
                 _playerInteraction.OnPickUpPressed();
             }
         }
 
-        protected virtual void OnInteract(InputAction.CallbackContext context)
+        public void OnInteract(InputAction.CallbackContext context)
         {
             if (context.started || context.performed)
             {
@@ -739,234 +532,38 @@ namespace EasyCharacterMovement
 
         #endregion
 
-        #region EVENTS
-
-        public delegate void PhysicsVolumeChangedEventHandler(PhysicsVolume newPhysicsVolume);
-
-        public delegate void MovementModeChangedEventHandler(MovementMode prevMovementMode, int prevCustomMode);
-
-        public delegate void DashEventHandler();
-
-        public delegate void WillLandEventHandler();
-        public delegate void LandedEventHandler();
-
-        /// <summary>
-        /// Event triggered when a character enter or leaves a PhysicsVolume.
-        /// </summary>
-
-        public event PhysicsVolumeChangedEventHandler PhysicsVolumeChanged;
-
-        /// <summary>
-        /// Event triggered after a MovementMode change.
-        /// </summary>
-
-        public event MovementModeChangedEventHandler MovementModeChanged;
-
-        /// <summary>
-        /// Event triggered when character dashes.
-        /// </summary>
-
-        public event DashEventHandler Dashed;
-
-        /// <summary>
-        /// Triggered when the Character will hit walkable ground.
-        /// </summary>
-
-        public event WillLandEventHandler WillLand;
-
-        /// <summary>
-        /// Event triggered when character enter isGrounded state (isOnWalkableGround AND isConstrainedToGround)
-        /// </summary>
-
-        public event LandedEventHandler Landed;
-
-        /// <summary>
-        /// Event triggered when characters collides with other during a Move.
-        /// Can be called multiple times.
-        /// </summary>
-
-        protected virtual void OnCollided(ref CollisionResult collisionResult)
-        {
-            // If found walkable ground during movement, trigger will land event
-
-            if (!characterMovement.wasGrounded && collisionResult.isWalkable)
-                OnWillLand();
-        }
-
-        /// <summary>
-        /// Event triggered when character find ground (walkable or non-walkable) as a result of a downcast sweep (eg: FindGround method).
-        /// </summary>
-
-        protected virtual void OnFoundGround(ref FindGroundResult foundGround)
-        {
-            // If found ground is walkable, trigger Landed event
-
-            if (foundGround.isWalkable)
-                OnLanded();
-        }
-
-        /// <summary>
-        /// Event triggered when character found walkable ground during its movement phase.
-        /// </summary>
-
-        protected virtual void OnWillLand()
-        {
-            WillLand?.Invoke();
-        }
-
-        /// <summary>
-        /// Event triggered when character enter isGrounded state (isOnWalkableGround AND isConstrainedToGround)
-        /// </summary>
-
-        protected virtual void OnLanded()
-        {
-            Landed?.Invoke();
-        }
-
-        /// <summary>
-        /// Called when PhysicsVolume has been changed.
-        /// </summary>
-
-        protected virtual void OnPhysicsVolumeChanged(PhysicsVolume newPhysicsVolume)
-        {
-            PhysicsVolumeChanged?.Invoke(newPhysicsVolume);
-        }
-
-        #endregion
-
         #region METHODS
 
         /// <summary>
         /// Start / Stops LateFixedUpdate coroutine.
         /// </summary>
-
         private void EnableLateFixedUpdate(bool enable)
         {
             if (enable)
             {
                 if (_lateFixedUpdateCoroutine != null)
+                {
                     StopCoroutine(_lateFixedUpdateCoroutine);
-
+                }
                 _lateFixedUpdateCoroutine = StartCoroutine(LateFixedUpdate());
             }
             else
             {
                 if (_lateFixedUpdateCoroutine != null)
+                {
                     StopCoroutine(_lateFixedUpdateCoroutine);
+                }
             }
-        }
-
-        /// <summary>
-        /// Sets the give new volume as our current Physics Volume.
-        /// Will call PhysicsVolumeChanged delegate.
-        /// </summary>
-
-        protected virtual void SetPhysicsVolume(PhysicsVolume newPhysicsVolume)
-        {
-            if (newPhysicsVolume == physicsVolume)
-                return;
-
-            // Trigger PhysicsVolumeChanged event
-
-            OnPhysicsVolumeChanged(newPhysicsVolume);
-
-            // Updates current physics volume
-
-            physicsVolume = newPhysicsVolume;
-        }
-
-        /// <summary>
-        /// Update character's current physics volume.
-        /// </summary>
-
-        protected virtual void UpdatePhysicsVolume(PhysicsVolume newPhysicsVolume)
-        {
-            // Check if Character is inside or outside a PhysicsVolume,
-            // It uses the Character's center as reference point
-
-            Vector3 characterCenter = characterMovement.worldCenter;
-
-            if (newPhysicsVolume && newPhysicsVolume.boxCollider.ClosestPoint(characterCenter) == characterCenter)
-            {
-                // Entering physics volume
-
-                SetPhysicsVolume(newPhysicsVolume);
-            }
-            else
-            {
-                // Leaving physics volume
-
-                SetPhysicsVolume(null);
-            }
-        }
-
-        /// <summary>
-        /// Attempts to add a new physics volume to our volumes list.
-        /// </summary>
-
-        protected virtual void AddPhysicsVolume(Collider other)
-        {
-            if (other.TryGetComponent(out PhysicsVolume volume) && !_volumes.Contains(volume))
-                _volumes.Insert(0, volume);
-        }
-
-        /// <summary>
-        /// Attempts to remove a physics volume from our volumes list.
-        /// </summary>
-
-        protected virtual void RemovePhysicsVolume(Collider other)
-        {
-            if (other.TryGetComponent(out PhysicsVolume volume) && _volumes.Contains(volume))
-                _volumes.Remove(volume);
-        }
-
-        /// <summary>
-        /// Sets as current physics volume the one with higher priority.
-        /// </summary>
-
-        protected virtual void UpdatePhysicsVolumes()
-        {
-            // Is Character movement is disabled, return
-
-            if (IsDisabled())
-                return;
-
-            // Find volume with higher priority
-
-            PhysicsVolume volume = null;
-            int maxPriority = int.MinValue;
-
-            for (int i = 0, c = _volumes.Count; i < c; i++)
-            {
-                PhysicsVolume vol = _volumes[i];
-                if (vol.priority <= maxPriority)
-                    continue;
-
-                maxPriority = vol.priority;
-                volume = vol;
-            }
-
-            // Update character's current volume
-
-            UpdatePhysicsVolume(volume);
         }
 
         /// <summary>
         /// Adds a force to the Character.
         /// This forces will be accumulated and applied during Move method call.
         /// </summary>
-
         public void AddForce(Vector3 force, ForceMode forceMode = ForceMode.Force)
         {
             characterMovement.AddForce(force, forceMode);
         }
-
-        /// <summary>
-        /// Applies a force to a rigidbody that simulates explosion effects.
-        /// The explosion is modeled as a sphere with a certain centre position and radius in world space;
-        /// normally, anything outside the sphere is not affected by the explosion and the force decreases in proportion to distance from the centre.
-        /// However, if a value of zero is passed for the radius then the full force will be applied regardless of how far the centre is from the rigidbody.
-        /// </summary>
 
         public void AddExplosionForce(float forceMagnitude, Vector3 origin, float explosionRadius,
             ForceMode forceMode = ForceMode.Force)
@@ -980,7 +577,6 @@ namespace EasyCharacterMovement
         /// <param name="launchVelocity">The desired launch velocity.</param>
         /// <param name="overrideVerticalVelocity">If true replace the vertical component of the Character's velocity instead of adding to it.</param>
         /// <param name="overrideLateralVelocity">If true replace the XY part of the Character's velocity instead of adding to it.</param>
-
         public void LaunchCharacter(Vector3 launchVelocity, bool overrideVerticalVelocity = false,
             bool overrideLateralVelocity = false)
         {
@@ -990,15 +586,10 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Should collision detection be enabled ?
         /// </summary>
-
         public virtual void DetectCollisions(bool detectCollisions)
         {
             characterMovement.detectCollisions = detectCollisions;
         }
-
-        /// <summary>
-        /// Makes the character to ignore all collisions vs otherCollider.
-        /// </summary>
 
         public virtual void IgnoreCollision(Collider otherCollider, bool ignore = true)
         {
@@ -1008,16 +599,10 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Makes the character to ignore collisions vs all colliders attached to the otherRigidbody.
         /// </summary>
-
         public virtual void IgnoreCollision(Rigidbody otherRigidbody, bool ignore = true)
         {
             characterMovement.IgnoreCollision(otherRigidbody, ignore);
         }
-
-        /// <summary>
-        /// Makes the character's collider (eg: CapsuleCollider) to ignore all collisions vs otherCollider.
-        /// NOTE: The character can still collide with other during a Move call if otherCollider is in CollisionLayers mask.
-        /// </summary>
 
         public virtual void CapsuleIgnoreCollision(Collider otherCollider, bool ignore = true)
         {
@@ -1028,7 +613,6 @@ namespace EasyCharacterMovement
         /// Temporarily disable ground constraint allowing the Character to freely leave the ground.
         /// Eg: LaunchCharacter, Dash, etc.
         /// </summary>
-
         public virtual void PauseGroundConstraint(float seconds = 0.1f)
         {
             characterMovement.PauseGroundConstraint(seconds);
@@ -1037,7 +621,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Was the character on ground last Move call ?
         /// </summary>
-
         public virtual bool WasOnGround()
         {
             return characterMovement.wasOnGround;
@@ -1046,7 +629,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Is the character on ground ?
         /// </summary>
-
         public virtual bool IsOnGround()
         {
             return characterMovement.isOnGround;
@@ -1055,7 +637,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Was the character on walkable ground last Move call ?
         /// </summary>
-
         public virtual bool WasOnWalkableGround()
         {
             return characterMovement.wasOnWalkableGround;
@@ -1064,7 +645,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Is the character on walkable ground ?
         /// </summary>
-
         public virtual bool IsOnWalkableGround()
         {
             return characterMovement.isOnWalkableGround;
@@ -1073,7 +653,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Was the character on walkable ground AND constrained to ground last Move call ?
         /// </summary>
-
         public virtual bool WasGrounded()
         {
             return characterMovement.wasGrounded;
@@ -1082,7 +661,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Is the character on walkable ground AND constrained to ground.
         /// </summary>
-
         public virtual bool IsGrounded()
         {
             return characterMovement.isGrounded;
@@ -1091,7 +669,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Return the CharacterMovement component. This is guaranteed to be not null.
         /// </summary>
-
         public virtual CharacterMovement GetCharacterMovement()
         {
             return characterMovement;
@@ -1100,7 +677,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Return the Animator component or null is not found.
         /// </summary>
-
         public virtual Animator GetAnimator()
         {
             return animator;
@@ -1109,25 +685,14 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Return the RootMotionController or null is not found.
         /// </summary>
-
         public virtual RootMotionController GetRootMotionController()
         {
             return rootMotionController;
         }
 
         /// <summary>
-        /// Return the Character's current PhysicsVolume, null if none.
-        /// </summary>
-
-        public virtual PhysicsVolume GetPhysicsVolume()
-        {
-            return physicsVolume;
-        }
-
-        /// <summary>
         /// The character's radius
         /// </summary>
-
         public virtual float GetRadius()
         {
             return characterMovement.radius;
@@ -1136,7 +701,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// The Character's current position.
         /// </summary>
-
         public virtual Vector3 GetPosition()
         {
             return characterMovement.position;
@@ -1146,7 +710,6 @@ namespace EasyCharacterMovement
         /// Sets the Character's position.
         /// This complies with the interpolation resulting in a smooth transition between the two positions in any intermediate frames rendered.
         /// </summary>
-
         public virtual void SetPosition(Vector3 position, bool updateGround = false)
         {
             characterMovement.SetPosition(position, updateGround);
@@ -1155,7 +718,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// The Character's current rotation.
         /// </summary>
-
         public Quaternion GetRotation()
         {
             return characterMovement.rotation;
@@ -1164,7 +726,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Sets the Character's current rotation.
         /// </summary>
-
         public void SetRotation(Quaternion newRotation)
         {
             characterMovement.rotation = newRotation;
@@ -1175,7 +736,6 @@ namespace EasyCharacterMovement
         /// </summary>
         /// <param name="worldDirection">The target direction in world space.</param>
         /// <param name="isPlanar">If True, the rotation will be performed on the Character's plane (defined by its up-axis).</param>
-
         public virtual void RotateTowards(Vector3 worldDirection, bool isPlanar = true)
         {
             characterMovement.RotateTowards(worldDirection, rotationRate * deltaTime, isPlanar);
@@ -1186,7 +746,6 @@ namespace EasyCharacterMovement
         /// </summary>
         /// <param name="worldDirection">The target direction in world space.</param>
         /// <param name="isPlanar">If True, the rotation will be performed on the Character's plane (defined by its up-axis).</param>
-
         public virtual void RotateTowardsWithSlerp(Vector3 worldDirection, bool isPlanar = true)
         {
             Vector3 characterUp = GetUpVector();
@@ -1201,26 +760,6 @@ namespace EasyCharacterMovement
 
             characterMovement.rotation =
                 Quaternion.Slerp(characterMovement.rotation, targetRotation, rotationRate * Mathf.Deg2Rad * deltaTime);
-        }
-
-        /// <summary>
-        /// Append root motion rotation to Character's rotation.
-        /// </summary>
-
-        protected virtual void RotateWithRootMotion()
-        {
-            if (_rotationMode == RotationMode.OrientWithRootMotion && rootMotionController != null)
-                characterMovement.rotation *= rootMotionController.animDeltaRotation;
-        }
-
-        /// <summary>
-        /// Sets the yaw value.
-        /// This will reset the current pitch and roll values.
-        /// </summary>
-
-        public virtual void SetYaw(float value)
-        {
-            characterMovement.rotation = Quaternion.Euler(0.0f, value, 0.0f);
         }
 
         /// <summary>
@@ -1280,18 +819,6 @@ namespace EasyCharacterMovement
         }
 
         /// <summary>
-        /// Returns the Character's animation velocity if using root motion, otherwise returns Character's current velocity.
-        /// </summary>
-
-        public virtual Vector3 GetRootMotionVelocity()
-        {
-            if (useRootMotion && rootMotionController)
-                return rootMotionController.animRootMotionVelocity;
-
-            return characterMovement.velocity;
-        }
-
-        /// <summary>
         /// Returns the Character's current rotation mode.
         /// </summary>
 
@@ -1299,14 +826,6 @@ namespace EasyCharacterMovement
         {
             return _rotationMode;
         }
-
-        /// <summary>
-        /// Sets the Character's current rotation mode:
-        ///     - None:                        Disables character's rotation.
-        ///     - OrientToMovement:            Orient the Character towards the given input move direction vector, using rotationRate as the rate of rotation change.
-        ///     - OrientToCameraViewDirection: Rotates the character towards the camera's current view direction (eg: forward vector), using rotationRate as the rate of rotation change.
-        ///     OrientWithRootMotion:          Append root motion rotation to Character's rotation.
-        /// </summary>
 
         public virtual void SetRotationMode(RotationMode rotationMode)
         {
@@ -1328,21 +847,17 @@ namespace EasyCharacterMovement
         ///
         /// Trigger OnMovementModeChanged event.
         /// </summary>
-
         public virtual void SetMovementMode(MovementMode newMovementMode, int newCustomMode = 0)
         {
-            // Do nothing if nothing is changing
-
             if (newMovementMode == _movementMode)
             {
-                // Allow changes in custom sub-modes
-
                 if (newMovementMode != MovementMode.Custom || newCustomMode == _customMovementMode)
+                {
                     return;
+                }
             }
 
             // Performs movement mode change
-
             MovementMode prevMovementMode = _movementMode;
             int prevCustomMode = _customMovementMode;
 
@@ -1357,7 +872,6 @@ namespace EasyCharacterMovement
         /// Does special handling for starting certain modes, eg: enable / disable ground constraint, etc.
         /// If overridden, must call base.OnMovementModeChanged.
         /// </summary>
-
         protected virtual void OnMovementModeChanged(MovementMode prevMovementMode, int prevCustomMode)
         {
             // Perform additional tasks on mode change
@@ -1383,17 +897,14 @@ namespace EasyCharacterMovement
             // Left Falling mode, reset falling timer
 
             if (!IsFalling())
+            {
                 _fallingTime = 0.0f;
-
-            // Trigger movement mode changed event
-
-            MovementModeChanged?.Invoke(prevMovementMode, prevCustomMode);
+            }
         }
 
         /// <summary>
         /// Returns true if the Character's movement mode is None (eg: is disabled).
         /// </summary>
-
         public virtual bool IsDisabled()
         {
             return _movementMode == MovementMode.None;
@@ -1402,7 +913,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Returns true if the Character is in the 'Walking' movement mode (eg: on walkable ground).
         /// </summary>
-
         public virtual bool IsWalking()
         {
             return _movementMode == MovementMode.Walking;
@@ -1411,34 +921,14 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Returns true if currently falling, eg: on air (not flying) or in not walkable ground.
         /// </summary>
-
         public virtual bool IsFalling()
         {
             return _movementMode == MovementMode.Falling;
         }
 
         /// <summary>
-        /// Returns true if currently flying (moving through a non-water volume without resting on the ground).
-        /// </summary>
-
-        public virtual bool IsFlying()
-        {
-            return _movementMode == MovementMode.Flying;
-        }
-
-        /// <summary>
-        /// Returns true if currently swimming (moving through a water volume).
-        /// </summary>
-
-        public virtual bool IsSwimming()
-        {
-            return _movementMode == MovementMode.Swimming;
-        }
-
-        /// <summary>
         /// The maximum speed for current movement mode (accounting crouching / sprinting state).
         /// </summary>
-
         public virtual float GetMaxSpeed()
         {
             switch (_movementMode)
@@ -1457,7 +947,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// The ground speed that we should accelerate up to when walking at minimum analog stick tilt.
         /// </summary>
-
         public virtual float GetMinAnalogSpeed()
         {
             switch (_movementMode)
@@ -1474,19 +963,18 @@ namespace EasyCharacterMovement
         /// <summary>
         /// The acceleration for current movement mode.
         /// </summary>
-
         public virtual float GetMaxAcceleration()
         {
             if (IsFalling())
+            {
                 return maxAcceleration * airControl;
-
+            }
             return maxAcceleration;
         }
 
         /// <summary>
         /// The braking deceleration for current movement mode.
         /// </summary>
-
         public virtual float GetMaxBrakingDeceleration()
         {
             switch (_movementMode)
@@ -1510,13 +998,15 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Computes the analog input modifier (0.0f to 1.0f) based on current input vector and desired velocity.
         /// </summary>
-
         protected virtual float ComputeAnalogInputModifier(Vector3 desiredVelocity)
         {
             float actualMaxSpeed = GetMaxSpeed();
 
             if (actualMaxSpeed > 0.0f && desiredVelocity.sqrMagnitude > 0.0f)
+            {
                 return Mathf.Clamp01(desiredVelocity.magnitude / actualMaxSpeed);
+            }
+                
 
             return 0.0f;
         }
@@ -1525,7 +1015,6 @@ namespace EasyCharacterMovement
         /// Apply friction and braking deceleration to given velocity.
         /// Returns modified input velocity.
         /// </summary>
-
         protected virtual Vector3 ApplyVelocityBraking(Vector3 velocity, float friction, float deceleration)
         {
             // If no friction or no deceleration, return
@@ -1534,24 +1023,22 @@ namespace EasyCharacterMovement
             bool isZeroBraking = deceleration == 0.0f;
 
             if (isZeroFriction && isZeroBraking)
+            {
                 return velocity;
+            }
 
             // Decelerate to brake to a stop
-
             Vector3 oldVel = velocity;
             Vector3 revAcceleration = isZeroBraking ? Vector3.zero : -deceleration * velocity.normalized;
 
             // Apply friction and braking
-
             velocity += (-friction * velocity + revAcceleration) * deltaTime;
 
             // Don't reverse direction
-
             if (Vector3.Dot(velocity, oldVel) <= 0.0f)
                 return Vector3.zero;
 
             // Clamp to zero if nearly zero, or if below min threshold and braking
-
             float sqrSpeed = velocity.sqrMagnitude;
             if (sqrSpeed <= 0.00001f || !isZeroBraking && sqrSpeed <= 0.01f)
                 return Vector3.zero;
@@ -1563,7 +1050,6 @@ namespace EasyCharacterMovement
         /// Calculates a new velocity for the given state, applying the effects of friction or braking friction and acceleration or deceleration.
         /// Calls GetMaxSpeed(), GetMaxAcceleration(), GetBrakingDeceleration().
         /// </summary>
-
         protected virtual Vector3 CalcVelocity(Vector3 velocity, Vector3 desiredVelocity, float friction, bool isFluid = false)
         {
             // Compute requested move direction
@@ -1590,16 +1076,13 @@ namespace EasyCharacterMovement
             if (isZeroAcceleration || isVelocityOverMax)
             {
                 // Pre-braking velocity
-
                 Vector3 oldVelocity = velocity;
 
                 // Apply friction and braking
-
                 float actualBrakingFriction = useSeparateBrakingFriction ? brakingFriction : friction;
                 velocity = ApplyVelocityBraking(velocity, actualBrakingFriction, GetMaxBrakingDeceleration());
 
                 // Don't allow braking to lower us below max speed if we started above it
-
                 if (isVelocityOverMax && velocity.sqrMagnitude < actualMaxSpeed.square() && Vector3.Dot(requestedAcceleration, oldVelocity) > 0.0f)
                     velocity = oldVelocity.normalized * actualMaxSpeed;
             }
@@ -1626,7 +1109,6 @@ namespace EasyCharacterMovement
             }
 
             // Return new velocity
-
             return velocity;
         }
 
@@ -1634,7 +1116,6 @@ namespace EasyCharacterMovement
         /// Apply a downward force when standing on top of non-kinematic physics objects (if applyStandingDownwardForce == true).
         /// The force applied is: mass * gravity * standingDownwardForceScale
         /// </summary>
-
         protected virtual void ApplyDownwardsForce()
         {
             Rigidbody groundRigidbody = characterMovement.groundRigidbody;
@@ -1649,7 +1130,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Determines the Character's movement (e.g: its velocity) when moving on walkable ground.
         /// </summary>
-
         protected virtual void Walking(Vector3 desiredVelocity)
         {
             // If using root motion output animation velocity
@@ -1673,7 +1153,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Returns the Character's gravity vector modified by gravityScale.
         /// </summary>
-
         public virtual Vector3 GetGravityVector()
         {
             return gravity;
@@ -1682,7 +1161,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Returns the gravity direction (normalized).
         /// </summary>
-
         public virtual Vector3 GetGravityDirection()
         {
             return gravity.normalized;
@@ -1691,7 +1169,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Sets the Character's gravity vector
         /// </summary>
-
         public virtual void SetGravityVector(Vector3 newGravityVector)
         {
             _gravity = newGravityVector;
@@ -1700,7 +1177,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Toggle gravity acceleration while falling.
         /// </summary>
-
         public virtual void EnableGravity(bool enable)
         {
             _applyGravity = enable;
@@ -1710,7 +1186,6 @@ namespace EasyCharacterMovement
         /// Apply gravity and clamps the current falling velocity (vertical component) to maxFallSpeed,
         /// or if within a PhysicsVolume, PhysicsVolume.maxFallSpeed
         /// </summary>
-
         protected virtual Vector3 LimitFallingVelocity(Vector3 currentVelocity)
         {
             // Output velocity
@@ -1720,8 +1195,6 @@ namespace EasyCharacterMovement
             // Don't exceed terminal velocity.
 
             float terminalLimit = maxFallSpeed;
-            if (physicsVolume)
-                terminalLimit = physicsVolume.maxFallSpeed;
 
             if (terminalVelocity.sqrMagnitude > terminalLimit.square())
             {
@@ -1737,29 +1210,23 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Determines the Character's movement (e.g: its velocity) when falling on air or sliding off non-walkable ground.
         /// </summary>
-
         protected virtual void Falling(Vector3 desiredVelocity)
         {
             // Current 'world' up vector defined by gravity direction
-
             Vector3 worldUp = -1.0f * GetGravityDirection();
 
             // Update falling time
-
             _fallingTime += deltaTime;
 
             // On not walkable ground
-
             if (IsOnGround())
             {
                 // If moving into the 'wall', limit contribution
-
                 Vector3 groundNormal = characterMovement.groundNormal;
 
                 if (desiredVelocity.dot(groundNormal) < 0.0f)
                 {
                     // Allow movement parallel to the wall, but not into it because that may push us up.
-
                     groundNormal = groundNormal.projectedOnPlane(worldUp).normalized;
                     desiredVelocity = desiredVelocity.projectedOnPlane(groundNormal);
                 }
@@ -1768,46 +1235,29 @@ namespace EasyCharacterMovement
             // Calc new velocity
 
             // Separate velocity into its components
-
             Vector3 verticalVelocity = Vector3.Project(characterMovement.velocity, worldUp);
             Vector3 lateralVelocity = characterMovement.velocity - verticalVelocity;
 
             // Compute new lateral velocity
-
             float actualFriction = useSeparateBrakingFriction ? brakingFriction : fallingLateralFriction;
             lateralVelocity = CalcVelocity(lateralVelocity, desiredVelocity, actualFriction);
 
             // Update new velocity
-
             characterMovement.velocity = lateralVelocity + verticalVelocity;
 
             // Apply gravity (if enabled)
-
             if (_applyGravity)
+            {
                 characterMovement.velocity += GetGravityVector() * deltaTime;
+            }
 
             // Clamp to terminal velocity
-
             characterMovement.velocity = LimitFallingVelocity(characterMovement.velocity);
-        }
-
-        /// <summary>
-        /// Exits swimming mode.
-        /// Called when Character leaves a water physics volume.
-        /// </summary>
-
-        public virtual void StopSwimming()
-        {
-            // If Swimming, change to Falling mode
-
-            if (IsSwimming())
-                SetMovementMode(MovementMode.Falling);
         }
 
         /// <summary>
         /// Allows to implement a custom movement.
         /// </summary>
-
         protected virtual void Dashing(Vector3 desiredVelocity)
         {
             _dashTime += deltaTime;
@@ -1837,7 +1287,6 @@ namespace EasyCharacterMovement
         /// Start a dash.
         /// Call this from an input event (such as a button 'down' event).
         /// </summary>
-
         public void BeginDash()
         {
             if (_dashCooldownTime > 0.0f)
@@ -1846,8 +1295,6 @@ namespace EasyCharacterMovement
             _dashTime = 0.0f;
             _dashProgress = 0.0f;
             _dashCooldownTime = _dashCooldown;
-
-            Dashed?.Invoke();
 
             if (GetMovementDirection() != Vector3.zero)
                 SetRotation(Quaternion.LookRotation(GetMovementDirection().normalized, GetUpVector()));
@@ -1858,7 +1305,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Calculate the desired velocity for current movement mode.
         /// </summary>
-
         protected virtual Vector3 CalcDesiredVelocity()
         {
             // Current movement direction
@@ -1879,7 +1325,6 @@ namespace EasyCharacterMovement
         /// <summary>
         /// Perform character's movement based on its current MovementMode.
         /// </summary>
-
         protected virtual void Move()
         {
             // If Character movement is disabled, return
@@ -1905,6 +1350,10 @@ namespace EasyCharacterMovement
                     characterMovement.velocity = Vector3.zero;
                     break;
 
+                case MovementMode.TurnInPlace:
+                    Walking(Vector3.zero);
+                    break;
+
                 case MovementMode.Walking:
                     Walking(desiredVelocity);
                     break;
@@ -1927,15 +1376,6 @@ namespace EasyCharacterMovement
         }
 
         /// <summary>
-        /// Allows to implement a custom rotation mode.
-        /// </summary>
-
-        protected virtual void CustomRotationMode()
-        {
-            // EMPTY BY DEFAULT
-        }
-
-        /// <summary>
         /// Updates the Character's rotation based on its current RotationMode.
         /// </summary>
 
@@ -1943,8 +1383,7 @@ namespace EasyCharacterMovement
         {
             // If Character movement is disabled, return
 
-            if (IsDisabled())
-                return;
+            if (IsDisabled()) { return; }
 
             // Should update Character's rotation ?
 
@@ -1956,31 +1395,17 @@ namespace EasyCharacterMovement
                     return;
 
                 case RotationMode.OrientToMovement:
-                    {
-                        // Orient towards current movement direction vector
-
-                        RotateTowards(_movementDirection);
-
-                        break;
-                    }
+                    // Orient towards current movement direction vector
+                    RotateTowards(_movementDirection);
+                    break;
 
                 case RotationMode.OrientToCameraViewDirection:
+                    // Orient towards camera view direction
+                    if (camera)
                     {
-                        // Orient towards camera view direction
-
-                        if (camera)
-                            RotateTowards(cameraTransform.forward);
-
-                        break;
+                        RotateTowards(cameraTransform.forward);
                     }
-
-                case RotationMode.Custom:
-                    {
-                        // Custom rotation mode
-
-                        CustomRotationMode();
-                        break;
-                    }
+                    break;
             }
         }
 
@@ -1998,24 +1423,13 @@ namespace EasyCharacterMovement
         public virtual void Simulate(float deltaTime)
         {
             // Assign the used deltaTime
-
             this.deltaTime = deltaTime;
 
             // Update character's rotation
-
             UpdateRotation();
 
-            // Append input rotation (eg: AddYawInput, etc)
-
-            ConsumeRotationInput();
-
             // Moves the character
-
             Move();
-
-            // Update active physics volume
-
-            UpdatePhysicsVolumes();
         }
 
         /// <summary>
@@ -2038,153 +1452,25 @@ namespace EasyCharacterMovement
         }
 
         /// <summary>
-        /// Amount to add to Yaw (up axis).
+        /// Subscribe to PlayerInputHandler callbacks
         /// </summary>
-
-        public virtual void AddYawInput(float value)
-        {
-            _rotationInput.y += value;
-        }
-
-        /// <summary>
-        /// Amount to add to Pitch (right axis).
-        /// </summary>
-
-        public virtual void AddPitchInput(float value)
-        {
-            _rotationInput.x += value;
-        }
-
-        /// <summary>
-        /// Amount to add to Roll (forward axis).
-        /// </summary>
-
-        public virtual void AddRollInput(float value)
-        {
-            _rotationInput.z += value;
-        }
-
-        /// <summary>
-        /// Append input rotation (eg: AddPitchInput, AddYawInput, AddRollInput) to character rotation.
-        /// </summary>
-
-        protected virtual void ConsumeRotationInput()
-        {
-            // If Character movement is disabled, return
-
-            if (IsDisabled())
-                return;
-
-            // Apply rotation input (if any)
-
-            if (_rotationInput != Vector3.zero)
-            {
-                // Consumes rotation input (e.g. apply and clear it)
-
-                characterMovement.rotation *= Quaternion.Euler(_rotationInput);
-
-                _rotationInput = Vector3.zero;
-            }
-        }
-
-        /// <summary>
-        /// Initialize player InputActions (if any).
-        /// E.g. Subscribe to input action events and enable input actions here.
-        /// </summary>
-
         protected virtual void InitPlayerInput()
         {
-            // Attempts to cache Character InputActions (if any)
-
-            if (PlayerInput == null)
-                return;
-
-            // Movement input action (no handler, this is polled, e.g. GetMovementInput())
-
-            movementInputAction = PlayerInput.currentActionMap.FindAction("Movement");
-            movementInputAction?.Enable();
-
-            // Setup Dash input action handlers
-
-            dashInputAction = PlayerInput.currentActionMap.FindAction("Dash");
-            if (dashInputAction != null)
-            {
-                dashInputAction.started += OnDash;
-                dashInputAction.Enable();
-            }
-
-            pickUpInputAction = PlayerInput.currentActionMap.FindAction("PickUp");
-            if (pickUpInputAction != null)
-            {
-                pickUpInputAction.started += OnPickUp;
-                pickUpInputAction.Enable();
-            }
-
-            interactInputAction = PlayerInput.currentActionMap.FindAction("Interact");
-            if (interactInputAction != null)
-            {
-                interactInputAction.started += OnInteract;
-                interactInputAction.canceled += OnInteract;
-                interactInputAction.Enable();
-            }
-        }
-
-        /// <summary>
-        /// Unsubscribe from input action events and disable input actions.
-        /// </summary>
-
-        protected virtual void DeinitPlayerInput()
-        {
-            // Unsubscribe from input action events and disable input actions
-
-            if (movementInputAction != null)
-            {
-                movementInputAction.Disable();
-                movementInputAction = null;
-            }
-
-            if (dashInputAction != null)
-            {
-                dashInputAction.started -= OnDash;
-                dashInputAction.Disable();
-                dashInputAction = null;
-            }
-
-            if (pickUpInputAction != null)
-            {
-                pickUpInputAction.started -= OnPickUp;
-                pickUpInputAction.Disable();
-                pickUpInputAction = null;
-            }
-
-            if (interactInputAction != null)
-            {
-                interactInputAction.started -= OnInteract;
-                interactInputAction.canceled -= OnInteract;
-                interactInputAction.Disable();
-                interactInputAction = null;
-            }
+            if (_input.Actions == null) { return; }
+            _input.SetCallbacks(this);
         }
 
         /// <summary>
         /// Handle Player input, only if actions are assigned (eg: actions != null).
         /// </summary>
-
         protected virtual void HandleInput()
         {
-            // Should this character handle input ?
-
-            if (PlayerInput == null)
-                return;
-
             // Poll movement InputAction
-
             Vector2 movementInput = GetMovementInput();
 
             if (camera)
             {
                 // If Camera is assigned, add input movement relative to camera look direction
-
                 Vector3 movementDirection = Vector3.zero;
 
                 movementDirection += Vector3.right * movementInput.x;
@@ -2209,23 +1495,13 @@ namespace EasyCharacterMovement
         }
 
         /// <summary>
-        /// Helper method used to feed the Character's animator.
-        /// Optional as you can prefer to externally animate your character.
-        /// </summary>
-
-        protected virtual void Animate()
-        {
-            // EMPTY BY DEFAULT
-        }
-
-        /// <summary>
         /// Our Reset method. Set this default values.
         /// If overridden, must call base method in order to fully initialize the class.
         /// </summary>
 
         protected virtual void OnReset()
         {
-            _playerInput = null;
+            _input = null;
 
             _defaultMovementMode = MovementMode.Walking;
 
@@ -2312,9 +1588,9 @@ namespace EasyCharacterMovement
             _rootMotionController = GetComponentInChildren<RootMotionController>();
 
             _playerInteraction = GetComponent<PlayerInteraction>();
+            _input.OnActionsAssigned += InitPlayerInput;
 
             // Enable late fixed update (default)
-
             enableLateFixedUpdate = true;
         }
 
@@ -2325,17 +1601,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnOnEnable()
         {
-            // Setup player InputActions (if any).
-
-            InitPlayerInput();
-
-            // Subscribe to CharacterMovement events
-
-            characterMovement.Collided += OnCollided;
-            characterMovement.FoundGround += OnFoundGround;
-
             // If enabled, start LateFixedUpdate coroutine
-
             if (_enableLateFixedUpdateCoroutine)
                 EnableLateFixedUpdate(true);
 
@@ -2357,17 +1623,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnOnDisable()
         {
-            // Unsubscribe from input action events and disable input actions (if any, e.g. inputActions != null)
-
-            DeinitPlayerInput();
-
-            // Unsubscribe from CharacterMovement events
-
-            characterMovement.Collided -= OnCollided;
-            characterMovement.FoundGround -= OnFoundGround;
-
             // If enabled, stops LateFixedUpdate coroutine
-
             if (_enableLateFixedUpdateCoroutine)
                 EnableLateFixedUpdate(false);
         }
@@ -2380,7 +1636,6 @@ namespace EasyCharacterMovement
         protected virtual void OnStart()
         {
             // Sets character's startup movement mode
-
             SetMovementMode(defaultMovementMode);
         }
 
@@ -2411,11 +1666,6 @@ namespace EasyCharacterMovement
         protected virtual void OnUpdate()
         {
             HandleInput();
-
-            Animate();
-
-            RotateWithRootMotion();
-
             UpdateDashTimer();
         }
 
@@ -2467,24 +1717,13 @@ namespace EasyCharacterMovement
             OnFixedUpdate();
         }
 
-        protected virtual void OnTriggerEnter(Collider other)
-        {
-            AddPhysicsVolume(other);
-        }
-
-        protected virtual void OnTriggerExit(Collider other)
-        {
-            RemovePhysicsVolume(other);
-        }
-
         private IEnumerator LateFixedUpdate()
         {
-            WaitForFixedUpdate waitTime = new WaitForFixedUpdate();
+            WaitForFixedUpdate waitTime = new();
 
             while (true)
             {
                 yield return waitTime;
-
                 OnLateFixedUpdate();
             }
         }
