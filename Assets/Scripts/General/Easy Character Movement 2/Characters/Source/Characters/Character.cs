@@ -21,6 +21,7 @@ namespace EasyCharacterMovement
     public enum MovementMode
     {
         None,
+        TurnInPlace,
         Walking,
         Falling,
         Swimming,
@@ -43,6 +44,7 @@ namespace EasyCharacterMovement
     {
         None,
         OrientToMovement,
+        OrientToInputDirection,
         OrientToCameraViewDirection,
         OrientWithRootMotion,
         Custom
