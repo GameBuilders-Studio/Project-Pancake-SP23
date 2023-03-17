@@ -23,10 +23,9 @@ public class IngredientProp : MonoBehaviour
 
     public Ingredient Data => _ingredientData;
 
-    void Awake()
+    protected virtual void Awake()
     {
         _ingredientData = new(_type, _state);
-        OnAwake();
     }
 
     public void AddProgress(float progressDelta)
@@ -46,6 +45,4 @@ public class IngredientProp : MonoBehaviour
     {
         // handle visual behaviour of ingredient
     }
-
-    protected virtual void OnAwake() {}
 }

@@ -1,8 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Station : Selectable
 {
+    [Space(15f)]
+    [SerializeField]
+    private StationBehaviour _stationBehaviour;
+
+    [SerializeField]
+    private ProxyTrigger _catchTrigger;
+
     [SerializeField]
     private Transform _itemHolderPivot;
 
@@ -15,10 +21,28 @@ public class Station : Selectable
         protected set => _placedItem = value;
     }
 
-    void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
+
+        if (_catchTrigger == null)
+        {
+           _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
+        }
+
+        if (_stationBehaviour == null)
+        {
+            _stationBehaviour = GetComponent<StationBehaviour>();
+        }
+
         if (_placedItem == null) { return; }
         CenterObject(_placedItem);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _catchTrigger.Enter += TryCatchItem;
     }
 
     void Start()
@@ -30,8 +54,8 @@ public class Station : Selectable
     public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
+        _stationBehaviour.ItemRemoved(ref item);
         PlacedItem = null;
-        OnItemRemoved(item);
         return item;
     }
 
@@ -42,7 +66,10 @@ public class Station : Selectable
     {
         if (PlacedItem == null)
         {
-            if (!ValidatePlacedItem(item)) { return false; }
+            if (!_stationBehaviour.ValidateItem(item))
+            {
+                return false; 
+            }
             PlaceItem(item);
             return true;
         }
@@ -66,20 +93,22 @@ public class Station : Selectable
     }
 
     /// <summary>
-    /// Returns true if the item is allowed to be placed on the station.
+    /// Returns true if the item can be caught by the Station
     /// </summary>
-    protected virtual bool ValidatePlacedItem(Carryable item) => true;
+    public void TryCatchItem(Collider other)
+    {
+        if (!other.TryGetComponent(out Carryable item)) { return; }
+        if (!item.PhysicsEnabled) { return; }
+        item.CancelThrow();
+        TryPlaceItem(item);
+    }
 
-    protected virtual void OnItemPlaced(Carryable item) {}
-
-    protected virtual void OnItemRemoved(Carryable item) {}
-
-    protected void PlaceItem(Carryable item)
+    public void PlaceItem(Carryable item)
     {
         PlacedItem = item;
-        CenterObject(item);
         item.OnPlace();
-        OnItemPlaced(item);
+        CenterObject(item);
+        _stationBehaviour.ItemPlaced(ref item);
     }
 
     private void CenterObject(Carryable item)
