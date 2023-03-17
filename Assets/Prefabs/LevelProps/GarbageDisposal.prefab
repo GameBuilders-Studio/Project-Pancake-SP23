@@ -62,6 +62,17 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+--- !u!114 &1624541454788367773 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 195078305573947851, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 1458754477746052182}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990119616718394324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1990119616718394324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -80,9 +91,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nearbyTrigger: {fileID: 6866945726354908098}
+  _highlightBehaviour: {fileID: 1624541454788367773}
   _isEverSelectable: 1
   _highlightOnHover: 1
+  _catchTrigger: {fileID: 0}
   _itemHolderPivot: {fileID: 4248576857562407363}
+  _placedItem: {fileID: 0}
 --- !u!4 &4248576857562407363 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}

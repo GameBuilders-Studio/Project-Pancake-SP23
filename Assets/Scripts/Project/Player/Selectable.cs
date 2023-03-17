@@ -1,17 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum HoverState 
-{
-    Selected, 
-    Deselected
-}
+public enum HoverState { Selected, Deselected }
 
-public enum SelectState 
-{
-    Default, 
-    Disabled
-}
+public enum SelectState { Default, Disabled }
 
 public class Selectable : MonoBehaviour
 {
@@ -20,10 +12,7 @@ public class Selectable : MonoBehaviour
 
     [SerializeField]
     private HighlightBehaviour _highlightBehaviour;
-
-    [SerializeField]
-    private bool _isEverSelectable = true;
-
+    
     [SerializeField]
     private bool _highlightOnHover = true;
 
@@ -32,29 +21,30 @@ public class Selectable : MonoBehaviour
 
     public virtual bool IsSelectable
     {
-        get => _isSelectable && _isEverSelectable;
+        get => _isSelectable;
         protected set => _isSelectable = value;
     }
 
-    void Awake()
+    protected virtual void OnValidate()
     {
         if (_nearbyTrigger == null)
         {
-            _nearbyTrigger = GetComponentInChildren<ProxyTrigger>();
+            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume");
         }
 
         if (_highlightBehaviour == null)
         {
             _highlightBehaviour = GetComponent<HighlightBehaviour>();
         }
-
-        _nearbyTrigger.OnEnter += OnProxyTriggerEnter;
-        _nearbyTrigger.OnExit += OnProxyTriggerExit;
-
-        OnAwake();
     }
 
-    public void SetState(SelectState state)
+    protected virtual void Awake()
+    {
+        _nearbyTrigger.Enter += OnProxyTriggerEnter;
+        _nearbyTrigger.Exit += OnProxyTriggerExit;
+    }
+    
+    public void SetSelectState(SelectState state)
     {
         if (state == SelectState.Default)
         {
@@ -80,16 +70,14 @@ public class Selectable : MonoBehaviour
         // TODO: highlight shader
         if (state == HoverState.Selected)
         {
-            _highlightBehaviour.EnableHighlight(enabled: true);
+            _highlightBehaviour.SetHighlight(enabled: true);
         }
         else
         {
             // disable highlight
-            _highlightBehaviour.EnableHighlight(enabled: false);
+            _highlightBehaviour.SetHighlight(enabled: false);
         }
     }
-
-    protected virtual void OnAwake() {}
 
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)
@@ -115,8 +103,6 @@ public class Selectable : MonoBehaviour
 public interface IInteractable
 {
     public void OnInteractStart();
-
     public void OnInteractEnd();
- 
     public bool Enabled {get;}
 }

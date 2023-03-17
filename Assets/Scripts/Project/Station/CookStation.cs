@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CookStation : Station
+public class CookStation : StationBehaviour
 {
-    [Space(15f)]
     [SerializeField]
     private float _cookTimePerIngredient;
 
@@ -26,19 +23,19 @@ public class CookStation : Station
         Cook(_container);
     }
 
-    protected override bool ValidatePlacedItem(Carryable item)
+    public override bool ValidateItem(Carryable item)
     {
         return item is CookContainer;
     }
 
-    protected override void OnItemPlaced(Carryable item)
+    public override void ItemPlaced(ref Carryable item)
     {
         // limit type casting by caching CookContainer reference
         _container = item as CookContainer;
         _containerExists = _container != null;
     }
 
-    protected override void OnItemRemoved(Carryable item)
+    public override void ItemRemoved(ref Carryable item)
     {
         _container = null;
         _containerExists = false;
@@ -79,8 +76,5 @@ public class CookStation : Station
         }
     }
 
-    void OnCookComplete()
-    {
-        
-    }
+    void OnCookComplete() {}
 }
