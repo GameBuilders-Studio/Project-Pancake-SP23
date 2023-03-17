@@ -1,7 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ServingStation : Station
 {
+    [SerializeField] private OrderSystem _orderSystem;
     protected override void OnItemPlaced(Carryable item)
     {
         Debug.Log("Called OnItemPlaced");
@@ -13,10 +15,12 @@ public class ServingStation : Station
         //Only Accept dish, don't accept ingredient
         if (item is FoodContainer container)
         {
-            if (isOrderCorrect(container))
+            List<IngredientType> ingredientTypes = new();
+            foreach (var ingredient in container.Ingredients)
             {
-                EventManager.Invoke("IncrementingScore");
+                ingredientTypes.Add(ingredient.Type);
             }
+            _orderSystem.CheckOrderMatch(ingredientTypes);
             container.ClearIngredients();
             Destroy(container.gameObject);
             return true;
