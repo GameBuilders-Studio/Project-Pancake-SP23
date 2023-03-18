@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public enum HoverState { Selected, Deselected }
 
 public enum SelectState { Default, Disabled }
 
+[RequireComponent(typeof(ItemBehaviourCollection))]
 public class Selectable : MonoBehaviour
 {
     [SerializeField]
@@ -16,8 +18,13 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private bool _highlightOnHover = true;
 
+    [SerializeField]
+    private ItemBehaviourCollection _interactions;
+
     private bool _isSelectable = true;
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
+
+    public ItemBehaviourCollection Interactions => _interactions;
 
     public virtual bool IsSelectable
     {
@@ -25,16 +32,19 @@ public class Selectable : MonoBehaviour
         protected set => _isSelectable = value;
     }
 
-    protected virtual void OnValidate()
+    void OnValidate()
     {
-        if (_nearbyTrigger == null)
-        {
-            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume");
+        if (_nearbyTrigger == null) 
+        { 
+            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume"); 
         }
-
-        if (_highlightBehaviour == null)
-        {
-            _highlightBehaviour = GetComponent<HighlightBehaviour>();
+        if (_highlightBehaviour == null) 
+        { 
+            _highlightBehaviour = GetComponent<HighlightBehaviour>(); 
+        }
+        if (_interactions == null)
+        { 
+            _interactions = GetComponent<ItemBehaviourCollection>(); 
         }
     }
 
@@ -98,11 +108,4 @@ public class Selectable : MonoBehaviour
             _nearbyPlayers.Remove(other.gameObject);
         }
     }
-}
-
-public interface IInteractable
-{
-    public void OnInteractStart();
-    public void OnInteractEnd();
-    public bool Enabled {get;}
 }

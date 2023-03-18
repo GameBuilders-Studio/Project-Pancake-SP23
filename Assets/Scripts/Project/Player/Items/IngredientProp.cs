@@ -4,7 +4,7 @@ using CustomAttributes;
 /// <summary>
 ///  Handles ingredient object behaviour
 /// </summary>
-public class IngredientProp : MonoBehaviour
+public class IngredientProp : Combinable
 {
     [ProgressBar("Progress", 1.0f, EColor.Green)]
     public float _progressIndicator = 0.0f;
@@ -44,5 +44,15 @@ public class IngredientProp : MonoBehaviour
     protected virtual void OnProgressUpdate(float progress)
     {
         // handle visual behaviour of ingredient
+    }
+
+    public override bool TryAddItem(ItemBehaviourCollection other)
+    {
+        if (other.TryGetBehaviour(out FoodContainer foodContainer))
+        {
+            return foodContainer.TryAddIngredientProp(this);
+        }
+
+        return false;
     }
 }

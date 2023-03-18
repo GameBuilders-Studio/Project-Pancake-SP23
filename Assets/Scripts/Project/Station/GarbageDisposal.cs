@@ -9,7 +9,7 @@ public class GarbageDisposal : StationBehaviour
 
     public override bool ValidateItem(Carryable item)
     {
-        if (item is FoodContainer container)
+        if (item.Collection.TryGetBehaviour(out FoodContainer container))
         {
             container.ClearIngredients();
             return false;

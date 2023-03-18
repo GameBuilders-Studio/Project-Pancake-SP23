@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ChoppingStation : StationBehaviour, IInteractable
 {
-    [Space(15f)]
     [SerializeField]
     private float _totalChopTime;
 
@@ -34,7 +33,7 @@ public class ChoppingStation : StationBehaviour, IInteractable
 
     public override void ItemPlaced(ref Carryable item)
     {
-        item.TryGetComponent(out _ingredient);
+        item.Collection.TryGetBehaviour(out _ingredient);
         _ingredientExists = _ingredient != null;
     }
 

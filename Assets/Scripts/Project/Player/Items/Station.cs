@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Station : Selectable
+[RequireComponent(typeof(Selectable))]
+public class Station : Combinable
 {
-    [Space(15f)]
     [SerializeField]
     private StationBehaviour _stationBehaviour;
 
@@ -15,19 +15,17 @@ public class Station : Selectable
     [SerializeField]
     private Carryable _placedItem;
 
-    public Carryable PlacedItem 
+    public Carryable PlacedItem
     {
         get => _placedItem;
         protected set => _placedItem = value;
     }
 
-    protected override void OnValidate()
+    void OnValidate()
     {
-        base.OnValidate();
-
         if (_catchTrigger == null)
         {
-           _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume");
+           _catchTrigger = ProxyTrigger.FindByName(gameObject, "CatchVolume", emitWarning: false);
         }
 
         if (_stationBehaviour == null)
@@ -39,10 +37,12 @@ public class Station : Selectable
         CenterObject(_placedItem);
     }
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-        _catchTrigger.Enter += TryCatchItem;
+        if (_catchTrigger != null)
+        {
+            _catchTrigger.Enter += TryCatchItem;
+        }
     }
 
     void Start()
@@ -54,7 +54,7 @@ public class Station : Selectable
     public virtual Carryable PopCarryableItem()
     {
         var item = PlacedItem;
-        _stationBehaviour.ItemRemoved(ref item);
+        _stationBehaviour?.ItemRemoved(ref item);
         PlacedItem = null;
         return item;
     }
@@ -62,31 +62,23 @@ public class Station : Selectable
     /// <summary>
     /// Returns true if the item is placed succesfully
     /// </summary>
-    public virtual bool TryPlaceItem(Carryable item)
+    public override bool TryAddItem(ItemBehaviourCollection other)
     {
+        if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
+
         if (PlacedItem == null)
         {
-            if (!_stationBehaviour.ValidateItem(item))
+            if (_stationBehaviour && !_stationBehaviour.ValidateItem(carryable))
             {
                 return false; 
             }
-            PlaceItem(item);
+            PlaceItem(carryable);
             return true;
         }
 
-        if (PlacedItem is FoodContainer placedContainer)
+        if (PlacedItem.Collection.TryGetBehaviourType(out Combinable combinable))
         {
-            return placedContainer.TryAddItem(item);
-        }
-
-        // place the container if it destroys the placed item
-        if (item is FoodContainer container)
-        {
-            if (container.TryAddItem(PlacedItem))
-            {
-                PlaceItem(item);
-                return true;
-            }
+            return combinable.TryAddItem(other);
         }
 
         return false; 
@@ -100,7 +92,7 @@ public class Station : Selectable
         if (!other.TryGetComponent(out Carryable item)) { return; }
         if (!item.PhysicsEnabled) { return; }
         item.CancelThrow();
-        TryPlaceItem(item);
+        TryAddItem(item.Collection);
     }
 
     public void PlaceItem(Carryable item)
@@ -108,7 +100,7 @@ public class Station : Selectable
         PlacedItem = item;
         item.OnPlace();
         CenterObject(item);
-        _stationBehaviour.ItemPlaced(ref item);
+        _stationBehaviour?.ItemPlaced(ref item);
     }
 
     private void CenterObject(Carryable item)

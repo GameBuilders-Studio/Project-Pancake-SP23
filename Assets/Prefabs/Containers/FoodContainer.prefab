@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 9059498309148403142}
   - component: {fileID: 9059498309148403165}
   - component: {fileID: 9059498309148403167}
+  - component: {fileID: 1413373083386298876}
+  - component: {fileID: 1780998756161429767}
+  - component: {fileID: 7653842725219283576}
   m_Layer: 0
   m_Name: FoodContainer
   m_TagString: Untagged
@@ -130,12 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 9059498310111909953}
-  _highlightBehaviour: {fileID: 0}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _throwSettings: {fileID: 0}
-  _gravityScale: 2.5
+  Owner: {fileID: 7653842725219283576}
   _capacity: 2
   _ingredients: []
 --- !u!114 &9059498309148403167
@@ -153,6 +151,52 @@ MonoBehaviour:
   _slopeBehaviour: 2
   _slopeLimit: 0
   _slopeLimitCos: 1
+--- !u!114 &1413373083386298876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nearbyTrigger: {fileID: 9059498310111909953}
+  _highlightBehaviour: {fileID: 0}
+  _highlightOnHover: 1
+  _interactions: {fileID: 7653842725219283576}
+--- !u!114 &1780998756161429767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 7653842725219283576}
+  _throwSettings: {fileID: 0}
+  _gravityScale: 2.5
+--- !u!114 &7653842725219283576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Behaviours:
+  - {fileID: 9059498309148403165}
+  - {fileID: 1780998756161429767}
 --- !u!1 &9059498310111909958
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +209,7 @@ GameObject:
   - component: {fileID: 9059498310111909953}
   - component: {fileID: 9059498310111909954}
   m_Layer: 0
-  m_Name: TriggerVolume
+  m_Name: NearbyVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

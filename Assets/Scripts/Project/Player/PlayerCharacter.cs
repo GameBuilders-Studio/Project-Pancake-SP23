@@ -494,7 +494,6 @@ namespace EasyCharacterMovement
         public void OnMove(InputAction.CallbackContext context) 
         {
             _moveInput = context.ReadValue<Vector2>();
-            Debug.Log(_moveInput);
         }
 
         public void OnDash(InputAction.CallbackContext context)
@@ -1588,7 +1587,7 @@ namespace EasyCharacterMovement
             _rootMotionController = GetComponentInChildren<RootMotionController>();
 
             _playerInteraction = GetComponent<PlayerInteraction>();
-            _input.OnActionsAssigned += InitPlayerInput;
+            _input.ActionsAssigned += InitPlayerInput;
 
             // Enable late fixed update (default)
             enableLateFixedUpdate = true;

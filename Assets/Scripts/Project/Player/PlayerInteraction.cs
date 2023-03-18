@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using EasyCharacterMovement;
 
 public class PlayerInteraction : MonoBehaviour
@@ -26,7 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
     private IInteractable _lastInteracted;
-    
+
     private bool _isCarrying = false;
     private Carryable _heldItem = null;
 
@@ -65,13 +66,13 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         var selectable = GetBestSelectable();
-        
+
         // deselect previous target
         if (HoverTarget != null)
         {
             HoverTarget.SetHoverState(HoverState.Deselected);
         }
-        
+
         if (selectable != null)
         {
             HoverTarget = selectable;
@@ -115,11 +116,11 @@ public class PlayerInteraction : MonoBehaviour
 
         Carryable item = null;
 
-        if (HoverTarget is Carryable carryable)
+        if (HoverTarget.Interactions.TryGetBehaviour(out Carryable carryable))
         {
             item = carryable;
         }
-        else if (HoverTarget is Station station)
+        else if (HoverTarget.Interactions.TryGetBehaviour(out Station station))
         {
             item = station.PopCarryableItem();
         }
@@ -133,26 +134,21 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TryPlace()
     {
-        if (HoverTarget is Station station)
+        if (HoverTarget == null)
         {
-            if (IsCarrying && station.TryPlaceItem(_heldItem))
-            {
-                _heldItem.OnPlace();
-                ReleaseItem();
-            }
-            return; // keep holding items if a station is selected
+            DropItem();
+            return;
         }
 
-        if (HoverTarget is FoodContainer container)
+        var interactions = HoverTarget.Interactions;
+
+        if (interactions.TryGetBehaviourType(out Combinable combinable))
         {
-            if (container.TryAddItem(_heldItem))
+            if (combinable.TryAddItem(_heldItem.Collection))
             {
                 ReleaseItem();
             }
-            return; // keep holding item if a container is selected
         }
-
-        DropItem();
     }
 
     public void PickUpItem(Carryable item)
@@ -209,13 +205,6 @@ public class PlayerInteraction : MonoBehaviour
         ReleaseItem();
     }
 
-    private void ThrowItem()
-    {
-        _heldItem.OnThrow(transform.forward, _character.GetFootPosition().y);
-        _heldItem.transform.parent = null;
-        ReleaseItem();
-    }
-
     private void ReleaseItem()
     {
         _character.IgnoreCollision(_heldItem.Rigidbody, false);
@@ -223,10 +212,19 @@ public class PlayerInteraction : MonoBehaviour
         _heldItem = null;
     }
 
+    private void ThrowItem()
+    {
+        _heldItem.OnThrow(transform.forward, _character.GetFootPosition().y);
+        _heldItem.IgnoreCollision(_catchTrigger.Collider);
+        _heldItem.transform.parent = null;
+        ReleaseItem();
+    }
+
     private void TryCatchItem(Collider other)
     {
         if (!other.TryGetComponent(out Carryable item)) { return; }
         if (IsCarrying || !item.IsFlying) { return; }
+        item.OnPickUp();
         PickUpItem(item);
     }
 
@@ -243,9 +241,9 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         Selectable nearest = null;
-        
+
         float minAngle = Mathf.Infinity;
-        
+
         for (int i = 0; i < Nearby.Count; i++)
         {
             if (!Nearby[i].IsSelectable) { continue; }

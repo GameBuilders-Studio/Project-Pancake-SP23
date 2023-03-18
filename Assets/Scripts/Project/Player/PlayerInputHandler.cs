@@ -14,7 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public PlayerInputActions Actions;
 
-    public event UnityAction OnActionsAssigned;
+    public event UnityAction ActionsAssigned;
 
     private Vector2 _moveInput = Vector2.zero;
     public Vector2 MoveInput => _moveInput;
@@ -48,6 +48,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnActionsChanged()
     {
-        OnActionsAssigned?.Invoke();
+        ActionsAssigned?.Invoke();
     }
 }

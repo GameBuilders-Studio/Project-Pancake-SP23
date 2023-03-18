@@ -1,21 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(Rigidbody))]
-public class Carryable : Selectable
+[RequireComponent(typeof(Rigidbody), typeof(Selectable))]
+public class Carryable : ItemBehaviour
 {
-    [Space(15f)]
     [SerializeField]
     private ThrowData _throwSettings;
 
     [SerializeField]
     private float _gravityScale = 2.5f;
 
-    protected Rigidbody _rigidbody;
+    [HideInInspector] private Rigidbody _rigidbody;
+    [HideInInspector] private Collider _collider;
+    [HideInInspector] private Selectable _selectable;
 
     private bool _isFlying = false;
     private bool _isBeingCarried = false;
+
+    private List<Collider> _ignoredColliders = new();
 
     private float _currentThrowTime = 0.0f;
     private float _throwHeight;
@@ -30,10 +33,15 @@ public class Carryable : Selectable
     public bool IsFlying => _isFlying;
     public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
-    protected override void Awake()
+    void OnValidate()
     {
-        base.Awake();
         _rigidbody = GetComponent<Rigidbody>();
+        _selectable = GetComponent<Selectable>();
+        _collider = GetComponent<Collider>();
+    }
+
+    void Awake()
+    {
         EnablePhysics();
     }
     
@@ -56,25 +64,25 @@ public class Carryable : Selectable
     {
         _isBeingCarried = true;
         _isFlying = false;
-        SetSelectState(SelectState.Disabled);
+        _selectable.SetSelectState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnPlace()
     {
         _isBeingCarried = false;
-        SetSelectState(SelectState.Disabled);
+        _selectable.SetSelectState(SelectState.Disabled);
         DisablePhysics();
     }
 
     public void OnDrop()
     {
         _isBeingCarried = false;
-        SetSelectState(SelectState.Default);
+        _selectable.SetSelectState(SelectState.Default);
         EnablePhysics();
     }
 
-    public void OnThrow(Vector3 direction, float footHeight)
+    public void OnThrow(Vector3 direction, float footHeight, Collider colliderToIgnore = null)
     {
         _isFlying = true;
         _isBeingCarried = false;
@@ -90,30 +98,51 @@ public class Carryable : Selectable
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        SetSelectState(SelectState.Disabled);
+        if (colliderToIgnore)
+        {
+            IgnoreCollision(colliderToIgnore, ignore: true);
+        }
+
+        _selectable.SetSelectState(SelectState.Disabled);
     }
 
     public void CancelThrow()
     {
         _isFlying = false;
         _currentThrowTime = 0.0f;
-        SetSelectState(SelectState.Default);
+        _selectable.SetSelectState(SelectState.Default);
         EnablePhysics();
+        ClearIgnoredCollisions();
+    }
+
+    public void IgnoreCollision(Collider other, bool ignore = true)
+    {
+        Physics.IgnoreCollision(other, _collider, ignore);
+        _ignoredColliders.Add(other);
+    }
+
+    private void ClearIgnoredCollisions()
+    {
+        foreach (Collider collider in _ignoredColliders)
+        {
+            Physics.IgnoreCollision(collider, _collider, ignore: false);
+        }
+        _ignoredColliders.Clear();
     }
     
-    void EnablePhysics()
+    private void EnablePhysics()
     {
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
-    void DisablePhysics()
+    private void DisablePhysics()
     {
         Rigidbody.isKinematic = true;
         Rigidbody.interpolation = RigidbodyInterpolation.None;
     }
 
-    void ThrowUpdate()
+    private void ThrowUpdate()
     {
         float throwDuration = _throwSettings.ThrowDurationSeconds;
         AnimationCurve trajectory = _throwSettings.Trajectory;

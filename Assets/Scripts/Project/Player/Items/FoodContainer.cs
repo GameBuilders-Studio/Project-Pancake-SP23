@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodContainer : Carryable
+public class FoodContainer : Combinable
 {
-    [Space(15f)]
     [SerializeField]
     private int _capacity;
     
@@ -16,8 +15,6 @@ public class FoodContainer : Carryable
     public bool IsFull => _ingredients.Count == _capacity;
     public bool IsEmpty => _ingredients.Count == 0;
 
-    public override bool IsEverThrowable => false;
-
     public List<Ingredient> Ingredients
     {
         get => _ingredients;
@@ -27,14 +24,14 @@ public class FoodContainer : Carryable
     /// <summary>
     /// Returns true if the item is destroyed when added to this container
     /// </summary>
-    public bool TryAddItem(Carryable item)
+    public override bool TryAddItem(ItemBehaviourCollection other)
     {
-        if (item.TryGetComponent(out IngredientProp ingredientProp))
+        if (other.TryGetBehaviour(out IngredientProp ingredientProp))
         {
-            return TryAddIngredient(ingredientProp);
+            return TryAddIngredientProp(ingredientProp);
         }
 
-        if (item is FoodContainer foodContainer)
+        if (other.TryGetBehaviour(out FoodContainer foodContainer))
         {
             if (IsEmpty && !foodContainer.IsEmpty)
             {
@@ -55,7 +52,7 @@ public class FoodContainer : Carryable
         return false;
     }
 
-    public bool TryAddIngredient(IngredientProp ingredient)
+    public bool TryAddIngredientProp(IngredientProp ingredient)
     {
         if (!ValidateIngredient(ingredient.Data)) { return false; }
 

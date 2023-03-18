@@ -59,25 +59,44 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3105630587809780605, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _highlightOnHover
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105630587809780605, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _itemInteractions
+      value: 
+      objectReference: {fileID: 2638106814761321416}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Owner
+      value: 
+      objectReference: {fileID: 2638106814761321416}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _stationBehaviour
+      value: 
+      objectReference: {fileID: 6233733899822971758}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[1]
+      value: 
+      objectReference: {fileID: 6233733899822971758}
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
---- !u!114 &3656883382528517788 stripped
+--- !u!114 &2638106814761321416 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5436622889255518100, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_PrefabInstance: {fileID: 8776706128838990088}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8533694510245877386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65998c8c7ca0ff14e82e1844ba9e733e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6270819285653955741 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-  m_PrefabInstance: {fileID: 8776706128838990088}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8533694510245877386 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -95,11 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83252f1fd1dce448a12b02a4bcfa84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 3656883382528517788}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _itemHolderPivot: {fileID: 6270819285653955741}
-  _placedItem: {fileID: 0}
+  Owner: {fileID: 2638106814761321416}
   _cookTimePerIngredient: 5
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
   _cooking: 0

@@ -25,14 +25,13 @@ public class CookStation : StationBehaviour
 
     public override bool ValidateItem(Carryable item)
     {
-        return item is CookContainer;
+        return true;
     }
 
     public override void ItemPlaced(ref Carryable item)
     {
         // limit type casting by caching CookContainer reference
-        _container = item as CookContainer;
-        _containerExists = _container != null;
+        _containerExists = item.Collection.TryGetBehaviour(out _container);
     }
 
     public override void ItemRemoved(ref Carryable item)

@@ -1,11 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Station))]
-public class StationBehaviour : MonoBehaviour
+public class StationBehaviour : ItemBehaviour
 {
-    public virtual bool ValidateItem(Carryable item) => true;
-
-    public virtual void ItemPlaced(ref Carryable item) {}
-
-    public virtual void ItemRemoved(ref Carryable item) {}
+    public virtual bool ValidateItem(Carryable carryable) => true;
+    public virtual void ItemPlaced(ref Carryable carryable) {}
+    public virtual void ItemRemoved(ref Carryable carryable) {}
 }
