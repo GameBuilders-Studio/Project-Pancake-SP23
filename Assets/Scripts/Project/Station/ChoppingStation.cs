@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class ChoppingStation : StationBehaviour, IInteractable
+public class ChoppingStation : StationBehaviour, IUsable
 {
     [SerializeField]
-    private float _totalChopTime;
+    private float _chopTimeSeconds;
 
     [SerializeField]
     private IngredientStateData _targetIngredientState;
@@ -12,7 +12,7 @@ public class ChoppingStation : StationBehaviour, IInteractable
     private bool _ingredientExists = false;
     private IngredientProp _ingredient;
 
-    bool IInteractable.Enabled
+    bool IUsable.Enabled
     {
         get => _ingredientExists && !_ingredient.ProgressComplete;
     }
@@ -22,9 +22,9 @@ public class ChoppingStation : StationBehaviour, IInteractable
         if (_interacting) { Chop(); }
     }
 
-    public void OnInteractStart() => _interacting = true;
+    public void OnUseStart() => _interacting = true;
 
-    public void OnInteractEnd() => _interacting = false;
+    public void OnUseEnd() => _interacting = false;
 
     public override bool ValidateItem(Carryable item)
     {
@@ -33,8 +33,7 @@ public class ChoppingStation : StationBehaviour, IInteractable
 
     public override void ItemPlaced(ref Carryable item)
     {
-        item.Collection.TryGetBehaviour(out _ingredient);
-        _ingredientExists = _ingredient != null;
+        _ingredientExists = item.Entity.TryGetBehaviour(out _ingredient);
     }
 
     public override void ItemRemoved(ref Carryable item)
@@ -47,6 +46,6 @@ public class ChoppingStation : StationBehaviour, IInteractable
     {
         // IInteractable.Enabled check ensures _ingredient exists
         _ingredient.Data.SetState(_targetIngredientState);
-        _ingredient.AddProgress(Time.deltaTime / _totalChopTime);
+        _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Station))]
-public class StationBehaviour : ItemBehaviour
+public class StationBehaviour : InteractionBehaviour
 {
     public virtual bool ValidateItem(Carryable carryable) => true;
     public virtual void ItemPlaced(ref Carryable carryable) {}

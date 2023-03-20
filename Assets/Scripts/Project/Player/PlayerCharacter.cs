@@ -484,7 +484,7 @@ namespace EasyCharacterMovement
 
         #endregion
 
-        #region INPUT ACTION HANDLERS
+        #region INPUT CALLBACK METHODS
 
         protected Vector2 GetMovementInput()
         {
@@ -514,18 +514,18 @@ namespace EasyCharacterMovement
 
         public void OnInteract(InputAction.CallbackContext context)
         {
-            if (context.started || context.performed)
+            if (context.started)
             {
                 //Player cannot move while interacting with an object
                 SetMovementMode(MovementMode.None);
-                _playerInteraction.OnInteractStart();
+                _playerInteraction.OnUseStart();
             }
 
             if (context.canceled)
             {
                 //Player can move again after interacting with an object
                 SetMovementMode(MovementMode.Walking);
-                _playerInteraction.OnInteractEnd();
+                _playerInteraction.OnUseEnd();
             }
         }
 

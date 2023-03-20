@@ -6,8 +6,7 @@ public enum HoverState { Selected, Deselected }
 
 public enum SelectState { Default, Disabled }
 
-[RequireComponent(typeof(ItemBehaviourCollection))]
-public class Selectable : MonoBehaviour
+public class Selectable : InteractionBehaviour
 {
     [SerializeField]
     private ProxyTrigger _nearbyTrigger;
@@ -18,13 +17,8 @@ public class Selectable : MonoBehaviour
     [SerializeField]
     private bool _highlightOnHover = true;
 
-    [SerializeField]
-    private ItemBehaviourCollection _interactions;
-
     private bool _isSelectable = true;
     private Dictionary<GameObject, PlayerInteraction> _nearbyPlayers = new();
-
-    public ItemBehaviourCollection Interactions => _interactions;
 
     public virtual bool IsSelectable
     {
@@ -41,10 +35,6 @@ public class Selectable : MonoBehaviour
         if (_highlightBehaviour == null) 
         { 
             _highlightBehaviour = GetComponent<HighlightBehaviour>(); 
-        }
-        if (_interactions == null)
-        { 
-            _interactions = GetComponent<ItemBehaviourCollection>(); 
         }
     }
 

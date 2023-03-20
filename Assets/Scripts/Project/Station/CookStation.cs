@@ -31,7 +31,7 @@ public class CookStation : StationBehaviour
     public override void ItemPlaced(ref Carryable item)
     {
         // limit type casting by caching CookContainer reference
-        _containerExists = item.Collection.TryGetBehaviour(out _container);
+        _containerExists = item.Entity.TryGetBehaviour(out _container);
     }
 
     public override void ItemRemoved(ref Carryable item)

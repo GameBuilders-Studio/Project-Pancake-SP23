@@ -384,6 +384,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: Behaviours.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7605582599296834490, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -556,6 +564,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: Behaviours.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7605582599296834490, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -715,6 +731,10 @@ PrefabInstance:
       propertyPath: _highlightOnHover
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6516423561780509169, guid: 56d84013745bd404d834ea2ec887653c, type: 3}
+      propertyPath: _throwSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
     - target: {fileID: 9059498309148403138, guid: 56d84013745bd404d834ea2ec887653c, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -898,6 +918,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7653842725219283576, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7653842725219283576, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
+      propertyPath: Behaviours.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9059498309148403138, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -945,10 +973,6 @@ PrefabInstance:
     - target: {fileID: 9059498309148403140, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
       propertyPath: m_Name
       value: FoodContainer (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9059498309148403165, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
-      propertyPath: _capacity
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
@@ -1291,6 +1315,14 @@ PrefabInstance:
     - target: {fileID: 5980901022417077901, guid: eb8b0d90514cd4f9d8b419f73a9c809e, type: 3}
       propertyPath: _isEverSelectable
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542368995087027349, guid: eb8b0d90514cd4f9d8b419f73a9c809e, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542368995087027349, guid: eb8b0d90514cd4f9d8b419f73a9c809e, type: 3}
+      propertyPath: Behaviours.Array.data[3]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb8b0d90514cd4f9d8b419f73a9c809e, type: 3}

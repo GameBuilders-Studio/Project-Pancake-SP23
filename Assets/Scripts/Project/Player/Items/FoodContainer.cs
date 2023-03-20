@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodContainer : Combinable
+public class FoodContainer : InteractionBehaviour, ICombinable
 {
     [SerializeField]
     private int _capacity;
@@ -24,7 +24,7 @@ public class FoodContainer : Combinable
     /// <summary>
     /// Returns true if the item is destroyed when added to this container
     /// </summary>
-    public override bool TryAddItem(ItemBehaviourCollection other)
+    public bool TryCombineWith(InteractableEntity other)
     {
         if (other.TryGetBehaviour(out IngredientProp ingredientProp))
         {

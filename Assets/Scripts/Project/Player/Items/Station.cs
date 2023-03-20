@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Selectable))]
-public class Station : Combinable
+public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 {
     [SerializeField]
     private StationBehaviour _stationBehaviour;
@@ -51,7 +51,7 @@ public class Station : Combinable
         PlaceItem(_placedItem);
     }
 
-    public virtual Carryable PopCarryableItem()
+    public Carryable PopCarryable()
     {
         var item = PlacedItem;
         _stationBehaviour?.ItemRemoved(ref item);
@@ -62,7 +62,7 @@ public class Station : Combinable
     /// <summary>
     /// Returns true if the item is placed succesfully
     /// </summary>
-    public override bool TryAddItem(ItemBehaviourCollection other)
+    public bool TryCombineWith(InteractableEntity other)
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
@@ -76,9 +76,9 @@ public class Station : Combinable
             return true;
         }
 
-        if (PlacedItem.Collection.TryGetBehaviourType(out Combinable combinable))
+        if (PlacedItem.Entity.TryGetInterface(out ICombinable combinable))
         {
-            return combinable.TryAddItem(other);
+            return combinable.TryCombineWith(other);
         }
 
         return false; 
@@ -92,7 +92,7 @@ public class Station : Combinable
         if (!other.TryGetComponent(out Carryable item)) { return; }
         if (!item.PhysicsEnabled) { return; }
         item.CancelThrow();
-        TryAddItem(item.Collection);
+        TryCombineWith(item.Entity);
     }
 
     public void PlaceItem(Carryable item)

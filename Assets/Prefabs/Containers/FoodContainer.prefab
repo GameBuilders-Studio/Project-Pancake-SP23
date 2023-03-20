@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 7653842725219283576}
+  Interactable: {fileID: 0}
   _capacity: 2
   _ingredients: []
 --- !u!114 &9059498309148403167
@@ -179,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 7653842725219283576}
-  _throwSettings: {fileID: 0}
+  Interactable: {fileID: 0}
+  _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
   _gravityScale: 2.5
 --- !u!114 &7653842725219283576
 MonoBehaviour:

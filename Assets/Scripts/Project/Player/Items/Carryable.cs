@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using CustomAttributes;
 
 [RequireComponent(typeof(Rigidbody), typeof(Selectable))]
-public class Carryable : ItemBehaviour
+public class Carryable : InteractionBehaviour, IHasCarryable
 {
     [SerializeField]
     private ThrowData _throwSettings;
@@ -11,12 +12,14 @@ public class Carryable : ItemBehaviour
     [SerializeField]
     private float _gravityScale = 2.5f;
 
+    [SerializeField]
+    [ReadOnly]
+    private Selectable _selectable;
+
     [HideInInspector] private Rigidbody _rigidbody;
     [HideInInspector] private Collider _collider;
-    [HideInInspector] private Selectable _selectable;
 
     private bool _isFlying = false;
-    private bool _isBeingCarried = false;
 
     private List<Collider> _ignoredColliders = new();
 
@@ -26,10 +29,8 @@ public class Carryable : ItemBehaviour
 
     public Rigidbody Rigidbody => _rigidbody;
 
-    public virtual bool IsEverThrowable => true;
-    public bool CanThrow => IsEverThrowable && _throwSettings != null;
-    
-    public bool IsBeingCarried => _isBeingCarried;
+    public bool CanThrow => _throwSettings != null && _throwSettings.IsThrowable;
+
     public bool IsFlying => _isFlying;
     public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
@@ -42,7 +43,7 @@ public class Carryable : ItemBehaviour
 
     void Awake()
     {
-        EnablePhysics();
+        EnablePhysicsAndSelection();
     }
     
     void FixedUpdate()
@@ -62,30 +63,23 @@ public class Carryable : ItemBehaviour
 
     public void OnPickUp()
     {
-        _isBeingCarried = true;
         _isFlying = false;
-        _selectable.SetSelectState(SelectState.Disabled);
-        DisablePhysics();
+        DisablePhysicsAndSelection();
     }
 
     public void OnPlace()
     {
-        _isBeingCarried = false;
-        _selectable.SetSelectState(SelectState.Disabled);
-        DisablePhysics();
+        DisablePhysicsAndSelection();
     }
 
     public void OnDrop()
     {
-        _isBeingCarried = false;
-        _selectable.SetSelectState(SelectState.Default);
-        EnablePhysics();
+        EnablePhysicsAndSelection();
     }
 
     public void OnThrow(Vector3 direction, float footHeight, Collider colliderToIgnore = null)
     {
         _isFlying = true;
-        _isBeingCarried = false;
         transform.parent = null;
 
         _throwDirection = direction;
@@ -110,8 +104,7 @@ public class Carryable : ItemBehaviour
     {
         _isFlying = false;
         _currentThrowTime = 0.0f;
-        _selectable.SetSelectState(SelectState.Default);
-        EnablePhysics();
+        EnablePhysicsAndSelection();
         ClearIgnoredCollisions();
     }
 
@@ -130,16 +123,18 @@ public class Carryable : ItemBehaviour
         _ignoredColliders.Clear();
     }
     
-    private void EnablePhysics()
+    private void EnablePhysicsAndSelection()
     {
         Rigidbody.isKinematic = false;
         Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        _selectable.SetSelectState(SelectState.Default);
     }
 
-    private void DisablePhysics()
+    private void DisablePhysicsAndSelection()
     {
         Rigidbody.isKinematic = true;
         Rigidbody.interpolation = RigidbodyInterpolation.None;
+        _selectable.SetSelectState(SelectState.Disabled);
     }
 
     private void ThrowUpdate()
@@ -167,5 +162,10 @@ public class Carryable : ItemBehaviour
         }
 
         Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
+    }
+
+    public Carryable PopCarryable()
+    {
+        return this;
     }
 }
