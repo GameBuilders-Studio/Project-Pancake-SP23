@@ -54,7 +54,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7605582599255157697}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.6
@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 7605582599296834486}
   - component: {fileID: 79977836911095686}
   - component: {fileID: 3857198461237242431}
+  - component: {fileID: 1055438650720953735}
   m_Layer: 0
   m_Name: IngredientBase
   m_TagString: Untagged
@@ -222,7 +223,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nearbyTrigger: {fileID: 7605582599255157724}
-  _isEverSelectable: 1
+  _highlightBehaviour: {fileID: 1055438650720953735}
   _highlightOnHover: 1
   _throwSettings: {fileID: 11400000, guid: b190fc41700cdff4d93a2f993db2b0ab, type: 2}
   _gravityScale: 2.5
+--- !u!114 &1055438650720953735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605582599296834493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 7605582599296834488}
+  _selectMaterial: {fileID: 2100000, guid: 54f7c51ced583a24da386e47f22d05ec, type: 2}
