@@ -13,10 +13,12 @@ public class InteractionDictionary : SerializableDictionary<SerializableType, In
 public class InteractableEntity : InteractionProvider
 {
     [SerializeField]
+    [ReadOnly]
     [ValidateInput("NoDuplicates", "Multiple InteractionBehaviours cannot inherit from the same class or interface")]
     public List<InteractionBehaviour> Behaviours;
 
     [SerializeField]
+    [ReadOnly]
     public List<string> Interfaces;
 
     [SerializeField]

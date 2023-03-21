@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adac6444d7c784b4c9c140aca683c3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 4406467074838959325}
-  _capacity: 3
+  _entity: {fileID: 4406467074838959325}
+  _containerSettings: {fileID: 11400000, guid: de0dc9e371c5fe145bdd742d1209361b, type: 2}
   _ingredients: []
 --- !u!114 &1413373083386298876
 MonoBehaviour:
@@ -163,10 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 4406467074838959325}
+  _entity: {fileID: 4406467074838959325}
   _nearbyTrigger: {fileID: 9059498310111909953}
   _highlightBehaviour: {fileID: 0}
   _highlightOnHover: 1
+  _isSelectable: 1
 --- !u!114 &4406467074838959325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +184,27 @@ MonoBehaviour:
   - {fileID: 5308514574281159156}
   - {fileID: 1413373083386298876}
   - {fileID: 6516423561780509169}
+  Interfaces:
+  - ICombinable
+  - IHasCarryable
+  _typeToBehaviourSerialized:
+    m_keys:
+    - typeId: Pot, Containers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 5308514574281159156}
+    - {fileID: 5308514574281159156}
+    - {fileID: 1413373083386298876}
+    - {fileID: 6516423561780509169}
+  _typeToInterfaceSerialized:
+    m_keys:
+    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 5308514574281159156}
+    - {fileID: 6516423561780509169}
 --- !u!114 &6516423561780509169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,10 +217,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 4406467074838959325}
+  _entity: {fileID: 4406467074838959325}
   _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 1413373083386298876}
+  _rigidbody: {fileID: 9059498309148403142}
+  _collider: {fileID: 9059498309148403164}
 --- !u!1 &9059498310111909958
 GameObject:
   m_ObjectHideFlags: 0

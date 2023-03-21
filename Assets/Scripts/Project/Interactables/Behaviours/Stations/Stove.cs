@@ -12,7 +12,7 @@ public class Stove : StationController
     private bool _cooking = false;
 
     private float _totalProgress = 0.0f;
-    private CookContainer _container;
+    private Pot _container;
     private bool _containerExists = false;
 
     public float TotalProgress => _totalProgress;
@@ -30,7 +30,7 @@ public class Stove : StationController
 
     public override void ItemPlaced(ref Carryable item)
     {
-        // limit type casting by caching CookContainer reference
+        // limit type casting by caching Pot reference
         _containerExists = item.TryGetBehaviour(out _container);
     }
 
@@ -41,7 +41,7 @@ public class Stove : StationController
     }
 
     // we need to cook jesse
-    void Cook(CookContainer container)
+    void Cook(Pot container)
     {
         _totalProgress = 0.0f;
 

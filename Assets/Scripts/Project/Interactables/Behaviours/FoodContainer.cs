@@ -4,15 +4,15 @@ using UnityEngine;
 public class FoodContainer : InteractionBehaviour, ICombinable
 {
     [SerializeField]
-    private int _capacity;
-    
+    private FoodContainerData _containerSettings;
+
     [SerializeField]
     private List<Ingredient> _ingredients = new();
 
     public int Count => _ingredients.Count;
-    public int Capacity => _capacity;
+    public int Capacity => _containerSettings.Capacity;
 
-    public bool IsFull => _ingredients.Count == _capacity;
+    public bool IsFull => _ingredients.Count == Capacity;
     public bool IsEmpty => _ingredients.Count == 0;
 
     public List<Ingredient> Ingredients
@@ -97,7 +97,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
-        return ingredient != null;
+        return ingredient.ProgressComplete && _containerSettings.IsIngredientAllowed(ingredient);
     }
 
     /// <summary>

@@ -19,6 +19,7 @@ public class Selectable : InteractionBehaviour
     private bool _highlightOnHover = true;
 
     [SerializeField]
+    [ReadOnly]
     private bool _isSelectable = true;
 
     public static readonly Dictionary<GameObject, List<Selectable>> NearbyObjects = new();
