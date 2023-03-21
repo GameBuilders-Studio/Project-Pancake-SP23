@@ -72,15 +72,23 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2638106814761321416}
     - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _controller
+      value: 
+      objectReference: {fileID: 6233733899822971758}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _stationBehaviour
       value: 
       objectReference: {fileID: 6233733899822971758}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: Behaviours.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: Behaviours.Array.data[1]
+      value: 
+      objectReference: {fileID: 5968524227652635253}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[2]
       value: 
       objectReference: {fileID: 6233733899822971758}
     m_RemovedComponents:
@@ -95,6 +103,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5968524227652635253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3105630587809780605, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 8776706128838990088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8533694510245877386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8533694510245877386 stripped
@@ -114,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83252f1fd1dce448a12b02a4bcfa84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 2638106814761321416}
+  Entity: {fileID: 2638106814761321416}
   _cookTimePerIngredient: 5
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
   _cooking: 0

@@ -68,9 +68,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 134681984994358456}
     - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _controller
+      value: 
+      objectReference: {fileID: 1577762749795549895}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _stationBehaviour
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[2]
+      value: 
+      objectReference: {fileID: 1577762749795549895}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
 --- !u!114 &134681984994358456 stripped
@@ -78,9 +90,27 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_PrefabInstance: {fileID: 6669570600633659000}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5994231006242103802}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5994231006242103802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 6669570600633659000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1577762749795549895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994231006242103802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54128f7b933efbb4e9d1dedfef938e33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entity: {fileID: 134681984994358456}

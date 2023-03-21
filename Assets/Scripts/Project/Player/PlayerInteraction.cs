@@ -8,6 +8,9 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private List<Selectable> _nearby;
 
+    [SerializeField]
+    private Carryable _heldItem = null;
+
     [Tooltip("Transform to place carried items in")]
     [SerializeField]
     private Transform _carryPivot;
@@ -29,7 +32,6 @@ public class PlayerInteraction : MonoBehaviour
     private IUsable _lastUsed;
 
     private bool _isCarrying = false;
-    private Carryable _heldItem = null;
 
     public bool IsCarrying => _isCarrying;
 
@@ -56,6 +58,12 @@ public class PlayerInteraction : MonoBehaviour
         Nearby = new();
         _character = GetComponent<CharacterMovement>();
         _catchTrigger.Enter += TryCatchItem;
+        Selectable.AddListener(gameObject, _nearby);
+    }
+
+    void OnDisable()
+    {
+        Selectable.RemoveListener(gameObject);
     }
 
     void Update()
@@ -117,12 +125,11 @@ public class PlayerInteraction : MonoBehaviour
 
         if (HoverTarget.Entity.TryGetInterface(out IHasCarryable hasCarryable))
         {
+            Debug.Log("pop!");
             item = hasCarryable.PopCarryable();
         }
 
-        if (item == null) { return; }
-
-        item.OnPickUp();
+        if (item == null) { Debug.Log("no carryable"); return; }
 
         PickUpItem(item);
     }
@@ -157,6 +164,8 @@ public class PlayerInteraction : MonoBehaviour
         _heldItem = item;
         _character.IgnoreCollision(item.Rigidbody);
 
+        item.OnPickUp();
+
         var go = item.gameObject;
 
         go.transform.parent = _carryPivot;
@@ -172,9 +181,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (HoverTarget.Entity.TryGetInterface(out IUsable usable))
         {
-            Debug.Log("has usable");
             if (!usable.Enabled) { return; }
-            Debug.Log("USING");
             usable.OnUseStart();
             _lastUsed = usable;
         }
@@ -218,7 +225,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (!other.TryGetComponent(out Carryable item)) { return; }
         if (IsCarrying || !item.IsFlying) { return; }
-        item.OnPickUp();
         PickUpItem(item);
     }
 
@@ -237,64 +243,64 @@ public class PlayerInteraction : MonoBehaviour
 
         Selectable bestSelectable = null;
         float minAngle = Mathf.Infinity;
-        float bestScore = 0.0f;
+        float bestScore = -1.0f;
 
-        for (int i = 0; i < Nearby.Count; i++)
+        foreach (var nearby in Nearby)
         {
-            if (!Nearby[i].IsSelectable) { continue; }
+            if (!nearby.IsSelectable) { continue; }
 
-            float angle = Angle2D(transform.forward, Nearby[i].transform.position - transform.position);
+            float angle = Angle2D(transform.forward, nearby.transform.position - transform.position);
             if (angle > _selectAngleRange) { continue; }
 
             float score = 0.0f;
-            var entity = Nearby[i].Entity;
+            var entity = nearby.Entity;
 
             // if not carrying anything, prefer:
             // a) IUsable
             // b) IHasCarryable
-            if (!IsCarrying)
-            {
-                bool hasUsable = entity.TryGetInterface(out IUsable _);
-                bool hasHasCarryable = entity.TryGetInterface(out IHasCarryable _);
-                if (hasUsable) 
-                { 
-                    score += 2.0f; 
-                }
-                else if (hasHasCarryable) 
-                {
-                    score += 1.0f; 
-                }
-            }
+            // if (!IsCarrying)
+            // {
+            //     bool hasUsable = entity.TryGetInterface(out IUsable _);
+            //     bool hasHasCarryable = entity.TryGetInterface(out IHasCarryable _);
+            //     if (hasUsable) 
+            //     { 
+            //         score += 2.0f; 
+            //     }
+            //     else if (hasHasCarryable) 
+            //     {
+            //         score += 1.0f; 
+            //     }
+            // }
 
-            // if carrying, prefer:
-            // a) Stations
-            // b) ICombinable
-            if (IsCarrying)
-            {
-                bool carryingCombinable = _heldItem.Entity.HasInterface<ICombinable>();
-                bool hasCombinable = entity.HasInterface<ICombinable>();
-                bool hasStation = entity.HasBehaviour<Station>();
-                if (hasStation) 
-                { 
-                    score += 2.0f; 
-                }
-                else if (hasCombinable && carryingCombinable) 
-                { 
-                    score += 1.0f; 
-                }
-            }
+            // // if carrying, prefer:
+            // // a) Stations
+            // // b) ICombinable
+            // if (IsCarrying)
+            // {
+            //     bool carryingCombinable = _heldItem.Entity.HasInterface<ICombinable>();
+            //     bool hasCombinable = entity.HasInterface<ICombinable>();
+            //     bool hasStation = entity.HasBehaviour<Station>();
+            //     if (hasStation) 
+            //     { 
+            //         score += 2.0f; 
+            //     }
+            //     else if (hasCombinable && carryingCombinable) 
+            //     { 
+            //         score += 1.0f; 
+            //     }
+            // }
 
             // angle is the tie-breaker
             if (angle < minAngle)
             {
                 minAngle = angle;
-                score += Mathf.Min(1 - (angle / minAngle), 0.999f);
+                score += Mathf.Min(1 - (angle / _selectAngleRange), 0.999f);
             }
 
             if (score > bestScore)
             {
                 bestScore = score;
-                bestSelectable = Nearby[i];
+                bestSelectable = nearby;
             }
         }
 

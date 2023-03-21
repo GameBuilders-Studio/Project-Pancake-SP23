@@ -19,20 +19,16 @@ public class PlayerInputHandler : MonoBehaviour
     private Vector2 _moveInput = Vector2.zero;
     public Vector2 MoveInput => _moveInput;
 
-    void Start()
-    {
-        if (_useAnyDevice)
-        {
-            Actions = InputManager.GetInputActionsAllDevices();
-            OnActionsChanged();
-        }
-    }
-
     void Update()
     {
         if (Actions == null)
         {
-            if (InputManager.GetInputActionsByIndex(PlayerIndex, out Actions))
+            if (_useAnyDevice)
+            {
+                Actions = InputManager.GetInputActionsAllDevices();
+                OnActionsChanged();
+            }
+            else if (InputManager.GetInputActionsByIndex(PlayerIndex, out Actions))
             {
                 Debug.Log($"Assigned input to player {PlayerIndex}");
                 OnActionsChanged();
