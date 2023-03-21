@@ -45,7 +45,6 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         _rigidbody = GetComponent<Rigidbody>();
         _selectable = GetComponent<Selectable>();
         _collider = GetComponent<Collider>();
-        Entity.TryGetInterface(out IUsable _);
     }
 
     void Awake()
