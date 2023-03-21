@@ -24,7 +24,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// <summary>
     /// Returns true if the item is destroyed when added to this container
     /// </summary>
-    public bool TryCombineWith(InteractableEntity other)
+    public bool TryCombineWith(InteractionProvider other)
     {
         if (other.TryGetBehaviour(out IngredientProp ingredientProp))
         {

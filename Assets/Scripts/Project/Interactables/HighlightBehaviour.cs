@@ -25,7 +25,6 @@ public class HighlightBehaviour : MonoBehaviour
     {
         if (enabled)
         {
-            Debug.Log("yes");
             _renderer.material.SetFloat(_highlightPropertyId, 1);
         }
         else

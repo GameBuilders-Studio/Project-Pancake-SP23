@@ -32,7 +32,7 @@ public class Selectable : InteractionBehaviour
     void OnValidate()
     {
         if (_nearbyTrigger == null) 
-        { 
+        {
             _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume"); 
         }
         if (_highlightBehaviour == null) 
@@ -50,9 +50,9 @@ public class Selectable : InteractionBehaviour
 
     void OnDisable()
     {
-        foreach (var hashset in NearbyObjects.Values)
+        foreach (var managedList in NearbyObjects.Values)
         {
-            hashset.Remove(this);
+            managedList.Remove(this);
         }
     }
 

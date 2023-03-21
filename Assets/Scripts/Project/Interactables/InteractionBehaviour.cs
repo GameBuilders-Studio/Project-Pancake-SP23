@@ -3,42 +3,25 @@ using UnityEngine;
 using CustomAttributes;
 
 [RequireComponent(typeof(InteractableEntity))]
-public abstract class InteractionBehaviour : MonoBehaviour
+public abstract class InteractionBehaviour : InteractionProvider
 {
     [SerializeField]
     [HideInInspector]
-    public InteractableEntity Entity;
-    
-    // public bool TryGetBehaviour<T>(out T component) where T : InteractionBehaviour
-    // {
-    //     bool exists = Entity.TryGetBehaviour(out T behaviour);
-    //     component = behaviour;
-    //     return exists;
-    // }
+    private InteractableEntity _entity;
 
-    // public bool HasBehaviour<T>() where T : InteractionBehaviour
-    // {
-    //     return Entity.HasBehaviour<T>();
-    // }
+    protected override InteractableEntity Entity => _entity;
 
-    // public bool TryGetInterface<T>(out T _interface) where T : IInteractionInterface
-    // {
-    //     bool exists = Entity.TryGetInterface(out T interfaceOut);
-    //     _interface = interfaceOut;
-    //     return exists;
-    // }
-
-    // public bool HasInterface<T>() where T : IInteractionInterface
-    // {
-    //     return Entity.HasInterface<T>();
-    // }
+    public void AssignToEntity(InteractableEntity entity)
+    {
+        _entity = entity;
+    }
 }
 
 public interface IInteractionInterface {}
 
 public interface ICombinable : IInteractionInterface
 {
-    public bool TryCombineWith(InteractableEntity other);
+    public bool TryCombineWith(InteractionProvider other);
 }
 
 public interface IUsable : IInteractionInterface

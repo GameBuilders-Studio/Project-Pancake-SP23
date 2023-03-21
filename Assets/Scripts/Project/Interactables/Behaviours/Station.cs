@@ -65,7 +65,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     /// <summary>
     /// Returns true if the item is placed succesfully
     /// </summary>
-    public bool TryCombineWith(InteractableEntity other)
+    public bool TryCombineWith(InteractionProvider other)
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
@@ -79,14 +79,14 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
             return true;
         }
 
-        if (PlacedItem.Entity.TryGetInterface(out ICombinable combinable))
+        if (PlacedItem.TryGetInterface(out ICombinable combinable))
         {
             return combinable.TryCombineWith(other);
         }
 
         if (other.TryGetInterface(out ICombinable otherCombinable))
         {
-            if (otherCombinable.TryCombineWith(PlacedItem.Entity))
+            if (otherCombinable.TryCombineWith(PlacedItem))
             {
                 PlaceItem(carryable);
                 return true;
@@ -107,7 +107,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
         item.CancelThrow();
 
-        TryCombineWith(item.Entity);
+        TryCombineWith(item);
     }
 
     public void PlaceItem(Carryable item)

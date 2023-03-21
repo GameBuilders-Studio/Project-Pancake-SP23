@@ -11,7 +11,7 @@ public class ServingStation : StationController
     public override bool ValidateItem(Carryable item)
     {
         //Only Accept dish, don't accept ingredient
-        if (item.Entity.TryGetBehaviour(out FoodContainer container))
+        if (item.TryGetBehaviour(out FoodContainer container))
         {
             if (isOrderCorrect(container))
             {

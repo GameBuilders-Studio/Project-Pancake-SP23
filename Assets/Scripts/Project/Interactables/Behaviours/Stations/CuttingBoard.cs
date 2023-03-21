@@ -33,7 +33,7 @@ public class CuttingBoard : StationController, IUsable
 
     public override void ItemPlaced(ref Carryable item)
     {
-        _ingredientExists = item.Entity.TryGetBehaviour(out _ingredient);
+        _ingredientExists = item.TryGetBehaviour(out _ingredient);
     }
 
     public override void ItemRemoved(ref Carryable item)
