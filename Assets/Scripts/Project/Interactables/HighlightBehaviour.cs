@@ -6,10 +6,9 @@ public class HighlightBehaviour : MonoBehaviour
     [SerializeField]
     private Renderer _renderer;
 
-    [SerializeField]
-    private Material _selectMaterial;
-
     protected Material _material;
+
+    private int _highlightPropertyId;
 
     void Awake()
     {
@@ -18,17 +17,20 @@ public class HighlightBehaviour : MonoBehaviour
             _renderer = GetComponent<Renderer>();
         }
         _material = _renderer.material;
+        _highlightPropertyId = Shader.PropertyToID("_Use_Highlight_Shader");
+        _renderer.material.EnableKeyword("_Use_Highlight_Shader");
     }
 
     public void SetHighlight(bool enabled = true)
     {
         if (enabled)
         {
-            _renderer.material = _selectMaterial;
+            Debug.Log("yes");
+            _renderer.material.SetFloat(_highlightPropertyId, 1);
         }
         else
         {
-            _renderer.material = _material;
+            _renderer.material.SetFloat(_highlightPropertyId, 0);
         }
     }
 }
