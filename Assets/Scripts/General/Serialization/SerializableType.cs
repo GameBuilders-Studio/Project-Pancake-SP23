@@ -7,7 +7,7 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
 using UnityEditor;
 using System.Linq;
-#endif // UNITY_EDITOR
+#endif
 
 namespace GameBuilders.Serialization
 {
@@ -18,13 +18,13 @@ namespace GameBuilders.Serialization
         protected string typeId = string.Empty;
 
         public string TypeNotFoundError =>
-            $"Could not find type for typeId[{typeId}] when trying to deserialize this SerializableType.";
+            $"Could not find type for typeId[{typeId}] when trying to deserialize this SerializableType. The type may have been renamed or deleted.";
 
         public Type Type { get; set; }
 
 #if UNITY_EDITOR
         public static bool IsBuilding { get; protected set; }
-#endif // UNITY_EDITOR
+#endif
 
         public SerializableType() { }
         public SerializableType(Type type)
@@ -36,42 +36,53 @@ namespace GameBuilders.Serialization
         {
 #if UNITY_EDITOR
             if (Guid.TryParse(typeString, out var guid))
+            {
                 type = TypeCache.GetTypesWithAttribute(typeof(GuidAttribute))
                     .FirstOrDefault(t => t.GUID == guid);
+            }  
             else
+            {
                 type = Type.GetType(typeString);
+            }
 #else
             type = Type.GetType(typeString);
-#endif // UNITY_EDITOR
+#endif
             return type != null || string.IsNullOrEmpty(typeString);
         }
 
         public static string ToSerializedType(Type type)
         {
             if (type == null)
+            {
                 return string.Empty;
+            }
 #if UNITY_EDITOR
             if (Attribute.IsDefined(type, typeof(GuidAttribute)) && !IsBuilding)
+            {
                 return type.GUID.ToString();
+            }
             else
+            {
                 return type.AssemblyQualifiedName;
+            }
 #else
             return type.AssemblyQualifiedName;
-#endif // UNITY_EDITOR
+#endif
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (!TryGetType(typeId, out var type))
+            {
                 Debug.LogError(TypeNotFoundError);
+            }
             Type = type;
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            var value = ToSerializedType(Type);
-            if (!string.IsNullOrEmpty(value))
-                typeId = value;
+            string value = ToSerializedType(Type);
+            if (!string.IsNullOrEmpty(value)) { typeId = value; }
         }
     }
 
@@ -90,5 +101,5 @@ namespace GameBuilders.Serialization
             IsBuilding = true;
         }
     }
-#endif // UNITY_EDITOR
+#endif
 }

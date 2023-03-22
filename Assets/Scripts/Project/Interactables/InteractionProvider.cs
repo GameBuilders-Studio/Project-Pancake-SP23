@@ -8,7 +8,7 @@ public abstract class InteractionProvider : MonoBehaviour
     /// Returns true if any InteractionBehaviours match the given type.
     /// </summary>
     /// <remarks>
-    /// For interfaces, use TryGetInterface.
+    /// For interfaces, use TryGetInterface
     /// </remarks>
     public bool TryGetBehaviour<T>(out T component) where T : InteractionBehaviour
     {
@@ -17,6 +17,9 @@ public abstract class InteractionProvider : MonoBehaviour
         return exists;
     }
 
+    /// <summary>
+    /// Returns true if any InteractionBehaviours match the given type.
+    /// </summary>
     public bool HasBehaviour<T>() where T : InteractionBehaviour
     {
         return Collection.TypeToBehaviour.ContainsKey(typeof(T));
@@ -32,6 +35,9 @@ public abstract class InteractionProvider : MonoBehaviour
         return exists;
     }
 
+    /// <summary>
+    /// Returns true if any InteractionBehaviours implement the given interface.
+    /// </summary>
     public bool HasInterface<T>() where T : IInteractionInterface
     {
         return Collection.TypeToInterface.ContainsKey(typeof(T));
