@@ -207,10 +207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 446099049515487953}
+  _entity: {fileID: 446099049515487953}
   _nearbyTrigger: {fileID: 7605582599255157724}
   _highlightBehaviour: {fileID: 1055438650720953735}
   _highlightOnHover: 1
+  _isSelectable: 1
 --- !u!114 &3857198461237242431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,10 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 446099049515487953}
+  _entity: {fileID: 446099049515487953}
   _throwSettings: {fileID: 11400000, guid: b190fc41700cdff4d93a2f993db2b0ab, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 3111386382994811259}
+  _rigidbody: {fileID: 7605582599296834494}
+  _collider: {fileID: 7605582599296834495}
 --- !u!114 &1055438650720953735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 7605582599296834488}
-  _selectMaterial: {fileID: 2100000, guid: 54f7c51ced583a24da386e47f22d05ec, type: 2}
 --- !u!114 &446099049515487953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +261,23 @@ MonoBehaviour:
   - {fileID: 4778439782488913873}
   Interfaces:
   - IHasCarryable
+  _typeToBehaviourSerialized:
+    m_keys:
+    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: CubeIngredient, Ingredients, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: IngredientProp, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 3111386382994811259}
+    - {fileID: 3857198461237242431}
+    - {fileID: 4778439782488913873}
+    - {fileID: 4778439782488913873}
+  _typeToInterfaceSerialized:
+    m_keys:
+    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 3857198461237242431}
+  _noDuplicates: 1
 --- !u!114 &4778439782488913873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,9 +290,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20500767bf3dc445a81427ffab04d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 446099049515487953}
+  _entity: {fileID: 446099049515487953}
   _progressIndicator: 0
   _type: 0
-  _state: {fileID: 0}
+  _state: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
   _startColor: {r: 0, g: 0, b: 0, a: 0}
   _endColor: {r: 0.88034004, g: 0.4481132, b: 1, a: 0}

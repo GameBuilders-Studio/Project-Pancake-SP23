@@ -12,25 +12,34 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]
     private bool _useAnyDevice = false;
 
-    public PlayerInputActions Actions;
-
-    public event UnityAction ActionsAssigned;
-
+    private bool _isManaged = false;
+    private PlayerInputActions _actions;
     private Vector2 _moveInput = Vector2.zero;
+
+    public bool HasActions => _actions != null;
     public Vector2 MoveInput => _moveInput;
+    
+    public event UnityAction ActionsAssigned;
 
     void Update()
     {
-        if (Actions == null)
+        if (!HasActions)
         {
-            if (_useAnyDevice)
+            if (InputManager.GetInputActionsByIndex(PlayerIndex, out _actions))
             {
-                Actions = InputManager.GetInputActionsAllDevices();
+                _isManaged = true;
                 OnActionsChanged();
             }
-            else if (InputManager.GetInputActionsByIndex(PlayerIndex, out Actions))
+
+            if (!_isManaged)
             {
-                Debug.Log($"Assigned input to player {PlayerIndex}");
+                _useAnyDevice = true;
+                Debug.LogWarning($"No actions assigned to Player {PlayerIndex}! Using any connected device");
+            }
+
+            if (_useAnyDevice)
+            {
+                _actions = InputManager.GetInputActionsAllDevices();
                 OnActionsChanged();
             }
         }
@@ -38,12 +47,17 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void SetCallbacks(PlayerInputActions.IPlayerControlsActions instance)
     {
-        if (Actions == null) { return; }
-        Actions.PlayerControls.SetCallbacks(instance);
+        if (_actions == null)
+        {
+            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
+            return;
+        }
+        _actions.PlayerControls.SetCallbacks(instance);
     }
 
     private void OnActionsChanged()
     {
+        Debug.Log($"Assigned input to Player {PlayerIndex}");
         ActionsAssigned?.Invoke();
     }
 }

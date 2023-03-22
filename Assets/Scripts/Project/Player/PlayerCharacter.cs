@@ -1455,7 +1455,6 @@ namespace EasyCharacterMovement
         /// </summary>
         protected virtual void InitPlayerInput()
         {
-            if (_input.Actions == null) { return; }
             _input.SetCallbacks(this);
         }
 

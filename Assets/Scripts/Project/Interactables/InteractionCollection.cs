@@ -45,15 +45,16 @@ public class InteractionCollection : InteractionProvider
     [SerializeField]
     [HideInInspector]
     private bool _noDuplicates = true;
+
     private bool NoDuplicates() => _noDuplicates;
 
     [Button]
     public void RefreshBehaviours() => OnValidate();
 
-    public Dictionary<Type, InteractionBehaviour> TypeToBehaviour => _typeToBehaviourRuntime;
-    public Dictionary<Type, IInteractionInterface> TypeToInterface => _typeToInterfaceRuntime;
+    public IDictionary<Type, InteractionBehaviour> TypeToBehaviour => _typeToBehaviourRuntime;
+    public IDictionary<Type, IInteractionInterface> TypeToInterface => _typeToInterfaceRuntime;
 
-    protected override InteractionCollection Collection => this;
+    protected sealed override InteractionCollection Collection => this;
 
     void OnValidate()
     {

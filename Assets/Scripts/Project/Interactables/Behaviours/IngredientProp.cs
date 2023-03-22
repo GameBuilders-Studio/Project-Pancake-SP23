@@ -13,6 +13,7 @@ public class IngredientProp : InteractionBehaviour
     private IngredientType _type;
 
     [SerializeField]
+    [Required]
     private IngredientStateData _state;
 
     private Ingredient _ingredientData;

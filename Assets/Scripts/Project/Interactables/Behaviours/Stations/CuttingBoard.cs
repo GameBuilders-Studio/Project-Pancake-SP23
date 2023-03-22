@@ -28,7 +28,7 @@ public class CuttingBoard : StationController, IUsable
 
     public override bool ValidateItem(Carryable item)
     {
-        return true;
+        return item.HasBehaviour<IngredientProp>();
     }
 
     public override void ItemPlaced(ref Carryable item)
