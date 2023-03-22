@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using EasyCharacterMovement;
+using CustomAttributes;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -13,19 +14,17 @@ public class PlayerInteraction : MonoBehaviour
 
     [Tooltip("Transform to place carried items in")]
     [SerializeField]
+    [Required]
     private Transform _carryPivot;
 
-    [Tooltip("Radius used to depenetrate carried item from walls")]
     [SerializeField]
-    private float _carryPivotRadius;
+    [Required]
+    private ProxyTrigger _catchTrigger;
 
     [Tooltip("Angle range in front of player to check for selectables")]
     [Range(0f, 180f)]
     [SerializeField]
     private float _selectAngleRange;
-
-    [SerializeField]
-    private ProxyTrigger _catchTrigger;
 
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
@@ -57,13 +56,18 @@ public class PlayerInteraction : MonoBehaviour
     {
         Nearby = new();
         _character = GetComponent<CharacterMovement>();
-        _catchTrigger.Enter += TryCatchItem;
+    }
+
+    void OnEnable()
+    {
         Selectable.AddListener(gameObject, _nearby);
+        _catchTrigger.Enter += TryCatchItem;
     }
 
     void OnDisable()
     {
         Selectable.RemoveListener(gameObject);
+        _catchTrigger.Enter -= TryCatchItem;
     }
 
     void Update()

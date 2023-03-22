@@ -10,6 +10,7 @@ public enum SelectState { Default, Disabled }
 public class Selectable : InteractionBehaviour
 {
     [SerializeField]
+    [Required]
     private ProxyTrigger _nearbyTrigger;
 
     [SerializeField]
@@ -42,15 +43,17 @@ public class Selectable : InteractionBehaviour
         }
     }
 
-    protected virtual void Awake()
+    void OnEnable()
     {
-        if (_nearbyTrigger == null) { return; }
         _nearbyTrigger.Enter += OnProxyTriggerEnter;
         _nearbyTrigger.Exit += OnProxyTriggerExit;
     }
 
     void OnDisable()
     {
+        _nearbyTrigger.Enter -= OnProxyTriggerEnter;
+        _nearbyTrigger.Exit -= OnProxyTriggerExit;
+        
         foreach (var managedList in NearbyObjects.Values)
         {
             managedList.Remove(this);

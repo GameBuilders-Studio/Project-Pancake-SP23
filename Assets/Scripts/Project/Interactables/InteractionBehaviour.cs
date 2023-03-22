@@ -2,36 +2,17 @@ using System;
 using UnityEngine;
 using CustomAttributes;
 
-[RequireComponent(typeof(InteractableEntity))]
+[RequireComponent(typeof(InteractionCollection))]
 public abstract class InteractionBehaviour : InteractionProvider
 {
     [SerializeField]
     [HideInInspector]
-    private InteractableEntity _entity;
+    private InteractionCollection _entity;
 
-    protected override InteractableEntity Entity => _entity;
+    protected override InteractionCollection Collection => _entity;
 
-    public void AssignToEntity(InteractableEntity entity)
+    public void AssignToEntity(InteractionCollection entity)
     {
         _entity = entity;
     }
-}
-
-public interface IInteractionInterface {}
-
-public interface ICombinable : IInteractionInterface
-{
-    public bool TryCombineWith(InteractionProvider other);
-}
-
-public interface IUsable : IInteractionInterface
-{
-    public void OnUseStart();
-    public void OnUseEnd();
-    public bool Enabled {get;}
-}
-
-public interface IHasCarryable : IInteractionInterface
-{
-    public Carryable PopCarryable();
 }

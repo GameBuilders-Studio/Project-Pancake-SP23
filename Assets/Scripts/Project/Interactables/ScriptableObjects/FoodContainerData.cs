@@ -6,6 +6,7 @@ using UnityEngine;
 public class FoodContainerData : ScriptableObject
 {
     [SerializeField]
+    [Min(0)]
     public int Capacity;
 
     [SerializeField]

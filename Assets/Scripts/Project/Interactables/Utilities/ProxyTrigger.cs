@@ -11,8 +11,8 @@ public class ProxyTrigger : MonoBehaviour
 
     public Collider Collider => _triggerCollider;
 
-    public UnityAction<Collider> Enter;
-    public UnityAction<Collider> Exit;
+    public event UnityAction<Collider> Enter;
+    public event UnityAction<Collider> Exit;
 
     void Awake()
     {

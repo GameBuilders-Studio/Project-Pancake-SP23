@@ -5,16 +5,26 @@ using CustomAttributes;
 using GameBuilders.Serialization;
 
 [Serializable]
-public class InteractionDictionary : SerializableDictionary<SerializableType, InteractionBehaviour> {}
+public class InteractionDictionary : SerializableDictionary<SerializableType, InteractionBehaviour> 
+{
+    public bool ContainsType(Type type)
+    {
+        foreach (SerializableType key in Keys)
+        {
+            if (key.Type == type) { return true; }
+        }
+        return false;
+    }
+}
 
 /// <summary>
-/// Collects and caches InteractionBehaviours and IInteractionInterfaces attached to the gameObject
+/// Collects and caches InteractionBehaviours and IInteractionInterfaces attached to the game object
 /// </summary>
-public class InteractableEntity : InteractionProvider
+public class InteractionCollection : InteractionProvider
 {
     [SerializeField]
-    [ReadOnly]
     [ValidateInput("NoDuplicates", "Multiple InteractionBehaviours cannot inherit from the same class or interface")]
+    [ReadOnly]
     public List<InteractionBehaviour> Behaviours;
 
     [SerializeField]
@@ -32,7 +42,9 @@ public class InteractableEntity : InteractionProvider
     private Dictionary<Type, InteractionBehaviour> _typeToBehaviourRuntime = new();
     private Dictionary<Type, IInteractionInterface> _typeToInterfaceRuntime = new();
 
-    [HideInInspector] private bool _noDuplicates = true;
+    [SerializeField]
+    [HideInInspector]
+    private bool _noDuplicates = true;
     private bool NoDuplicates() => _noDuplicates;
 
     [Button]
@@ -41,52 +53,11 @@ public class InteractableEntity : InteractionProvider
     public Dictionary<Type, InteractionBehaviour> TypeToBehaviour => _typeToBehaviourRuntime;
     public Dictionary<Type, IInteractionInterface> TypeToInterface => _typeToInterfaceRuntime;
 
-    protected override InteractableEntity Entity => this;
+    protected override InteractionCollection Collection => this;
 
     void OnValidate()
     {
-        Behaviours = new(GetComponents<InteractionBehaviour>());
-        Interfaces.Clear();
-
-        _typeToBehaviourSerialized.Clear();
-        _typeToInterfaceSerialized.Clear();
-
-        foreach (InteractionBehaviour behaviour in Behaviours)
-        {
-            var type = behaviour.GetType();
-
-            var interfaces = type.GetInterfaces();
-
-            foreach (var _interface in interfaces)
-            {
-                if (_interface == typeof(IInteractionInterface)) { continue; }
-
-                if (!_typeToInterfaceSerialized.TryAdd(new SerializableType(_interface), behaviour))
-                {
-                    _noDuplicates = false;
-                    Debug.LogWarning($"Found duplicate InteractionBehaviours implementing {_interface}", behaviour);
-                    return;
-                }
-                Interfaces.Add(_interface.Name);
-            }
-
-            while (type != typeof(InteractionBehaviour))
-            {
-                if (_typeToBehaviourSerialized.TryAdd(new SerializableType(type), behaviour))
-                {
-                    behaviour.AssignToEntity(this);
-                }
-                else
-                {
-                    _noDuplicates = false;
-                    Debug.LogWarning($"Found duplicate InteractionBehaviours of type {type}", behaviour);
-                    return;
-                }
-                type = type.BaseType;
-            }
-        }
-
-        _noDuplicates = true;
+        GetBehavioursAndInterfaces();
     }
 
     void Awake()
@@ -101,5 +72,54 @@ public class InteractableEntity : InteractionProvider
         {
             _typeToInterfaceRuntime.Add(entry.Key.Type, (IInteractionInterface)entry.Value);
         }
+    }
+
+    private void GetBehavioursAndInterfaces()
+    {
+        Behaviours = new(GetComponents<InteractionBehaviour>());
+        Interfaces.Clear();
+
+        _typeToBehaviourSerialized.Clear();
+        _typeToInterfaceSerialized.Clear();
+
+        foreach (InteractionBehaviour behaviour in Behaviours)
+        {
+            behaviour.AssignToEntity(this);
+
+            var type = behaviour.GetType();
+            var interfaces = type.GetInterfaces();
+
+            foreach (var _interface in interfaces)
+            {
+                if (_interface == typeof(IInteractionInterface)) { continue; }
+
+                if (_typeToInterfaceSerialized.ContainsType(_interface))
+                {
+                    _noDuplicates = false;
+                    Debug.LogError($"Found duplicate InteractionBehaviours implementing {_interface}", behaviour);
+                    return;
+                }
+
+                _typeToInterfaceSerialized.TryAdd(new SerializableType(_interface), behaviour);
+
+                Interfaces.Add(_interface.Name);
+            }
+
+            while (type != typeof(InteractionBehaviour))
+            {
+                if (_typeToBehaviourSerialized.ContainsType(type))
+                {
+                    _noDuplicates = false;
+                    Debug.LogError($"Found duplicate InteractionBehaviours of type {type}", behaviour);
+                    return;
+                }
+
+                _typeToBehaviourSerialized.TryAdd(new SerializableType(type), behaviour);
+
+                type = type.BaseType;
+            }
+        }
+
+        _noDuplicates = true;
     }
 }

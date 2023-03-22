@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class InteractionProvider : MonoBehaviour
 {
-    protected abstract InteractableEntity Entity { get; }
+    protected abstract InteractionCollection Collection { get; }
 
     /// <summary>
     /// Returns true if any InteractionBehaviours match the given type.
@@ -12,14 +12,14 @@ public abstract class InteractionProvider : MonoBehaviour
     /// </remarks>
     public bool TryGetBehaviour<T>(out T component) where T : InteractionBehaviour
     {
-        bool exists = Entity.TypeToBehaviour.TryGetValue(typeof(T), out InteractionBehaviour behaviour);
+        bool exists = Collection.TypeToBehaviour.TryGetValue(typeof(T), out InteractionBehaviour behaviour);
         component = (T)behaviour;
         return exists;
     }
 
     public bool HasBehaviour<T>() where T : InteractionBehaviour
     {
-        return Entity.TypeToBehaviour.ContainsKey(typeof(T));
+        return Collection.TypeToBehaviour.ContainsKey(typeof(T));
     }
 
     /// <summary>
@@ -27,13 +27,13 @@ public abstract class InteractionProvider : MonoBehaviour
     /// </summary>
     public bool TryGetInterface<T>(out T _interface) where T : IInteractionInterface
     {
-        bool exists = Entity.TypeToInterface.TryGetValue(typeof(T), out IInteractionInterface interfaceOut);
+        bool exists = Collection.TypeToInterface.TryGetValue(typeof(T), out IInteractionInterface interfaceOut);
         _interface = (T)interfaceOut;
         return exists;
     }
 
     public bool HasInterface<T>() where T : IInteractionInterface
     {
-        return Entity.TypeToInterface.ContainsKey(typeof(T));
+        return Collection.TypeToInterface.ContainsKey(typeof(T));
     }
 }

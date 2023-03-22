@@ -40,12 +40,16 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         CenterObject(_placedItem);
     }
 
-    void Awake()
+    void OnEnable()
     {
-        if (_catchTrigger != null)
-        {
-            _catchTrigger.Enter += TryCatchItem;
-        }
+        if (_catchTrigger == null) { return; }
+        _catchTrigger.Enter += TryCatchItem;
+    }
+
+    void OnDisable()
+    {
+        if (_catchTrigger == null) { return; }
+        _catchTrigger.Enter -= TryCatchItem;
     }
 
     void Start()
