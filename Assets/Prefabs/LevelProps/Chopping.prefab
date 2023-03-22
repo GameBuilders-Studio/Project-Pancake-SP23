@@ -59,6 +59,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _stationBehaviour
+      value: 
+      objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[2]
+      value: 
+      objectReference: {fileID: 5980901022417077901}
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -79,28 +91,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa18e75ed3af71e4389ec7b418c848c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 5541826487737903553}
-  _highlightBehaviour: {fileID: 0}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _catchTrigger: {fileID: 0}
-  _itemHolderPivot: {fileID: 2977219313586498496}
-  _placedItem: {fileID: 0}
-  _totalChopTime: 4
+  Entity: {fileID: 6542368995087027349}
+  _chopTimeSeconds: 4
   _targetIngredientState: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
---- !u!4 &2977219313586498496 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-  m_PrefabInstance: {fileID: 547827694413469269}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5541826487737903553 stripped
+--- !u!114 &6542368995087027349 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5436622889255518100, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_PrefabInstance: {fileID: 547827694413469269}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 592958005159123415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65998c8c7ca0ff14e82e1844ba9e733e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

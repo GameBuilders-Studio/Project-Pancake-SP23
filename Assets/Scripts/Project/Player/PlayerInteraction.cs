@@ -1,34 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using EasyCharacterMovement;
+using CustomAttributes;
 
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField]
     private List<Selectable> _nearby;
 
+    [SerializeField]
+    private Carryable _heldItem = null;
+
     [Tooltip("Transform to place carried items in")]
     [SerializeField]
+    [Required]
     private Transform _carryPivot;
 
-    [Tooltip("Radius used to depenetrate carried item from walls")]
     [SerializeField]
-    private float _carryPivotRadius;
+    [Required]
+    private ProxyTrigger _catchTrigger;
 
     [Tooltip("Angle range in front of player to check for selectables")]
     [Range(0f, 180f)]
     [SerializeField]
     private float _selectAngleRange;
 
-    [SerializeField]
-    private ProxyTrigger _catchTrigger;
-
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
-    private IInteractable _lastInteracted;
-    
+    private IUsable _lastUsed;
+
     private bool _isCarrying = false;
-    private Carryable _heldItem = null;
 
     public bool IsCarrying => _isCarrying;
 
@@ -54,7 +56,18 @@ public class PlayerInteraction : MonoBehaviour
     {
         Nearby = new();
         _character = GetComponent<CharacterMovement>();
+    }
+
+    void OnEnable()
+    {
+        Selectable.AddListener(gameObject, _nearby);
         _catchTrigger.Enter += TryCatchItem;
+    }
+
+    void OnDisable()
+    {
+        Selectable.RemoveListener(gameObject);
+        _catchTrigger.Enter -= TryCatchItem;
     }
 
     void Update()
@@ -65,13 +78,13 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         var selectable = GetBestSelectable();
-        
+
         // deselect previous target
         if (HoverTarget != null)
         {
             HoverTarget.SetHoverState(HoverState.Deselected);
         }
-        
+
         if (selectable != null)
         {
             HoverTarget = selectable;
@@ -81,19 +94,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             HoverTarget = null;
             // stop interacting if nothing is selected
-            if (_lastInteracted != null)
+            if (_lastUsed != null)
             {
-                _lastInteracted.OnInteractEnd();
-                _lastInteracted = null;
+                _lastUsed.OnUseEnd();
+                _lastUsed = null;
             }
         }
 
         // stop interacting if interactable is disabled
-        if (_lastInteracted != null && !_lastInteracted.Enabled)
+        if (_lastUsed != null && !_lastUsed.Enabled)
         {
-            _lastInteracted.OnInteractEnd();
-            Debug.Log("interact canceled");
-            _lastInteracted = null;
+            _lastUsed.OnUseEnd();
+            _lastUsed = null;
         }
     }
 
@@ -115,41 +127,31 @@ public class PlayerInteraction : MonoBehaviour
 
         Carryable item = null;
 
-        if (HoverTarget is Carryable carryable)
+        if (HoverTarget.TryGetInterface(out IHasCarryable hasCarryable))
         {
-            item = carryable;
-        }
-        else if (HoverTarget is Station station)
-        {
-            item = station.PopCarryableItem();
+            item = hasCarryable.PopCarryable();
         }
 
         if (item == null) { return; }
-
-        item.OnPickUp();
 
         PickUpItem(item);
     }
 
     public void TryPlace()
     {
-        if (HoverTarget is Station station)
+        if (HoverTarget == null)
         {
-            if (IsCarrying && station.TryPlaceItem(_heldItem))
-            {
-                _heldItem.OnPlace();
-                ReleaseItem();
-            }
-            return; // keep holding items if a station is selected
+            DropItem();
+            return;
         }
 
-        if (HoverTarget is FoodContainer container)
+        if (HoverTarget.TryGetInterface(out ICombinable combinable))
         {
-            if (container.TryAddItem(_heldItem))
+            if (combinable.TryCombineWith(_heldItem))
             {
                 ReleaseItem();
+                return;
             }
-            return; // keep holding item if a container is selected
         }
 
         DropItem();
@@ -168,6 +170,8 @@ public class PlayerInteraction : MonoBehaviour
         _heldItem = item;
         _character.IgnoreCollision(item.Rigidbody);
 
+        item.OnPickUp();
+
         var go = item.gameObject;
 
         go.transform.parent = _carryPivot;
@@ -175,26 +179,26 @@ public class PlayerInteraction : MonoBehaviour
         go.transform.localRotation = Quaternion.identity;
     }
 
-    public void OnInteractStart()
+    public void OnUseStart()
     {
         if (HoverTarget == null) { return; }
 
         if (IsCarrying) { return; }
 
-        if (HoverTarget.TryGetComponent(out IInteractable interactable))
+        if (HoverTarget.TryGetInterface(out IUsable usable))
         {
-            if (!interactable.Enabled) { return; }
-            interactable.OnInteractStart();
-            _lastInteracted = interactable;
+            if (!usable.Enabled) { return; }
+            usable.OnUseStart();
+            _lastUsed = usable;
         }
     }
 
-    public void OnInteractEnd()
+    public void OnUseEnd()
     {
-        if (_lastInteracted != null)
+        if (_lastUsed != null)
         {
-            _lastInteracted.OnInteractEnd();
-            _lastInteracted = null;
+            _lastUsed.OnUseEnd();
+            _lastUsed = null;
         }
         else if (IsCarrying && _heldItem.CanThrow)
         {
@@ -209,18 +213,18 @@ public class PlayerInteraction : MonoBehaviour
         ReleaseItem();
     }
 
-    private void ThrowItem()
-    {
-        _heldItem.OnThrow(transform.forward, _character.GetFootPosition().y);
-        _heldItem.transform.parent = null;
-        ReleaseItem();
-    }
-
     private void ReleaseItem()
     {
-        _character.IgnoreCollision(_heldItem.Rigidbody, false);
+        _character.IgnoreCollision(_heldItem.Rigidbody, ignore: false);
         _isCarrying = false;
         _heldItem = null;
+    }
+
+    private void ThrowItem()
+    {
+        _heldItem.OnThrow(transform.forward, _character.GetFootPosition().y, _catchTrigger.Collider);
+        _heldItem.transform.parent = null;
+        ReleaseItem();
     }
 
     private void TryCatchItem(Collider other)
@@ -230,8 +234,9 @@ public class PlayerInteraction : MonoBehaviour
         PickUpItem(item);
     }
 
+    // TODO: move to separate class
     /// <summary>
-    /// Gets a selectable that the player is facing
+    /// Chooses the best selectable based on the player's current position and rotation
     /// </summary>
     private Selectable GetBestSelectable()
     {
@@ -242,24 +247,42 @@ public class PlayerInteraction : MonoBehaviour
             return Vector3.Angle(a, b);
         }
 
-        Selectable nearest = null;
-        
+        Selectable bestSelectable = null;
         float minAngle = Mathf.Infinity;
-        
-        for (int i = 0; i < Nearby.Count; i++)
+        float bestScore = -1.0f;
+
+        foreach (var nearby in Nearby)
         {
-            if (!Nearby[i].IsSelectable) { continue; }
+            if (!nearby.IsSelectable) { continue; }
 
-            float angle = Angle2D(transform.forward, Nearby[i].transform.position - transform.position);
+            float angle = Angle2D(transform.forward, nearby.transform.position - transform.position);
+            if (angle > _selectAngleRange) { continue; }
 
-            if (angle < minAngle && angle < _selectAngleRange)
+            float score = 0.0f;
+
+            // if not carrying anything, prefer:
+            // a) IUsable
+            // b) IHasCarryable
+
+            // // if carrying, prefer:
+            // // a) Stations
+            // // b) ICombinable
+
+            // angle is the tie-breaker
+            if (angle < minAngle)
             {
-                nearest = Nearby[i];
                 minAngle = angle;
+                score += Mathf.Min(1 - (angle / _selectAngleRange), 0.999f);
+            }
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestSelectable = nearby;
             }
         }
 
-        return nearest;
+        return bestSelectable;
     }
 
     private void DepenetrateHeldItem()

@@ -15,6 +15,10 @@ GameObject:
   - component: {fileID: 9059498309148403142}
   - component: {fileID: 9059498309148403165}
   - component: {fileID: 9059498309148403167}
+  - component: {fileID: 1413373083386298876}
+  - component: {fileID: 1780998756161429767}
+  - component: {fileID: 7653842725219283576}
+  - component: {fileID: 7835736793297698840}
   m_Layer: 0
   m_Name: FoodContainer
   m_TagString: Untagged
@@ -130,13 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 9059498310111909953}
-  _highlightBehaviour: {fileID: 0}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _throwSettings: {fileID: 0}
-  _gravityScale: 2.5
-  _capacity: 2
+  _entity: {fileID: 7653842725219283576}
+  _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients: []
 --- !u!114 &9059498309148403167
 MonoBehaviour:
@@ -153,6 +152,89 @@ MonoBehaviour:
   _slopeBehaviour: 2
   _slopeLimit: 0
   _slopeLimitCos: 1
+--- !u!114 &1413373083386298876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entity: {fileID: 7653842725219283576}
+  _nearbyTrigger: {fileID: 9059498310111909953}
+  _highlightBehaviour: {fileID: 7835736793297698840}
+  _highlightOnHover: 1
+  _isSelectable: 1
+--- !u!114 &1780998756161429767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entity: {fileID: 7653842725219283576}
+  _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
+  _gravityScale: 2.5
+  _selectable: {fileID: 1413373083386298876}
+  _rigidbody: {fileID: 9059498309148403142}
+  _collider: {fileID: 9059498309148403164}
+--- !u!114 &7653842725219283576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Behaviours:
+  - {fileID: 9059498309148403165}
+  - {fileID: 1413373083386298876}
+  - {fileID: 1780998756161429767}
+  Interfaces:
+  - ICombinable
+  - IHasCarryable
+  _typeToBehaviourSerialized:
+    m_keys:
+    - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 9059498309148403165}
+    - {fileID: 1413373083386298876}
+    - {fileID: 1780998756161429767}
+  _typeToInterfaceSerialized:
+    m_keys:
+    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 9059498309148403165}
+    - {fileID: 1780998756161429767}
+--- !u!114 &7835736793297698840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 9059498309148403136}
 --- !u!1 &9059498310111909958
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +247,7 @@ GameObject:
   - component: {fileID: 9059498310111909953}
   - component: {fileID: 9059498310111909954}
   m_Layer: 0
-  m_Name: TriggerVolume
+  m_Name: NearbyVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
