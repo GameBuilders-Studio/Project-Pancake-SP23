@@ -71,7 +71,7 @@ public class OrderSystem : MonoBehaviour
         {
             SpawnOrder();
         }
-        _orderSpawnCoroutine = StartCoroutine(OrderSpawnCoroutine()); //Start spawning orders if StartingLevel event is invoked
+        _orderSpawnCoroutine = StartCoroutine(OrderSpawnCoroutine()); //Start spawning orders if StartingLevel event is invoked (what happens if multiple calls?)
     }
 
     private IEnumerator OrderSpawnCoroutine()
