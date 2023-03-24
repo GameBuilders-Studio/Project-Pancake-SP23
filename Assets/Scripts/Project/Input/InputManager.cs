@@ -21,6 +21,8 @@ public class InputManager : MonoBehaviour
     public static event UnityAction<InputUser> OnDeviceLost;
     public static event UnityAction<InputUser> OnDeviceRegained;
 
+    public static int PlayerCount => s_players.Count;
+
     void Awake()
     {
         InputUser.onUnpairedDeviceUsed += OnUnpairedDeviceUsed;

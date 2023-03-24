@@ -484,7 +484,7 @@ namespace EasyCharacterMovement
 
         #endregion
 
-        #region INPUT ACTION HANDLERS
+        #region INPUT CALLBACK METHODS
 
         protected Vector2 GetMovementInput()
         {
@@ -494,7 +494,6 @@ namespace EasyCharacterMovement
         public void OnMove(InputAction.CallbackContext context) 
         {
             _moveInput = context.ReadValue<Vector2>();
-            Debug.Log(_moveInput);
         }
 
         public void OnDash(InputAction.CallbackContext context)
@@ -515,18 +514,18 @@ namespace EasyCharacterMovement
 
         public void OnInteract(InputAction.CallbackContext context)
         {
-            if (context.started || context.performed)
+            if (context.started)
             {
                 //Player cannot move while interacting with an object
                 SetMovementMode(MovementMode.None);
-                _playerInteraction.OnInteractStart();
+                _playerInteraction.OnUseStart();
             }
 
             if (context.canceled)
             {
                 //Player can move again after interacting with an object
                 SetMovementMode(MovementMode.Walking);
-                _playerInteraction.OnInteractEnd();
+                _playerInteraction.OnUseEnd();
             }
         }
 
@@ -1456,7 +1455,6 @@ namespace EasyCharacterMovement
         /// </summary>
         protected virtual void InitPlayerInput()
         {
-            if (_input.Actions == null) { return; }
             _input.SetCallbacks(this);
         }
 
@@ -1588,7 +1586,7 @@ namespace EasyCharacterMovement
             _rootMotionController = GetComponentInChildren<RootMotionController>();
 
             _playerInteraction = GetComponent<PlayerInteraction>();
-            _input.OnActionsAssigned += InitPlayerInput;
+            _input.ActionsAssigned += InitPlayerInput;
 
             // Enable late fixed update (default)
             enableLateFixedUpdate = true;

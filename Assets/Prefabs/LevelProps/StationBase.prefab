@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3041401109508263998}
   - component: {fileID: 195078305573947851}
   - component: {fileID: 4134685410734081310}
+  - component: {fileID: 3105630587809780605}
+  - component: {fileID: 6724278394014653120}
   m_Layer: 0
   m_Name: StationBase
   m_TagString: Untagged
@@ -145,14 +147,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807fa7d1f6cc7804dafc5c4d2bacbb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 5436622889255518100}
-  _highlightBehaviour: {fileID: 195078305573947851}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
+  Owner: {fileID: 6724278394014653120}
   _stationBehaviour: {fileID: 0}
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
+--- !u!114 &3105630587809780605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemInteractions: {fileID: 6724278394014653120}
+  _nearbyTrigger: {fileID: 5436622889255518100}
+  _highlightBehaviour: {fileID: 195078305573947851}
+  _highlightOnHover: 1
+--- !u!114 &6724278394014653120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Behaviours:
+  - {fileID: 4134685410734081310}
 --- !u!1 &1865062751841588484
 GameObject:
   m_ObjectHideFlags: 0
