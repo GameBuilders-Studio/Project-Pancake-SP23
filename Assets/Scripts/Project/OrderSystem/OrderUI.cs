@@ -20,7 +20,7 @@ public class OrderUI : MonoBehaviour
     {
         _currentOrders.Add(order);
         order.transform.SetParent(transform);
-        Debug.Log("Added " + order.RecipeData.name + " to UI");
+        // Debug.Log("Added " + order.RecipeData.name + " to UI");
 
         UpdateOrderUI(); //Reorder UI
     }
@@ -36,7 +36,7 @@ public class OrderUI : MonoBehaviour
 
         _currentOrders[idx].gameObject.SetActive(false); //Disable the order
         _currentOrders.RemoveAt(idx);
-        Debug.Log("Removed " + order.RecipeData.name + " from UI");
+        // Debug.Log("Removed " + order.RecipeData.name + " from UI");
 
         UpdateOrderUI(); //Reorder UI
     }

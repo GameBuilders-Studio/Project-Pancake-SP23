@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using CustomAttributes;
 
 public class Order : MonoBehaviour
 {
     [SerializeField] private RecipeData _recipe;
 
-    [SerializeField] private TextMeshProUGUI _orderText;
+    [SerializeField, Required]
+    private TextMeshProUGUI _orderText;
 
     [SerializeField] private OrderProgressBar _orderProgressBar;
+
     public bool IsComplete { get; set; }
-    public float TimeRemaining { get; set; }
+    public float TimeRemaining { get; private set; }
 
     //todo: variable for complete time to use for points?
     [SerializeField] private float _startTime = 15f;
@@ -19,11 +22,21 @@ public class Order : MonoBehaviour
 
     private Coroutine _timerCoroutine;
 
-    //Testing
+    public void SetOrderComplete()
+    {
+        IsComplete = true;
+        StopTimer();
+    }
+
     private void Awake()
     {
         SetTimer(_startTime);
         StartTimer();
+    }
+
+    private void OnDisable()
+    {
+        StopTimer();
     }
 
     private void SetTimer(float seconds)
@@ -72,13 +85,7 @@ public class Order : MonoBehaviour
             yield return null;
         }
         EventManager.Invoke("OrderExpired");
-        Debug.Log("Order Expired");
-    }
-
-    public void SetOrderComplete()
-    {
-        IsComplete = true;
-        StopTimer();
+        // Debug.Log("Order Expired");
     }
 
     private void UpdateOrderText()
