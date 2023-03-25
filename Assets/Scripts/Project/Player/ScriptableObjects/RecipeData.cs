@@ -7,14 +7,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Recipe Data", menuName = "Recipe Data")]
 public class RecipeData : ScriptableObject
 {
-    public string recipeName;
+    [SerializeField]
+    private string _recipeName;
     // public string description;
-    public List<IngredientType> recipe;
+    [SerializeField]
+    private List<IngredientType> _recipe;
 
+    public string RecipeName => _recipeName;
     public bool IsRecipeValid(List<IngredientType> ingredients)
     {
         // check if the number of ingredients is correct
-        if (ingredients.Count != recipe.Count)
+        if (ingredients.Count != _recipe.Count)
         {
             return false;
         }
@@ -22,7 +25,7 @@ public class RecipeData : ScriptableObject
         // check if the ingredients and states are the same using a dictionary
         var comparison = new Dictionary<IngredientType, int>();
 
-        foreach (var recipeIngredient in recipe)
+        foreach (var recipeIngredient in _recipe)
         {
             if (!comparison.ContainsKey(recipeIngredient))
             {
