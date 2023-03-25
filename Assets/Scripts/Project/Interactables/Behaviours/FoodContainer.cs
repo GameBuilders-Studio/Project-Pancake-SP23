@@ -57,7 +57,6 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         if (!ValidateIngredient(ingredient.Data)) { return false; }
 
         AddIngredient(ingredient.Data);
-        OnAddIngredient();
         Destroy(ingredient.gameObject);
         
         return true;
@@ -113,7 +112,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         return true;
     }
 
-    protected virtual void OnAddIngredient()
+    protected virtual void OnIngredientsChanged()
     {
         // modify visuals
     }
@@ -122,5 +121,6 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         Ingredients.Add(ingredient);
         Ingredients.Sort((a, b) => b.Progress.CompareTo(a.Progress));
+        OnIngredientsChanged();
     }
 }
