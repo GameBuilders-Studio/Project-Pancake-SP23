@@ -97,7 +97,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
-        return ingredient.ProgressComplete && _containerSettings.IsIngredientAllowed(ingredient);
+        return _containerSettings.IsIngredientAllowed(ingredient);
     }
 
     /// <summary>

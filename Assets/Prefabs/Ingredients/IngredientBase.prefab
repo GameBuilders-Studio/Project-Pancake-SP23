@@ -292,7 +292,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entity: {fileID: 446099049515487953}
   _progressIndicator: 0
-  _type: 0
-  _state: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
+  _ingredientData:
+    Type: 1
+    State: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
+    Progress: 0
   _startColor: {r: 0, g: 0, b: 0, a: 0}
   _endColor: {r: 0.88034004, g: 0.4481132, b: 1, a: 0}
