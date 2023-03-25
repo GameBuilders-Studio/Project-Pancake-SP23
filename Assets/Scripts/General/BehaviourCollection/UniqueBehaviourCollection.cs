@@ -6,9 +6,9 @@ using GameBuilders.Serialization;
 namespace BehaviourCollections
 {
     /// <summary>
-    /// Collects and caches <typeparamref name="TBehaviour"/> components and their Interfaces on this gameObject
+    /// Collects and caches components of type <typeparamref name="TBehaviour"/> and their interfaces on a gameObject
     /// </summary>
-    public class BehaviourCollection<TBehaviour> : BehaviourProvider<TBehaviour>
+    public class UniqueBehaviourCollection<TBehaviour> : BehaviourProvider<TBehaviour>
         where TBehaviour : BehaviourProvider<TBehaviour>
     {
         [SerializeField]
@@ -29,10 +29,14 @@ namespace BehaviourCollections
         [SerializeField, HideInInspector]
         public bool NoDuplicates = true;
 
-        protected sealed override BehaviourCollection<TBehaviour> Collection => this;
+        protected sealed override UniqueBehaviourCollection<TBehaviour> Collection => this;
 
         private void OnValidate()
         {
+            if (GetComponents<UniqueBehaviourCollection<TBehaviour>>().Length > 1)
+            {
+                Debug.LogError($"Found multiple BehaviourCollections with type parameter {typeof(TBehaviour).Name} on gameObject");
+            }
             GetBehavioursAndInterfaces();
         }
 
@@ -53,7 +57,6 @@ namespace BehaviourCollections
         private void GetBehavioursAndInterfaces()
         {
             Behaviours = new(GetComponents<TBehaviour>());
-
             Interfaces.Clear();
 
             _typeToBehaviourSerialized.Clear();
@@ -71,11 +74,11 @@ namespace BehaviourCollections
                     if (ContainsType(_typeToInterfaceSerialized, _interface))
                     {
                         NoDuplicates = false;
-                        Debug.LogError($"Found duplicate {typeof(TBehaviour).Name}s implementing {_interface}. This is not allowed!", behaviour);
+                        Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s implementing {_interface}. This is not allowed!", behaviour);
                         return;
                     }
 
-                    _typeToInterfaceSerialized.TryAdd(new SerializableType(_interface), behaviour);
+                    _typeToInterfaceSerialized.Add(new SerializableType(_interface), behaviour);
 
                     Interfaces.Add(_interface.Name);
                 }
@@ -85,11 +88,11 @@ namespace BehaviourCollections
                     if (ContainsType(_typeToBehaviourSerialized, type))
                     {
                         NoDuplicates = false;
-                        Debug.LogError($"Found duplicate {typeof(TBehaviour).Name}s of type {type}. This is not allowed!", behaviour);
+                        Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s of type {type}. This is not allowed!", behaviour);
                         return;
                     }
 
-                    _typeToBehaviourSerialized.TryAdd(new SerializableType(type), behaviour);
+                    _typeToBehaviourSerialized.Add(new SerializableType(type), behaviour);
 
                     type = type.BaseType;
                 }

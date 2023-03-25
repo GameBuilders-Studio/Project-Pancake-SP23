@@ -2,14 +2,17 @@ using UnityEngine;
 
 namespace BehaviourCollections
 {
+    /// <summary>
+    /// Provides <typeparamref name="TBehaviour"/> components and their interfaces on this gameObject 
+    /// </summary>
     public class BehaviourProvider<TBehaviour> : MonoBehaviour
         where TBehaviour : BehaviourProvider<TBehaviour>
     {
-        private BehaviourCollection<TBehaviour> _collection = null;
+        private UniqueBehaviourCollection<TBehaviour> _collection = null;
 
-        protected virtual BehaviourCollection<TBehaviour> Collection { get; }
+        protected virtual UniqueBehaviourCollection<TBehaviour> Collection { get => _collection; }
 
-        internal void InitializeCollection(BehaviourCollection<TBehaviour> collection)
+        internal void InitializeCollection(UniqueBehaviourCollection<TBehaviour> collection)
         {
             if (Collection != null) { return; }
             _collection = collection;

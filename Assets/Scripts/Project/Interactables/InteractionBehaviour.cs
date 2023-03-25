@@ -1,18 +1,7 @@
-using System;
-using UnityEngine;
-using CustomAttributes;
+using BehaviourCollections;
 
-[RequireComponent(typeof(InteractionCollection))]
-public abstract class InteractionBehaviour : InteractionProvider
-{
-    [SerializeField]
-    [HideInInspector]
-    private InteractionCollection _entity;
+// provider
+// behaviour
+// collection
 
-    protected sealed override InteractionCollection Collection => _entity;
-
-    public void AssignToEntity(InteractionCollection entity)
-    {
-        _entity = entity;
-    }
-}
+public abstract class InteractionBehaviour : InteractionProvider {}
