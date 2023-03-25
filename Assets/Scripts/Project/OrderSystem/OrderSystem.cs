@@ -103,7 +103,7 @@ public class OrderSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        StopOrderSpawn();
+        StopOrderSpawn(); //Should we also stop the order timer coroutines?
     }
 
     private void OnStartLevel()

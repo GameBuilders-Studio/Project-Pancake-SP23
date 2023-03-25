@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using CustomAttributes;
 public class ServingStation : StationController
 {
-    [SerializeField] private OrderSystem _orderSystem;
+    [SerializeField, Required] private OrderSystem _orderSystem;
     public override void ItemPlaced(ref Carryable item)
     {
         Debug.Log("Called OnItemPlaced");
@@ -15,12 +15,7 @@ public class ServingStation : StationController
         //Only Accept dish, don't accept ingredient
         if (item.TryGetBehaviour(out FoodContainer container))
         {
-            List<IngredientType> ingredientTypes = new();
-            foreach (var ingredient in container.Ingredients)
-            {
-                ingredientTypes.Add(ingredient.Type);
-            }
-            _orderSystem.CheckOrderMatch(ingredientTypes);
+            isOrderCorrect(container);
             container.ClearIngredients();
             Destroy(container.gameObject);
             return true;
@@ -30,6 +25,11 @@ public class ServingStation : StationController
 
     public bool isOrderCorrect(FoodContainer container)
     {
-        return true;
+        List<IngredientType> ingredientTypes = new();
+        foreach (var ingredient in container.Ingredients)
+        {
+            ingredientTypes.Add(ingredient.Type);
+        }
+        return _orderSystem.CheckOrderMatch(ingredientTypes);
     }
 }
