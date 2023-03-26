@@ -3,44 +3,41 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteInEditMode]
 public class ProgressBar : MonoBehaviour
 {
-    [SerializeField] Color BarColor;
-    [SerializeField] Color BarBackGroundColor;
-
-    [SerializeField] Image bar;
-    [SerializeField] Image barBackground;
-
-    private float val;
-    public float Val
+#if UNITY_EDITOR
+    [MenuItem("GameObject/UI/Linear Progress Bar")]
+    public static void AddLinearProgressBar()
     {
-        get { return val; }
-
-        set
-        {
-            value = Mathf.Clamp(value, 0, 1);
-            val = value;
-            UpdateValue(val);
-
-        }
+        GameObject obj = Instantiate(Resources.Load<GameObject>("Path/To/Your/Prefab"));
+        obj.transform.SetParent(Selection.activeGameObject.transform, false);
     }
-    
-    [SerializeField] TMP_Text text;
+#endif
+    public int minimum;
+    public int maximum;
+    public int current;
+    public Image mask;
+    public Image fill;
+    public Color color;
 
-    private void Awake()
+
+    void Update()
     {
-        bar.color = BarColor;
-        barBackground.color = BarBackGroundColor;
-
-        UpdateValue(val);
+        GetCurrentFill();
     }
 
-    void UpdateValue(float val)
+    void GetCurrentFill()
     {
-        // text.text = $"{Mathf.Min(losingFarmValue, Mathf.RoundToInt(val * losingFarmValue))}/{losingFarmValue} PLANTED";  //| Hard-coded
-        bar.fillAmount = val;
+        float currentOffset = current - minimum;
+        float maximumOffset = maximum - minimum;
+        float fillAmount = currentOffset / maximumOffset;
+        mask.fillAmount = fillAmount;
+
+        fill.color = color;
     }
 }
