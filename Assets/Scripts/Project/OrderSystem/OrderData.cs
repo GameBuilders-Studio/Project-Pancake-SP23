@@ -22,11 +22,15 @@ public class OrderData : ScriptableObject
 [System.Serializable]
 public class OrderListStorage : SerializableDictionary.Storage<List<Order>> { }
 
-[CustomPropertyDrawer(typeof(OrderListStorage))]
-public class ListStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer { }
-
 [System.Serializable]
 public class LevelOrderListDictionary : SerializableDictionary<int, List<Order>, OrderListStorage> { }
 
+#if UNITY_EDITOR
+
 [CustomPropertyDrawer(typeof(LevelOrderListDictionary))]
 public class ListSerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer { }
+
+[CustomPropertyDrawer(typeof(OrderListStorage))]
+public class ListStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer { }
+
+#endif
