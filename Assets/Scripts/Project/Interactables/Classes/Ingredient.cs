@@ -13,8 +13,8 @@ public enum IngredientType
 [System.Serializable]
 public class Ingredient
 {
-    public IngredientType Type;
-
+    //public IngredientType Type;
+    public IngredientData Data;
     public IngredientStateData State;
 
     [ProgressBar("Progress", 1.0f, EColor.Green)]
@@ -22,9 +22,10 @@ public class Ingredient
 
     public bool ProgressComplete => Mathf.Approximately(Progress, 1.0f);
 
-    public Ingredient(IngredientType type, IngredientStateData state)
+    public Ingredient(/*IngredientType type, */IngredientData data, IngredientStateData state)
     {
-        Type = type;
+        //Type = type;
+        Data = data;
         State = state;
     }
 
