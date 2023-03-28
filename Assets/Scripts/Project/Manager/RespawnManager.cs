@@ -9,10 +9,18 @@ public class RespawnManager : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        StartCoroutine(Time());
         if(other.tag == "Player")
         {
-           player.transform.position = respawnPoint.transform.position; 
+            //StartCoroutine(Time());
+            player.transform.position = respawnPoint.transform.position; 
         }
+    }
+
+    IEnumerator Time()
+    {
+        yield return new WaitForSeconds(3); //wait 5 seconds to respawn the character
+        Debug.Log("Done");
     }
 }
 
