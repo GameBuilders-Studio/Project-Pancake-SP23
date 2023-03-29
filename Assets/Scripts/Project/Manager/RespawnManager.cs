@@ -6,21 +6,19 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
-
     void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(Time());
         if(other.tag == "Player")
         {
-            //StartCoroutine(Time());
-            player.transform.position = respawnPoint.transform.position; 
+            StartCoroutine(RespawnTime());
         }
     }
 
-    IEnumerator Time()
+    IEnumerator RespawnTime()
     {
-        yield return new WaitForSeconds(3); //wait 5 seconds to respawn the character
-        Debug.Log("Done");
+        yield return new WaitForSeconds(5); //wait 5 seconds to respawn the character
+        Debug.Log("Done"); 
+        player.transform.position = respawnPoint.transform.position; //Set them to the respawnPoint
     }
 }
 
