@@ -11,12 +11,15 @@ public class RespawnManager : MonoBehaviour
 
     private Vector3 originalPos; //This is to store the original position 
 
+    //private Vector3[] orignals = new Vector3[pots.Length()];
     void Awake()
     {
         //Store all the pots with the tag "Pot" inside the array pots
         pots = GameObject.FindGameObjectsWithTag("Pot");
 
         //make an array that stores all the original positions of all the pots that are in the scene
+        private Vector3[] orignalPotPositions = new Vector3[pots.Length()];
+
         originalPos = pot.transform.position;
         Debug.Log(originalPos);
     }
@@ -36,6 +39,8 @@ public class RespawnManager : MonoBehaviour
             //The pot needs to be let go from the player
 
             /*
+            //use GameObject.FindGameObjectWithTag("Your_Tag_Here").transform.position; if this is equal to current position of pot that needs to respawns,
+            move the pot to new position and check again is position is avaiable
             //if() if original position is being taken, check if space next to is open, if so then place object there
             IDEAS: use vector3 distance seeing is the distance between the pots is ~0, 
             this means that another pot is in another pots original postion is so, move the point to the next position using Vector3
@@ -53,7 +58,7 @@ public class RespawnManager : MonoBehaviour
         yield return new WaitForSeconds(1); //wait 5 seconds to respawn the character
         Debug.Log("Player Respawned"); 
         player.transform.position = respawnPoint.transform.position; //Set them to the respawnPoint
-        pot.transform.position = originalPos;
+        //pot.transform.position = originalPos;
     }
 }
 
