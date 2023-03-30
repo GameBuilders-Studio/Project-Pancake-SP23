@@ -4,6 +4,9 @@ public class CuttingBoard : StationController, IUsable
 {
     [SerializeField]
     private float _chopTimeSeconds;
+    [SerializeField] 
+    [Tooltip("The state the ingredient has to be in to be chopped, most likely just 'raw'")]
+    private IngredientStateData _startIngredientState;
 
     [SerializeField]
     private IngredientStateData _targetIngredientState;
@@ -44,7 +47,12 @@ public class CuttingBoard : StationController, IUsable
 
     void Chop()
     {
+        // ensure ingredient is in a state that can be chopped
+        if(_ingredient.Data.State != _startIngredientState && _ingredient.Data.State != _targetIngredientState) { return; }
+
         // IInteractable.Enabled check ensures _ingredient exists
+        if(_ingredient.ProgressComplete) { return; }
+
         _ingredient.Data.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
     }
