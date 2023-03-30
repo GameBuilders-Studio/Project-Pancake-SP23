@@ -60,6 +60,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _controller
+      value: 
+      objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _stationBehaviour
       value: 
       objectReference: {fileID: 5980901022417077901}
@@ -68,9 +72,58 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Interfaces.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: Behaviours.Array.data[2]
       value: 
       objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Interfaces.Array.data[2]
+      value: IUsable
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToInterfaceSerialized.m_keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToInterfaceSerialized.m_values.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[2]
+      value: 
+      objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[3]
+      value: 
+      objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToInterfaceSerialized.m_values.Array.data[2]
+      value: 
+      objectReference: {fileID: 5980901022417077901}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[2].typeId
+      value: CuttingBoard, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[3].typeId
+      value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToInterfaceSerialized.m_keys.Array.data[2].typeId
+      value: IUsable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -91,8 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa18e75ed3af71e4389ec7b418c848c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 6542368995087027349}
+  _entity: {fileID: 6542368995087027349}
   _chopTimeSeconds: 4
+  _startIngredientState: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
   _targetIngredientState: {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
 --- !u!114 &6542368995087027349 stripped
 MonoBehaviour:
