@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using EasyCharacterMovement;
 using CustomAttributes;
 

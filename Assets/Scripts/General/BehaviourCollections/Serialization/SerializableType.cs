@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
@@ -9,7 +9,7 @@ using UnityEditor;
 using System.Linq;
 #endif
 
-namespace GameBuilders.Serialization
+namespace BehaviourCollections.Serialization
 {
     [Serializable]
     public partial class SerializableType : ISerializationCallbackReceiver
@@ -83,6 +83,20 @@ namespace GameBuilders.Serialization
         {
             string value = ToSerializedType(Type);
             if (!string.IsNullOrEmpty(value)) { typeId = value; }
+        }
+
+        public override int GetHashCode()
+        {
+            return Type.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SerializableType other)
+            {
+                if (Type == other.Type) { return true; }
+            }
+            return false;   
         }
     }
 
