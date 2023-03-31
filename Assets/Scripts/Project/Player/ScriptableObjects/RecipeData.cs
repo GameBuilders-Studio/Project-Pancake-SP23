@@ -11,10 +11,10 @@ public class RecipeData : ScriptableObject
     private string _recipeName;
     // public string description;
     [SerializeField]
-    private List<IngredientData> _recipe;
+    private List<IngredientSO> _recipe;
 
     public string RecipeName => _recipeName;
-    public bool IsRecipeValid(List<IngredientData> ingredients)
+    public bool IsRecipeValid(List<IngredientSO> ingredients)
     {
         // check if the number of ingredients is correct
         if (ingredients.Count != _recipe.Count)
@@ -23,7 +23,7 @@ public class RecipeData : ScriptableObject
         }
 
         // check if the ingredients and states are the same using a dictionary
-        var comparison = new Dictionary<IngredientData, int>();
+        var comparison = new Dictionary<IngredientSO, int>();
 
         foreach (var recipeIngredient in _recipe)
         {
