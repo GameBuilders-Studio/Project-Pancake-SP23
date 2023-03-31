@@ -55,7 +55,7 @@ public class OrderSystem : MonoBehaviour
     /// Checks for a matching order with the the highest priority (lowest time remaining) from the orders list and removes it.
     /// Returns true if a matching order is found, false otherwise.
     /// </summary>
-    public bool CheckOrderMatch(List<IngredientData> ingredients)
+    public bool CheckOrderMatch(List<IngredientSO> ingredients)
     {
         int orderIndexToRemove = -1;
         float minTimeRemaining = float.MaxValue;
