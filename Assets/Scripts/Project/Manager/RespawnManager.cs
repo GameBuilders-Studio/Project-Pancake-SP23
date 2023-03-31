@@ -11,17 +11,18 @@ public class RespawnManager : MonoBehaviour
 
     private Vector3 originalPos; //This is to store the original position 
 
-    //private Vector3[] orignals = new Vector3[pots.Length()];
+    //private Vector3[] orignals = new Vector3[pots.Length];
     void Awake()
     {
         //Store all the pots with the tag "Pot" inside the array pots
         pots = GameObject.FindGameObjectsWithTag("Pot");
+        Debug.Log(pots);
 
         //make an array that stores all the original positions of all the pots that are in the scene
-        private Vector3[] orignalPotPositions = new Vector3[pots.Length()];
+        private Vector3[] orignalPotPositions = new Vector3[pots.Length];
 
         originalPos = pot.transform.position;
-        Debug.Log(originalPos);
+        Debug.Log(originalPotPositions[0]);
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -31,12 +32,14 @@ public class RespawnManager : MonoBehaviour
         if(other.tag == "Player")
         {
             StartCoroutine(RespawnTime());
+
+            //Drop the pot that the player is holding and respawn it to a stove top
+
         }
 
-        //If the pot hits the death trigger
+        //If the pot hits the death triggere
         if(other.tag == "Pot")
         {
-            //The pot needs to be let go from the player
 
             /*
             //use GameObject.FindGameObjectWithTag("Your_Tag_Here").transform.position; if this is equal to current position of pot that needs to respawns,
@@ -61,4 +64,3 @@ public class RespawnManager : MonoBehaviour
         //pot.transform.position = originalPos;
     }
 }
-

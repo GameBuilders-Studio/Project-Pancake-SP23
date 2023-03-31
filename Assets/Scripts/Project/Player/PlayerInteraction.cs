@@ -213,6 +213,13 @@ public class PlayerInteraction : MonoBehaviour
         ReleaseItem();
     }
 
+    // private void DropItem()
+    // {
+    //     _heldItem.OnDrop();
+    //     _heldItem.transform.parent = null;
+    //     ReleaseItem();
+    // }
+
     private void ReleaseItem()
     {
         _character.IgnoreCollision(_heldItem.Rigidbody, ignore: false);
