@@ -11,7 +11,7 @@ public class Portal : MonoBehaviour
     [Required]
     [SerializeField] Portal exitPortal;
     
-    [SerializeField] float exitSpeedMultiplier = 1f;
+    // [SerializeField] float exitSpeedMultiplier = 1f;
 
     [SerializeField] LayerMask teleportableLayers;
 
@@ -31,7 +31,6 @@ public class Portal : MonoBehaviour
         }
 
         // Return true iff parent is null
-        Debug.Log("has parent");
         return other.transform.parent == null; 
     }
 
