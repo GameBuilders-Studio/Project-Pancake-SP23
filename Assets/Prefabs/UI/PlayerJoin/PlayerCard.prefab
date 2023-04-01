@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerIndex: 0
+  CurrentControlScheme: 
   _useAnyDevice: 0
 --- !u!114 &8225521782175389267
 MonoBehaviour:
@@ -160,7 +161,8 @@ MonoBehaviour:
   _title: {fileID: 3694406609264494079}
   _buttonPrompt: {fileID: 1202835403068279966}
   _joinText: Press any button to join
-  _readyUpText: Press X to ready up
+  _readyUpTextGamepad: Press X to ready up
+  _readyUpTextKeyboard: Press Space to ready up
 --- !u!1 &3132457516253301906
 GameObject:
   m_ObjectHideFlags: 0
