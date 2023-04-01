@@ -11,33 +11,43 @@ using UnityEditor;
 public class ProgressBar : MonoBehaviour
 {
 #if UNITY_EDITOR
-    [MenuItem("GameObject/UI/Linear Progress Bar")]
+    [MenuItem("GameObject/UI/Progress Bar")]
     public static void AddLinearProgressBar()
     {
-        GameObject obj = Instantiate(Resources.Load<GameObject>("Path/To/Your/Prefab"));
+        GameObject obj = Instantiate(Resources.Load<GameObject>("Progress Bar"));
+        Debug.Log(obj);
         obj.transform.SetParent(Selection.activeGameObject.transform, false);
     }
 #endif
-    public int minimum;
-    public int maximum;
-    public int current;
-    public Image mask;
-    public Image fill;
-    public Color color;
+    [SerializeField] private Image _border;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private Image _fill;
+    [SerializeField] private Gradient _gradient;
 
 
-    void Update()
+    public void SetProgress(float value)
     {
-        GetCurrentFill();
+        if (value > _slider.maxValue && value < _slider.minValue)
+        {
+            Debug.Log("Invalid value");
+            return;
+        }
+
+        _slider.value = value;
+        _fill.color = _gradient.Evaluate(_slider.normalizedValue);
     }
 
-    void GetCurrentFill()
+    public float GetProgress()
     {
-        float currentOffset = current - minimum;
-        float maximumOffset = maximum - minimum;
-        float fillAmount = currentOffset / maximumOffset;
-        mask.fillAmount = fillAmount;
-
-        fill.color = color;
+        return _slider.value;
     }
+
+    public void SetMaxValue(float maxValue)
+    {
+        _slider.maxValue = maxValue;
+        _slider.value = maxValue;
+
+        _fill.color = _gradient.Evaluate(1f);
+    }
+
 }
