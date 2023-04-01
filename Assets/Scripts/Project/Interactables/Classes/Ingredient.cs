@@ -3,18 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomAttributes;
 
-public enum IngredientType
-{
-    None,
-    Cube,
-    Sphere
-}
-
 [System.Serializable]
 public class Ingredient
 {
-    public IngredientType Type;
-
+    public IngredientSO Data;
     public IngredientStateData State;
 
     [ProgressBar("Progress", 1.0f, EColor.Green)]
@@ -22,9 +14,9 @@ public class Ingredient
 
     public bool ProgressComplete => Mathf.Approximately(Progress, 1.0f);
 
-    public Ingredient(IngredientType type, IngredientStateData state)
+    public Ingredient(IngredientSO data, IngredientStateData state)
     {
-        Type = type;
+        Data = data;
         State = state;
     }
 

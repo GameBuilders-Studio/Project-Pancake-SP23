@@ -10,12 +10,6 @@ public class IngredientProp : InteractionBehaviour
     public float _progressIndicator = 0.0f;
 
     [SerializeField]
-    private IngredientType _type;
-
-    [SerializeField]
-    [Required]
-    private IngredientStateData _state;
-
     private Ingredient _ingredientData;
 
     public float Progress => _ingredientData.Progress;
@@ -23,11 +17,6 @@ public class IngredientProp : InteractionBehaviour
     public bool ProgressComplete => _ingredientData.ProgressComplete;
 
     public Ingredient Data => _ingredientData;
-
-    protected virtual void Awake()
-    {
-        _ingredientData = new(_type, _state);
-    }
 
     public void AddProgress(float progressDelta)
     {

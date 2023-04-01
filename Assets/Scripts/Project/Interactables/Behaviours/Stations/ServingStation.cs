@@ -25,11 +25,11 @@ public class ServingStation : StationController
 
     public bool isOrderCorrect(FoodContainer container)
     {
-        List<IngredientType> ingredientTypes = new();
+        List<IngredientSO> ingredientDatas = new();
         foreach (var ingredient in container.Ingredients)
         {
-            ingredientTypes.Add(ingredient.Type);
+            ingredientDatas.Add(ingredient.Data);
         }
-        return _orderSystem.CheckOrderMatch(ingredientTypes);
+        return _orderSystem.CheckOrderMatch(ingredientDatas);
     }
 }

@@ -3,13 +3,13 @@ using UnityEngine;
 public class IngredientDispenser : StationController
 {
     [SerializeField]
-    private GameObject _ingredientPrefab;
+    private IngredientSO _ingredientSO;
 
     public override void ItemRemoved(ref Carryable item)
     {
         if (item == null)
         {
-            var ingredientGo = Instantiate(_ingredientPrefab, transform.position, transform.rotation);
+            var ingredientGo = Instantiate(_ingredientSO.prefab, transform.position, transform.rotation);
             item = ingredientGo.GetComponent<Carryable>();
         }
     }
