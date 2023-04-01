@@ -12,6 +12,8 @@ public class LevelSelectionController : MonoBehaviour
     private GameObject _buttonPrefab;
     [SerializeField]
     private Transform _buttonParent;
+    [SerializeField]
+    private List<GameObject> _buttons;
     private void Awake() {
         int index = 1;
         foreach (var scene in _scenes)
@@ -19,6 +21,7 @@ public class LevelSelectionController : MonoBehaviour
             var button = Instantiate(_buttonPrefab, _buttonParent);
             button.GetComponentInChildren<Text>().text = index.ToString();
             button.GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(scene));
+            _buttons.Add(button);
             index++;
         }
     }
