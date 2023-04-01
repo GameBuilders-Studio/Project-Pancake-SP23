@@ -75,6 +75,16 @@ public class InputManager : MonoBehaviour
         return true;
     }
 
+    public static string GetControlSchemeByIndex(int playerIndex)
+    {
+        if (playerIndex > s_players.Count - 1 || playerIndex < 0)
+        {
+            return null;
+        }
+        var user = s_players[playerIndex];
+        return user.controlScheme?.name;
+    }
+
     public void ReassignDevice(InputUser user, InputDevice newDevice)
     {
         user = InputUser.PerformPairingWithDevice(newDevice, user, InputUserPairingOptions.UnpairCurrentDevicesFromUser);

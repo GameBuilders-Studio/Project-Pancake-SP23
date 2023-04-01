@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
-//using UnityEngine.InputSystem;
 
 public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 {
@@ -19,6 +18,16 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     [SerializeField]
     private TextMeshProUGUI _buttonPrompt;
+
+    [Space(15f)]
+    [SerializeField]
+    private string _joinText;
+
+    [SerializeField]
+    private string _readyUpTextGamepad;
+
+    [SerializeField]
+    private string _readyUpTextKeyboard;
 
     void Awake()
     {
@@ -42,21 +51,32 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
     private void OnPlayerJoin()
     {
         _playerVisual.SetActive(true);
+        _playerInputHandler.SetCallbacks(this);
+
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
-        _buttonPrompt.enabled = false;
+
+        if (_playerInputHandler.CurrentControlScheme == "Gamepad")
+        {
+            _buttonPrompt.text = _readyUpTextGamepad;
+        }
+        else
+        {
+            _buttonPrompt.text = _readyUpTextKeyboard; 
+        }
     }
 
     private void OnPlayerLost()
     {
         _playerVisual.SetActive(false);
-        _title.text = "???";
-        _buttonPrompt.enabled = true;
+
+        _title.text = "";
+        _buttonPrompt.text = _joinText;
     }
 
     // handle UI navigation here
     public void OnNavigate(InputAction.CallbackContext context)
     {
-
+        var direction = context.ReadValue<Vector2>();
     }
 
     public void OnSubmit(InputAction.CallbackContext context)

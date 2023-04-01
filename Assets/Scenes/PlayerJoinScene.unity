@@ -922,6 +922,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2533391073464827542, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}
+      propertyPath: ControlScheme
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2760924272410426960, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1033,6 +1037,14 @@ PrefabInstance:
     - target: {fileID: 5845082547614764723, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225521782175389267, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}
+      propertyPath: _readyUpTextGamepad
+      value: Press X to ready up
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225521782175389267, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}
+      propertyPath: _readyUpTextKeyboard
+      value: Press Space to ready up
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6909ed3399a097e40b7dd53efa1855a7, type: 3}

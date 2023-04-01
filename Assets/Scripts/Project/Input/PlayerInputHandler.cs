@@ -7,6 +7,9 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]
     public int PlayerIndex = 0;
 
+    [SerializeField]
+    public string CurrentControlScheme = "";
+
     [Tooltip("Use any connected device available to control this player. For testing purposes only!")]
     [SerializeField]
     private bool _useAnyDevice = false;
@@ -42,6 +45,7 @@ public class PlayerInputHandler : MonoBehaviour
             if (InputManager.GetInputActionsByIndex(PlayerIndex, out _actions))
             {
                 _isManaged = true;
+                CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
                 OnActionsAssigned();
             }
 
