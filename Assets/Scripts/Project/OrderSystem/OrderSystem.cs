@@ -118,7 +118,7 @@ public class OrderSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("Order spawn coroutine already running");
+            Debug.LogError("Order spawn coroutine already running");
         }
 
     }

@@ -27,9 +27,9 @@ public class ProgressBar : MonoBehaviour
 
     public void SetProgress(float value)
     {
-        if (value > _slider.maxValue && value < _slider.minValue)
+        if (value > _slider.maxValue || value < _slider.minValue)
         {
-            Debug.Log("Invalid value");
+            Debug.LogWarning("Progress Bar: Value is out of range");
             return;
         }
 
