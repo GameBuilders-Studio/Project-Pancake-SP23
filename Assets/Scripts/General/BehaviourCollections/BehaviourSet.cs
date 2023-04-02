@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -9,17 +8,17 @@ namespace BehaviourCollections
     public class BehaviourSet<TBehaviour> : BehaviourProvider<TBehaviour>
         where TBehaviour : ManagedMonoBehaviour<TBehaviour>
     {
-        [SerializeField, HideInInspector]
-        private SerializableType[] _behaviourTypes = new SerializableType[1];
-
         [SerializeField]
         private TBehaviour[] _behaviours = new TBehaviour[1];
 
-        [SerializeField, HideInInspector]
-        private SerializableType[] _interfaceTypes = new SerializableType[1];
-
         [SerializeField]
         private TBehaviour[] _interfaces = new TBehaviour[1];
+
+        [SerializeField, HideInInspector]
+        private SerializableType[] _behaviourTypes = new SerializableType[1];
+
+        [SerializeField, HideInInspector]
+        private SerializableType[] _interfaceTypes = new SerializableType[1];
 
         [SerializeField, HideInInspector]
         public bool NoDuplicates = true;
