@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using BehaviourCollections.Serialization;
 
 namespace BehaviourCollections
 {
-    public class BehaviourSet<TBehaviour> : BehaviourCollectionComponent<TBehaviour>
+    public class BehaviourSet<TBehaviour> : BehaviourProvider<TBehaviour>
         where TBehaviour : ManagedMonoBehaviour<TBehaviour>
     {
-        [SerializeField]
-        private SerializableDictionary<SerializableType, TBehaviour> _typeToBehaviour;
+        [SerializeField, HideInInspector]
+        private SerializableType[] _behaviourTypes = new SerializableType[1];
 
         [SerializeField]
-        private SerializableDictionary<SerializableType, TBehaviour> _typeToInterface;
+        private TBehaviour[] _behaviours = new TBehaviour[1];
+
+        [SerializeField, HideInInspector]
+        private SerializableType[] _interfaceTypes = new SerializableType[1];
+
+        [SerializeField]
+        private TBehaviour[] _interfaces = new TBehaviour[1];
 
         [SerializeField, HideInInspector]
         public bool NoDuplicates = true;
@@ -23,19 +30,20 @@ namespace BehaviourCollections
             TypeToInterface = new();
             
             // convert serialized types to System.Type at runtime
-            foreach (KeyValuePair<SerializableType, TBehaviour> entry in _typeToBehaviour)
+            for (int i = 0; i < _behaviourTypes.Length; i++)
             {
-                var behaviour = entry.Value;
-                TypeToBehaviour.Add(entry.Key.Type, behaviour);
+                var behaviour = _behaviours[i];
+                TypeToBehaviour.AddByTypeParameter(_behaviourTypes[i].Type, behaviour);
                 behaviour.Initialize();
             }
 
-            foreach (KeyValuePair<SerializableType, TBehaviour> entry in _typeToInterface)
+            for (int i = 0; i < _interfaceTypes.Length; i++)
             {
-                TypeToInterface.Add(entry.Key.Type, entry.Value);
+                TypeToInterface.AddByTypeParameter(_interfaceTypes[i].Type, _interfaces[i]);
             }
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (GetComponents<BehaviourSet<TBehaviour>>().Length > 1)
@@ -51,12 +59,12 @@ namespace BehaviourCollections
             var components = GetComponents<TBehaviour>();
             if (components.Length < 0) { return; }
 
+            ArrayUtility.Clear(ref _behaviourTypes);
+            ArrayUtility.Clear(ref _behaviours);
+            ArrayUtility.Clear(ref _interfaceTypes);
+            ArrayUtility.Clear(ref _interfaces);
+
             List<TBehaviour> behaviours = new(components);
-
-            _typeToBehaviour.Clear();
-            _typeToInterface.Clear();
-
-            int nextHashCode = 0;
 
             foreach (TBehaviour behaviour in behaviours)
             {
@@ -65,8 +73,6 @@ namespace BehaviourCollections
 
                 if (behaviour is ManagedMonoBehaviour<TBehaviour> managedBehaviour)
                 {
-                    managedBehaviour.HashCode = nextHashCode;
-                    nextHashCode++;
                     managedBehaviour.Collection = this;
                 }
 
@@ -74,24 +80,29 @@ namespace BehaviourCollections
                 {
                     var interfaceKey = new SerializableType(_interface);
 
-                    if (!_typeToInterface.TryAdd(interfaceKey, behaviour))
+                    if (ArrayUtility.Contains(_interfaceTypes, interfaceKey))
                     {
                         NoDuplicates = false;
                         Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s implementing {_interface}. This is not allowed!");
                         return;
                     }
+                    ArrayUtility.Add(ref _interfaceTypes, interfaceKey);
+                    ArrayUtility.Add(ref _interfaces, behaviour);
                 }
 
                 while (type != typeof(TBehaviour) && type != typeof(MonoBehaviour))
                 {
                     var behaviourKey = new SerializableType(type);
 
-                    if (!_typeToBehaviour.TryAdd(behaviourKey, behaviour))
+                    if (ArrayUtility.Contains(_behaviourTypes, behaviourKey))
                     {
                         NoDuplicates = false;
                         Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s deriving from {type}. This is not allowed!");
                         return;
                     }
+
+                    ArrayUtility.Add(ref _behaviourTypes, behaviourKey);
+                    ArrayUtility.Add(ref _behaviours, behaviour);
 
                     type = type.BaseType;
                 }
@@ -99,5 +110,6 @@ namespace BehaviourCollections
 
             NoDuplicates = true;
         }
+#endif
     }
 }
