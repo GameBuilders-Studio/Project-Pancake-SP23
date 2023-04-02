@@ -6,7 +6,13 @@ public class Stove : StationController
     private float _cookTimePerIngredient;
 
     [SerializeField]
+    private float _overcookTimePerIngredient;
+
+    [SerializeField]
     private IngredientStateData _targetIngredientState;
+
+    [SerializeField]
+    private IngredientStateData _targetOvercookedIngredientState;
 
     [SerializeField]
     private bool _cooking = false;
@@ -49,12 +55,15 @@ public class Stove : StationController
         {
             var ingredient = container.Ingredients[i];
 
-            ingredient.SetState(_targetIngredientState);
+            if (ingredient.State != _targetIngredientState && ingredient.State != _targetOvercookedIngredientState)
+            {
+                ingredient.SetState(_targetIngredientState);
+            }
 
-            if (ingredient.ProgressComplete) 
+            if (ingredient.ProgressComplete)
             {
                 _totalProgress += 1.0f / container.Count;
-                continue; 
+                continue;
             }
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
@@ -62,12 +71,12 @@ public class Stove : StationController
 
             _cooking = true;
 
-            if (i == container.Capacity - 1 && ingredient.ProgressComplete)
+            if (i == container.Count - 1 && ingredient.ProgressComplete)
             {
                 if (_cooking)
                 {
                     _cooking = false;
-                    OnCookComplete();
+                    OnCookComplete(container);
                 }
             }
 
@@ -75,5 +84,14 @@ public class Stove : StationController
         }
     }
 
-    void OnCookComplete() {}
+    void OnCookComplete(Pot container)
+    {
+        // Debug.Log("Cook Complete");
+        //should this increment an overcooked progress bar? and only transition to overcooked after that is filled
+        for (int i = 0; i < container.Count; i++)
+        {
+            var ingredient = container.Ingredients[i];
+            ingredient.SetState(_targetOvercookedIngredientState);
+        }
+    }
 }
