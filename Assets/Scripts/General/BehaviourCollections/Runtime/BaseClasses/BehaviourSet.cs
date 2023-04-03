@@ -5,20 +5,24 @@ using BehaviourCollections.Serialization;
 
 namespace BehaviourCollections
 {
+    /// <summary>
+    /// Caches ManagedMonoBehaviours deriving from <typeparamref name="TBehaviour"/>.
+    /// All behaviours managed by this collection must derive from unique types.
+    /// </summary>
     public class BehaviourSet<TBehaviour> : BehaviourProvider<TBehaviour>
         where TBehaviour : ManagedMonoBehaviour<TBehaviour>
     {
         [SerializeField]
-        private TBehaviour[] _behaviours = new TBehaviour[1];
+        private TBehaviour[] _behaviours;
 
         [SerializeField]
-        private TBehaviour[] _interfaces = new TBehaviour[1];
+        private TBehaviour[] _interfaces;
 
         [SerializeField, HideInInspector]
-        private SerializableType[] _behaviourTypes = new SerializableType[1];
+        private SerializableType[] _behaviourTypes;
 
         [SerializeField, HideInInspector]
-        private SerializableType[] _interfaceTypes = new SerializableType[1];
+        private SerializableType[] _interfaceTypes;
 
         [SerializeField, HideInInspector]
         public bool NoDuplicates = true;
@@ -29,16 +33,16 @@ namespace BehaviourCollections
             TypeToInterface = new();
             
             // convert serialized types to System.Type at runtime
-            for (int i = 0; i < _behaviourTypes.Length; i++)
+            for (var i = 0; i < _behaviourTypes.Length; i++)
             {
                 var behaviour = _behaviours[i];
-                TypeToBehaviour.AddByTypeParameter(_behaviourTypes[i].Type, behaviour);
+                TypeToBehaviour.Add(_behaviourTypes[i].Type, behaviour);
                 behaviour.Initialize();
             }
 
-            for (int i = 0; i < _interfaceTypes.Length; i++)
+            for (var i = 0; i < _interfaceTypes.Length; i++)
             {
-                TypeToInterface.AddByTypeParameter(_interfaceTypes[i].Type, _interfaces[i]);
+                TypeToInterface.Add(_interfaceTypes[i].Type, _interfaces[i]);
             }
         }
 
@@ -56,16 +60,17 @@ namespace BehaviourCollections
         private void GetBehavioursAndInterfaces()
         {
             var components = GetComponents<TBehaviour>();
-            if (components.Length < 0) { return; }
-
+            
             ArrayUtility.Clear(ref _behaviourTypes);
             ArrayUtility.Clear(ref _behaviours);
             ArrayUtility.Clear(ref _interfaceTypes);
             ArrayUtility.Clear(ref _interfaces);
+            
+            if (components.Length == 0) { return; }
 
             List<TBehaviour> behaviours = new(components);
 
-            foreach (TBehaviour behaviour in behaviours)
+            foreach (var behaviour in behaviours)
             {
                 var type = behaviour.GetType();
                 var interfaces = type.GetInterfaces();
@@ -75,16 +80,17 @@ namespace BehaviourCollections
                     managedBehaviour.Collection = this;
                 }
 
-                foreach (var _interface in interfaces)
+                foreach (var @interface in interfaces)
                 {
-                    var interfaceKey = new SerializableType(_interface);
+                    var interfaceKey = new SerializableType(@interface);
 
                     if (ArrayUtility.Contains(_interfaceTypes, interfaceKey))
                     {
                         NoDuplicates = false;
-                        Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s implementing {_interface}. This is not allowed!");
+                        Debug.LogError($"Found multiple {typeof(TBehaviour).Name}s implementing {@interface}. This is not allowed!");
                         return;
                     }
+                    
                     ArrayUtility.Add(ref _interfaceTypes, interfaceKey);
                     ArrayUtility.Add(ref _interfaces, behaviour);
                 }

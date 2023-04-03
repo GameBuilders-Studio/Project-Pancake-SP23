@@ -22,14 +22,21 @@ namespace BehaviourCollections
         }
 
         /// <summary>
-        /// Remove this <typeparamref name="TBehaviour"/> from its associated collection 
+        /// Removes this <typeparamref name="TBehaviour"/> from its associated collection 
         /// </summary>
         /// <remarks>
-        /// IMPORTANT: Pass the type of this script as a generic parameter.
+        /// It is not recommended to destroy or deregister components managed by a behaviour collection.
         /// </remarks>
-        public void Deregister<T>()
+        public void Deregister()
         {
-            TypeToBehaviour.Remove<T>();
+            var type = GetType();
+            TypeToBehaviour.Remove(type);
+
+            var interfaces = type.GetInterfaces();
+            foreach (var interfaceType in interfaces)
+            {
+                TypeToInterface.Remove(interfaceType);
+            }
         }
     }
 }
