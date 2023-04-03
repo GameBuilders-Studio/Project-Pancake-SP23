@@ -12,8 +12,6 @@ namespace BehaviourCollections
         {
             var managedTypes = GetAllDerivedTypes(typeof(ManagedMonoBehaviour<>));
 
-            Debug.Log($"Found {managedTypes.Count} derived types");
-
             foreach (var type in managedTypes)
             {
                 FastBehaviourDictionary.RegisterType(type);
