@@ -11,8 +11,6 @@ public class Portal : MonoBehaviour
     [Required]
     [SerializeField] Portal exitPortal;
     
-    // [SerializeField] float exitSpeedMultiplier = 1f;
-
     [SerializeField] LayerMask teleportableLayers;
 
     private void OnTriggerEnter(Collider other)
