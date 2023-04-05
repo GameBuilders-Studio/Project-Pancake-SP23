@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stove
       objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277124, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -91,6 +95,31 @@ PrefabInstance:
       propertyPath: Behaviours.Array.data[2]
       value: 
       objectReference: {fileID: 6233733899822971758}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[2]
+      value: 
+      objectReference: {fileID: 6233733899822971758}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[3]
+      value: 
+      objectReference: {fileID: 6233733899822971758}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[2].typeId
+      value: Stove, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[3].typeId
+      value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -133,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83252f1fd1dce448a12b02a4bcfa84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 2638106814761321416}
+  _entity: {fileID: 2638106814761321416}
   _cookTimePerIngredient: 5
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
   _cooking: 0

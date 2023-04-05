@@ -7,22 +7,22 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private Transform pot;
-    [SerializeField] private GameObject[] pots; //Make an array storing all the pots that are in the scene
-
+    private Stove[] stoveInScene; //Make an array storing all the pots that are in the scene
+    
     private Vector3 originalPos; //This is to store the original position 
 
-    //private Vector3[] orignals = new Vector3[pots.Length];
+    //IMPLEMENTATION:
+    //Create an array of the stoves that are in the scene
+    //When a pot falls down, we will go through the array of stoves and see if something is on top of it
+    //If a stove is being occupied, we skip until the next one. If the stove is empty, we store the fallen pot 
+    //on the empty stove 
+
     void Awake()
     {
-        //Store all the pots with the tag "Pot" inside the array pots
-        pots = GameObject.FindGameObjectsWithTag("Pot");
-        Debug.Log(pots);
-
-        //make an array that stores all the original positions of all the pots that are in the scene
-        private Vector3[] orignalPotPositions = new Vector3[pots.Length];
+        //stoveInScene = FindGameObjectsWithTag("Stove");
+        stoveInScene = GameObject.FindObjectsOfType<Stove>();
 
         originalPos = pot.transform.position;
-        Debug.Log(originalPotPositions[0]);
     }
 
     //When the player or pot hits the death trigger, this function will be used
