@@ -14,6 +14,10 @@ public class Flammable : InteractionBehaviour
     private Transform _firePivot;
 
     [SerializeField]
+    [Tooltip("The scale of the spawned fire prefab")]
+    private float _fireEffectScale = 1.0f;
+
+    [SerializeField]
     private bool _isBurning = false;
 
     [SerializeField]
@@ -128,5 +132,6 @@ public class Flammable : InteractionBehaviour
         _spreadTimer = _settings.SpreadIntervalSeconds;
         _fireHealth = _settings.FireInitialHealth;
         _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
+        _fireEffect.transform.localScale *= _fireEffectScale;
     }
 }
