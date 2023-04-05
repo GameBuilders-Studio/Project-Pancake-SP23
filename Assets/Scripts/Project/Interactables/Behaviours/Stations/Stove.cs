@@ -25,12 +25,11 @@ public class Stove : StationController
 
     public override bool ValidateItem(Carryable item)
     {
-        return true;
+        return item.HasBehaviour<Pot>();
     }
 
     public override void ItemPlaced(ref Carryable item)
     {
-        // limit type casting by caching Pot reference
         _containerExists = item.TryGetBehaviour(out _container);
     }
 
@@ -38,6 +37,14 @@ public class Stove : StationController
     {
         _container = null;
         _containerExists = false;
+    }
+
+    public void StartFire()
+    {
+        if (TryGetBehaviour(out Flammable flammable))
+        {
+            flammable.TryIgnite();
+        }
     }
 
     // we need to cook jesse

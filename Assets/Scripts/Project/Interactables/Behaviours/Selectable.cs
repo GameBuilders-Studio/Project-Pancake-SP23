@@ -23,7 +23,7 @@ public class Selectable : InteractionBehaviour
     [ReadOnly]
     private bool _isSelectable = true;
 
-    public static readonly Dictionary<GameObject, IList<Selectable>> NearbyObjects = new();
+    public static readonly Dictionary<GameObject, List<Selectable>> NearbyObjects = new();
 
     public virtual bool IsSelectable
     {
@@ -60,7 +60,7 @@ public class Selectable : InteractionBehaviour
         }
     }
 
-    public static void AddListener(GameObject gameObject, IList<Selectable> managedList)
+    public static void AddListener(GameObject gameObject, List<Selectable> managedList)
     {
         if (!NearbyObjects.TryAdd(gameObject, managedList))
         {
@@ -111,7 +111,7 @@ public class Selectable : InteractionBehaviour
     // TODO: change collision matrix so Selectables only detect Players (for performance)
     void OnProxyTriggerEnter(Collider other)
     {
-        if (NearbyObjects.TryGetValue(other.gameObject, out IList<Selectable> selectables))
+        if (NearbyObjects.TryGetValue(other.gameObject, out List<Selectable> selectables))
         {
             selectables.Add(this);
         }
@@ -119,7 +119,7 @@ public class Selectable : InteractionBehaviour
 
     void OnProxyTriggerExit(Collider other)
     {
-        if (NearbyObjects.TryGetValue(other.gameObject, out IList<Selectable> selectables))
+        if (NearbyObjects.TryGetValue(other.gameObject, out List<Selectable> selectables))
         {
             selectables.Remove(this);
         }

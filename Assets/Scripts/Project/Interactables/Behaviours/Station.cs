@@ -73,7 +73,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
-        if (PlacedItem == null)
+        if (_placedItem == null)
         {
             if (!_controller.ValidateItem(carryable))
             {
@@ -90,7 +90,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
         if (other.TryGetInterface(out ICombinable otherCombinable))
         {
-            if (otherCombinable.TryCombineWith(PlacedItem))
+            if (otherCombinable.TryCombineWith(_placedItem))
             {
                 PlaceItem(carryable);
                 return true;
@@ -100,23 +100,9 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         return false; 
     }
 
-    /// <summary>
-    /// Returns true if the item can be caught by the Station
-    /// </summary>
-    public void TryCatchItem(Collider other)
-    {
-        if (!other.TryGetComponent(out Carryable item)) { return; }
-
-        if (!item.PhysicsEnabled) { return; }
-
-        item.CancelThrow();
-
-        TryCombineWith(item);
-    }
-
     public void PlaceItem(Carryable item)
     {
-        PlacedItem = item;
+        _placedItem = item;
 
         item.OnPlace();
 
@@ -131,5 +117,19 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Returns true if the item can be caught by the Station
+    /// </summary>
+    private void TryCatchItem(Collider other)
+    {
+        if (!other.TryGetComponent(out Carryable item)) { return; }
+
+        if (!item.PhysicsEnabled) { return; }
+
+        item.CancelThrow();
+
+        TryCombineWith(item);
     }
 }
