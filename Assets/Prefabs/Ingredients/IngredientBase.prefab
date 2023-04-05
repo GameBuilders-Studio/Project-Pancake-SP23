@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 1055438650720953735}
   - component: {fileID: 446099049515487953}
   - component: {fileID: 4778439782488913873}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IngredientBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
   _entity: {fileID: 446099049515487953}
   _progressIndicator: 0
   _ingredientData:
-    Type: 1
+    Data: {fileID: 0}
     State: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
     Progress: 0
   _startColor: {r: 0, g: 0, b: 0, a: 0}
