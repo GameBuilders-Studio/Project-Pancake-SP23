@@ -1586,7 +1586,7 @@ namespace EasyCharacterMovement
             _rootMotionController = GetComponentInChildren<RootMotionController>();
 
             _playerInteraction = GetComponent<PlayerInteraction>();
-            _input.ActionsAssigned += InitPlayerInput;
+            _input.InputActionsAssigned += InitPlayerInput;
 
             // Enable late fixed update (default)
             enableLateFixedUpdate = true;

@@ -14,17 +14,22 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private bool _enablePairingOnStart = false;
 
+    private static bool s_isInitialized = false;
+
     private static List<InputUser> s_players = new();
     private static Dictionary<InputUser, PlayerInputActions> s_userToInputActions = new();
 
-    public static event UnityAction<InputUser> OnPlayerJoin;
-    public static event UnityAction<InputUser> OnDeviceLost;
-    public static event UnityAction<InputUser> OnDeviceRegained;
+    public static event UnityAction<int, InputUser> PlayedJoined;
+    public static event UnityAction<int, InputUser> DeviceLost;
+    public static event UnityAction<int, InputUser> DeviceReassigned;
 
     public static int PlayerCount => s_players.Count;
 
     void Awake()
     {
+        if (s_isInitialized) { return; }
+        s_isInitialized = true;
+
         InputUser.onUnpairedDeviceUsed += OnUnpairedDeviceUsed;
         InputUser.onChange += OnInputUserChange;
     }
@@ -60,7 +65,7 @@ public class InputManager : MonoBehaviour
 
     public static bool GetInputActionsByIndex(int playerIndex, out PlayerInputActions inputActions)
     {
-        if (playerIndex > s_players.Count - 1)
+        if (playerIndex > s_players.Count - 1 || playerIndex < 0)
         {
             inputActions = null;
             return false;
@@ -70,10 +75,21 @@ public class InputManager : MonoBehaviour
         return true;
     }
 
+    public static string GetControlSchemeByIndex(int playerIndex)
+    {
+        if (playerIndex > s_players.Count - 1 || playerIndex < 0)
+        {
+            return null;
+        }
+        var user = s_players[playerIndex];
+        return user.controlScheme?.name;
+    }
+
     public void ReassignDevice(InputUser user, InputDevice newDevice)
     {
         user = InputUser.PerformPairingWithDevice(newDevice, user, InputUserPairingOptions.UnpairCurrentDevicesFromUser);
-        ConfigureControlScheme(user);
+        SetControlScheme(user);
+        DeviceReassigned?.Invoke(UserIndex(user), user);
     }
 
     /// <summary>
@@ -111,12 +127,12 @@ public class InputManager : MonoBehaviour
         switch (change)
         {
             case InputUserChange.DeviceLost:
-                OnDeviceLost?.Invoke(user);
+                DeviceLost?.Invoke(UserIndex(user), user);
                 Log($"Lost device {device}");
                 break;
             case InputUserChange.DeviceRegained:
-                OnDeviceRegained?.Invoke(user);
-                Log("device regained");
+                DeviceReassigned?.Invoke(UserIndex(user), user);
+                Log("Device regained");
                 break;
             default:
                 break;
@@ -133,15 +149,15 @@ public class InputManager : MonoBehaviour
         user.AssociateActionsWithUser(actions);
         actions.Enable();
 
-        ConfigureControlScheme(user);
+        SetControlScheme(user);
 
         s_players.Add(user);
         s_userToInputActions.Add(user, actions);
 
-        OnPlayerJoin?.Invoke(user);
+        PlayedJoined?.Invoke(UserIndex(user), user);
     }
 
-    private void ConfigureControlScheme(InputUser user)
+    private void SetControlScheme(InputUser user)
     {
         var device = user.pairedDevices[0];
         if (device is Gamepad)
@@ -159,6 +175,11 @@ public class InputManager : MonoBehaviour
         user.UnpairDevicesAndRemoveUser();
         s_players.Remove(user);
         s_userToInputActions.Remove(user);
+    }
+
+    private int UserIndex(InputUser user)
+    {
+        return s_players.FindIndex(x => x == user);
     }
 
     private void Log(string s)
