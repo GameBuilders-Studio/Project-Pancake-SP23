@@ -20,7 +20,6 @@ public class MovingPlatform : MonoBehaviour
         _rb = _movingPlat.GetComponent<Rigidbody>();
         foreach (var wp in wayPoints)
         {
-            //_wayPoints.Add(wp.transform);
             wp.SetActive(false);
         }
     }
@@ -33,7 +32,6 @@ public class MovingPlatform : MonoBehaviour
             Vector3.MoveTowards(position, wayPoints[_currentWayPoint].transform.position,
                 moveSpeed * Time.fixedDeltaTime);
         _rb.MovePosition(target);
-        //_movingPlat.transform.localPosition = localTarget;
         if (Vector3.Distance
                 (wayPoints[_currentWayPoint].transform.position,
                     _movingPlat.transform.position) <= 0.1)
