@@ -10,12 +10,14 @@ public class Portal : MonoBehaviour
     public Transform ExitAtPoint => exitAtPoint;
 
     [SerializeField] bool exitAtSameY = true;
+    [SerializeField] float exitVelocityMultiplier = 1f;
 
     [Required]
     [SerializeField] Portal exitPortal;
     
     [SerializeField] LayerMask teleportableLayers;
 
+    // TODO: change to Dictionary<Collider, Portal> and remove collider when object exits the collider of the exit portal
     [SerializeField] float teleportCooldown = 0.5f;
     Dictionary<Collider, float> recentlyTeleportedToCooldownFinishedTimes = new Dictionary<Collider, float>();
 
@@ -34,9 +36,17 @@ public class Portal : MonoBehaviour
 
     private void Teleport(Collider other)
     {
+        // TODO: Change this to spawn at same relative height as entry portal
         float exitY = exitAtSameY ? other.transform.position.y : exitPortal.ExitAtPoint.position.y;
         Vector3 exitPos = new Vector3(exitPortal.ExitAtPoint.position.x, exitY, exitPortal.ExitAtPoint.position.z);
         other.transform.position = exitPos;
+        
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity *= exitVelocityMultiplier;
+        }
+
         recentlyTeleportedToCooldownFinishedTimes.Add(other, Time.time + teleportCooldown);
     }
 
