@@ -371,7 +371,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1984585203}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -769,6 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1297519712}
   - component: {fileID: 1297519713}
+  - component: {fileID: 1297519714}
   m_Layer: 5
   m_Name: LevelSelectionController
   m_TagString: Untagged
@@ -788,12 +789,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1984585203}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 760, y: -150}
+  m_AnchoredPosition: {x: 760, y: 930}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1297519713
@@ -817,6 +818,25 @@ MonoBehaviour:
     scenePath: Assets/Scenes/Level3Room.unity
   _buttonPrefab: {fileID: 1103087825043748272, guid: a3dd71193ebe76e4a9c889f8f9f64b8c, type: 3}
   _buttonParent: {fileID: 267285060}
+  _buttons: []
+  _playerInputHandler: {fileID: 1297519714}
+  _selectedColor: {r: 1, g: 0, b: 0, a: 1}
+  _selectIndex: 0
+--- !u!114 &1297519714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297519711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ddb5f361169074ba95c133ce20e80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerIndex: 0
+  CurrentControlScheme: 
+  _useAnyDevice: 1
 --- !u!1 &1559329994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1137,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1559329995}
-  - {fileID: 1297519712}
   - {fileID: 267285060}
   - {fileID: 1755970528}
   m_Father: {fileID: 170284410}
