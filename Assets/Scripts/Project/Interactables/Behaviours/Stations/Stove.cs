@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using CustomAttributes;
 
 public class Stove : StationController
 {
@@ -9,10 +10,10 @@ public class Stove : StationController
     [SerializeField]
     private float _overcookTime;
 
-    [SerializeField]
+    [SerializeField, Required]
     private IngredientStateData _targetIngredientState;
 
-    [SerializeField]
+    [SerializeField, Required]
     private IngredientStateData _targetOvercookedIngredientState;
 
     [SerializeField]
@@ -102,7 +103,6 @@ public class Stove : StationController
     {
         while (_overcookTimeRemaining > 0)
         {
-            Debug.Log(_overcookTimeRemaining);
             _overcookTimeRemaining -= Time.deltaTime;
             yield return null;
         }
