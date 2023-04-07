@@ -6,9 +6,8 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
-    [SerializeField] private Transform pot;
-    [SerializeField] private GameObject[] stovesInScene; //Make an array storing all the stoves that are in the scene
-    
+    [SerializeField] private List<Station> stovesInScene = new List<Station>(); //Make an array storing all the stoves that are in the scene
+     
     private Vector3 originalPos; //This is to store the original position //REMOVE
 
     //IMPLEMENTATION:
@@ -19,10 +18,17 @@ public class RespawnManager : MonoBehaviour
 
     void Awake()
     {
-        stovesInScene = GameObject.FindGameObjectsWithTag("Stove");
+        List<GameObject> stoveObjs = Object.FindObjectsOfType(Stove);
         Debug.Log(stovesInScene.Length);
-;
-        originalPos = pot.transform.position; //REMOVE
+        foreach(GameObject obj in stoveObjs) {
+            Station station = obj.GetComponent<Station>(); 
+            if(station != null) {
+                stovesInScene.Add(station); 
+            }
+        }
+
+        Debug.Log(stovesInScene.Count);
+        Debug.Log(stovesInScene);
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -50,8 +56,6 @@ public class RespawnManager : MonoBehaviour
 
                 }
             }
-            
-            pot.transform.position = originalPos; //REMOVE
         }
     }
 
