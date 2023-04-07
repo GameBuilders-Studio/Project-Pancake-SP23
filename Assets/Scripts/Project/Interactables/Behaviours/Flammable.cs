@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomAttributes;
@@ -21,10 +20,6 @@ public class Flammable : InteractionBehaviour
     private bool _isBurning = false;
 
     [SerializeField]
-    [ReadOnly]
-    private float _spreadTimer = 0.0f;
-
-    [SerializeField]
     [ReadOnly, ProgressBar("Fire Health", "_maxFireHealth", EColor.Orange)]
     private float _fireHealth = 0.0f;
 
@@ -36,6 +31,8 @@ public class Flammable : InteractionBehaviour
     public static readonly Dictionary<GameObject, Flammable> Instances = new();
 
     private float _maxFireHealth = 1.0f;
+    private float _spreadTimer = 0.0f;
+
     private GameObject _fireEffect;
     private Collider[] _overlapResults = new Collider[32];
 
@@ -85,7 +82,7 @@ public class Flammable : InteractionBehaviour
 
     public bool TryIgnite()
     {
-        if (_isBurning) 
+        if (!_isBurning) 
         {
             Ignite();
             return true; 
@@ -111,7 +108,7 @@ public class Flammable : InteractionBehaviour
         }
     }
 
-    public void Extinguish(float fireDamage)
+    public void DamageFire(float fireDamage)
     {
         if (!_isBurning) { return; }
 
@@ -119,10 +116,7 @@ public class Flammable : InteractionBehaviour
 
         if (_fireHealth < 0.0f)
         {
-            _fireHealth = 0.0f;
-            _spreadTimer = 0.0f;
-            _isBurning = false;
-            Destroy(_fireEffect);
+            Extinguish();
         }
     }
 
@@ -133,5 +127,13 @@ public class Flammable : InteractionBehaviour
         _fireHealth = _settings.FireInitialHealth;
         _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
         _fireEffect.transform.localScale *= _fireEffectScale;
+    }
+
+    private void Extinguish()
+    {
+        _isBurning = false;
+        _fireHealth = 0.0f;
+        _spreadTimer = 0.0f;
+        Destroy(_fireEffect);
     }
 }
