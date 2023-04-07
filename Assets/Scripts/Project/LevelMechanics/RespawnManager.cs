@@ -14,16 +14,16 @@ public class RespawnManager : MonoBehaviour
     //Create an array of the stoves that are in the scene - DONE
     //When a pot falls down, we will go through the array of stoves and see if something is on top of it
     //If a stove is being occupied, we skip until the next one. If the stove is empty, we store the fallen pot 
-    //on the empty stove 
+    //on the empty stove           
 
     void Awake()
     {
-        List<GameObject> stoveObjs = Object.FindObjectsOfType(Stove);
-        Debug.Log(stovesInScene.Length);
-        foreach(GameObject obj in stoveObjs) {
+        Object[] stoves = GameObject.FindObjectsOfType(typeof(Stove));
+        Debug.Log(stoves.Length);
+        foreach(Stove obj in stoves) {
             Station station = obj.GetComponent<Station>(); 
             if(station != null) {
-                stovesInScene.Add(station); 
+                Debug.LogError("Every Stove should have Station component!");
             }
         }
 
@@ -47,14 +47,18 @@ public class RespawnManager : MonoBehaviour
         if(other.tag == "Pot")
         {
             //We will iterate through each of the stoves in the scene
-            foreach (GameObject stoves in stovesInScene)
+            foreach (Stove stoves in stovesInScene)
             {
                 //if a stove is not occupied, put the pot on that empty stove
-                if(stoves)
-                {
-                    //Call PlaceItem from Station.cs -> place pot on stove
+                //if(stoves)
+                //{
+                    // Check if station has a placed item using the public property 
 
-                }
+                    //Call PlaceItem from Station.cs -> place pot on stove 
+
+                    // 
+
+                //}
             }
         }
     }
