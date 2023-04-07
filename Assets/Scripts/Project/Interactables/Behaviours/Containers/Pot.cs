@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class Pot : FoodContainer
 {
-    protected override void OnAddIngredient()
+    [SerializeField]
+    private GameObject _soupVisual;
+
+    private void Awake()
     {
-        // do something
+        _soupVisual.SetActive(false);
+    }
+
+    protected override void OnIngredientsChanged()
+    {
+        bool showSoup = !IsEmpty;
+        _soupVisual.SetActive(showSoup);
     }
 }

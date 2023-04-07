@@ -59,6 +59,44 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _controller
+      value: 
+      objectReference: {fileID: 8147260660728289421}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[2]
+      value: 
+      objectReference: {fileID: 8147260660728289421}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[2]
+      value: 
+      objectReference: {fileID: 8147260660728289421}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[3]
+      value: 
+      objectReference: {fileID: 8147260660728289421}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[2].typeId
+      value: IngredientDispenser, NewAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[3].typeId
+      value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2204274614136302942, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -79,38 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380d8037982a08b4985f9ba9dd4fa902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyTrigger: {fileID: 4644826036160320547}
-  _highlightBehaviour: {fileID: 698745902589387388}
-  _isEverSelectable: 1
-  _highlightOnHover: 1
-  _catchTrigger: {fileID: 0}
-  _itemHolderPivot: {fileID: 2723565406288926242}
-  _placedItem: {fileID: 0}
-  _ingredientPrefab: {fileID: 7605582599296834493, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
---- !u!114 &698745902589387388 stripped
+  _entity: {fileID: 6221178144394883447}
+  _ingredientSO: {fileID: 11400000, guid: a7006763ae2fbcb4fbe00675ee321eb4, type: 2}
+--- !u!114 &6221178144394883447 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 195078305573947851, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
   m_PrefabInstance: {fileID: 794743622641085367}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335418483911058485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2723565406288926242 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-  m_PrefabInstance: {fileID: 794743622641085367}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4644826036160320547 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5436622889255518100, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-  m_PrefabInstance: {fileID: 794743622641085367}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65998c8c7ca0ff14e82e1844ba9e733e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
