@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using CustomAttributes;
 
 public class Stove : StationController
 {
@@ -6,11 +8,19 @@ public class Stove : StationController
     private float _cookTimePerIngredient;
 
     [SerializeField]
+    private float _overcookTime;
+
+    [SerializeField, Required]
     private IngredientStateData _targetIngredientState;
+
+    [SerializeField, Required]
+    private IngredientStateData _targetOvercookedIngredientState;
 
     [SerializeField]
     private bool _cooking = false;
 
+    private float _overcookTimeRemaining;
+    private Coroutine _timerCoroutine;
     private float _totalProgress = 0.0f;
     private Pot _container;
     private bool _containerExists = false;
@@ -20,6 +30,7 @@ public class Stove : StationController
     void Update()
     {
         if (!_containerExists) { return; }
+        _cooking = true;
         Cook(_container);
     }
 
@@ -37,6 +48,12 @@ public class Stove : StationController
     {
         _container = null;
         _containerExists = false;
+        _cooking = false;
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+            _timerCoroutine = null;
+        }
     }
 
     public void StartFire()
@@ -56,31 +73,53 @@ public class Stove : StationController
         {
             var ingredient = container.Ingredients[i];
 
-            ingredient.SetState(_targetIngredientState);
+            if (ingredient.State != _targetIngredientState && ingredient.State != _targetOvercookedIngredientState) //only transition states if not already cooking or overcooked
+            {
+                ingredient.SetState(_targetIngredientState);
+            }
 
-            if (ingredient.ProgressComplete) 
+            if (i == container.Count - 1 && ingredient.ProgressComplete && _timerCoroutine == null) // if last ingredient is done cooking, start timer
+            {
+                if (ingredient.State != _targetOvercookedIngredientState) // don't call timer if already overcooked
+                {
+                    OnCookComplete(container);
+                }
+            }
+
+            if (ingredient.ProgressComplete)
             {
                 _totalProgress += 1.0f / container.Count;
-                continue; 
+                continue;
             }
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
             _totalProgress += ingredient.Progress / container.Count;
 
-            _cooking = true;
-
-            if (i == container.Capacity - 1 && ingredient.ProgressComplete)
-            {
-                if (_cooking)
-                {
-                    _cooking = false;
-                    OnCookComplete();
-                }
-            }
-
             return;
         }
     }
 
-    void OnCookComplete() {}
+    void OnCookComplete(Pot container)
+    {
+        // Debug.Log("Cook Complete");
+        _overcookTimeRemaining = _overcookTime;
+        _timerCoroutine = StartCoroutine(TimerCoroutine(container));
+    }
+
+    private IEnumerator TimerCoroutine(Pot container)
+    {
+        while (_overcookTimeRemaining > 0)
+        {
+            _overcookTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        // Debug.Log("Overcooked!");
+        for (int i = 0; i < container.Count; i++)
+        {
+            var ingredient = container.Ingredients[i];
+            ingredient.SetState(_targetOvercookedIngredientState);
+            ingredient.SetProgress(1.0f);
+        }
+
+    }
 }

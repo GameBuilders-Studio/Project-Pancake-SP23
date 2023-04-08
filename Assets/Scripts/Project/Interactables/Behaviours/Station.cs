@@ -69,7 +69,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     /// <summary>
     /// Returns true if the item is placed succesfully
     /// </summary>
-    public bool TryCombineWith(InteractionProvider other)
+    public bool TryCombineWith(InteractionBehaviour other)
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 

@@ -92,10 +92,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6233733899822971758}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-      propertyPath: Behaviours.Array.data[3]
-      value: 
-      objectReference: {fileID: 6233733899822971758}
-    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _typeToBehaviourSerialized.m_keys.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -112,20 +108,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6233733899822971758}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[4]
-      value: 
-      objectReference: {fileID: 6233733899822971758}
-    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[2].typeId
       value: Stove, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[3].typeId
-      value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
-      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[4].typeId
       value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       objectReference: {fileID: 0}
@@ -173,5 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entity: {fileID: 2638106814761321416}
   _cookTimePerIngredient: 5
+  _overcookTime: 10
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
+  _targetOvercookedIngredientState: {fileID: 11400000, guid: e751dbbf2b6fad049b579c4d56bd60a6, type: 2}
   _cooking: 0
