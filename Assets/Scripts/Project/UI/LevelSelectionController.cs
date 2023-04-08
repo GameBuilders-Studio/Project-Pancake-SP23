@@ -4,45 +4,56 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using CustomAttributes;
 
 public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIActions
 {
     [SerializeField]
     private List<SceneReference> _scenes;
     [SerializeField]
+    [Required]
     private GameObject _buttonPrefab;
     [SerializeField]
+    [Required]
     private Transform _buttonParent;
     [SerializeField]
     private List<GameObject> _buttons;
     [SerializeField]
+    [Required]
     private PlayerInputHandler _playerInputHandler;
     [SerializeField]
     private Color _selectedColor;
     [SerializeField]
-    private int _selectIndex = 0;
+    [Required]
+    private GameObject _exitButton;
+    [SerializeField]
+    private int _selectedIndex = 0;
     private bool _isSubmit = false;
-    public int SelectIndex{
-        get => _selectIndex;
+    private bool _isCancel = false;
+    public int SelectedIndex
+    {
+        get => _selectedIndex;
         set
         {
             if (value < 0)
             {
-                _selectIndex = _buttons.Count - 1;
+                _selectedIndex = _buttons.Count - 1;
             }
             else if (value > _buttons.Count - 1)
             {
-                _selectIndex = 0;
+                _selectedIndex = 0;
             }
             else
             {
-                _selectIndex = value;
+                _selectedIndex = value;
             }
         }
     }
-    private void Awake()
+    private void Start()
     {
         int index = 1;
+        _isSubmit = false;
+        _isCancel = false;
         foreach (var scene in _scenes)
         {
             var button = Instantiate(_buttonPrefab, _buttonParent);
@@ -62,6 +73,7 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
 
     void OnDisable()
     {
+        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
         _playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
         _playerInputHandler.DeviceReassigned -= OnPlayerJoin;
         _playerInputHandler.DeviceLost -= OnPlayerLost;
@@ -69,41 +81,47 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
 
     private void OnPlayerJoin()
     {
-        Debug.Log("Player joined");
+        //Debug.Log("Player joined");
         _playerInputHandler.SetCallbacksUI(this);
     }
 
     private void OnPlayerLost()
     {
-        Debug.Log("Player lost");
+        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
+        //Debug.Log("Player lost");
     }
 
     void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
     {
-        _buttons[SelectIndex].GetComponent<Image>().color = Color.white;
+        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
         var direction = context.ReadValue<Vector2>();
         if (direction.x > 0)
         {
-            SelectIndex--;
+            SelectedIndex--;
 
         }
         else if (direction.x < 0)
         {
-            SelectIndex++;
+            SelectedIndex++;
         }
-        _buttons[SelectIndex].GetComponent<Image>().color = _selectedColor;
+        _buttons[SelectedIndex].GetComponent<Image>().color = _selectedColor;
         //Debug.Log("direction: " + direction.x + " " + direction.y);
 
     }
     void PlayerInputActions.IUIActions.OnSubmit(InputAction.CallbackContext context)
     {
-        if(_isSubmit) {return;}
-        _buttons[SelectIndex].GetComponent<Button>().onClick.Invoke();
+        //Prevent multiple inputs
+        if (_isSubmit) return;
+        _buttons[SelectedIndex].GetComponent<Button>().onClick.Invoke();
         _isSubmit = true;
     }
     void PlayerInputActions.IUIActions.OnCancel(InputAction.CallbackContext context)
     {
-        _buttons[SelectIndex].GetComponent<Image>().color = Color.white;
-        SelectIndex = 0;
+        if(_isCancel) return;
+        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
+        SelectedIndex = 0;
+        _exitButton.GetComponent<Button>().onClick.Invoke();
+        _isCancel = true;
+
     }
 }

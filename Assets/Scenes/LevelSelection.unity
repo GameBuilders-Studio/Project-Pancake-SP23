@@ -505,6 +505,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1fd9ec2b3a732a4ea4a2ad7c395a7fa, type: 3}
+--- !u!1 &505785794 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8954969189670940753, guid: b45d8917d73930946abcc44d55496207, type: 3}
+  m_PrefabInstance: {fileID: 1755970527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &708116778
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +826,8 @@ MonoBehaviour:
   _buttons: []
   _playerInputHandler: {fileID: 1297519714}
   _selectedColor: {r: 1, g: 0, b: 0, a: 1}
-  _selectIndex: 0
+  _exitButton: {fileID: 505785794}
+  _selectedIndex: 0
 --- !u!114 &1297519714
 MonoBehaviour:
   m_ObjectHideFlags: 0
