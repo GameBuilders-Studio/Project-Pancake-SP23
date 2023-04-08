@@ -523,8 +523,30 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         {
             ""name"": ""InGameUIAction"",
             ""id"": ""5dce3e46-bf9b-4f68-933b-4ba25f0afbdc"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6e20fa9-5d61-4359-9276-a7fc53210eab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d04d9486-c899-446e-9851-b13c679bfa56"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -565,6 +587,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         // InGameUIAction
         m_InGameUIAction = asset.FindActionMap("InGameUIAction", throwIfNotFound: true);
+        m_InGameUIAction_Pause = m_InGameUIAction.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -730,10 +753,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     // InGameUIAction
     private readonly InputActionMap m_InGameUIAction;
     private IInGameUIActionActions m_InGameUIActionActionsCallbackInterface;
+    private readonly InputAction m_InGameUIAction_Pause;
     public struct InGameUIActionActions
     {
         private @PlayerInputActions m_Wrapper;
         public InGameUIActionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_InGameUIAction_Pause;
         public InputActionMap Get() { return m_Wrapper.m_InGameUIAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -743,10 +768,16 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_InGameUIActionActionsCallbackInterface != null)
             {
+                @Pause.started -= m_Wrapper.m_InGameUIActionActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_InGameUIActionActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_InGameUIActionActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_InGameUIActionActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -784,5 +815,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     }
     public interface IInGameUIActionActions
     {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 //PlayerInputActions.IInGameUIActionActions
 
-public class PausedMenu : MonoBehaviour
+public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActions
 { 
     public GameObject pauseMenu;
     public static bool isPaused = false;
@@ -80,16 +80,18 @@ public class PausedMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void OnPaused()
-    {
-        Debug.Log("2");
-        if (isPaused)
+    public void OnPause(InputAction.CallbackContext context){
+        Debug.Log("3");
+        if (context.performed)
         {
-            ResumeGame();
-        }
-        else
-        {
-            PauseGame();
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 }
