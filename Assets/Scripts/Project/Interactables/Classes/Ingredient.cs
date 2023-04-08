@@ -6,7 +6,7 @@ using CustomAttributes;
 [System.Serializable]
 public class Ingredient
 {
-    public IngredientData Data;
+    public IngredientSO Data;
     public IngredientStateData State;
 
     [ProgressBar("Progress", 1.0f, EColor.Green)]
@@ -14,7 +14,7 @@ public class Ingredient
 
     public bool ProgressComplete => Mathf.Approximately(Progress, 1.0f);
 
-    public Ingredient(IngredientData data, IngredientStateData state)
+    public Ingredient(IngredientSO data, IngredientStateData state)
     {
         Data = data;
         State = state;

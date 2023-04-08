@@ -11,7 +11,7 @@ public class Order : MonoBehaviour
     [SerializeField, Required]
     private TextMeshProUGUI _orderText;
 
-    [SerializeField] private OrderProgressBar _orderProgressBar;
+    [SerializeField] private ProgressBar _orderProgressBar;
 
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; private set; }
@@ -30,6 +30,7 @@ public class Order : MonoBehaviour
 
     private void Awake()
     {
+        _orderProgressBar.SetMaxValue(_startTime);
         SetTimer(_startTime);
         StartTimer();
     }
@@ -79,9 +80,8 @@ public class Order : MonoBehaviour
     {
         while (TimeRemaining > 0)
         {
+            _orderProgressBar.SetProgress(TimeRemaining);
             TimeRemaining -= Time.deltaTime;
-
-            _orderProgressBar.SetFill(TimeRemaining / _startTime);
             yield return null;
         }
         EventManager.Invoke("OrderExpired");

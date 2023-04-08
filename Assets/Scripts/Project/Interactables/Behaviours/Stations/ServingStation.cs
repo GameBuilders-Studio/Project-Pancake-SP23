@@ -25,7 +25,7 @@ public class ServingStation : StationController
 
     public bool isOrderCorrect(FoodContainer container)
     {
-        List<IngredientData> ingredientDatas = new();
+        List<IngredientSO> ingredientDatas = new();
         foreach (var ingredient in container.Ingredients)
         {
             ingredientDatas.Add(ingredient.Data);

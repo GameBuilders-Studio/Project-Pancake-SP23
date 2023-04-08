@@ -3,44 +3,51 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteInEditMode]
 public class ProgressBar : MonoBehaviour
 {
-    [SerializeField] Color BarColor;
-    [SerializeField] Color BarBackGroundColor;
-
-    [SerializeField] Image bar;
-    [SerializeField] Image barBackground;
-
-    private float val;
-    public float Val
+#if UNITY_EDITOR
+    [MenuItem("GameObject/UI/Progress Bar")]
+    public static void AddLinearProgressBar()
     {
-        get { return val; }
+        GameObject obj = Instantiate(Resources.Load<GameObject>("Progress Bar"));
+        Debug.Log(obj);
+        obj.transform.SetParent(Selection.activeGameObject.transform, false);
+    }
+#endif
+    [SerializeField] private Image _border;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private Image _fill;
+    [SerializeField] private Gradient _gradient;
 
-        set
+
+    public void SetProgress(float value)
+    {
+        if (value > _slider.maxValue || value < _slider.minValue)
         {
-            value = Mathf.Clamp(value, 0, 1);
-            val = value;
-            UpdateValue(val);
-
+            Debug.LogWarning("Progress Bar: Value is out of range");
+            return;
         }
-    }
-    
-    [SerializeField] TMP_Text text;
 
-    private void Awake()
+        _slider.value = value;
+        _fill.color = _gradient.Evaluate(_slider.normalizedValue);
+    }
+
+    public float GetProgress()
     {
-        bar.color = BarColor;
-        barBackground.color = BarBackGroundColor;
-
-        UpdateValue(val);
+        return _slider.value;
     }
 
-    void UpdateValue(float val)
+    public void SetMaxValue(float maxValue)
     {
-        // text.text = $"{Mathf.Min(losingFarmValue, Mathf.RoundToInt(val * losingFarmValue))}/{losingFarmValue} PLANTED";  //| Hard-coded
-        bar.fillAmount = val;
+        _slider.maxValue = maxValue;
+        _slider.value = maxValue;
+
+        _fill.color = _gradient.Evaluate(1f);
     }
+
 }
