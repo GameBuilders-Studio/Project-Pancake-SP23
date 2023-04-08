@@ -1,18 +1,18 @@
-public interface IInteractionInterface {}
+using BehaviourCollections;
 
-public interface ICombinable : IInteractionInterface
+public interface ICombinable
 {
-    public bool TryCombineWith(InteractionProvider other);
+    public bool TryCombineWith(InteractionBehaviour other);
 }
 
-public interface IUsable : IInteractionInterface
+public interface IUsable
 {
     public void OnUseStart();
     public void OnUseEnd();
     public bool Enabled {get;}
 }
 
-public interface IHasCarryable : IInteractionInterface
+public interface IHasCarryable
 {
     public Carryable PopCarryable();
 }
