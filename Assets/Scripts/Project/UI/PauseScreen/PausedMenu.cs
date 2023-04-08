@@ -7,29 +7,19 @@ using UnityEngine.SceneManagement;
 //PlayerInputActions.IInGameUIActionActions
 
 public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActions
-{ 
+{
     public GameObject pauseMenu;
     public static bool isPaused = false;
 
-    //private PlayerInput playerInput;
+    [SerializeField]
+    private PlayerInputHandler _playerInputHandler;
 
     private PlayerInputActions player1;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("1");
         pauseMenu.SetActive(false);
-        //if (InputManager.GetInputActionsByIndex(0, out player1) != true)
-        //{
-        //    Debug.Log("2null");
-        //}
-        //else
-        //{
-        //    Debug.Log("00");
-        //}
-
-        //player1.InGameUIAction.SetCallbacks(this);
 
     }
 
@@ -48,6 +38,31 @@ public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActio
         //    }
         //}
     }
+
+    void OnEnable()
+    {
+        _playerInputHandler.InputActionsAssigned += OnPlayerJoin;
+        _playerInputHandler.DeviceReassigned += OnPlayerJoin;
+        _playerInputHandler.DeviceLost += OnPlayerLost;
+    }
+
+    void OnDisable()
+    {
+        _playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
+        _playerInputHandler.DeviceReassigned -= OnPlayerJoin;
+        _playerInputHandler.DeviceLost -= OnPlayerLost;
+    }
+
+    private void OnPlayerJoin()
+    {
+        _playerInputHandler.SetCallbacks(this);
+    }
+
+    private void OnPlayerLost()
+    {
+        _playerInputHandler.SetCallbacks(null as PlayerInputActions.IInGameUIActionActions);
+    }
+
 
     public void PauseGame()
     {
@@ -80,7 +95,8 @@ public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActio
         Application.Quit();
     }
 
-    public void OnPause(InputAction.CallbackContext context){
+    public void OnPause(InputAction.CallbackContext context)
+    {
         Debug.Log("3");
         if (context.performed)
         {

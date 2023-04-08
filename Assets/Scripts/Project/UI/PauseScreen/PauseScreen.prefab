@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4896705968012134397}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PausedMenu, UI
         m_MethodName: OnClickResumeBtn
         m_Mode: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4896705968012134397}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PausedMenu, UI
         m_MethodName: OnClickMainMenuBtn
         m_Mode: 1
@@ -626,6 +626,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1094195467438105261}
+  - component: {fileID: 6691523050481332994}
   m_Layer: 0
   m_Name: PauseScreen
   m_TagString: Untagged
@@ -649,6 +650,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6691523050481332994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239797290885244559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42188d553379040fc86ee18249ae909b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  _playerInputHandler: {fileID: 0}
 --- !u!1 &8432825387596593925
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +676,6 @@ GameObject:
   - component: {fileID: 7759886989772908922}
   - component: {fileID: 5496415506401961790}
   - component: {fileID: 5446870642076927692}
-  - component: {fileID: 4896705968012134397}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -751,19 +765,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4896705968012134397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8432825387596593925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42188d553379040fc86ee18249ae909b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 5179886167135351721}
 --- !u!1 &8621290415628398896
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,7 +887,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4896705968012134397}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PausedMenu, UI
         m_MethodName: OnClickQuitBtn
         m_Mode: 1
