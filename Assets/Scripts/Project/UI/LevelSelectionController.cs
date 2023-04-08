@@ -97,7 +97,7 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
     }
     void PlayerInputActions.IUIActions.OnSubmit(InputAction.CallbackContext context)
     {
-        if(_isSubmit) return;
+        if(_isSubmit) {return;}
         _buttons[SelectIndex].GetComponent<Button>().onClick.Invoke();
         _isSubmit = true;
     }
