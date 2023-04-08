@@ -73,7 +73,7 @@ public class PlayerInputHandler : MonoBehaviour
         _actions.PlayerControls.SetCallbacks(instance);
     }
 
-    public void SetCallbacks(PlayerInputActions.IUIActions instance)
+    public void SetCallbacksUI(PlayerInputActions.IUIActions instance)
     {
         if (_actions == null)
         {
