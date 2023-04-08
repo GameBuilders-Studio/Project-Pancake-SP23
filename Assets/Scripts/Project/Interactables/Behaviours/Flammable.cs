@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomAttributes;
 
+
 public class Flammable : InteractionBehaviour
 {
     [SerializeField]
