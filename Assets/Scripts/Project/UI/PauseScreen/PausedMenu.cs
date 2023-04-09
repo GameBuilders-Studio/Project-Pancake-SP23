@@ -9,12 +9,10 @@ using UnityEngine.SceneManagement;
 public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActions
 {
     public GameObject pauseMenu;
-    public static bool isPaused = false;
+    private bool isPaused = false;
 
     [SerializeField]
     private PlayerInputHandler _playerInputHandler;
-
-    private PlayerInputActions player1;
 
     // Start is called before the first frame update
     void Start()
@@ -26,17 +24,7 @@ public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActio
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    if (isPaused)
-        //    {
-        //        ResumeGame();
-        //    }
-        //    else
-        //    {
-        //        PauseGame();
-        //    }
-        //}
+
     }
 
     void OnEnable()
@@ -95,9 +83,14 @@ public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActio
         Application.Quit();
     }
 
+    public void OnClickRestartBtn()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex);
+    }
+
     public void OnPause(InputAction.CallbackContext context)
     {
-        Debug.Log("3");
         if (context.performed)
         {
             if (isPaused)
