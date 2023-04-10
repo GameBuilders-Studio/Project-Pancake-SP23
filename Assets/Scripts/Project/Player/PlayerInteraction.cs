@@ -213,6 +213,12 @@ public class PlayerInteraction : MonoBehaviour
         ReleaseItem();
     }
 
+    public void HandsEmpty() //calls DropItem
+    {
+        Debug.Log("CALLED");
+        DropItem();
+    }
+
     // private void DropItem()
     // {
     //     _heldItem.OnDrop();

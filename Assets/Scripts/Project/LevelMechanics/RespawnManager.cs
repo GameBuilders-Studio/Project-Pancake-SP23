@@ -7,6 +7,7 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private Transform PotRespawnPoint;
+    [SerializeField] private PlayerInteraction playerHands; //used for the player to let go of the object if currently holding.
     [SerializeField] private List<Station> stovesInScene = new List<Station>(); //Make an array storing all the stoves that are in the scene
 
     //IMPLEMENTATION:
@@ -41,7 +42,9 @@ public class RespawnManager : MonoBehaviour
             StartCoroutine(RespawnTime());
 
             //Drop the pot that the player is holding and respawn it to a stove top
-
+            Debug.Log("Error");
+            //playerHands.HandsEmpty();
+            Debug.Log("Check");
         }
 
         //If the pot hits the death triggeer
@@ -67,6 +70,7 @@ public class RespawnManager : MonoBehaviour
                 }
             }
 
+            //Moves the pot to position if all stoves are taken
             carryable.transform.position = PotRespawnPoint.transform.position;
         }
     }
