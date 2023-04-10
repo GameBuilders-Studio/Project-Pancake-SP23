@@ -516,9 +516,15 @@ namespace EasyCharacterMovement
         {
             if (context.started)
             {
-                //Player cannot move while interacting with an object
-                SetMovementMode(MovementMode.None);
-                _playerInteraction.OnUseStart();
+                bool turnInPlace = _playerInteraction.OnUseStart();
+                if (turnInPlace)
+                {
+                    SetMovementMode(MovementMode.TurnInPlace);
+                }
+                else
+                {
+                    SetMovementMode(MovementMode.None);
+                }
             }
 
             if (context.canceled)

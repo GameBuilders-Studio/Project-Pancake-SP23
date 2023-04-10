@@ -1586,6 +1586,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a103910eaeb97bf4dbd123196bed4724, type: 3}
+--- !u!1001 &2520581502845856957
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.195
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0469999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.02448082
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520581503706247027, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
+      propertyPath: m_Name
+      value: FireExtinguisher
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
 --- !u!1001 &4209850628995484586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1654,6 +1711,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 437684384809171815, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+      propertyPath: _useAnyDevice
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter

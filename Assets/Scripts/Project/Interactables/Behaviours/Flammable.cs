@@ -91,7 +91,24 @@ public class Flammable : InteractionBehaviour
         return false;
     }
 
-    public void IgniteNeighbors()
+    public void DamageFire(float fireDamage)
+    {
+        if (!_isBurning) { return; }
+
+        _fireHealth -= fireDamage;
+
+        if (_fireHealth < 0.0f)
+        {
+            Extinguish();
+        }
+    }
+
+    public static bool TryGetFlammable(GameObject go, out Flammable flammable)
+    {
+        return Instances.TryGetValue(go, out flammable);
+    }
+
+    private void IgniteNeighbors()
     {
         // TODO: use layermask to filter non-flammable results
         int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
@@ -106,18 +123,6 @@ public class Flammable : InteractionBehaviour
             {
                 flammable.TryIgnite();
             }
-        }
-    }
-
-    public void DamageFire(float fireDamage)
-    {
-        if (!_isBurning) { return; }
-
-        _fireHealth -= fireDamage;
-
-        if (_fireHealth < 0.0f)
-        {
-            Extinguish();
         }
     }
 
