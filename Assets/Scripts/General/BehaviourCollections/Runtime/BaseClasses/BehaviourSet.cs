@@ -13,16 +13,16 @@ namespace BehaviourCollections
         where TBehaviour : ManagedMonoBehaviour<TBehaviour>
     {
         [SerializeField]
-        private TBehaviour[] _behaviours;
+        private TBehaviour[] _behaviours = new TBehaviour[0];
 
         [SerializeField]
-        private TBehaviour[] _interfaces;
+        private TBehaviour[] _interfaces = new TBehaviour[0];
 
         [SerializeField, HideInInspector]
-        private SerializableType[] _behaviourTypes;
+        private SerializableType[] _behaviourTypes = new SerializableType[0];
 
         [SerializeField, HideInInspector]
-        private SerializableType[] _interfaceTypes;
+        private SerializableType[] _interfaceTypes = new SerializableType[0];
 
         [SerializeField, HideInInspector]
         public bool NoDuplicates = true;
