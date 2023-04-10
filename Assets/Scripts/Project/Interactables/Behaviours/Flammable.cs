@@ -10,7 +10,8 @@ public class Flammable : InteractionBehaviour
     private FlammableData _settings;
 
     [SerializeField]
-    [Required, Tooltip("The transform to spawn the fire prefab at.")]
+    [Tooltip("The transform to spawn the fire prefab at.")]
+    [Required]
     private Transform _firePivot;
 
     [SerializeField]
@@ -108,24 +109,6 @@ public class Flammable : InteractionBehaviour
         return Instances.TryGetValue(go, out flammable);
     }
 
-    private void IgniteNeighbors()
-    {
-        // TODO: use layermask to filter non-flammable results
-        int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
-
-        for (int i = 0; i < neighborCount; i++)
-        {
-            var collider = _overlapResults[i];
-
-            if (collider == _collider) { continue; }
-
-            if (Instances.TryGetValue(collider.gameObject, out Flammable flammable))
-            {
-                flammable.TryIgnite();
-            }
-        }
-    }
-
     [Button]
     private void Ignite()
     {
@@ -142,6 +125,24 @@ public class Flammable : InteractionBehaviour
         _fireHealth = 0.0f;
         _spreadTimer = 0.0f;
         ReleaseFireFX();
+    }
+
+    private void IgniteNeighbors()
+    {
+        // TODO: use layermask to filter non-flammable results
+        int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
+
+        for (int i = 0; i < neighborCount; i++)
+        {
+            var collider = _overlapResults[i];
+
+            if (collider == _collider) { continue; }
+
+            if (Instances.TryGetValue(collider.gameObject, out Flammable flammable))
+            {
+                flammable.TryIgnite();
+            }
+        }
     }
 
     // TODO: use object pooling
