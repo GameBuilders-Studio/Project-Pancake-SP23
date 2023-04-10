@@ -6,10 +6,8 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
+    [SerializeField] private Transform PotRespawnPoint;
     [SerializeField] private List<Station> stovesInScene = new List<Station>(); //Make an array storing all the stoves that are in the scene
-
-    private Station empty;
-    private Vector3 originalPos; //This is to store the original position //REMOVE
 
     //IMPLEMENTATION:
     //Create an array of the stoves that are in the scene - DONE
@@ -46,7 +44,7 @@ public class RespawnManager : MonoBehaviour
 
         }
 
-        //If the pot hits the death triggere
+        //If the pot hits the death triggeer
         if (other.tag == "Pot")
         {
             Debug.Log("Pot entered triggerbox");
@@ -63,10 +61,13 @@ public class RespawnManager : MonoBehaviour
                 if (stoves.PlacedItem == null) //EMPTY
                 {
                     // Check if station has a placed item using the public property 
+                    Debug.Log("Pot moved to stove");
                     stoves.PlaceItem(carryable);
+                    return;
                 }
-
             }
+
+            carryable.transform.position = PotRespawnPoint.transform.position;
         }
     }
 
