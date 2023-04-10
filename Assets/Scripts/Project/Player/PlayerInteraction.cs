@@ -215,16 +215,8 @@ public class PlayerInteraction : MonoBehaviour
 
     public void HandsEmpty() //calls DropItem
     {
-        Debug.Log("CALLED");
         DropItem();
     }
-
-    // private void DropItem()
-    // {
-    //     _heldItem.OnDrop();
-    //     _heldItem.transform.parent = null;
-    //     ReleaseItem();
-    // }
 
     private void ReleaseItem()
     {

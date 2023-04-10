@@ -42,9 +42,7 @@ public class RespawnManager : MonoBehaviour
             StartCoroutine(RespawnTime());
 
             //Drop the pot that the player is holding and respawn it to a stove top
-            Debug.Log("Error");
-            //playerHands.HandsEmpty();
-            Debug.Log("Check");
+            playerHands.HandsEmpty();
         }
 
         //If the pot hits the death triggeer
@@ -69,11 +67,15 @@ public class RespawnManager : MonoBehaviour
                     return;
                 }
             }
-
+            //openTables(carryable);
             //Moves the pot to position if all stoves are taken
             carryable.transform.position = PotRespawnPoint.transform.position;
         }
     }
+
+    // private void openTables(Carryable carryable){
+
+    // }
 
     //Used as a timer so the Player must wait 5 seconds to respawn
     IEnumerator RespawnTime()

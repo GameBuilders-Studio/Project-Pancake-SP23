@@ -13322,6 +13322,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
   m_PrefabInstance: {fileID: 1841346958}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1859978943 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2819626521960616056, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+  m_PrefabInstance: {fileID: 1841346958}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3145c548ea890ca4c87fcb4e1e3592d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1860141413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13625,6 +13636,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1859978941}
+    - target: {fileID: -2917767017634591130, guid: 19a4ab47154804d4dbb3e292af48eec0, type: 3}
+      propertyPath: playerHands
+      value: 
+      objectReference: {fileID: 1859978943}
     - target: {fileID: -2917767017634591130, guid: 19a4ab47154804d4dbb3e292af48eec0, type: 3}
       propertyPath: respawnPoint
       value: 
