@@ -58,7 +58,7 @@ public class Flammable : InteractionBehaviour
     void Start()
     {
         _maxFireHealth = _settings.FireInitialHealth;
-        if (_isBurning) { Ignite(); }
+        if (_isBurning) { SpawnFireFX(); }
     }
 
     void Update()
@@ -121,20 +121,39 @@ public class Flammable : InteractionBehaviour
         }
     }
 
+    [Button]
     private void Ignite()
     {
         _isBurning = true;
         _spreadTimer = _settings.SpreadIntervalSeconds;
         _fireHealth = _settings.FireInitialHealth;
-        _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
-        _fireEffect.transform.localScale *= _fireEffectScale;
+        SpawnFireFX();
     }
 
+    [Button]
     private void Extinguish()
     {
         _isBurning = false;
         _fireHealth = 0.0f;
         _spreadTimer = 0.0f;
+        ReleaseFireFX();
+    }
+
+    // TODO: use object pooling
+    private void SpawnFireFX()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
+        _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
+        _fireEffect.transform.localScale *= _fireEffectScale;
+    }
+
+    private void ReleaseFireFX()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
         Destroy(_fireEffect);
     }
 }
