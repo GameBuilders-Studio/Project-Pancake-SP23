@@ -83,6 +83,43 @@ PrefabInstance:
       propertyPath: Behaviours.Array.data[2]
       value: 
       objectReference: {fileID: 1577762749795549895}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: Behaviours.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[2]
+      value: 
+      objectReference: {fileID: 1577762749795549895}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[3]
+      value: 
+      objectReference: {fileID: 1577762749795549895}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_values.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[2].typeId
+      value: Counter, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[3].typeId
+      value: StationController, Interactables, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724278394014653120, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: _typeToBehaviourSerialized.m_keys.Array.data[4].typeId
+      value: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
 --- !u!114 &134681984994358456 stripped
@@ -113,4 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54128f7b933efbb4e9d1dedfef938e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Entity: {fileID: 134681984994358456}
+  _entity: {fileID: 134681984994358456}

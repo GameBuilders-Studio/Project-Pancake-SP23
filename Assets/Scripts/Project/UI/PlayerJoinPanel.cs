@@ -51,7 +51,7 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
     private void OnPlayerJoin()
     {
         _playerVisual.SetActive(true);
-        _playerInputHandler.SetCallbacks(this);
+        _playerInputHandler.SetCallbacksUI(this);
 
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
 

@@ -1,18 +1,6 @@
 using System;
 using UnityEngine;
-using CustomAttributes;
+using BehaviourCollections;
 
-[RequireComponent(typeof(InteractionCollection))]
-public abstract class InteractionBehaviour : InteractionProvider
-{
-    [SerializeField]
-    [HideInInspector]
-    private InteractionCollection _entity;
-
-    protected sealed override InteractionCollection Collection => _entity;
-
-    public void AssignToEntity(InteractionCollection entity)
-    {
-        _entity = entity;
-    }
-}
+[RequireComponent(typeof(InteractionSet))]
+public abstract class InteractionBehaviour : ManagedMonoBehaviour<InteractionBehaviour> {}

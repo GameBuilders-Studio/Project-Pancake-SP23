@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4134685410734081310}
   - component: {fileID: 3105630587809780605}
   - component: {fileID: 6724278394014653120}
+  - component: {fileID: 1177871955971841851}
   m_Layer: 0
   m_Name: StationBase
   m_TagString: Untagged
@@ -134,7 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1126139912628277124}
-  _selectMaterial: {fileID: 2100000, guid: 54f7c51ced583a24da386e47f22d05ec, type: 2}
 --- !u!114 &4134685410734081310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,11 +147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807fa7d1f6cc7804dafc5c4d2bacbb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 6724278394014653120}
-  _stationBehaviour: {fileID: 0}
+  _entity: {fileID: 6724278394014653120}
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
+  _controller: {fileID: 0}
 --- !u!114 &3105630587809780605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,10 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemInteractions: {fileID: 6724278394014653120}
+  _entity: {fileID: 6724278394014653120}
   _nearbyTrigger: {fileID: 5436622889255518100}
   _highlightBehaviour: {fileID: 195078305573947851}
   _highlightOnHover: 1
+  _isSelectable: 1
 --- !u!114 &6724278394014653120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +183,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Behaviours:
   - {fileID: 4134685410734081310}
+  - {fileID: 3105630587809780605}
+  - {fileID: 1177871955971841851}
+  Interfaces:
+  - ICombinable
+  - IHasCarryable
+  _typeToBehaviourSerialized:
+    m_keys:
+    - typeId: Station, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 4134685410734081310}
+    - {fileID: 3105630587809780605}
+    - {fileID: 1177871955971841851}
+  _typeToInterfaceSerialized:
+    m_keys:
+    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_values:
+    - {fileID: 4134685410734081310}
+    - {fileID: 4134685410734081310}
+  _noDuplicates: 1
+--- !u!114 &1177871955971841851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ba308627a7435478c4ce87f0ba9b18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entity: {fileID: 6724278394014653120}
+  _settings: {fileID: 11400000, guid: fc67363a84186a44fb84a3e31c3033f0, type: 2}
+  _firePivot: {fileID: 3371915549144759701}
+  _fireEffectScale: 1
+  _isBurning: 0
+  _fireHealth: 0
+  _collider: {fileID: 1126139912628277123}
 --- !u!1 &1865062751841588484
 GameObject:
   m_ObjectHideFlags: 0
