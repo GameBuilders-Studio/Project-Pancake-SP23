@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using CustomAttributes;
 
 //PlayerInputActions.IInGameUIActionActions
 
@@ -12,6 +13,7 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
     private bool isPaused = false;
 
     [SerializeField]
+    [Required]
     private PlayerInputHandler _playerInputHandler;
 
     // Start is called before the first frame update
