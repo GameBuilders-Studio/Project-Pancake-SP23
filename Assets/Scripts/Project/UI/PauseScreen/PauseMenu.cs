@@ -23,12 +23,6 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void OnEnable()
     {
         _playerInputHandler.InputActionsAssigned += OnPlayerJoin;
