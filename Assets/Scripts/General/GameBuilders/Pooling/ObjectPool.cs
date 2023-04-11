@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameBuilders.Collections
+namespace GameBuilders.Pooling
 {
     public class ObjectPool<T>
     {
