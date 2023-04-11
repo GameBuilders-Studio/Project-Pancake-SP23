@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 //PlayerInputActions.IInGameUIActionActions
 
-public class PausedMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActions
+public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionActions
 {
     public GameObject pauseMenu;
     private bool isPaused = false;
