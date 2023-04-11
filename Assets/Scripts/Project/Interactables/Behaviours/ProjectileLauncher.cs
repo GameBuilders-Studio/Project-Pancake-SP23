@@ -25,17 +25,20 @@ public class ProjectileLauncher : InteractionBehaviour, IUsable
 
     void Update()
     {
-        if (!_firing) { return; }
+        _fireRepeatTimer -= Time.deltaTime;
 
-        if (_fireRepeatTimer > _repeatFireIntervalSeconds)
+        if (!_firing)
         {
-            _fireRepeatTimer -= _repeatFireIntervalSeconds;
-            LaunchProjectile();
+            _fireRepeatTimer = Mathf.Max(_fireRepeatTimer, 0.0f);
+            return;
         }
 
-        if (!_canRepeatFire) { return; }
-
-        _fireRepeatTimer += Time.deltaTime;
+        if (_fireRepeatTimer < Mathf.Epsilon)
+        {
+            if (!_canRepeatFire) { _firing = false; }
+            _fireRepeatTimer += _repeatFireIntervalSeconds;
+            LaunchProjectile();
+        }
     }
 
     void OnDrawGizmosSelected()
@@ -52,7 +55,6 @@ public class ProjectileLauncher : InteractionBehaviour, IUsable
     public void OnUseStart()
     {
         _firing = true;
-        _fireRepeatTimer = _repeatFireIntervalSeconds;
     }
 
     public void OnUseEnd()
