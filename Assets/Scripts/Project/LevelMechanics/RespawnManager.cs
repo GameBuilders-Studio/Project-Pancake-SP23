@@ -6,7 +6,7 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform respawnPoint;
-    [SerializeField] private Transform PotRespawnPoint; 
+    [SerializeField] private Transform PotRespawnPoint;
     [SerializeField] private PlayerInteraction playerHands; //used for the player to let go of the object if currently holding.
     private List<Station> stovesInScene = new List<Station>(); //Make an array storing all the stoves that are in the scene
     private List<Station> tablesInScene = new List<Station>(); //Used to place when we have to put our extra pots and pans on table
@@ -31,8 +31,8 @@ public class RespawnManager : MonoBehaviour
         }
 
         //make a list of all the Tables in the scene
-        Object[] tables = GameObject.FindObjectsOfType(typeof(Table));
-        foreach(Table obj1 in tables)
+        Object[] counters = GameObject.FindObjectsOfType(typeof(Counter));
+        foreach (Counter obj1 in counters)
         {
             Station station1 = obj1.GetComponent<Station>();
             tablesInScene.Add(station1);
@@ -82,20 +82,21 @@ public class RespawnManager : MonoBehaviour
         }
     }
 
-     private void openTables(Carryable carryable){
+    private void openTables(Carryable carryable)
+    {
         foreach (Station tables in tablesInScene)
+        {
+            //if a stove is not occupied, put the pot on that empty stove
+            if (tables.PlacedItem == null) //EMPTY
             {
-                //if a stove is not occupied, put the pot on that empty stove
-                if (tables.PlacedItem == null) //EMPTY
-                {
-                    // Check if station has a placed item using the public property 
-                    Debug.Log("Placed on table");
-                    tables.PlaceItem(carryable);
-                    return;
-                }
+                // Check if station has a placed item using the public property 
+                Debug.Log("Placed on table");
+                tables.PlaceItem(carryable);
+                return;
             }
+        }
         carryable.transform.position = PotRespawnPoint.transform.position; //This will probably never happen
-     }
+    }
 
     //Used as a timer so the Player must wait 5 seconds to respawn
     IEnumerator RespawnTime()

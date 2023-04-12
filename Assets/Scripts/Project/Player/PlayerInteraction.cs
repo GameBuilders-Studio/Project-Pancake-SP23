@@ -215,7 +215,10 @@ public class PlayerInteraction : MonoBehaviour
 
     public void HandsEmpty() //calls DropItem
     {
-        DropItem();
+        if (IsCarrying)
+        {
+            DropItem();
+        }
     }
 
     private void ReleaseItem()
