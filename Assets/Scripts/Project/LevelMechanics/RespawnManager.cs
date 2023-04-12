@@ -16,12 +16,7 @@ public class RespawnManager : MonoBehaviour
     private Transform PotRespawnPoint;
 
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
-    private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table
-    //IMPLEMENTATION:
-    //Create an array of the stoves that are in the scene - DONE
-    //When a pot falls down, we will go through the array of stoves and see if something is on top of it
-    //If a stove is being occupied, we skip until the next one. If the stove is empty, we store the fallen pot 
-    //on the empty stove           
+    private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
 
     void Awake()
     {
