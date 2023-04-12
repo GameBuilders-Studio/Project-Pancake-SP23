@@ -205,6 +205,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    public void TryDropItem()
+    {
+        if (IsCarrying)
+        {
+            DropItem();
+        }
+    }
+
     private void DropItem()
     {
         _heldItem.OnDrop();
