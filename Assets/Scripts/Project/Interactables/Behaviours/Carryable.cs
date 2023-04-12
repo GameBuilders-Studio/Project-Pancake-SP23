@@ -40,6 +40,22 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     public bool IsFlying => _isFlying;
     public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
+    float timePressed = 0f;
+    
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            timePressed = Time.time;
+        }
+
+        if(Input.GetKeyUp(KeyCode.E))
+        {
+            timePressed = Time.time + timePressed;
+            Debug.Log("Pressed for: " + timePressed + " Seconds");
+        }
+    }
+
     void OnValidate()
     {
         _rigidbody = GetComponent<Rigidbody>();
