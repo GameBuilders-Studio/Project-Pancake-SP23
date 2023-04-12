@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomAttributes;
-
 [RequireComponent(typeof(Collider))]
 public class RespawnManager : MonoBehaviour
 {
-    [SerializeField] private Transform respawnPoint;
-    [SerializeField] private Transform PotRespawnPoint;
-    private List<Station> stovesInScene = new List<Station>(); //Make an array storing all the stoves that are in the scene
-    private List<Station> tablesInScene = new List<Station>(); //Used to place when we have to put our extra pots and pans on table
+    [SerializeField]
+    [Required]
+    private Transform respawnPoint;
+
+    [SerializeField]
+    [Required]
+    private Transform PotRespawnPoint;
+
+    private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
+    private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table
     //IMPLEMENTATION:
     //Create an array of the stoves that are in the scene - DONE
     //When a pot falls down, we will go through the array of stoves and see if something is on top of it
@@ -37,15 +42,11 @@ public class RespawnManager : MonoBehaviour
             Station station1 = obj1.GetComponent<Station>();
             tablesInScene.Add(station1);
         }
-
-        Debug.Log("STOVES IN SCENE COUNT: " + stovesInScene.Count);
-        Debug.Log("TABLES IN SCENE COUNT: " + tablesInScene.Count);
     }
 
     //When the player or pot hits the death trigger, this function will be used
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Object entered triggerbox");
         //If the player hits the death trigger, 
         if (other.GetComponent<PlayerInteraction>() != null)
         {
@@ -55,16 +56,16 @@ public class RespawnManager : MonoBehaviour
             playerHands.TryDropItem();
         }
 
+        Pot pot = other.GetComponent<Pot>();
         //If the pot hits the death triggeer
-        if (other.GetComponent<Pot>() != null)
+        if (pot != null)
         {
-            Debug.Log("Pot entered triggerbox");
+            pot.ClearIngredients();
             Carryable carryable = other.GetComponent<Carryable>();
             if (carryable == null)
             {
                 Debug.LogError("Objects with Pot tag should have Carryable component");
             }
-            Debug.Log(stovesInScene.Count);
             //We will iterate through each of the stoves in the scene
             foreach (Station stoves in stovesInScene)
             {
@@ -72,7 +73,6 @@ public class RespawnManager : MonoBehaviour
                 if (stoves.PlacedItem == null) //EMPTY
                 {
                     // Check if station has a placed item using the public property 
-                    Debug.Log("Pot moved to stove");
                     stoves.PlaceItem(carryable);
                     return;
                 }
@@ -90,7 +90,6 @@ public class RespawnManager : MonoBehaviour
             if (tables.PlacedItem == null) //EMPTY
             {
                 // Check if station has a placed item using the public property 
-                Debug.Log("Placed on table");
                 tables.PlaceItem(carryable);
                 return;
             }
@@ -102,7 +101,6 @@ public class RespawnManager : MonoBehaviour
     IEnumerator RespawnTime(GameObject player)
     {
         yield return new WaitForSeconds(5); //wait 5 seconds to respawn the character
-        Debug.Log("Player Respawned");
         player.transform.position = respawnPoint.transform.position; //Set them to the respawnPoint
     }
 }
