@@ -7,10 +7,12 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField]
     [Required]
+    [Tooltip("The point where the player will respawn to")]
     private Transform respawnPoint;
 
     [SerializeField]
     [Required]
+    [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
     private Transform PotRespawnPoint;
 
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
