@@ -187,7 +187,7 @@ public class PlayerInteraction : MonoBehaviour
     /// </summary>
     public bool OnUseStart()
     {
-        if (_isCarrying && _heldItem.TryGetInterface(out IUsable heldUsable))
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
         {
             if (!heldUsable.Enabled) { return true; }
             heldUsable.OnUseStart();
@@ -208,7 +208,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnUseEnd()
     {
-        if (_isCarrying && _heldItem.TryGetInterface(out IUsable heldUsable))
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
         {
             heldUsable.OnUseEnd();
             return;
@@ -228,11 +228,14 @@ public class PlayerInteraction : MonoBehaviour
     private void DropItem()
     {
         _heldItem.OnDrop();
+
         _heldItem.transform.parent = null;
+
         if (_heldItem.TryGetInterface(out IUsable usable))
         {
             usable.OnUseEnd();
         }
+
         ReleaseItem();
     }
 

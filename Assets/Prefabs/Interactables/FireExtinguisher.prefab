@@ -199,6 +199,7 @@ MonoBehaviour:
   _interfaces:
   - {fileID: 2520581503706247017}
   - {fileID: 2520581503706247013}
+  - {fileID: 2520581503706247013}
   _behaviourTypes:
   - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -207,6 +208,8 @@ MonoBehaviour:
   _interfaceTypes:
   - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: IUsable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IUsableWhileCarried, Interactables, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   NoDuplicates: 1
 --- !u!114 &2520581503706247016
 MonoBehaviour:
@@ -272,4 +275,4 @@ MonoBehaviour:
   _projectile: {fileID: 6377695598696041229, guid: f93de06ce6f27fa43bb5cd097c908d76, type: 3}
   _projectileSpawnPoint: {fileID: 2520581503706247023}
   _canRepeatFire: 1
-  _repeatFireIntervalSeconds: 0.1
+  _fireIntervalSeconds: 0.1

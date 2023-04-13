@@ -1,27 +1,30 @@
 using UnityEngine;
 using CustomAttributes;
 
-public class ProjectileLauncher : InteractionBehaviour, IUsable
+public class ProjectileLauncher : InteractionBehaviour, IUsableWhileCarried
 {
     [SerializeField]
+    [Tooltip("The prefab projectile to launch.")]
     [Required]
     private GameObject _projectile;
 
     [SerializeField]
+    [Tooltip("The transform to spawn the projectile at.")]
     [Required]
     private Transform _projectileSpawnPoint;
 
     [SerializeField]
+    [Tooltip("Whether the launcher should fire automatically.")]
     private bool _canRepeatFire = true;
 
     [SerializeField]
-    [ShowIf("_canRepeatFire")]
-    private float _repeatFireIntervalSeconds = 0.3f;
+    [Tooltip("The minimum time between firing each projectile.")]
+    private float _fireIntervalSeconds = 0.1f;
 
     private float _fireRepeatTimer = 0.0f;
     private bool _firing = false;
 
-    bool IUsable.Enabled => true;
+    public bool Enabled => true;
 
     void Update()
     {
@@ -36,7 +39,7 @@ public class ProjectileLauncher : InteractionBehaviour, IUsable
         if (_fireRepeatTimer < Mathf.Epsilon)
         {
             if (!_canRepeatFire) { _firing = false; }
-            _fireRepeatTimer += _repeatFireIntervalSeconds;
+            _fireRepeatTimer += _fireIntervalSeconds;
             LaunchProjectile();
         }
     }
