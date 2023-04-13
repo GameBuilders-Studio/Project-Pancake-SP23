@@ -10,7 +10,8 @@ public class Flammable : InteractionBehaviour
     private FlammableData _settings;
 
     [SerializeField]
-    [Required, Tooltip("The transform to spawn the fire prefab at.")]
+    [Tooltip("The transform to spawn the fire prefab at.")]
+    [Required]
     private Transform _firePivot;
 
     [SerializeField]
@@ -58,7 +59,7 @@ public class Flammable : InteractionBehaviour
     void Start()
     {
         _maxFireHealth = _settings.FireInitialHealth;
-        if (_isBurning) { Ignite(); }
+        if (_isBurning) { SpawnFireFX(); }
     }
 
     void Update()
@@ -91,7 +92,42 @@ public class Flammable : InteractionBehaviour
         return false;
     }
 
-    public void IgniteNeighbors()
+    public void DamageFire(float fireDamage)
+    {
+        if (!_isBurning) { return; }
+
+        _fireHealth -= fireDamage;
+
+        if (_fireHealth < 0.0f)
+        {
+            Extinguish();
+        }
+    }
+
+    public static bool TryGetFlammable(GameObject go, out Flammable flammable)
+    {
+        return Instances.TryGetValue(go, out flammable);
+    }
+
+    [Button]
+    private void Ignite()
+    {
+        _isBurning = true;
+        _spreadTimer = _settings.SpreadIntervalSeconds;
+        _fireHealth = _settings.FireInitialHealth;
+        SpawnFireFX();
+    }
+
+    [Button]
+    private void Extinguish()
+    {
+        _isBurning = false;
+        _fireHealth = 0.0f;
+        _spreadTimer = 0.0f;
+        ReleaseFireFX();
+    }
+
+    private void IgniteNeighbors()
     {
         // TODO: use layermask to filter non-flammable results
         int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
@@ -109,32 +145,21 @@ public class Flammable : InteractionBehaviour
         }
     }
 
-    public void DamageFire(float fireDamage)
+    // TODO: use object pooling
+    private void SpawnFireFX()
     {
-        if (!_isBurning) { return; }
-
-        _fireHealth -= fireDamage;
-
-        if (_fireHealth < 0.0f)
-        {
-            Extinguish();
-        }
-    }
-
-    private void Ignite()
-    {
-        _isBurning = true;
-        _spreadTimer = _settings.SpreadIntervalSeconds;
-        _fireHealth = _settings.FireInitialHealth;
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
         _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
         _fireEffect.transform.localScale *= _fireEffectScale;
     }
 
-    private void Extinguish()
+    private void ReleaseFireFX()
     {
-        _isBurning = false;
-        _fireHealth = 0.0f;
-        _spreadTimer = 0.0f;
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
         Destroy(_fireEffect);
     }
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CustomAttributes
 {
+    /// <summary>
+    /// Select an Animator parameter with a dropdown interface.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class AnimatorParamAttribute : DrawerAttribute
     {

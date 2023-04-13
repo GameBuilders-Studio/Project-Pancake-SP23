@@ -6,23 +6,26 @@ using CustomAttributes;
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField]
+    [Tooltip("A managed list of nearby game objects with the Selectable component")]
     private List<Selectable> _nearby;
 
     [SerializeField]
+    [Tooltip("The item currently being held by this player.")]
     private Carryable _heldItem = null;
 
-    [Tooltip("Transform to place carried items in")]
     [SerializeField]
+    [Tooltip("Transform to place carried items in.")]
     [Required]
     private Transform _carryPivot;
 
     [SerializeField]
+    [Tooltip("The ProxyTrigger used to detect and automatically catch thrown items.")]
     [Required]
     private ProxyTrigger _catchTrigger;
 
-    [Tooltip("Angle range in front of player to check for selectables")]
-    [Range(0f, 180f)]
     [SerializeField]
+    [Tooltip("Angle range in front of player to check for selectables.")]
+    [Range(0f, 180f)]
     private float _selectAngleRange;
 
     private CharacterMovement _character;
@@ -92,6 +95,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             HoverTarget = null;
+
             // stop interacting if nothing is selected
             if (_lastUsed != null)
             {
@@ -158,7 +162,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void PickUpItem(Carryable item)
     {
-        if (IsCarrying)
+        if (_isCarrying)
         {
             Debug.LogError("Tried to pick up item while already carrying one");
             return;
@@ -178,28 +182,44 @@ public class PlayerInteraction : MonoBehaviour
         go.transform.localRotation = Quaternion.identity;
     }
 
-    public void OnUseStart()
+    /// <summary>
+    /// Returns true if the player is allowed to turn in place while using.
+    /// </summary>
+    public bool OnUseStart()
     {
-        if (HoverTarget == null) { return; }
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
+        {
+            if (!heldUsable.Enabled) { return true; }
+            heldUsable.OnUseStart();
+            return true;
+        }
 
-        if (IsCarrying) { return; }
+        if (HoverTarget == null) { return false; }
 
         if (HoverTarget.TryGetInterface(out IUsable usable))
         {
-            if (!usable.Enabled) { return; }
+            if (!usable.Enabled) { return false; }
             usable.OnUseStart();
             _lastUsed = usable;
         }
+
+        return false;
     }
 
     public void OnUseEnd()
     {
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
+        {
+            heldUsable.OnUseEnd();
+            return;
+        }
+
         if (_lastUsed != null)
         {
             _lastUsed.OnUseEnd();
             _lastUsed = null;
         }
-        else if (IsCarrying && _heldItem.CanThrow)
+        else if (_isCarrying && _heldItem.CanThrow)
         {
             ThrowItem();
         }
@@ -216,7 +236,14 @@ public class PlayerInteraction : MonoBehaviour
     private void DropItem()
     {
         _heldItem.OnDrop();
+
         _heldItem.transform.parent = null;
+
+        if (_heldItem.TryGetInterface(out IUsable usable))
+        {
+            usable.OnUseEnd();
+        }
+
         ReleaseItem();
     }
 

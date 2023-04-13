@@ -12,7 +12,7 @@ namespace CustomAttributes.Editor
             {
                 if (property.objectReferenceValue == null)
                 {
-                    string errorMessage = property.name + " is required";
+                    string errorMessage = ObjectNames.NicifyVariableName(property.name) + " is required";
                     if (!string.IsNullOrEmpty(requiredAttribute.Message))
                     {
                         errorMessage = requiredAttribute.Message;
