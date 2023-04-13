@@ -6,7 +6,7 @@ namespace BehaviourCollections
     /// Base class for MonoBehaviours that are managed by a behaviour collection
     /// </summary>
     public abstract class ManagedMonoBehaviour<TBehaviour> : BehaviourProvider<TBehaviour>
-        where TBehaviour : ManagedMonoBehaviour<TBehaviour>
+        where TBehaviour : MonoBehaviour
     {
         [SerializeField, HideInInspector]
         public BehaviourProvider<TBehaviour> Collection;
