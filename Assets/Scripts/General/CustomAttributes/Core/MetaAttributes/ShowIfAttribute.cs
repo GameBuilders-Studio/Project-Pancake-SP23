@@ -2,6 +2,9 @@
 
 namespace CustomAttributes
 {
+    /// <summary>
+    /// Can be used to show/hide serialized fields or buttons based on a condition. The condition can be a field, property or function.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ShowIfAttribute : ShowIfAttributeBase
     {
