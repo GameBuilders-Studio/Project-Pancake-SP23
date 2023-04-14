@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using CustomAttributes;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class ScoreUI : MonoBehaviour
 {
-    [SerializeField] ProgressBar _comboBar;
+    [SerializeField, Required] ProgressBar _comboBar;
 
     [Tooltip("Score text to display the score")]
     [SerializeField] public TextMeshProUGUI ScoreText;
