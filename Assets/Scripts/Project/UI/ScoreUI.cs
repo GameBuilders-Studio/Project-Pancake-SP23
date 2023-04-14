@@ -6,6 +6,8 @@ using TMPro;
 [RequireComponent(typeof(CanvasGroup))]
 public class ScoreUI : MonoBehaviour
 {
+    [SerializeField] ProgressBar _comboBar;
+
     [Tooltip("Score text to display the score")]
     [SerializeField] public TextMeshProUGUI ScoreText;
 
