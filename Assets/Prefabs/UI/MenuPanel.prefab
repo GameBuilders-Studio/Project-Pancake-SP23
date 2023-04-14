@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 6454175579470090324}
   - component: {fileID: 6454175579470090322}
   - component: {fileID: 6454175579470090323}
+  - component: {fileID: 6449810880344018671}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
@@ -869,6 +870,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6449810880344018671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454175579470090325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42188d553379040fc86ee18249ae909b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  _playerInputHandler: {fileID: 0}
 --- !u!1 &6454175579654136857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,6 +1220,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6454175579470090324}
     m_Modifications:
+    - target: {fileID: 186003816702797309, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 186003816702797309, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6174049697847818577, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_Text
       value: 'Retry
@@ -1493,6 +1516,14 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 186003816702797309, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 186003816702797309, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6174049697847818577, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_Text
       value: 'Retry
@@ -1513,23 +1544,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6449810880344018671}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeState
+      value: OnClickMainMenuBtn
       objectReference: {fileID: 0}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
+      value: PausedMenu, UI
       objectReference: {fileID: 0}
     - target: {fileID: 7957886340027968917, guid: 7e7d6efedae829648a2680e696810ffc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument

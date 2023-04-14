@@ -73,7 +73,7 @@ public class PlayerInputHandler : MonoBehaviour
         _actions.PlayerControls.SetCallbacks(instance);
     }
 
-    public void SetCallbacks(PlayerInputActions.IUIActions instance)
+    public void SetCallbacksUI(PlayerInputActions.IUIActions instance)
     {
         if (_actions == null)
         {
@@ -81,6 +81,16 @@ public class PlayerInputHandler : MonoBehaviour
             return;
         }
         _actions.UI.SetCallbacks(instance);
+    }
+
+    public void SetCallbacks(PlayerInputActions.IInGameUIActionActions instance)
+    {
+        if (_actions == null)
+        {
+            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
+            return;
+        }
+        _actions.InGameUIAction.SetCallbacks(instance);
     }
 
     private void OnActionsAssigned()

@@ -2,6 +2,9 @@
 
 namespace CustomAttributes
 {
+    /// <summary>
+    /// Draw a progress bar. Can be applied to an <see cref="int"/> or a <see cref="float"/>.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class ProgressBarAttribute : DrawerAttribute
     {

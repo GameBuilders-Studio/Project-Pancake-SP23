@@ -1559,9 +1559,17 @@ PrefabInstance:
       value: Assets/Scenes/MainScene.unity
       objectReference: {fileID: 0}
     - target: {fileID: 1829363004776218621, guid: f1fd9ec2b3a732a4ea4a2ad7c395a7fa, type: 3}
+      propertyPath: _sceneToLoad.scenePath
+      value: Assets/Scenes/LevelSelection.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 1829363004776218621, guid: f1fd9ec2b3a732a4ea4a2ad7c395a7fa, type: 3}
       propertyPath: sceneToLoad.sceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+    - target: {fileID: 1829363004776218621, guid: f1fd9ec2b3a732a4ea4a2ad7c395a7fa, type: 3}
+      propertyPath: _sceneToLoad.sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 475d559f69760f84eb63e9b7255bef95, type: 3}
     - target: {fileID: 4982950511548851660, guid: f1fd9ec2b3a732a4ea4a2ad7c395a7fa, type: 3}
       propertyPath: m_RootOrder
       value: 7

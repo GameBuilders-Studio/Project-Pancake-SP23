@@ -6,6 +6,7 @@ using CustomAttributes;
 /// </summary>
 public class IngredientProp : InteractionBehaviour
 {
+    [SerializeField]
     [ProgressBar("Progress", 1.0f, EColor.Green)]
     public float _progressIndicator = 0.0f;
 

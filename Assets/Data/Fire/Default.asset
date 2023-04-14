@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7337df4948f1a7746ae006f339ee653f, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: 
+  FirePrefab: {fileID: 100000, guid: 756d99540142b5e4a8d174e18a6310d9, type: 3}
+  SpreadIntervalSeconds: 4
+  SpreadRadius: 0.63
+  FireInitialHealth: 100
