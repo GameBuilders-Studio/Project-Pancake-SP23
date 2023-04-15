@@ -14915,6 +14915,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2495396573393355477, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2495396573393355477, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4590067256824484269, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: _slideLeftTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_SizeDelta.x
       value: -600
@@ -15013,6 +15025,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8959779120666044609, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959779120666044611, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8959779120666044613, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
@@ -16327,7 +16343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1362076711312219553}
+  Collection: {fileID: 1362076711312219553}
   _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients:
   - Data: {fileID: 11400000, guid: 9a6631c7e02d11c48aeef82115ab4a8e, type: 2}
@@ -16541,7 +16557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1203084061445071689}
+  Collection: {fileID: 1203084061445071689}
   _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients:
   - Data: {fileID: 11400000, guid: 6ca195900c1195f42bece6b00e4dd6d1, type: 2}
@@ -16755,30 +16771,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Behaviours:
+  _behaviours:
   - {fileID: 521311769230308588}
   - {fileID: 7572961828887580877}
   - {fileID: 7075928052748988470}
-  Interfaces:
-  - ICombinable
-  - IHasCarryable
-  _typeToBehaviourSerialized:
-    m_keys:
-    - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 521311769230308588}
-    - {fileID: 7572961828887580877}
-    - {fileID: 7075928052748988470}
-  _typeToInterfaceSerialized:
-    m_keys:
-    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 521311769230308588}
-    - {fileID: 7075928052748988470}
-  _noDuplicates: 1
+  _interfaces:
+  - {fileID: 521311769230308588}
+  - {fileID: 7075928052748988470}
+  _behaviourTypes:
+  - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _interfaceTypes:
+  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  NoDuplicates: 1
 --- !u!114 &1362076711312219553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16791,30 +16798,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Behaviours:
+  _behaviours:
   - {fileID: 389901476663986692}
   - {fileID: 7732038110391381541}
   - {fileID: 6946688127475240670}
-  Interfaces:
-  - ICombinable
-  - IHasCarryable
-  _typeToBehaviourSerialized:
-    m_keys:
-    - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 389901476663986692}
-    - {fileID: 7732038110391381541}
-    - {fileID: 6946688127475240670}
-  _typeToInterfaceSerialized:
-    m_keys:
-    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 389901476663986692}
-    - {fileID: 6946688127475240670}
-  _noDuplicates: 1
+  _interfaces:
+  - {fileID: 389901476663986692}
+  - {fileID: 6946688127475240670}
+  _behaviourTypes:
+  - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _interfaceTypes:
+  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  NoDuplicates: 1
 --- !u!114 &1472353805894430657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16853,7 +16851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1362076711312219553}
+  Collection: {fileID: 1362076711312219553}
   _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 7732038110391381541}
@@ -16871,7 +16869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1203084061445071689}
+  Collection: {fileID: 1203084061445071689}
   _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 7572961828887580877}
@@ -16889,7 +16887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1203084061445071689}
+  Collection: {fileID: 1203084061445071689}
   _nearbyTrigger: {fileID: 521311770187516272}
   _highlightBehaviour: {fileID: 1602154353367372073}
   _highlightOnHover: 1
@@ -16906,7 +16904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 1362076711312219553}
+  Collection: {fileID: 1362076711312219553}
   _nearbyTrigger: {fileID: 389901477579536280}
   _highlightBehaviour: {fileID: 1472353805894430657}
   _highlightOnHover: 1

@@ -1,35 +1,42 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using CustomAttributes;
-
+[RequireComponent(typeof(RectTransform))]
 public class Order : MonoBehaviour
 {
     [SerializeField] private RecipeData _recipe;
 
-    [SerializeField, Required]
-    private TextMeshProUGUI _orderText;
+    [SerializeField] private float _startTime = 15f;
 
-    [SerializeField] private ProgressBar _orderProgressBar;
+    [SerializeField] private float _orderDespawnTime = 10f;
+
+    [SerializeField, Required] private TextMeshProUGUI _orderText;
+
+    [SerializeField, Required] private ProgressBar _orderProgressBar;
+
+    [SerializeField, Required] private Image _panel;
+
 
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; private set; }
 
-    //todo: variable for complete time to use for points?
-    [SerializeField] private float _startTime = 15f;
+
+    // variable for complete time to use for points?
     public RecipeData RecipeData { get => _recipe; }
+    public RectTransform RectTransform { get => _rectTransform; }
 
+    private RectTransform _rectTransform;
     private Coroutine _timerCoroutine;
-
-    public void SetOrderComplete()
-    {
-        IsComplete = true;
-        StopTimer();
-    }
+    private float _orderDespawnTimeRemaining;
+    private Coroutine _despawnTimerCoroutine;
 
     private void Awake()
     {
+        _rectTransform = GetComponent<RectTransform>();
+        SetOrderText();
+
         _orderProgressBar.SetMaxValue(_startTime);
         SetTimer(_startTime);
         StartTimer();
@@ -40,28 +47,48 @@ public class Order : MonoBehaviour
         StopTimer();
     }
 
-    private void SetTimer(float seconds)
+    public void SetOrderComplete()
     {
-        TimeRemaining = seconds;
+        IsComplete = true;
+        StopTimer();
+        _panel.color = Color.green;
     }
 
-    private void StartTimer()
+    public void DespawnOrder()
     {
-        UpdateOrderText();
+        if (_despawnTimerCoroutine != null)
+        {
+            return;
+        }
+
+        StopAllCoroutines();
+        _orderDespawnTimeRemaining = _orderDespawnTime;
+        _despawnTimerCoroutine = StartCoroutine(DespawnTimerCoroutine());
+    }
+
+    public void SetStartTime(float time)
+    {
+        _startTime = time;
+        SetTimer(_startTime);
+        _orderProgressBar.SetMaxValue(_startTime);
+    }
+
+    public void StartTimer()
+    {
         _timerCoroutine = StartCoroutine(TimerCoroutine());
     }
 
-    private void StopTimer()
+    public void StopTimer()
     {
         if (_timerCoroutine != null)
         {
-            StopCoroutine(TimerCoroutine());
+            StopCoroutine(_timerCoroutine);
             _timerCoroutine = null;
         }
 
     }
 
-    private void ResumeTimer()
+    public void ResumeTimer()
     {
         if (_timerCoroutine == null)
         {
@@ -69,11 +96,16 @@ public class Order : MonoBehaviour
         }
     }
 
-    private void ResetTimer()
+    public void ResetTimer()
     {
         StopTimer();
         SetTimer(_startTime);
         StartTimer();
+    }
+
+    private void SetTimer(float seconds)
+    {
+        TimeRemaining = seconds;
     }
 
     private IEnumerator TimerCoroutine()
@@ -85,10 +117,19 @@ public class Order : MonoBehaviour
             yield return null;
         }
         EventManager.Invoke("OrderExpired");
-        // Debug.Log("Order Expired");
     }
 
-    private void UpdateOrderText()
+    private IEnumerator DespawnTimerCoroutine()
+    {
+        while (_orderDespawnTimeRemaining > 0)
+        {
+            _orderDespawnTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
+
+    private void SetOrderText()
     {
         _orderText.text = $"Recipe Name: {_recipe.RecipeName}";
     }
