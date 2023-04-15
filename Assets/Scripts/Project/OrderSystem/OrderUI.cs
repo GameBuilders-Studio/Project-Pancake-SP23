@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 [RequireComponent(typeof(RectTransform))]
 public class OrderUI : MonoBehaviour
@@ -12,17 +13,15 @@ public class OrderUI : MonoBehaviour
     private RectTransform _rectTransform;
     private List<Order> _currentOrders = new();
 
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-    }
     public void AddOrder(Order order)
     {
         _currentOrders.Add(order);
-        order.transform.SetParent(transform);
-        // Debug.Log("Added " + order.RecipeData.name + " to UI");
 
-        UpdateOrderUI(); //Reorder UI
+        //Display order in UI
+        order.transform.SetParent(transform);
+        order.GetRectTransform().anchoredPosition = new Vector2(_rectTransform.rect.width, 0);
+
+        UpdateOrderUI();
     }
 
     public void RemoveOrder(Order order)
@@ -34,15 +33,15 @@ public class OrderUI : MonoBehaviour
             return;
         }
 
-        _currentOrders[idx].gameObject.SetActive(false); //Disable the order
         _currentOrders.RemoveAt(idx);
-        // Debug.Log("Removed " + order.RecipeData.name + " from UI");
+        SlideupOrder(order);
 
-        UpdateOrderUI(); //Reorder UI
+        UpdateOrderUI();
     }
+
     public void UpdateOrderUI()
     {
-        //Update UI
+        //Shift all orders to the left if there are empty slots
         float parentWidth = _rectTransform.rect.width;
         float distFromLeftSideX = parentWidth / 2;
 
@@ -50,13 +49,24 @@ public class OrderUI : MonoBehaviour
         {
 
             Order order = _currentOrders[i];
-            RectTransform childTransform = order.GetComponent<RectTransform>();
+            RectTransform childTransform = order.GetRectTransform();
 
             float offset = childTransform.rect.width;
-
             float spacing = _spacing * i;
-            childTransform.anchoredPosition = new Vector2(-distFromLeftSideX + (offset * i + offset / 2) + _leftPadding + spacing, 0);
+
+            childTransform.DOAnchorPos(new Vector2(-distFromLeftSideX + (offset * i + offset / 2) + _leftPadding + spacing, 0), 1f);
         }
+    }
+
+    public void SlideupOrder(Order order)
+    {
+        RectTransform rectTransform = order.GetRectTransform();
+        rectTransform.DOAnchorPosY(500, 2f); //Move order up, out of view
+    }
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
     }
 
 }
