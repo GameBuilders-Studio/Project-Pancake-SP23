@@ -10,12 +10,12 @@ public class ScoreUI : MonoBehaviour
     [SerializeField, Required] ProgressBar _comboBar;
 
     [Tooltip("Score text to display the score")]
-    [SerializeField] public TextMeshProUGUI ScoreText;
+    [SerializeField, Required] public TextMeshProUGUI ScoreText;
 
     [Tooltip("Score to win the game")]
     [SerializeField] public int ScoreToWin;
 
-    [SerializeField] private GameObject _endScreen;
+    [SerializeField, Required] private GameObject _endScreen;
     private int _score;
 
     private CanvasGroup _canvasGroup;
