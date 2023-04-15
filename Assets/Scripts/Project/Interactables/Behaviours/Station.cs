@@ -18,11 +18,15 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     [ReadOnly, Required]
     private StationController _controller;
 
+    private bool _placedItemExists = false;
+
     public Carryable PlacedItem
     {
         get => _placedItem;
         protected set => _placedItem = value;
     }
+
+    public bool HasItem => _placedItem != null;
 
     void OnValidate()
     {
@@ -60,9 +64,10 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
     public Carryable PopCarryable()
     {
-        var item = PlacedItem;
+        var item = _placedItem;
         _controller.ItemRemoved(ref item);
-        PlacedItem = null;
+        _placedItem = null;
+        _placedItemExists = false;
         return item;
     }
 
@@ -83,7 +88,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
             return true;
         }
 
-        if (PlacedItem.TryGetInterface(out ICombinable combinable))
+        if (_placedItem.TryGetInterface(out ICombinable combinable))
         {
             return combinable.TryCombineWith(other);
         }
@@ -102,13 +107,15 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
     public void PlaceItem(Carryable item)
     {
-        _placedItem = item;
-
         item.OnPlace();
 
         CenterObject(item);
         
         _controller.ItemPlaced(ref item);
+
+        _placedItem = item;
+
+        _placedItemExists = _placedItem != null;
     }
 
     private void CenterObject(Carryable item)

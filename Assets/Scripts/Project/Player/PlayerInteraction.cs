@@ -32,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     private Selectable _hoverTarget = null;
     private IUsable _lastUsed;
 
+    [SerializeField]
     private bool _isCarrying = false;
 
     public bool IsCarrying => _isCarrying;
@@ -153,8 +154,8 @@ public class PlayerInteraction : MonoBehaviour
             if (combinable.TryCombineWith(_heldItem))
             {
                 ReleaseItem();
-                return;
             }
+            return;
         }
 
         DropItem();
@@ -283,36 +284,99 @@ public class PlayerInteraction : MonoBehaviour
 
         Selectable bestSelectable = null;
         float minAngle = Mathf.Infinity;
-        float bestScore = -1.0f;
 
-        foreach (var nearby in Nearby)
+        bool carryableExists = false;
+        bool usableExists = false;
+
+        bool emptyStationExists = false;
+        bool foodContainerExists = false;
+
+        foreach (var item in Nearby)
         {
-            if (!nearby.IsSelectable) { continue; }
+            if (!item.IsSelectable) { continue; }
 
-            float angle = Angle2D(transform.forward, nearby.transform.position - transform.position);
+            float angle = Angle2D(transform.forward, item.transform.position - transform.position);
             if (angle > _selectAngleRange) { continue; }
 
-            float score = 0.0f;
-
             // if not carrying anything, prefer:
-            // a) IUsable
-            // b) IHasCarryable
+            // a) loose Carryables or Stations with Carryables
+            // b) IUsable
 
-            // // if carrying, prefer:
-            // // a) Stations
-            // // b) ICombinable
+            if (!_isCarrying)
+            {
+                if (item.HasBehaviour<Carryable>()
+                    || (item.TryGetBehaviour(out Station station) && station.HasItem))
+                {
+                    if (!carryableExists)
+                    {
+                        minAngle = Mathf.Infinity;
+                    }
+                    carryableExists = true;
+                }
+                else if (carryableExists)
+                {
+                    continue;
+                }
 
-            // angle is the tie-breaker
+                if (item.HasInterface<IUsable>())
+                {
+                    if (!usableExists)
+                    {
+                        minAngle = Mathf.Infinity;
+                    }
+                    usableExists = true;
+                }
+                else if (usableExists)
+                {
+                    continue;
+                }
+            }
+
+            // if carrying an ingredient, prefer:
+            // a) food containers
+
+            // if carrying a non-ingredient, prefer:
+            // b) empty Stations
+
+            if (_isCarrying)
+            {
+                if (_heldItem.HasBehaviour<IngredientProp>())
+                {
+                    if (item.HasBehaviour<FoodContainer>())
+                    {
+                        if (!foodContainerExists)
+                        {
+                            minAngle = Mathf.Infinity;
+                        }
+                        foodContainerExists = true;
+                    }
+                    else if (foodContainerExists)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (item.TryGetBehaviour(out Station station) && !station.HasItem)
+                    {
+                        if (!emptyStationExists)
+                        {
+                            minAngle = Mathf.Infinity;
+                        }
+                        emptyStationExists = true;
+                    }
+                    else if (emptyStationExists)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            // use angle as the tie-breaker
             if (angle < minAngle)
             {
                 minAngle = angle;
-                score += Mathf.Min(1 - (angle / _selectAngleRange), 0.999f);
-            }
-
-            if (score > bestScore)
-            {
-                bestScore = score;
-                bestSelectable = nearby;
+                bestSelectable = item;
             }
         }
 

@@ -85,6 +85,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     public void ClearIngredients()
     {
         Ingredients.Clear();
+        OnIngredientsChanged();
     }
 
     public Ingredient PopIngredient()
