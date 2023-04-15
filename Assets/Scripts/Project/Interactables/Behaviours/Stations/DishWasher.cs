@@ -18,7 +18,7 @@ public class DishWasher : StationController, IUsable
 
     bool IUsable.Enabled
     {
-        get => _ingredientExists && !_ingredient.ProgressComplete;
+        get => _ingredientExists && _dirtyDishCount > 0;
     }
 
     void Update()
@@ -55,7 +55,7 @@ public class DishWasher : StationController, IUsable
     void Wash()
     {
         // ensure ingredient is in a state that can be chopped
-        if(_dirtyDishCount <=0 && _ingredient.Data.State != _targetIngredientState) { return; }
+        if(_dirtyDishCount <=0) { return; }
 
         // IInteractable.Enabled check ensures _ingredient exists
         if(_dishWasherSO.dishWashTime>=_currentProgress) {
