@@ -8,6 +8,10 @@ public class DishStack : StationController
     private int _maxPlates = 3;
     [SerializeField]
     private int _currentPlates = 0;
+    public int CurrentPlates{
+        get => _currentPlates;
+        set => _currentPlates = value;
+    }
     private void Awake() {
         _currentPlates = _maxPlates;
     }
