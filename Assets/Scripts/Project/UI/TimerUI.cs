@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using CustomAttributes;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class TimerUI : MonoBehaviour
 {
     [Tooltip("Time text to display the time")]
-    [SerializeField] public TextMeshProUGUI TimeText;
+    [SerializeField, Required] public TextMeshProUGUI TimeText;
+
+    [SerializeField, Required] ProgressBar _timerProgressBar;
 
     [Tooltip("Time Duration in seconds")]
     [SerializeField] public float TimeDuration;
@@ -77,5 +80,6 @@ public class TimerUI : MonoBehaviour
         float minutes = Mathf.FloorToInt(time / 60);
         float seconds = Mathf.FloorToInt(time % 60);
         TimeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+        _timerProgressBar.SetProgress(time / TimeDuration);
     }
 }

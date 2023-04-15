@@ -19,7 +19,7 @@ public class OrderUI : MonoBehaviour
     public void AddOrder(Order order)
     {
         _currentOrders.Add(order);
-        order.transform.SetParent(transform);
+        order.transform.SetParent(transform, false);
         // Debug.Log("Added " + order.RecipeData.name + " to UI");
 
         UpdateOrderUI(); //Reorder UI
