@@ -18,7 +18,7 @@ public class OrderUI : MonoBehaviour
         _currentOrders.Add(order);
 
         //Display order in UI
-        order.transform.SetParent(transform);
+        order.transform.SetParent(transform, false);
         order.GetRectTransform().anchoredPosition = new Vector2(_rectTransform.rect.width, 0);
 
         UpdateOrderUI();
