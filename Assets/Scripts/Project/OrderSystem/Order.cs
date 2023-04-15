@@ -3,11 +3,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using CustomAttributes;
-using System;
-
+[RequireComponent(typeof(RectTransform))]
 public class Order : MonoBehaviour
 {
     [SerializeField] private RecipeData _recipe;
+
+    [SerializeField] private float _startTime = 15f;
+
+    [SerializeField] private float _orderDespawnTime = 10f;
 
     [SerializeField, Required] private TextMeshProUGUI _orderText;
 
@@ -15,19 +18,34 @@ public class Order : MonoBehaviour
 
     [SerializeField, Required] private Image _panel;
 
+
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; private set; }
 
-    //todo: variable for complete time to use for points?
-    [SerializeField] private float _startTime = 15f;
-    public RecipeData RecipeData { get => _recipe; }
 
-    [SerializeField] private float _orderDespawnTime = 10f;
+    // variable for complete time to use for points?
+    public RecipeData RecipeData { get => _recipe; }
+    public RectTransform RectTransform { get => _rectTransform; }
 
     private RectTransform _rectTransform;
     private Coroutine _timerCoroutine;
     private float _orderDespawnTimeRemaining;
     private Coroutine _despawnTimerCoroutine;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+        SetOrderText();
+
+        _orderProgressBar.SetMaxValue(_startTime);
+        SetTimer(_startTime);
+        StartTimer();
+    }
+
+    private void OnDisable()
+    {
+        StopTimer();
+    }
 
     public void SetOrderComplete()
     {
@@ -64,7 +82,7 @@ public class Order : MonoBehaviour
     {
         if (_timerCoroutine != null)
         {
-            StopCoroutine(TimerCoroutine());
+            StopCoroutine(_timerCoroutine);
             _timerCoroutine = null;
         }
 
@@ -83,25 +101,6 @@ public class Order : MonoBehaviour
         StopTimer();
         SetTimer(_startTime);
         StartTimer();
-    }
-
-    public RectTransform GetRectTransform()
-    {
-        return _rectTransform;
-    }
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-        SetOrderText();
-
-        _orderProgressBar.SetMaxValue(_startTime);
-        SetTimer(_startTime);
-        StartTimer();
-    }
-
-    private void OnDisable()
-    {
-        StopTimer();
     }
 
     private void SetTimer(float seconds)

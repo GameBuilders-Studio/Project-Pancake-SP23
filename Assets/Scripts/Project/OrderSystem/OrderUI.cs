@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,19 +6,27 @@ using DG.Tweening;
 [RequireComponent(typeof(RectTransform))]
 public class OrderUI : MonoBehaviour
 {
-    [SerializeField] float _spacing;
-    [SerializeField] float _leftPadding;
+    [SerializeField] private float _spacing = 5.0f;
+    [SerializeField] private float _leftPadding = 0.0f;
+    [SerializeField] private float _slideUpTime = 2.0f;
+    [SerializeField] private float _slideUpYPosition = 500.0f;
+    [SerializeField] private float _slideLeftTime = 1.0f;
+
 
     private RectTransform _rectTransform;
     private List<Order> _currentOrders = new();
 
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
     public void AddOrder(Order order)
     {
         _currentOrders.Add(order);
 
         //Display order in UI
         order.transform.SetParent(transform, false);
-        order.GetRectTransform().anchoredPosition = new Vector2(_rectTransform.rect.width, 0);
+        order.RectTransform.anchoredPosition = new Vector2(_rectTransform.rect.width, 0);
 
         UpdateOrderUI();
     }
@@ -34,6 +41,7 @@ public class OrderUI : MonoBehaviour
         }
 
         _currentOrders.RemoveAt(idx);
+        DOTween.Kill(order.RectTransform); //Stop any tweens on the order
         SlideupOrder(order);
 
         UpdateOrderUI();
@@ -49,24 +57,19 @@ public class OrderUI : MonoBehaviour
         {
 
             Order order = _currentOrders[i];
-            RectTransform childTransform = order.GetRectTransform();
+            RectTransform childTransform = order.RectTransform;
 
             float offset = childTransform.rect.width;
             float spacing = _spacing * i;
 
-            childTransform.DOAnchorPos(new Vector2(-distFromLeftSideX + (offset * i + offset / 2) + _leftPadding + spacing, 0), 1f);
+            childTransform.DOAnchorPos(new Vector2(-distFromLeftSideX + (offset * i + offset / 2) + _leftPadding + spacing, 0), _slideLeftTime);
         }
     }
 
     public void SlideupOrder(Order order)
     {
-        RectTransform rectTransform = order.GetRectTransform();
-        rectTransform.DOAnchorPosY(500, 2f); //Move order up, out of view
-    }
-
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
+        RectTransform rectTransform = order.RectTransform;
+        rectTransform.DOAnchorPosY(_slideUpYPosition, _slideUpTime); //Move order up, out of view
     }
 
 }
