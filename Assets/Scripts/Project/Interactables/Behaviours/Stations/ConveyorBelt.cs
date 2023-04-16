@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
 using DG.Tweening;
+using CustomAttributes;
 
 public class ConveyorBelt : StationController
 {
@@ -10,6 +12,13 @@ public class ConveyorBelt : StationController
     [SerializeField]
     [Min(0.0f)]
     private float _distance = 1.0f;
+
+    [SerializeField]
+    [Required]
+    private Transform _pivotPoint;
+
+    [SerializeField]
+    private Vector3 _extents;
 
     public override void ItemPlaced(ref Carryable item)
     {
@@ -24,14 +33,14 @@ public class ConveyorBelt : StationController
 
         tweenerCore.onComplete += item.EnablePhysics;
 
-        item.CurrentTween = tweenerCore;
+        item.CurrentTweener = tweenerCore;
 
         item = null;
     }
 
     public override bool ValidateItem(Carryable item)
     {
-        var rb = item.Rigidbody;
-        
+
+        return true;
     }
 }

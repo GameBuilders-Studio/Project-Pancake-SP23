@@ -30,15 +30,15 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     private float _currentThrowTime = 0.0f;
     private float _throwHeight;
     private Vector3 _throwDirection;
-    private Tweener _currentTween;
+    private Tweener _currentTweener;
 
-    public Tweener CurrentTween
+    public Tweener CurrentTweener
     {
-        get => _currentTween;
+        get => _currentTweener;
         set
         {
-            _currentTween.Kill(true);
-            _currentTween = value;
+            _currentTweener.Kill(true);
+            _currentTweener = value;
         }
     }
 
@@ -77,7 +77,7 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     public void OnPickUp()
     {
-        CurrentTween.Kill();
+        _currentTweener.Kill();
         _isFlying = false;
         DisablePhysics();
         DisableSelection();
@@ -135,7 +135,7 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     public void EnablePhysics()
     {
-        CurrentTween.Kill();
+        _currentTweener.Kill();
         _rigidbody.isKinematic = false;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
     }
