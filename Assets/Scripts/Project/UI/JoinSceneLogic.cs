@@ -21,7 +21,7 @@ public class JoinSceneLogic : MonoBehaviour
 
         if (playerCount == 0)
         {
-            Debug.LogWarning("No players joined");
+            // Debug.LogWarning("No players joined");
             return;
         }
 
@@ -30,7 +30,7 @@ public class JoinSceneLogic : MonoBehaviour
         {
             if (panel.PlayerJoined && !panel.IsReady)
             {
-                Debug.LogWarning("Not all players are ready");
+                // Debug.LogWarning("Not all players are ready");
                 return;
             }
         }
