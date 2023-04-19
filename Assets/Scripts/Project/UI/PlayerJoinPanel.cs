@@ -30,6 +30,8 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
     private string _readyUpTextKeyboard;
 
     private string _readyUpText = "";
+    private bool _playerJoined = false;
+    public bool PlayerJoined => _playerJoined;
     private bool _isReady = false;
     public bool IsReady => _isReady;
 
@@ -55,19 +57,18 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     private void OnPlayerJoin()
     {
+        _playerJoined = true;
         _playerVisual.SetActive(true);
         _playerInputHandler.SetCallbacksUI(this);
-
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
-
         _readyUpText = _playerInputHandler.CurrentControlScheme == "Gamepad" ? _readyUpTextGamepad : _readyUpTextKeyboard;
         _buttonPrompt.text = _readyUpText;
     }
 
     private void OnPlayerLost()
     {
+        _playerJoined = false;
         _playerVisual.SetActive(false);
-
         _title.text = "";
         _buttonPrompt.text = _joinText;
     }
