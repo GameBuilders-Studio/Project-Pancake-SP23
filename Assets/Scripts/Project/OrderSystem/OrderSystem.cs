@@ -18,6 +18,26 @@ public class OrderSystem : MonoBehaviour
     private Queue<Order> _orderQueue = new();
     public List<Order> CurrentOrders { get => _currentOrders; }
 
+    private void Awake()
+    {
+        //Load original sequence of orders for the current level
+        foreach (Order order in _orderData.Orders[_currentLevel])
+        {
+            _orderQueue.Enqueue(order);
+        }
+        OnStartLevel();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("StartingLevel", OnStartLevel);
+        EventManager.AddListener("OrderExpired", OnOrderExpired);
+    }
+
+    private void OnDisable()
+    {
+        StopOrderSpawn(); //Should we also stop the order timer coroutines?
+    }
     public void AddOrder(Order order)
     {
         _orderQueue.Enqueue(order);
@@ -82,27 +102,6 @@ public class OrderSystem : MonoBehaviour
 
         return false;
 
-    }
-
-    private void OnEnable()
-    {
-        EventManager.AddListener("StartingLevel", OnStartLevel);
-        EventManager.AddListener("OrderExpired", OnOrderExpired);
-    }
-
-    private void Awake()
-    {
-        //Load original sequence of orders for the current level
-        foreach (Order order in _orderData.Orders[_currentLevel])
-        {
-            _orderQueue.Enqueue(order);
-        }
-
-    }
-
-    private void OnDisable()
-    {
-        StopOrderSpawn(); //Should we also stop the order timer coroutines?
     }
 
     private void OnStartLevel()
