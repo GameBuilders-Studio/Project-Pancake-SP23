@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace GameBuilders.Variables
 {
     /// <inheritdoc/>
-    public class BoolReference : GlobalReference<bool>
+    [Serializable]
+    public class BoolReference : VariableReference<bool>
     {
         
     }

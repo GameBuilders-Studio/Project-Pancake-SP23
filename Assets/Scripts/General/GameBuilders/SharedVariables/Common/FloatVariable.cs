@@ -4,7 +4,7 @@ namespace GameBuilders.Variables
 {
     /// <inheritdoc/>
     [CreateAssetMenu(menuName = "Variables/FloatVariable")]
-    public class FloatVariable : GlobalVariable<float>
+    public class FloatVariable : SharedVariable<float>
     {
         
     }

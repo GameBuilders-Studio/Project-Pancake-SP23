@@ -4,7 +4,7 @@ namespace GameBuilders.Variables
 {
     /// <inheritdoc/>
     [CreateAssetMenu(menuName = "Variables/BoolVariable")]
-    public class BoolVariable : GlobalVariable<bool>
+    public class BoolVariable : SharedVariable<bool>
     {
         
     }
