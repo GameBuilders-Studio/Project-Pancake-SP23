@@ -11,13 +11,37 @@ public class OrderSystem : MonoBehaviour
     [SerializeField, Range(0f, 600f)] private float _orderSpawnTime = 15f; //Time in seconds between order spawns
     [SerializeField] private int _maxConcurrentOrders = 6; //Maximum number of orders that can be displayed at once
     [SerializeField] private int _minConcurrentOrders = 2; //Minimum number of orders that can be displayed at once
+    [SerializeField] private float _stageStartDelay = 2.0f; //Delay before the first order spawns
 
     private Coroutine _orderSpawnCoroutine;
-
     private List<Order> _currentOrders = new();
     private Queue<Order> _orderQueue = new();
     public List<Order> CurrentOrders { get => _currentOrders; }
 
+    private void Awake()
+    {
+        //Load original sequence of orders for the current level
+        foreach (Order order in _orderData.Orders[_currentLevel])
+        {
+            _orderQueue.Enqueue(order);
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("StartingLevel", OnStartLevel);
+        EventManager.AddListener("OrderExpired", OnOrderExpired);
+    }
+
+    private void OnDisable()
+    {
+        StopOrderSpawn(); //Should we also stop the order timer coroutines?
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartLevelCoroutine());
+    }
     public void AddOrder(Order order)
     {
         _orderQueue.Enqueue(order);
@@ -82,27 +106,6 @@ public class OrderSystem : MonoBehaviour
 
         return false;
 
-    }
-
-    private void OnEnable()
-    {
-        EventManager.AddListener("StartingLevel", OnStartLevel);
-        EventManager.AddListener("OrderExpired", OnOrderExpired);
-    }
-
-    private void Awake()
-    {
-        //Load original sequence of orders for the current level
-        foreach (Order order in _orderData.Orders[_currentLevel])
-        {
-            _orderQueue.Enqueue(order);
-        }
-
-    }
-
-    private void OnDisable()
-    {
-        StopOrderSpawn(); //Should we also stop the order timer coroutines?
     }
 
     private void OnStartLevel()
@@ -187,7 +190,11 @@ public class OrderSystem : MonoBehaviour
         }
     }
 
-
+    IEnumerator StartLevelCoroutine()
+    {
+        yield return new WaitForSeconds(_stageStartDelay);
+        EventManager.Invoke("StartingLevel");
+    }
 
 }
 
