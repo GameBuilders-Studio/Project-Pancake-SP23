@@ -16,8 +16,9 @@ public class IngredientProp : InteractionBehaviour
     public float Progress => _ingredientData.Progress;
 
     public bool ProgressComplete => _ingredientData.ProgressComplete;
+    public IngredientStateData State => _ingredientData.State;
 
-    public Ingredient Data => _ingredientData;
+    private Ingredient Data => _ingredientData;
 
     public void AddProgress(float progressDelta)
     {
@@ -31,7 +32,12 @@ public class IngredientProp : InteractionBehaviour
         _ingredientData.SetProgress(progress);
         OnProgressUpdate(progress);
     }
-    
+
+    public void SetState(IngredientStateData state)
+    {
+        _ingredientData.SetState(state);
+    }
+
     protected virtual void OnProgressUpdate(float progress)
     {
         // handle visual behaviour of ingredient

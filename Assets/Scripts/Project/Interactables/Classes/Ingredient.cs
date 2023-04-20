@@ -39,6 +39,8 @@ public class Ingredient
     /// </summary>
     public void SetState(IngredientStateData state)
     {
+        GameObject choppedPrefab = GameObject.Instantiate(Data.choppedPrefab, transform.position, Quaternion.identity);
+
         if (state != State)
         {
             State = state;

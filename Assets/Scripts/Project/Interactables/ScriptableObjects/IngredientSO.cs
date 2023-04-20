@@ -7,5 +7,5 @@ public class IngredientSO : ScriptableObject
 {
     public Sprite icon;
     public GameObject prefab;
-    public GameObject choopedPrefab;
+    public GameObject choppedPrefab;
 }
