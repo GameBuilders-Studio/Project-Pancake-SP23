@@ -5,7 +5,7 @@ public class DishStack : StationController
     [SerializeField]
     private GameObject _dishPrefab;
     [SerializeField]
-    private int _maxPlates = 3;
+    private int _initPlates = 3;
     [SerializeField]
     private int _currentPlates = 0;
     public int CurrentPlates{
@@ -13,7 +13,7 @@ public class DishStack : StationController
         set => _currentPlates = value;
     }
     private void Awake() {
-        _currentPlates = _maxPlates;
+        _currentPlates = _initPlates;
     }
     public override void ItemRemoved(ref Carryable item)
     {
