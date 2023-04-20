@@ -33,7 +33,7 @@ public class IngredientProp : InteractionBehaviour
         if (State != null && _stateToModel.TryGetValue(State, out GameObject model))
         {
             DisableAllModels();
-            _stateToModel[State].SetActive(true);
+            model.SetActive(true);
         }
     }
 
