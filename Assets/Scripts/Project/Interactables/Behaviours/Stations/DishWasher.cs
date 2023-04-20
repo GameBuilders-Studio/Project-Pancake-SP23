@@ -1,17 +1,17 @@
 using UnityEngine;
+using CustomAttributes;
 
 public class DishWasher : StationController, IUsable
 {
-    [SerializeField]
     private float _dishWashTime;
     [SerializeField]
     private int _dirtyDishCount = 0;
     [SerializeField]
-    private DishWasherSO _dishWasherSO;
-    [SerializeField]
-    private float _currentProgress;
-    [SerializeField]
-    private DishStack _dishStack;
+    private float _maxDishWashTime;
+    [SerializeField] [ProgressBar("Dish Washing", "_maxDishWashTime", EColor.Orange)]
+    private float _currentDishWashTime;
+    [SerializeField] [Required]
+    private DishStack _dishStack; //a dish stack to add the washed dishes to
 
     private bool _interacting = false;
     private bool _ingredientExists = false;
@@ -23,7 +23,10 @@ public class DishWasher : StationController, IUsable
 
     void Update()
     {
-        if (_interacting) { Wash(); }
+        if (_interacting)
+        {
+            Wash();
+        }
     }
 
     public void OnUseStart() => _interacting = true;
@@ -32,11 +35,12 @@ public class DishWasher : StationController, IUsable
 
     public override bool ValidateItem(Carryable item)
     {
-        return item.HasBehaviour<IngredientProp>();
+        return item.HasBehaviour<DirtyDish>();
     }
 
     public override void ItemPlaced(ref Carryable item)
     {
+
         DirtyDish _dirtyDish;
         _ingredientExists = item.TryGetBehaviour(out _dirtyDish);
         if (_ingredientExists)
@@ -55,15 +59,16 @@ public class DishWasher : StationController, IUsable
     void Wash()
     {
         // ensure ingredient is in a state that can be chopped
-        if(_dirtyDishCount <=0) { return; }
+        if (_dirtyDishCount <= 0) { return; }
 
         // IInteractable.Enabled check ensures _ingredient exists
-        if(_dishWasherSO.dishWashTime>=_currentProgress) {
-            _currentProgress = 0;
+        if (_currentDishWashTime>=_maxDishWashTime)
+        {
+            _currentDishWashTime = 0;
             _dirtyDishCount--;
             _dishStack.CurrentPlates++;
         }
 
-        _currentProgress+=Time.deltaTime / _dishWashTime;
+        _currentDishWashTime += Time.deltaTime / _maxDishWashTime;
     }
 }

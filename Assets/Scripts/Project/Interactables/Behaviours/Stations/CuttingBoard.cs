@@ -29,9 +29,10 @@ public class CuttingBoard : StationController, IUsable
 
     public void OnUseEnd() => _interacting = false;
 
+    //You can place anything on cutting board
     public override bool ValidateItem(Carryable item)
     {
-        return item.HasBehaviour<IngredientProp>();
+        return true;
     }
 
     public override void ItemPlaced(ref Carryable item)
