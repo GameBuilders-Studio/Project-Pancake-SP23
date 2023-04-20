@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -399,7 +399,9 @@ MonoBehaviour:
   _recipe: {fileID: 11400000, guid: 134724e566e78ad499e75ca4a9e7551c, type: 2}
   _orderText: {fileID: 4380493338907087126}
   _orderProgressBar: {fileID: 4418154079899131627}
+  _panel: {fileID: 1586185762406922233}
   _startTime: 200
+  _orderDespawnTime: 10
 --- !u!1 &7528256618705704340
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using GameBuilders.Singleton;
 
 [System.Serializable]
 public class EventDictionary : SerializableDictionary<string, UnityEvent> { }
