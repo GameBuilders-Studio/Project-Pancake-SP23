@@ -66,7 +66,7 @@ public class DishWasher : StationController, IUsable
         {
             _currentDishWashTime = 0;
             _dirtyDishCount--;
-            _dishStack.CurrentPlates++;
+            _dishStack.Count++;
         }
 
         _currentDishWashTime += Time.deltaTime / _maxDishWashTime;
