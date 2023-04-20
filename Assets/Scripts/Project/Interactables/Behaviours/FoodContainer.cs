@@ -15,6 +15,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     public bool IsFull => _ingredients.Count == Capacity;
     public bool IsEmpty => _ingredients.Count == 0;
 
+    private Dictionary<Ingredient, GameObject> _ingredientModels = new(); // Stores the models for each ingredient currently in the container
+
     public List<Ingredient> Ingredients
     {
         get => _ingredients;
@@ -52,12 +54,18 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         return false;
     }
 
-    public bool TryAddIngredientProp(IngredientProp ingredient)
+    public bool TryAddIngredientProp(IngredientProp ingredientProp)
     {
-        if (!ValidateIngredient(ingredient.Data)) { return false; }
+        if (!ValidateIngredient(ingredientProp.Ingredient)) { return false; }
 
-        AddIngredient(ingredient.Data);
-        Destroy(ingredient.gameObject);
+        Ingredient ingredient = ingredientProp.Ingredient;
+        AddIngredient(ingredient);
+        // Instantiate a model for the ingredient and display it in the container
+        GameObject ingredientModel = Instantiate(ingredient.Data.platedModels[ingredient.State], transform);
+        _ingredientModels.Add(ingredient, ingredientModel);
+        // Position the model in the container
+        ingredientModel.transform.localPosition = Vector3.zero;
+        Destroy(ingredientProp.gameObject);
 
         return true;
     }
@@ -75,7 +83,14 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         while (Count < Capacity && other.Count > 0)
         {
-            AddIngredient(other.PopIngredient());
+            // Move the model from the other container to this container   
+            Ingredient otherIngredient = other.PopIngredient();
+            // Add the model to this container
+            GameObject ingredientModel = otherIngredient.Data.platedModels[otherIngredient.State];
+            _ingredientModels.Add(otherIngredient, ingredientModel);
+            // Position the model in the container
+            ingredientModel.transform.localPosition = Vector3.zero;
+            AddIngredient(otherIngredient);
             didTransfer = true;
         }
 
@@ -84,19 +99,30 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     public void ClearIngredients()
     {
+        // Destroy all ingredient models
+        foreach (GameObject ingredientModel in _ingredientModels.Values)
+        {
+            Destroy(ingredientModel);
+        }
+        _ingredientModels.Clear();
         Ingredients.Clear();
     }
 
     public Ingredient PopIngredient()
     {
         Ingredient ingredient = Ingredients[Count - 1];
+        // Remove the model from this container
+        GameObject ingredientModel = _ingredientModels[ingredient];
+        _ingredientModels.Remove(ingredient);
+        Destroy(ingredientModel);
+        // Remove the ingredient from the container
         Ingredients.RemoveAt(Count - 1);
         return ingredient;
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
-        return _containerSettings.IsIngredientAllowed(ingredient);
+        return (_containerSettings.IsIngredientAllowed(ingredient) && ingredient.ProgressComplete);
     }
 
     /// <summary>
@@ -115,6 +141,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     protected virtual void OnIngredientsChanged()
     {
         // modify visuals
+
+
     }
 
     private void AddIngredient(Ingredient ingredient)
