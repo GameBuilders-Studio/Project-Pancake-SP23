@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -18,6 +19,8 @@ public class Order : MonoBehaviour
 
     [SerializeField, Required] private Image _panel;
 
+    [SerializeField] private List<Image> _ingredientsImages = new();
+
 
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; private set; }
@@ -35,6 +38,10 @@ public class Order : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        for (int i = 0; i < _recipe._recipe.Count; i++)
+        {
+            _ingredientsImages[i].sprite = _recipe._recipe[i].icon;
+        }
         SetOrderText();
 
         _orderProgressBar.SetMaxValue(_startTime);
