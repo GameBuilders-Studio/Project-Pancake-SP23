@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CustomAttributes;
 using UnityEngine;
 
 public class FoodContainer : InteractionBehaviour, ICombinable
@@ -8,6 +9,9 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     [SerializeField]
     private List<Ingredient> _ingredients = new();
+
+    [SerializeField, Required]
+    private Transform _ingredientModelParent;
 
     public int Count => _ingredients.Count;
     public int Capacity => _containerSettings.Capacity;
@@ -61,7 +65,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         Ingredient ingredient = ingredientProp.Ingredient;
         AddIngredient(ingredient);
         // Instantiate a model for the ingredient and display it in the container
-        GameObject ingredientModel = Instantiate(ingredient.Data.platedModels[ingredient.State], transform);
+        GameObject ingredientModel = Instantiate(ingredient.Data.platedModels[ingredient.State], _ingredientModelParent);
         _ingredientModels.Add(ingredient, ingredientModel);
         // Position the model in the container
         ingredientModel.transform.localPosition = Vector3.zero;
@@ -86,7 +90,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
             // Move the model from the other container to this container   
             Ingredient otherIngredient = other.PopIngredient();
             // Add the model to this container
-            GameObject ingredientModel = otherIngredient.Data.platedModels[otherIngredient.State];
+            GameObject ingredientModel = Instantiate(otherIngredient.Data.platedModels[otherIngredient.State], _ingredientModelParent);
             _ingredientModels.Add(otherIngredient, ingredientModel);
             // Position the model in the container
             ingredientModel.transform.localPosition = Vector3.zero;
@@ -122,7 +126,19 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
-        return (_containerSettings.IsIngredientAllowed(ingredient) && ingredient.ProgressComplete);
+        // if the ingredient is not allowed in this container or is not complete, return false
+        if (!_containerSettings.IsIngredientAllowed(ingredient) || !ingredient.ProgressComplete)
+        {
+            return false;
+        }
+
+        // If the ingredient does not have a plated model for its current state, return false
+        if (!ingredient.Data.platedModels.ContainsKey(ingredient.State))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>

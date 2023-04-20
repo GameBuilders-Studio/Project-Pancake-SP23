@@ -97,6 +97,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4512697221133524534}
+--- !u!1 &3227118742332332792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7087563876600141287}
+  m_Layer: 0
+  m_Name: IngredientModels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7087563876600141287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3227118742332332792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.334, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9059498309148403138}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9059498309148403140
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,6 +165,7 @@ Transform:
   m_Children:
   - {fileID: 9059498310111909955}
   - {fileID: 4216733737334597437}
+  - {fileID: 7087563876600141287}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -182,6 +214,7 @@ MonoBehaviour:
   Collection: {fileID: 7653842725219283576}
   _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients: []
+  _ingredientModelParent: {fileID: 7087563876600141287}
 --- !u!114 &9059498309148403167
 MonoBehaviour:
   m_ObjectHideFlags: 0
