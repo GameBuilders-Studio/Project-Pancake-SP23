@@ -7350,6 +7350,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food Source
       objectReference: {fileID: 0}
+    - target: {fileID: 7173727142457994008, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ca623a5216f123c4c8686de49b9c547e, type: 3}
+    - target: {fileID: 8147260660728289421, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: _ingredientSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 6ca195900c1195f42bece6b00e4dd6d1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
 --- !u!4 &772611153 stripped
@@ -13955,11 +13963,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 335418483911058485, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
   m_PrefabInstance: {fileID: 1705333705}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1705333708
+--- !u!114 &1705333708 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1705333708, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+  m_PrefabInstance: {fileID: 1705333705}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705333707}
   m_Enabled: 1
@@ -13967,14 +13974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileID: 303851674
-  _ruleID: -1
-  _tileName: Food Source
-  _group: TestTileGroup
-  _internalPosition: {x: 0, y: 3, z: 8}
-  _localRotation: {x: 0, y: 0, z: 0, w: 1}
-  _isBaked: 0
-  View: {fileID: 1705333707}
 --- !u!1001 &1727827955
 PrefabInstance:
   m_ObjectHideFlags: 0
