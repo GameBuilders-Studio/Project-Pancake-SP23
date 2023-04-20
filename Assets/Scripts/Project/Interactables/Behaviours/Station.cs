@@ -41,10 +41,10 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         if (_controller != null)
         {
             _controller.Station = this;
+            if (_placedItem == null) { return; }
+            CenterObject(_placedItem);
         }
-
-        if (_placedItem == null) { return; }
-        CenterObject(_placedItem);
+        
     }
 
     void OnEnable()
@@ -77,7 +77,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     /// Returns true if the item is placed succesfully
     /// </summary>
     public bool TryCombineWith(InteractionBehaviour other)
-    { 
+    {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
         if (!HasItem)
@@ -107,20 +107,15 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         return false; 
     }
 
-    public void PlaceItem(Carryable item, bool centerObject = true)
+    public void PlaceItem(Carryable item)
     {
         item.OnPlace();
-        if (centerObject) { CenterObject(item); }
-        _controller.ItemPlaced(ref item);
-        _placedItem = item;
-    }
 
-    private void CenterObject(Carryable item)
-    {
-        var go = item.gameObject;
-        go.transform.SetParent(_itemHolderPivot);
-        go.transform.localPosition = Vector3.zero;
-        go.transform.localRotation = Quaternion.identity;
+        _controller.PositionItem(ref item, _itemHolderPivot);
+
+        _controller.ItemPlaced(ref item);
+
+        _placedItem = item;
     }
 
     /// <summary>
@@ -135,5 +130,13 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         item.CancelThrow();
 
         TryCombineWith(item);
+    }
+
+    private void CenterObject(Carryable item)
+    {
+        var go = item.gameObject;
+        go.transform.SetParent(_itemHolderPivot);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
     }
 }

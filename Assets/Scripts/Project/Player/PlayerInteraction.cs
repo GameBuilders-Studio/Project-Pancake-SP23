@@ -302,7 +302,7 @@ public class PlayerInteraction : MonoBehaviour
 
             if (!_isCarrying)
             {
-                if (item.HasBehaviour<Carryable>() || item.HasBehaviour<Station>())
+                if (item.HasBehaviour<Carryable>() || (item.TryGetBehaviour(out Station station) && station.HasItem))
                 {
                     if (!carryableExists)
                     {

@@ -13,4 +13,12 @@ public class StationController : InteractionBehaviour
     public virtual void ItemPlaced(ref Carryable carryable) {}
 
     public virtual void ItemRemoved(ref Carryable carryable) {}
+
+    public virtual void PositionItem(ref Carryable item, Transform pivot)
+    {
+        var go = item.gameObject;
+        go.transform.SetParent(pivot);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+    }
 }

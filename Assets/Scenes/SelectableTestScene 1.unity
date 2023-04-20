@@ -1042,6 +1042,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 437684384809171815, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+      propertyPath: _useAnyDevice
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter (1)
@@ -1829,6 +1833,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9059498309148403136, guid: a103910eaeb97bf4dbd123196bed4724, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9059498309148403138, guid: a103910eaeb97bf4dbd123196bed4724, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2068,6 +2076,10 @@ PrefabInstance:
     - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 2819626521960616056, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+      propertyPath: _selectAngleRange
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_RootOrder

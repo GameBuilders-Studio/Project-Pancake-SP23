@@ -22,6 +22,8 @@ public class ConveyorBelt : StationController
 
     private Collider[] _overlapResults = new Collider[32];
 
+    private bool _itemWasDestroyed = false;
+
     void OnDrawGizmosSelected()
     {
         if (_boxPivot == null) { return; }
@@ -31,34 +33,38 @@ public class ConveyorBelt : StationController
 
     public override bool ValidateItem(Carryable carryable)
     {
-        if (!TryGetNearestItem(out Carryable item, carryable.gameObject)) { return true; }
+        _itemWasDestroyed = false;
 
-        // if (item.TryGetInterface(out ICombinable combinable))
-        // {
-        //     return combinable.TryCombineWith(carryable);
-        // }
+        if (!TryGetNearestItem(out Carryable item, carryable.gameObject)) 
+        {
+            return true; 
+        }
+
+        if (item.TryGetInterface(out ICombinable combinable))
+        {
+            _itemWasDestroyed = combinable.TryCombineWith(carryable);
+            return _itemWasDestroyed;
+        }
 
         // Combining 
-
-        // if (carryable.TryGetInterface(out ICombinable otherCombinable))
-        // {
-        //     var tweener = item.CurrentTweener;
-        //     if (otherCombinable.TryCombineWith(item))
-        //     {
-        //         Debug.Log("combined and changed position");
-        //         Station.PlaceItem(carryable);
-        //     }
-        // }
+        if (carryable.TryGetInterface(out ICombinable otherCombinable))
+        {
+            //var tweener = item.CurrentTweener;
+            if (otherCombinable.TryCombineWith(item))
+            {
+                return true;
+            }
+        }
 
         return false;
     }
 
     public override void ItemPlaced(ref Carryable item)
     {
+        if (_itemWasDestroyed) { return; }
+
         item.DisablePhysics();
         item.DisableSelection();
-
-        item.transform.parent = null;
 
         var targetPosition = item.transform.position + (transform.forward * _tweenDistance);
 
@@ -66,11 +72,18 @@ public class ConveyorBelt : StationController
             .DOMove(targetPosition, _tweenTimeSeconds)
             .SetEase(Ease.Linear);
 
+        Debug.Log($"assigned tween to object {item.gameObject.name}");
+
         tweenerCore.onComplete += item.OnDrop;
-
         item.CurrentTweener = tweenerCore;
-
+        
         item = null;
+    }
+
+    public override void PositionItem(ref Carryable item, Transform pivot)
+    {
+        if (_itemWasDestroyed) { return; }
+        base.PositionItem(ref item, pivot);
     }
 
     public override void ItemRemoved(ref Carryable carryable)

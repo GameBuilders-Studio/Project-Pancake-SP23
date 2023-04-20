@@ -175,7 +175,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1126139912628277122, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_Name
-      value: Conveyor Belt
+      value: Conveyor Belt (3)
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277124, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -187,7 +187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalPosition.y
@@ -195,23 +195,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.70710784
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.70710576
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -219,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -283,7 +283,7 @@ MonoBehaviour:
   _tweenTimeSeconds: 1
   _tweenDistance: 1
   _boxPivot: {fileID: 3706376410323686530}
-  _boxExtents: {x: 0.8, y: 0.3, z: 0.8}
+  _boxExtents: {x: 0.6, y: 0.3, z: 0.6}
 --- !u!114 &2649691768313031689 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}

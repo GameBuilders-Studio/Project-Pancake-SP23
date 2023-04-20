@@ -103,6 +103,7 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     public void OnDrop()
     {
+        transform.parent = null;
         EnablePhysics();
         EnableSelection();
     }
