@@ -32,6 +32,8 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     private Vector3 _throwDirection;
     private Tweener _currentTweener;
 
+    private static readonly Dictionary<GameObject, Carryable> s_instances = new();
+
     public Tweener CurrentTweener
     {
         get => _currentTweener;
@@ -67,6 +69,16 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
         if (!_isFlying) { return; }
         ThrowUpdate();
+    }
+
+    void OnEnable()
+    {
+        s_instances.Add(gameObject, this);
+    }
+
+    void OnDisable()
+    {
+        s_instances.Remove(gameObject);
     }
 
     void OnCollisionStay()
@@ -135,7 +147,6 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     public void EnablePhysics()
     {
-        _currentTweener.Kill();
         _rigidbody.isKinematic = false;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
     }
@@ -195,5 +206,10 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     public Carryable PopCarryable()
     {
         return this;
+    }
+
+    public static bool TryGetCarryable(GameObject go, out Carryable carryable)
+    {
+        return s_instances.TryGetValue(go, out carryable);
     }
 }

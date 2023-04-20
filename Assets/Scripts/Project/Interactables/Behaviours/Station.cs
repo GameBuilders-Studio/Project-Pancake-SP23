@@ -18,12 +18,10 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     [ReadOnly, Required]
     private StationController _controller;
 
-    private bool _placedItemExists = false;
-
     public Carryable PlacedItem
     {
         get => _placedItem;
-        protected set => _placedItem = value;
+        set => _placedItem = value;
     }
 
     public bool HasItem => _placedItem != null;
@@ -38,6 +36,11 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         if (_controller == null)
         {
             _controller = GetComponent<StationController>();
+        }
+
+        if (_controller != null)
+        {
+            _controller.Station = this;
         }
 
         if (_placedItem == null) { return; }
@@ -67,7 +70,6 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         var item = _placedItem;
         _controller.ItemRemoved(ref item);
         _placedItem = null;
-        _placedItemExists = false;
         return item;
     }
 
@@ -75,10 +77,10 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     /// Returns true if the item is placed succesfully
     /// </summary>
     public bool TryCombineWith(InteractionBehaviour other)
-    {
+    { 
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
-        if (_placedItem == null)
+        if (!HasItem)
         {
             if (!_controller.ValidateItem(carryable))
             {
@@ -105,17 +107,12 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         return false; 
     }
 
-    public void PlaceItem(Carryable item)
+    public void PlaceItem(Carryable item, bool centerObject = true)
     {
         item.OnPlace();
-
-        CenterObject(item);
-        
+        if (centerObject) { CenterObject(item); }
         _controller.ItemPlaced(ref item);
-
         _placedItem = item;
-
-        _placedItemExists = _placedItem != null;
     }
 
     private void CenterObject(Carryable item)
@@ -131,7 +128,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     /// </summary>
     private void TryCatchItem(Collider other)
     {
-        if (!other.TryGetComponent(out Carryable item)) { return; }
+        if (!Carryable.TryGetCarryable(other.gameObject, out Carryable item)) { return; }
 
         if (!item.PhysicsEnabled) { return; }
 

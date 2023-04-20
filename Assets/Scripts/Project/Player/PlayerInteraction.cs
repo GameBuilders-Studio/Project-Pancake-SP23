@@ -157,8 +157,6 @@ public class PlayerInteraction : MonoBehaviour
             }
             return;
         }
-
-        DropItem();
     }
 
     public void PickUpItem(Carryable item)
@@ -299,13 +297,12 @@ public class PlayerInteraction : MonoBehaviour
             if (angle > _selectAngleRange) { continue; }
 
             // if not carrying anything, prefer:
-            // a) loose Carryables or Stations with Carryables
+            // a) loose Carryables and Stations
             // b) IUsable
 
             if (!_isCarrying)
             {
-                if (item.HasBehaviour<Carryable>()
-                    || (item.TryGetBehaviour(out Station station) && station.HasItem))
+                if (item.HasBehaviour<Carryable>() || item.HasBehaviour<Station>())
                 {
                     if (!carryableExists)
                     {
