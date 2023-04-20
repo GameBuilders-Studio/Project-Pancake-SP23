@@ -48,7 +48,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
             return false;
         }
-        
+
         return false;
     }
 
@@ -58,7 +58,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         AddIngredient(ingredient.Data);
         Destroy(ingredient.gameObject);
-        
+
         return true;
     }
 
@@ -68,9 +68,9 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     public bool TryTransferIngredients(FoodContainer other)
     {
         if (Count >= Capacity) { return false; }
-        
+
         if (!ValidateTransfer(other)) { return false; }
-        
+
         bool didTransfer = false;
 
         while (Count < Capacity && other.Count > 0)

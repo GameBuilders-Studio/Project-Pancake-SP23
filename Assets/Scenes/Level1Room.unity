@@ -16074,18 +16074,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1950515783898600238, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1950515783898600238, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1950515783898600238, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 1192863211, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
+      propertyPath: _ingredientData.State
+      value: 
+      objectReference: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
     - target: {fileID: 3864704719881843971, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
       propertyPath: m_Name
       value: PlanktonBlue
@@ -16134,13 +16126,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4541177207943561700, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4921555771344556688, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025425544131511798, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e6a0315b728c3b48b0363e67337b054, type: 3}

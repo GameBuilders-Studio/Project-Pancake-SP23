@@ -220,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4541177207943561700
 Transform:
   m_ObjectHideFlags: 0
@@ -283,15 +283,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dae7e0324ad37df4fb81f5a557504712, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6604397
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dae7e0324ad37df4fb81f5a557504712, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.6604397
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dae7e0324ad37df4fb81f5a557504712, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6604397
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dae7e0324ad37df4fb81f5a557504712, type: 3}
       propertyPath: m_LocalPosition.x
@@ -449,6 +449,13 @@ MonoBehaviour:
     Data: {fileID: 11400000, guid: 9a6631c7e02d11c48aeef82115ab4a8e, type: 2}
     State: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
     Progress: 0
+  _stateToModel:
+    m_keys:
+    - {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
+    - {fileID: 11400000, guid: a09e9f377c42d524296c2e008ab27665, type: 2}
+    m_values:
+    - {fileID: 8025425544131511798}
+    - {fileID: 4921555771344556688}
 --- !u!4 &3864704719881843972 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7605582599296834490, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
