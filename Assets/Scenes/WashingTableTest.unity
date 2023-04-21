@@ -123,38 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &349282 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-  m_PrefabInstance: {fileID: 1225968954}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &349283 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-  m_PrefabInstance: {fileID: 1225968954}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &349284 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-  m_PrefabInstance: {fileID: 1225968954}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b1fef424d4feca40924e6eb5dcb8bbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &349294 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-  m_PrefabInstance: {fileID: 1225968954}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6868242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -689,8 +657,8 @@ Transform:
   - {fileID: 109141520}
   - {fileID: 1360244872}
   - {fileID: 1970184690}
-  - {fileID: 1274020951}
   - {fileID: 847394368}
+  - {fileID: 780876927}
   m_Father: {fileID: 149699123}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -746,7 +714,6 @@ MonoBehaviour:
   - {x: 1, y: 2, z: 6}
   - {x: 2, y: 2, z: 7}
   - {x: 12, y: 3, z: 11}
-  - {x: 12, y: 3, z: 8}
   - {x: 0, y: 3, z: 5}
   - {x: 12, y: 3, z: 12}
   - {x: 12, y: 2, z: 9}
@@ -860,7 +827,7 @@ MonoBehaviour:
   - {x: 5, y: 4, z: 4}
   - {x: 4, y: 4, z: 4}
   - {x: 3, y: 4, z: 4}
-  - {x: 12, y: 3, z: 7}
+  - {x: 12, y: 3, z: 8}
   - {x: 3, y: 3, z: 5}
   - {x: 4, y: 3, z: 5}
   _NodesValues:
@@ -1196,15 +1163,6 @@ MonoBehaviour:
     _group: TestTileGroup
     _tileName: Table
     _tileID: -917330742
-    _ruleID: -1
-  - Layer: {fileID: 75103934}
-    InternalPosition: {x: 12, y: 3, z: 8}
-    LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-    _block: {fileID: 2090159439}
-    _instance: {fileID: 2090159438}
-    _group: TestTileGroup
-    _tileName: Dish Washer
-    _tileID: 784190221
     _ruleID: -1
   - Layer: {fileID: 75103934}
     InternalPosition: {x: 0, y: 3, z: 5}
@@ -2224,13 +2182,13 @@ MonoBehaviour:
     _tileID: 212428250
     _ruleID: -1
   - Layer: {fileID: 75103934}
-    InternalPosition: {x: 12, y: 3, z: 7}
-    LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-    _block: {fileID: 349294}
-    _instance: {fileID: 349282}
+    InternalPosition: {x: 12, y: 3, z: 8}
+    LocalRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    _block: {fileID: 1084569613}
+    _instance: {fileID: 1084569612}
     _group: TestTileGroup
-    _tileName: Dish Stack
-    _tileID: 453152254
+    _tileName: Dish Washer
+    _tileID: 784190221
     _ruleID: -1
   - Layer: {fileID: 75103934}
     InternalPosition: {x: 3, y: 3, z: 5}
@@ -2250,7 +2208,7 @@ MonoBehaviour:
     _tileName: Dirty Dish
     _tileID: -52997519
     _ruleID: -1
-  _AnchorKeys: d5741bc5caa452c924916b560504ec9345fd221ed6209ce9da65a90c9a681c12fe8d021b0dcbbd2e7152d7fc
+  _AnchorKeys: d5741bc5caa452c924916b560504ec9345fd221ed6209ce9da65a90c9a681c12fe8d021b7152d7fc0dcbbd2e
   _AnchorValues:
   - {fileID: 1540271319}
   - {fileID: 618757499}
@@ -2261,16 +2219,16 @@ MonoBehaviour:
   - {fileID: 109141519}
   - {fileID: 1360244871}
   - {fileID: 1970184689}
-  - {fileID: 1274020950}
   - {fileID: 847394367}
+  - {fileID: 780876926}
   LoadedGroups:
   - {fileID: 11400000, guid: 1edde58f529342444af1e40ece72ce29, type: 2}
   - {fileID: 11400000, guid: 29d8c4474b7e97b4ea36ff580f92876c, type: 2}
   - {fileID: 11400000, guid: 086471ca33d4b294b87b2cecdd98e4fd, type: 2}
   - {fileID: 11400000, guid: 87b8d609771fb4943b46588342cee428, type: 2}
-  HoverPrefabObject: {fileID: 7605582599296834493, guid: 92583dac69bc4d94abb350e55af91f63, type: 3}
-  LocalHoverPosition: {x: 26, y: 3, z: 20}
-  PrevLocalHoverPosition: {x: 20, y: 3, z: 18}
+  HoverPrefabObject: {fileID: 1126139912628277122, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+  LocalHoverPosition: {x: 14, y: 3, z: 8}
+  PrevLocalHoverPosition: {x: 14, y: 3, z: 9}
   SearchedInternalPosition: {x: 0, y: 0, z: 0}
   SearchedInternalNode:
     Layer: {fileID: 0}
@@ -7306,6 +7264,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64e722fdd5500491c8daa3d363ed5ec1, type: 3}
+--- !u!1 &780876925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780876927}
+  - component: {fileID: 780876926}
+  m_Layer: 0
+  m_Name: Anchor Dish Washer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &780876926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780876925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ba00f3f4dfea343bd5339890fa858d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileID: 784190221
+  BakedParent: {fileID: 0}
+  _childCount: 1
+  _bakeCount: 0
+--- !u!4 &780876927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780876925}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1084569611}
+  m_Father: {fileID: 75103933}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &783599828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7813,7 +7820,7 @@ Transform:
   m_Children:
   - {fileID: 2023003870}
   m_Father: {fileID: 75103933}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &848917680 stripped
 GameObject:
@@ -9378,6 +9385,93 @@ MonoBehaviour:
   _localRotation: {x: 0, y: 0, z: 0, w: 1}
   _isBaked: 0
   View: {fileID: 1083884752}
+--- !u!1001 &1084569610
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 780876927}
+    m_Modifications:
+    - target: {fileID: 1126139912628277122, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_Name
+      value: DishWasher
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+--- !u!4 &1084569611 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1126139912628277126, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+  m_PrefabInstance: {fileID: 1084569610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1084569612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+  m_PrefabInstance: {fileID: 1084569610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1084569613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084569612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileID: 784190221
+  _ruleID: -1
+  _tileName: Dish Washer
+  _group: TestTileGroup
+  _internalPosition: {x: 12, y: 3, z: 8}
+  _localRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+  _isBaked: 0
+  View: {fileID: 1084569612}
 --- !u!1001 &1087085453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10332,79 +10426,6 @@ MonoBehaviour:
   _localRotation: {x: 0, y: 0, z: 0, w: 1}
   _isBaked: 0
   View: {fileID: 1217955874}
---- !u!1001 &1225968954
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1970184690}
-    m_Modifications:
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _tileName
-      value: Dish Stack
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _internalPosition.x
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _internalPosition.z
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _maxPlates
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: m_Name
-      value: DishStack
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
 --- !u!1001 &1227382569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10837,55 +10858,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5c71061c261fcd438296d802639730e, type: 3}
---- !u!1 &1274020949
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1274020951}
-  - component: {fileID: 1274020950}
-  m_Layer: 0
-  m_Name: Anchor Dish Washer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1274020950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274020949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2ba00f3f4dfea343bd5339890fa858d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tileID: 784190221
-  BakedParent: {fileID: 0}
-  _childCount: 1
-  _bakeCount: 0
---- !u!4 &1274020951
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274020949}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2090159437}
-  m_Father: {fileID: 75103933}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1286939109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 64e722fdd5500491c8daa3d363ed5ec1, type: 3}
@@ -15154,7 +15126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tileID: 453152254
   BakedParent: {fileID: 0}
-  _childCount: 2
+  _childCount: 1
   _bakeCount: 0
 --- !u!4 &1970184690
 Transform:
@@ -15169,7 +15141,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1922639737}
-  - {fileID: 349283}
   m_Father: {fileID: 75103933}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15668,97 +15639,6 @@ MonoBehaviour:
   _localRotation: {x: 0, y: 0, z: 0, w: 1}
   _isBaked: 0
   View: {fileID: 2080792257}
---- !u!1001 &2090159436
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1274020951}
-    m_Modifications:
-    - target: {fileID: -3483069033535477172, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: _dishStack
-      value: 
-      objectReference: {fileID: 349284}
-    - target: {fileID: 1126139912628277122, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_Name
-      value: DishWasher
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
---- !u!4 &2090159437 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-  m_PrefabInstance: {fileID: 2090159436}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2090159438 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
-  m_PrefabInstance: {fileID: 2090159436}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2090159439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090159438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tileID: 784190221
-  _ruleID: -1
-  _tileName: Dish Washer
-  _group: TestTileGroup
-  _internalPosition: {x: 12, y: 3, z: 8}
-  _localRotation: {x: 0, y: 0, z: 0, w: 1}
-  _isBaked: 0
-  View: {fileID: 2090159438}
 --- !u!1 &2090903142 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: 64e722fdd5500491c8daa3d363ed5ec1, type: 3}
