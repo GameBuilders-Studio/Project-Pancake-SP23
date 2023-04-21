@@ -14,6 +14,8 @@ public class RespawnManager : MonoBehaviour
     [Required]
     [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
     private Transform PotRespawnPoint;
+    [SerializeField]
+    [Required]
     private DishStack _dishStack;
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
     private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
@@ -84,12 +86,10 @@ public class RespawnManager : MonoBehaviour
         if(other.tag == "Plate" /*plate != null <--ADD LATER*/)
         {
             Debug.Log("Plate touched death trigger");
-            if(_dishStack == null)
-            {
-                Debug.Log("hello");
+            
+                Debug.Log(_dishStack);
                 //We must increase the count of the DishStackCounter
                 _dishStack.Count++;
-            }
 
             //Delete the plate off the scene so the player doesn't see the plate fall down
         }
