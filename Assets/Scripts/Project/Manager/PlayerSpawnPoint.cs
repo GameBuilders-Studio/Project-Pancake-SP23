@@ -3,19 +3,19 @@ using UnityEditor;
 using EasyCharacterMovement;
 using CustomAttributes;
 
+[ExecuteInEditMode]
 public class PlayerSpawnPoint : MonoBehaviour
 {
     [SerializeField]
     public PlayerCharacter ManagedPlayer;
     
     [SerializeField]
-    [ReadOnly]
     private CapsuleCollider _playerCollider;
 
     [SerializeField]
-    [ReadOnly]
     private Vector3 _floorPosition;
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Handles.DrawWireDisc(_floorPosition + Vector3.up * 0.03f, Vector3.up, 0.5f, 2.0f);
@@ -23,12 +23,17 @@ public class PlayerSpawnPoint : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.green;
+        CustomGizmos.DrawArrow(transform.position, _floorPosition);
+    }
+#endif
+
+    void OnValidate()
+    {
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 10.0f, -1, QueryTriggerInteraction.Ignore))
         {
             _floorPosition = hitInfo.point;
         }
-        Gizmos.color = Color.green;
-        CustomGizmos.DrawArrow(transform.position, _floorPosition);
     }
 
     public void SpawnPlayer(int playerIndex, GameObject playerPrefab)
@@ -43,10 +48,10 @@ public class PlayerSpawnPoint : MonoBehaviour
                 Debug.LogError("Player prefab has no capsule collider!");
             }
 
-            var heightOffset =  _playerCollider.height * 0.5f * Vector3.up;
+            var heightOffset = _playerCollider.height * 0.25f * Vector3.up;
             player.transform.position = _floorPosition + heightOffset;
 
-            if (!player.TryGetComponent(out PlayerCharacter ManagedPlayer))
+            if (!player.TryGetComponent(out ManagedPlayer))
             {
                 Debug.LogError("Player prefab has no PlayerCharacter!");
             }

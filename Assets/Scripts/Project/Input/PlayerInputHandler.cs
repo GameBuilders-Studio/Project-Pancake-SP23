@@ -45,7 +45,6 @@ public class PlayerInputHandler : MonoBehaviour
             if (InputManager.GetInputActionsByIndex(PlayerIndex, out _actions))
             {
                 _isManaged = true;
-                CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
                 OnActionsAssigned();
             }
 
@@ -97,6 +96,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         Debug.Log($"Assigned input to Player {PlayerIndex}");
         InputActionsAssigned?.Invoke();
+        CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
     }
 
     private void OnDeviceLost(int playerIndex, InputUser user)

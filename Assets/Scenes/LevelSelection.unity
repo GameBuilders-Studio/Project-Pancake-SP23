@@ -815,8 +815,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scenes:
-  - sceneAsset: {fileID: 102900000, guid: 5d70d86cdef12504987c2a142ce222ea, type: 3}
-    scenePath: Assets/Scenes/OrderSystemTests/Level1RoomWIthOrderSystem.unity
+  - sceneAsset: {fileID: 102900000, guid: 2bab5e0531f174acfaaaf87b5c5524e9, type: 3}
+    scenePath: Assets/Scenes/Level1Room.unity
   - sceneAsset: {fileID: 102900000, guid: fdcdbdd59c34145c59685f7a46f1d9e5, type: 3}
     scenePath: Assets/Scenes/Level2Room.unity
   - sceneAsset: {fileID: 102900000, guid: cd3bd8bfbdbf148f79512a75a7d2fbd5, type: 3}
@@ -842,7 +842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: 0
   CurrentControlScheme: 
-  _useAnyDevice: 1
+  _useAnyDevice: 0
 --- !u!1 &1559329994
 GameObject:
   m_ObjectHideFlags: 0
