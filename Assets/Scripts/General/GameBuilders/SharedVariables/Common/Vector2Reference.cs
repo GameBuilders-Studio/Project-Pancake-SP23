@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace GameBuilders.Variables
 {
-    /// <inheritdoc/>
     [Serializable]
-    public class BoolReference : VariableReference<bool, BoolVariable>
+    public class Vector2Reference : VariableReference<Vector2, Vector2Variable>
     {
         
     }

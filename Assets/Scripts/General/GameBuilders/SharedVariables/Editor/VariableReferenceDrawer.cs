@@ -1,15 +1,14 @@
 using UnityEditor;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 
-namespace GameBuilders.Variables
+namespace GameBuilders.Variables.Editor
 {
-    public class VariableReferenceDrawer<T> : PropertyDrawer
+    [CustomPropertyDrawer(typeof(VariableReference), true)]
+    public class VariableReferenceDrawer : PropertyDrawer
     {
-        private readonly GUIContent _localContent = new("Use Constant");
-        private readonly GUIContent _globalContent = new("Use Shared Variable");
-        private readonly GUIStyle _buttonStyle = new()
+        private readonly GUIContent _localContent = new GUIContent("Use Constant");
+        private readonly GUIContent _globalContent = new GUIContent("Use Shared Variable");
+        private readonly GUIStyle _buttonStyle = new GUIStyle
         {
             imagePosition = ImagePosition.ImageOnly,
             padding = new RectOffset(0, 0, 0, 0),
@@ -17,14 +16,19 @@ namespace GameBuilders.Variables
         };
 
         private const string UsingGlobalFieldName = "UseGlobal";
-        private const string GlobalVariableFieldName = "Variable";
+        private const string SharedVariableFieldName = "Variable";
         private const string LocalValueFieldName = "LocalValue";
 
         public override void OnGUI(Rect fieldRect, SerializedProperty serializedVariableReference, GUIContent label)
         {
+            // In case property is an array or list element, we need to convert the property path
+            // from C++ land to C#-land
+            string pathToUse = ReflectionUtility.FromCppToCsPath(serializedVariableReference.propertyPath);
+            VariableReference varRef = ReflectionUtility.FindFieldByPath<VariableReference>(serializedVariableReference.serializedObject.targetObject, pathToUse);
+
             // Get properties
             SerializedProperty usingGlobal = serializedVariableReference.FindPropertyRelative(UsingGlobalFieldName);
-            SerializedProperty globalReference = serializedVariableReference.FindPropertyRelative(GlobalVariableFieldName);
+            SerializedProperty globalReference = serializedVariableReference.FindPropertyRelative(SharedVariableFieldName);
             SerializedProperty localValue = serializedVariableReference.FindPropertyRelative(LocalValueFieldName);
 
             label = EditorGUI.BeginProperty(fieldRect, label, serializedVariableReference);
@@ -36,50 +40,28 @@ namespace GameBuilders.Variables
             // give the context button space
             fieldRect.xMax -= 24;
 
-            EditorGUI.BeginChangeCheck();
-
             // Draw the property editor
             if (usingGlobal.boolValue)
             {
-                var labelPosition = new Rect(fieldRect.x, fieldRect.y, fieldRect.width, fieldRect.height);
+                EditorGUI.BeginChangeCheck();
 
-                fieldRect = EditorGUI.PrefixLabel(
-                    labelPosition,
-                    GUIUtility.GetControlID(FocusType.Passive),
-                    label
-                );
+                EditorGUI.PropertyField(fieldRect, globalReference, label, true);
 
-                int indent = EditorGUI.indentLevel;
-
-                float widthSize = fieldRect.width * 0.25f;
-                float offsetSize = 4.0f;
-
-                Rect pos1 = new(fieldRect.x, fieldRect.y, widthSize - offsetSize, fieldRect.height);
-                Rect pos2 = new(fieldRect.x + widthSize, fieldRect.y, 3f * widthSize, fieldRect.height);
-
-                EditorGUI.ObjectField(pos2, globalReference, typeof(T), GUIContent.none);
-
-                if (globalReference != null && globalReference.propertyType == SerializedPropertyType.ObjectReference && globalReference.objectReferenceValue != null)
+                if (EditorGUI.EndChangeCheck() && Application.isPlaying)
                 {
-                    var data = (ScriptableObject)globalReference.objectReferenceValue;
-                    var serializedObject = new SerializedObject(data);
-                    SerializedProperty prop = serializedObject.FindProperty("Value");
-
-                    EditorGUI.PropertyField(pos1, prop, GUIContent.none);
-
-                    if (GUI.changed)
-                    {
-                        serializedObject.ApplyModifiedProperties();
-                    }
-
-                    serializedObject.Dispose();
+                    EditorApplication.delayCall += varRef.RaiseChangedEvent;
                 }
-
-                EditorGUI.indentLevel = indent;
             }
             else
             {
+                EditorGUI.BeginChangeCheck();
+
                 EditorGUI.PropertyField(fieldRect, localValue, label, true);
+
+                if (EditorGUI.EndChangeCheck() && Application.isPlaying)
+                {
+                    EditorApplication.delayCall += varRef.RaiseChangedEvent;
+                }
             }
 
             EditorGUI.EndProperty();
@@ -91,7 +73,7 @@ namespace GameBuilders.Variables
 
             if (GUI.Button(contextMenuRect, EditorGUIUtility.IconContent("_Popup"), _buttonStyle))
             {
-                var menu = new GenericMenu();
+                GenericMenu menu = new();
                 menu.AddItem(_localContent, !usingGlobal.boolValue, () => SetUseGlobal(propertyCopy, false));
                 menu.AddItem(_globalContent, usingGlobal.boolValue, () => SetUseGlobal(propertyCopy, true));
                 menu.ShowAsContext();
@@ -112,19 +94,18 @@ namespace GameBuilders.Variables
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            float height = 0.0f;
             SerializedProperty value;
 
             if (property.FindPropertyRelative(UsingGlobalFieldName).boolValue)
             {
-                value = property.FindPropertyRelative(GlobalVariableFieldName);
+                value = property.FindPropertyRelative(SharedVariableFieldName);
             }
             else
             {
                 value = property.FindPropertyRelative(LocalValueFieldName);
             }
 
-            height += EditorGUI.GetPropertyHeight(value, value.isExpanded);
+            float height = EditorGUI.GetPropertyHeight(value, value.isExpanded) + EditorGUIUtility.standardVerticalSpacing;
 
             return height;
         }

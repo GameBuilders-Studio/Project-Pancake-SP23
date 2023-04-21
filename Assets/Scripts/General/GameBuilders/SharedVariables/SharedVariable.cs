@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace GameBuilders.Variables
 {
@@ -10,11 +9,25 @@ namespace GameBuilders.Variables
     [Serializable]
     public class SharedVariable<T> : ScriptableObject
     {
-        public T Value;
+        public T value;
 
-#if UNITY_EDITOR
-        [TextArea]
-        public string DeveloperDescription = "";
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        [Tooltip("Whether this variable can be modified at runtime.")]
+        public bool readOnly = false;
+
+        [Tooltip("Whether this variable should be initialized before being read.")]
+        public bool requireInitialization = false;
+
+        [TextArea(1, 10)]
+        public string developerDescription = "";
+
+        [HideInInspector]
+        public bool isInitialized = false;
+
+        void OnEnable()
+        {
+            isInitialized = false;
+        }
 #endif
     }
 }

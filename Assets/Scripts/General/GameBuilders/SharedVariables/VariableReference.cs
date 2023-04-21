@@ -1,63 +1,93 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace GameBuilders.Variables
 {
     /// <summary>
-    /// A class that references a GlobalVariable. Use this to read GlobalVariable values.
+    /// A class that references a SharedVariable. Use this to read SharedVariable values.
     /// </summary>
     /// <remarks>
     /// For testing purposes, the returned value can be overridden in the inspector.
     /// </remarks>
-    [Serializable]
     public abstract class VariableReference 
     {
-
+        public event UnityAction OnValueChanged;
+        
+        public void RaiseChangedEvent()
+        {
+            OnValueChanged?.Invoke();
+        }
     }
     
     /// <summary>
-    /// Stores a reference to a SharedVariable. For testing purposes, the value can also be set to a constant in the inspector.
+    /// Stores a reference to a SharedVariable. This value can be set to a constant in the inspector.
     /// </summary>
-    [Serializable]
-    public abstract class VariableReference<T> : VariableReference
+    public abstract class VariableReference<T, SharedVariableSO> : VariableReference
+        where SharedVariableSO : SharedVariable<T>
     {
-        public SharedVariable<T> Variable;
-        public bool UseGlobal = true;
-        public T LocalValue;
+        public SharedVariableSO Variable;
 
-        public event UnityAction<T> OnValueChanged;
-        
-        public VariableReference() {}
+        [SerializeField]
+        private bool UseGlobal = true;
 
-        public VariableReference(T value)
+        [SerializeField]
+        private T LocalValue;
+
+        public T value
         {
-            UseGlobal = false;
-            LocalValue = value;
-        }
-
-        public T Value
-        {
-            get { return UseGlobal ? Variable.Value : LocalValue; }
-            set
+            get
             {
-                if (value.Equals(Value)) { return; }
-
                 if (UseGlobal)
                 {
-                    Variable.Value = value;
-                }
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                    if (Variable.requireInitialization)
+                    {
+                        if (!Variable.isInitialized)
+                        {
+                            Debug.LogError($"Shared Variable {Variable.name} is not initialized!");
+                        }
+                    }
+#endif
+                    return Variable.value;
+                }  
                 else
                 {
-                    LocalValue = value;
+                    return LocalValue;
                 }
-
-                OnValueChanged?.Invoke(value);
             }
         }
 
-        public static implicit operator T(VariableReference<T> reference)
+        public void SetValue(T value)
         {
-            return reference.Value;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (UseGlobal)
+            {
+                Variable.isInitialized = true;
+                if (Variable.readOnly)
+                {
+                    Debug.LogError($"Shared Variable {Variable.name} is read only!");
+                    return;
+                }
+            }
+#endif
+            if (value.Equals(this.value)) { return; }
+
+            if (UseGlobal)
+            {
+                Variable.value = value;
+            }
+            else
+            {
+                LocalValue = value;
+            }
+
+            RaiseChangedEvent();
+        }
+
+        public static implicit operator T(VariableReference<T, SharedVariableSO> reference)
+        {
+            return reference.value;
         }
     }
 }
