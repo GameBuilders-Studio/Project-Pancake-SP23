@@ -9,7 +9,6 @@ public class Portal : MonoBehaviour
     [SerializeField] Transform exitAtPoint;
     public Transform ExitAtPoint => exitAtPoint;
 
-    [SerializeField] bool exitAtSameY = true;
     [SerializeField] float exitVelocityMultiplier = 1f;
 
     [Required]
@@ -31,13 +30,14 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!ShouldTeleport(other)) { return; }
-        Teleport(other);
+        float yOffset = other.ClosestPoint(transform.position).y - transform.position.y;
+        Teleport(other, yOffset);
     }
 
-    private void Teleport(Collider other)
+    private void Teleport(Collider other, float yOffset)
     {
-        // TODO: Change this to spawn at same relative height as entry portal
-        float exitY = exitAtSameY ? other.transform.position.y : exitPortal.ExitAtPoint.position.y;
+        // Changed to spawn at same relative height as entry portal
+        float exitY = exitPortal.ExitAtPoint.position.y + yOffset;
         Vector3 exitPos = new Vector3(exitPortal.ExitAtPoint.position.x, exitY, exitPortal.ExitAtPoint.position.z);
         other.transform.position = exitPos;
         
