@@ -11,17 +11,40 @@ public class OrderSystem : MonoBehaviour
     [SerializeField, Range(0f, 600f)] private float _orderSpawnTime = 15f; //Time in seconds between order spawns
     [SerializeField] private int _maxConcurrentOrders = 6; //Maximum number of orders that can be displayed at once
     [SerializeField] private int _minConcurrentOrders = 2; //Minimum number of orders that can be displayed at once
+    [SerializeField] private float _stageStartDelay = 2.0f; //Delay before the first order spawns
 
     private Coroutine _orderSpawnCoroutine;
-
     private List<Order> _currentOrders = new();
-    private Queue<Order> _originalSequence = new();
+    private Queue<Order> _orderQueue = new();
     public List<Order> CurrentOrders { get => _currentOrders; }
 
+    private void Awake()
+    {
+        //Load original sequence of orders for the current level
+        foreach (Order order in _orderData.Orders[_currentLevel])
+        {
+            _orderQueue.Enqueue(order);
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("StartingLevel", OnStartLevel);
+        EventManager.AddListener("OrderExpired", OnOrderExpired);
+    }
+
+    private void OnDisable()
+    {
+        StopOrderSpawn(); //Should we also stop the order timer coroutines?
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartLevelCoroutine());
+    }
     public void AddOrder(Order order)
     {
-        _currentOrders.Add(order);
-        // Debug.Log("Order added " + order.RecipeData.name);
+        _orderQueue.Enqueue(order);
     }
 
     public Order RemoveOrder(int index)
@@ -33,11 +56,10 @@ public class OrderSystem : MonoBehaviour
         }
 
         Order temp = _currentOrders[index];
-        _orderUI.RemoveOrder(temp); //Remove from order UI
         _currentOrders.Remove(temp); //Remove from current orders list
-        // Debug.Log("Order removed: " + temp.RecipeData.name);
+        _orderUI.RemoveOrder(temp); //Remove from order UI
 
-        //when orders drop below minimum, instantly add a new order
+        //When orders drop below minimum, instantly add a new order
         if (_currentOrders.Count < _minConcurrentOrders)
         {
             SpawnOrder();
@@ -76,34 +98,14 @@ public class OrderSystem : MonoBehaviour
         {
             Order temp = RemoveOrder(orderIndexToRemove);
             temp.SetOrderComplete();
-            Destroy(temp.gameObject);
+            temp.DespawnOrder();
+
             EventManager.Invoke("IncrementingScore");
             return true;
         }
 
         return false;
 
-    }
-
-    private void OnEnable()
-    {
-        EventManager.AddListener("StartingLevel", OnStartLevel);
-        EventManager.AddListener("OrderExpired", OnOrderExpired);
-    }
-
-    private void Awake()
-    {
-        //Load original sequence of orders for the current level
-        foreach (Order order in _orderData.Orders[_currentLevel])
-        {
-            _originalSequence.Enqueue(order);
-        }
-
-    }
-
-    private void OnDisable()
-    {
-        StopOrderSpawn(); //Should we also stop the order timer coroutines?
     }
 
     private void OnStartLevel()
@@ -114,7 +116,8 @@ public class OrderSystem : MonoBehaviour
         }
         if (_orderSpawnCoroutine == null)
         {
-            _orderSpawnCoroutine = StartCoroutine(OrderSpawnCoroutine()); //Start spawning orders if StartingLevel event is invoked (what happens if multiple calls?)
+            //Start spawning orders if StartingLevel event is invoked (what happens if multiple calls?)
+            _orderSpawnCoroutine = StartCoroutine(OrderSpawnCoroutine());
         }
         else
         {
@@ -153,19 +156,19 @@ public class OrderSystem : MonoBehaviour
     {
         if (_currentOrders.Count < _maxConcurrentOrders)
         {
-            if (_originalSequence.Count > 0)             //If there are still orders in the original sequence, spawn them first
+            if (_orderQueue.Count > 0)
             {
-                Order order = Instantiate(_originalSequence.Dequeue());
-                // Debug.Log("Spawning order: " + order.RecipeData.name);
+                //If there are still orders in the original sequence, spawn them first
+                Order order = Instantiate(_orderQueue.Dequeue());
                 _currentOrders.Add(order);
                 _orderUI.AddOrder(order);
 
             }
-            else                                        //If there are no more orders in the original sequence, spawn a random order
+            else
             {
+                //If there are no more orders in the original sequence, spawn a random order
                 int randomIndex = Random.Range(0, _orderData.Orders[_currentLevel].Count);
                 Order order = Instantiate(_orderData.Orders[_currentLevel][randomIndex]);
-                // Debug.Log("Spawning order: " + order.RecipeData.name);
                 _currentOrders.Add(order);
                 _orderUI.AddOrder(order);
 
@@ -175,18 +178,23 @@ public class OrderSystem : MonoBehaviour
 
     private void OnOrderExpired()
     {
-        for (int i = 0; i < _currentOrders.Count; i++) //Remove all orders that have expired
+        for (int i = 0; i < _currentOrders.Count; i++)
         {
+            //Remove all orders that have expired
             Order currentOrder = _currentOrders[i];
             if (currentOrder.TimeRemaining <= 0)
             {
                 Order temp = RemoveOrder(i);
-                Destroy(temp.gameObject);
+                temp.DespawnOrder();
             }
         }
     }
 
-
+    IEnumerator StartLevelCoroutine()
+    {
+        yield return new WaitForSeconds(_stageStartDelay);
+        EventManager.Invoke("StartingLevel");
+    }
 
 }
 

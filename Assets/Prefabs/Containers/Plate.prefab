@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9059498309148403140
+--- !u!1 &1788293850965468447
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,55 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9059498309148403138}
-  - component: {fileID: 9059498309148403139}
-  - component: {fileID: 9059498309148403136}
-  - component: {fileID: 9059498309148403164}
-  - component: {fileID: 9059498309148403142}
-  - component: {fileID: 9059498309148403165}
-  - component: {fileID: 9059498309148403167}
-  - component: {fileID: 1413373083386298876}
-  - component: {fileID: 1780998756161429767}
-  - component: {fileID: 7653842725219283576}
-  - component: {fileID: 7835736793297698840}
+  - component: {fileID: 4216733737334597437}
+  - component: {fileID: 4084613247905075599}
+  - component: {fileID: 4512697221133524534}
+  - component: {fileID: 8529283028335532549}
   m_Layer: 0
-  m_Name: FoodContainer
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9059498309148403138
+--- !u!4 &4216733737334597437
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9059498309148403140}
+  m_GameObject: {fileID: 1788293850965468447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6788276, y: 1.03, z: 2.72}
-  m_LocalScale: {x: 0.8, y: 0.3, z: 0.8}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 9059498310111909955}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_LocalPosition: {x: 0, y: 0.088, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9059498309148403138}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &9059498309148403139
+--- !u!33 &4084613247905075599
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9059498309148403140}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &9059498309148403136
+  m_GameObject: {fileID: 1788293850965468447}
+  m_Mesh: {fileID: -4850532726680341992, guid: 20293085696677d40a2cc969adbb2e12, type: 3}
+--- !u!23 &4512697221133524534
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9059498309148403140}
+  m_GameObject: {fileID: 1788293850965468447}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -70,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8fcf2dc34814c374287bd407b67d48fa, type: 2}
+  - {fileID: 2100000, guid: 978bbcf9abdfc404fa538fba9a668ccd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,6 +84,91 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8529283028335532549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788293850965468447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 4512697221133524534}
+--- !u!1 &3227118742332332792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7087563876600141287}
+  m_Layer: 0
+  m_Name: IngredientModels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7087563876600141287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3227118742332332792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.334, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9059498309148403138}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9059498309148403140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9059498309148403138}
+  - component: {fileID: 9059498309148403164}
+  - component: {fileID: 9059498309148403142}
+  - component: {fileID: 9059498309148403165}
+  - component: {fileID: 9059498309148403167}
+  - component: {fileID: 1413373083386298876}
+  - component: {fileID: 1780998756161429767}
+  - component: {fileID: 7653842725219283576}
+  m_Layer: 0
+  m_Name: Plate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9059498309148403138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9059498309148403140}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.6788276, y: 1.03, z: 2.72}
+  m_LocalScale: {x: 0.8, y: 0.3, z: 0.8}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 9059498310111909955}
+  - {fileID: 4216733737334597437}
+  - {fileID: 7087563876600141287}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &9059498309148403164
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -134,9 +211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 7653842725219283576}
+  Collection: {fileID: 7653842725219283576}
   _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients: []
+  _ingredientModelParent: {fileID: 7087563876600141287}
 --- !u!114 &9059498309148403167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,9 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 7653842725219283576}
+  Collection: {fileID: 7653842725219283576}
   _nearbyTrigger: {fileID: 9059498310111909953}
-  _highlightBehaviour: {fileID: 7835736793297698840}
+  _highlightBehaviour: {fileID: 8529283028335532549}
   _highlightOnHover: 1
   _isSelectable: 1
 --- !u!114 &1780998756161429767
@@ -181,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 7653842725219283576}
+  Collection: {fileID: 7653842725219283576}
   _throwSettings: {fileID: 11400000, guid: 4adb38e5454b76a48a28a9cf8ba8adb0, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 1413373083386298876}
@@ -199,42 +277,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Behaviours:
+  _behaviours:
   - {fileID: 9059498309148403165}
   - {fileID: 1413373083386298876}
   - {fileID: 1780998756161429767}
-  Interfaces:
-  - ICombinable
-  - IHasCarryable
-  _typeToBehaviourSerialized:
-    m_keys:
-    - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 9059498309148403165}
-    - {fileID: 1413373083386298876}
-    - {fileID: 1780998756161429767}
-  _typeToInterfaceSerialized:
-    m_keys:
-    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 9059498309148403165}
-    - {fileID: 1780998756161429767}
---- !u!114 &7835736793297698840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9059498309148403140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 9059498309148403136}
+  _interfaces:
+  - {fileID: 9059498309148403165}
+  - {fileID: 1780998756161429767}
+  _behaviourTypes:
+  - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _interfaceTypes:
+  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  NoDuplicates: 1
 --- !u!1 &9059498310111909958
 GameObject:
   m_ObjectHideFlags: 0

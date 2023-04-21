@@ -29,6 +29,13 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
     [SerializeField]
     private string _readyUpTextKeyboard;
 
+    private string _readyUpText = "";
+    private bool _playerJoined = false;
+    public bool PlayerJoined => _playerJoined;
+    private bool _isReady = false;
+    public bool IsReady => _isReady;
+
+
     void Awake()
     {
         OnPlayerLost();
@@ -50,25 +57,18 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     private void OnPlayerJoin()
     {
+        _playerJoined = true;
         _playerVisual.SetActive(true);
         _playerInputHandler.SetCallbacksUI(this);
-
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
-
-        if (_playerInputHandler.CurrentControlScheme == "Gamepad")
-        {
-            _buttonPrompt.text = _readyUpTextGamepad;
-        }
-        else
-        {
-            _buttonPrompt.text = _readyUpTextKeyboard; 
-        }
+        _readyUpText = _playerInputHandler.CurrentControlScheme == "Gamepad" ? _readyUpTextGamepad : _readyUpTextKeyboard;
+        _buttonPrompt.text = _readyUpText;
     }
 
     private void OnPlayerLost()
     {
+        _playerJoined = false;
         _playerVisual.SetActive(false);
-
         _title.text = "";
         _buttonPrompt.text = _joinText;
     }
@@ -81,11 +81,31 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     public void OnSubmit(InputAction.CallbackContext context)
     {
-
+        ReadyUp();
     }
 
     public void OnCancel(InputAction.CallbackContext context)
     {
+        Unready();
+    }
 
+    private void ReadyUp()
+    {
+        Debug.Log($"Player {_playerInputHandler.PlayerIndex} is ready!");
+        if (!_isReady)
+        {
+            _isReady = true;
+            _buttonPrompt.text = "Ready!";
+        }
+    }
+
+    private void Unready()
+    {
+        Debug.Log($"Player {_playerInputHandler.PlayerIndex} is not ready!");
+        if (_isReady)
+        {
+            _isReady = false;
+            _buttonPrompt.text = _readyUpText;
+        }
     }
 }
