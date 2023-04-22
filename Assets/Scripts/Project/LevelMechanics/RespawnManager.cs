@@ -15,8 +15,12 @@ public class RespawnManager : MonoBehaviour
     [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
     private Transform PotRespawnPoint;
 
+    [SerializeField]
+    [Required]
+    private DishStack _dishStack;
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
     private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
+    [SerializeField]
     private List<Station> dishStacksInScene = new(); //Used to help us add the dishes to the dishStack when one is full
     void Awake()
     {
@@ -42,12 +46,12 @@ public class RespawnManager : MonoBehaviour
 
         //Make a list of all the DishStaks in the scene
         Object[] dishStacks = GameObject.FindObjectsOfType(typeof(DishStack));
-        foreach (Counter obj2 in dishStacks)
+        foreach (DishStack obj2 in dishStacks)
         {
             Station station2 = obj2.GetComponent<Station>();
             dishStacksInScene.Add(station2);
         }
-        Debug.Log(dishStacksInScene);
+        Debug.Log("DishStacks in Scene" + dishStacksInScene.Count);
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -85,6 +89,23 @@ public class RespawnManager : MonoBehaviour
             }
             //When there all the stoves are occupied and the object can't go back onto the stove
             openTables(carryable);
+        }
+
+        //plate plate = other.GetComponent<Plate>();
+        if(other.tag == "Plate" /*plate != null <--ADD LATER*/)
+        {
+            Debug.Log("Plate touched death trigger");
+            foreach (Station dishStacks in dishStacksInScene)
+            {
+                //Check is the DishStack is full or not
+                //If it is full, then move to the next dishStack and check that
+                if (!(dishStacks.IsFull()))
+                {
+                    //Increase the count of DishStacks for the openDistacks 
+                    _dishStack.Count++;
+                    return;
+                }
+            }
         }
     }
 

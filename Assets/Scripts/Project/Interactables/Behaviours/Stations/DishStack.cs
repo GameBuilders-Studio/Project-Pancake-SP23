@@ -25,4 +25,16 @@ public class DishStack : StationController
             _count--;
         }
     }
+
+    //Will call this in RespawnManaer 
+    //When we are full, we are gonna move plate to open DishStack
+    public bool IsFull()
+    {
+        if(_count == _size && _size != 0) //This means we are full, we are gonna move plate to open DishStack
+        {                                 //the _size != 0 is to avoid the dishStack thats conected to dishWasher
+            return true;
+        }
+        return false; //Meaning that the dishstack can allow a plate, WE WANT THIS
+    }
+    
 }
