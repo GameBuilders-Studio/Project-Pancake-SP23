@@ -14,12 +14,10 @@ public class RespawnManager : MonoBehaviour
     [Required]
     [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
     private Transform PotRespawnPoint;
-    [SerializeField]
-    [Required]
-    private DishStack _dishStack;
+
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
     private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
-
+    private List<Station> dishStacksInScene = new(); //Used to help us add the dishes to the dishStack when one is full
     void Awake()
     {
         //Helps initialize the amount of stoves that are in the scene
@@ -41,6 +39,15 @@ public class RespawnManager : MonoBehaviour
             Station station1 = obj1.GetComponent<Station>();
             tablesInScene.Add(station1);
         }
+
+        //Make a list of all the DishStaks in the scene
+        Object[] dishStacks = GameObject.FindObjectsOfType(typeof(DishStack));
+        foreach (Counter obj2 in dishStacks)
+        {
+            Station station2 = obj2.GetComponent<Station>();
+            dishStacksInScene.Add(station2);
+        }
+        Debug.Log(dishStacksInScene);
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -51,7 +58,7 @@ public class RespawnManager : MonoBehaviour
         {
             StartCoroutine(RespawnTime(other.gameObject));
             PlayerInteraction playerHands = other.GetComponent<PlayerInteraction>();
-            //Drop the item that the player is holding and respawn it back to posititon
+            //Drop the pot that the player is holding and respawn it to a stove top
             playerHands.TryDropItem();
         }
 
@@ -65,7 +72,6 @@ public class RespawnManager : MonoBehaviour
             {
                 Debug.LogError("Objects with Pot tag should have Carryable component");
             }
-
             //We will iterate through each of the stoves in the scene
             foreach (Station stoves in stovesInScene)
             {
@@ -79,19 +85,6 @@ public class RespawnManager : MonoBehaviour
             }
             //When there all the stoves are occupied and the object can't go back onto the stove
             openTables(carryable);
-        }
-
-        //If a plate touches the death trigger
-        //Plate plate = other.GetComponent<Plate>(); <--ADD LATER
-        if(other.tag == "Plate" /*plate != null <--ADD LATER*/)
-        {
-            Debug.Log("Plate touched death trigger");
-            
-                Debug.Log(_dishStack);
-                //We must increase the count of the DishStackCounter
-                _dishStack.Count++;
-
-            //Delete the plate off the scene so the player doesn't see the plate fall down
         }
     }
 
