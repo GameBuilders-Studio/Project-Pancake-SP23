@@ -1,10 +1,4 @@
-// Developed by Tom Kail at Inkle
-// Released under the MIT Licence as held at https://opensource.org/licenses/MIT
-
-// Must be placed within a folder named "Editor"
 using System;
-using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -14,12 +8,12 @@ using Object = UnityEngine.Object;
 namespace GameBuilders.Variables.Editor
 {
     /// <summary>
-    /// Extends how ScriptableObject object references are displayed in the inspector
-    /// Shows you all values under the object reference
+    /// Extends how SharedVariable object references are displayed in the inspector
+    /// Shows all values under the SharedVariable reference
     /// Also provides a button to create a new ScriptableObject if property is null.
     /// </summary>
     [CustomPropertyDrawer(typeof(SharedVariable<>), true)]
-    public class ExtendedVariableSODrawer : PropertyDrawer
+    public class SharedVariableFoldoutDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
