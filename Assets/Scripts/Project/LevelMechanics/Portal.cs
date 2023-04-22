@@ -20,13 +20,6 @@ public class Portal : MonoBehaviour
     [SerializeField] float teleportCooldown = 0.5f;
     Dictionary<Collider, float> recentlyTeleportedToCooldownFinishedTimes = new Dictionary<Collider, float>();
 
-    void Update()
-    {
-        recentlyTeleportedToCooldownFinishedTimes = recentlyTeleportedToCooldownFinishedTimes
-            .Where(kvp => kvp.Value > Time.time)
-            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (!ShouldTeleport(other)) { return; }
@@ -55,7 +48,14 @@ public class Portal : MonoBehaviour
         // Return false if recently teleported
         if (recentlyTeleportedToCooldownFinishedTimes.ContainsKey(other))
         {
-            return false;
+            if (Time.time < recentlyTeleportedToCooldownFinishedTimes[other])
+            {
+                return false;
+            }
+            else
+            {
+                recentlyTeleportedToCooldownFinishedTimes.Remove(other);
+            }
         }
         
         // Return false if other layer not in teleportableLayers
