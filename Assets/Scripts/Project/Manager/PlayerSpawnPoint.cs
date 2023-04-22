@@ -6,13 +6,11 @@ using CustomAttributes;
 [ExecuteInEditMode]
 public class PlayerSpawnPoint : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, ReadOnly]
+    [Tooltip("This ratio is used to calculate the offset based on the player's collider height. This is used to spawn the player at the correct height. ")]
+    private float _heightOffsetRatio = 0.5f;
     public PlayerCharacter ManagedPlayer;
-    
-    [SerializeField]
     private CapsuleCollider _playerCollider;
-
-    [SerializeField]
     private Vector3 _floorPosition;
 
 #if UNITY_EDITOR
@@ -48,7 +46,7 @@ public class PlayerSpawnPoint : MonoBehaviour
                 Debug.LogError("Player prefab has no capsule collider!");
             }
 
-            var heightOffset = _playerCollider.height * 0.25f * Vector3.up;
+            var heightOffset = _playerCollider.height * _heightOffsetRatio * Vector3.up;
             player.transform.position = _floorPosition + heightOffset;
 
             if (!player.TryGetComponent(out ManagedPlayer))
@@ -66,7 +64,7 @@ public class PlayerSpawnPoint : MonoBehaviour
         else
         {
             // respawn player
-            var heightOffset =  _playerCollider.height * 0.5f * Vector3.up;
+            var heightOffset = _playerCollider.height * _heightOffsetRatio * Vector3.up;
             ManagedPlayer.transform.position = _floorPosition + heightOffset;
         }
     }
