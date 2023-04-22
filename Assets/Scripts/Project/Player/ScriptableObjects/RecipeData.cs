@@ -11,8 +11,8 @@ public class RecipeData : ScriptableObject
     private string _recipeName;
     // public string description;
     [SerializeField]
-    public List<IngredientSO> _recipe;
-
+    private List<IngredientSO> _recipe;
+    public List<IngredientSO> Recipe => _recipe;
     public string RecipeName => _recipeName;
     public bool IsRecipeValid(List<IngredientSO> ingredients)
     {

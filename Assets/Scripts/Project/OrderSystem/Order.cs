@@ -38,9 +38,9 @@ public class Order : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        for (int i = 0; i < _recipe._recipe.Count; i++)
+        for (int i = 0; i < _ingredientsImages.Count; i++)
         {
-            _ingredientsImages[i].sprite = _recipe._recipe[i].icon;
+            _ingredientsImages[i].sprite = _recipe.Recipe[i].icon;
         }
         SetOrderText();
 

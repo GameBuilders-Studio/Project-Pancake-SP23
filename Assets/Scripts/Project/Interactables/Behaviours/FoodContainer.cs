@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomAttributes;
 using UnityEngine;
+using CustomAttributes;
 
 public class FoodContainer : InteractionBehaviour, ICombinable
 {
@@ -12,6 +13,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     [SerializeField, Required]
     private Transform _ingredientModelParent;
+    [SerializeField, Required] private Tooltip _tooltip;
 
     public int Count => _ingredients.Count;
     public int Capacity => _containerSettings.Capacity;
@@ -69,13 +71,14 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         _ingredientModels.Add(ingredient, ingredientModel);
         // Position the model in the container
         ingredientModel.transform.localPosition = Vector3.zero;
+        _tooltip.AddIngredient(ingredient.Data);
         Destroy(ingredientProp.gameObject);
 
         return true;
     }
 
     /// <summary>
-    /// Transfer ingredients from the given container to this container 
+    /// Transfer ingredients from the given container to this container
     /// </summary>
     public bool TryTransferIngredients(FoodContainer other)
     {
@@ -87,7 +90,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         while (Count < Capacity && other.Count > 0)
         {
-            // Move the model from the other container to this container   
+            // Move the model from the other container to this container
             Ingredient otherIngredient = other.PopIngredient();
             // Add the model to this container
             GameObject ingredientModel = Instantiate(otherIngredient.Data.platedModels[otherIngredient.State], _ingredientModelParent);
@@ -110,6 +113,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
         _ingredientModels.Clear();
         Ingredients.Clear();
+        _tooltip.ClearIngredients();
     }
 
     public Ingredient PopIngredient()
