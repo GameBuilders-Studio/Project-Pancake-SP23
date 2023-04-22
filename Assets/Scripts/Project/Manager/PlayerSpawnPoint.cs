@@ -6,11 +6,14 @@ using CustomAttributes;
 [ExecuteInEditMode]
 public class PlayerSpawnPoint : MonoBehaviour
 {
-    [SerializeField, ReadOnly]
+    [SerializeField]
     [Tooltip("This ratio is used to calculate the offset based on the player's collider height. This is used to spawn the player at the correct height. ")]
     private float _heightOffsetRatio = 0.5f;
+    [SerializeField, ReadOnly]
     public PlayerCharacter ManagedPlayer;
+    [SerializeField, ReadOnly]
     private CapsuleCollider _playerCollider;
+    [SerializeField, ReadOnly]
     private Vector3 _floorPosition;
 
 #if UNITY_EDITOR

@@ -16,9 +16,10 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        if (_forceSpawn) 
+        FindAllSpawnPoints();
+        if (_forceSpawn)
         {
-            ForceSpawnPlayers(); 
+            ForceSpawnPlayers();
         }
         else
         {
@@ -26,6 +27,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns players at each spawn point if there are enough input devices.
+    /// </summary>
     public void SpawnPlayers()
     {
         for (int i = 0; i < InputManager.PlayerCount; i++)
@@ -34,6 +38,10 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// For debugging purposes. It will spawn players at each spawn point even if there are no input devices.
+    /// </summary>
+    [Button]
     public void ForceSpawnPlayers()
     {
         for (int i = 0; i < _spawnPoints.Count; i++)
@@ -42,6 +50,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fetches all spawn points in the scene
+    /// </summary>
     [Button]
     private void FindAllSpawnPoints()
     {
