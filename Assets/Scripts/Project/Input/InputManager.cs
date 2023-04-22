@@ -42,16 +42,16 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public void EnablePairing()
+    public static void EnablePairing()
     {
         InputUser.listenForUnpairedDeviceActivity = 1;
-        Log("PAIRING ENABLED");
+        Debug.Log("PAIRING ENABLED");
     }
 
-    public void DisablePairing()
+    public static void DisablePairing()
     {
         InputUser.listenForUnpairedDeviceActivity = 0;
-        Log("PAIRING DISABLED");
+        Debug.Log("PAIRING DISABLED");
 
         // remove unpaired users
         foreach (var user in s_players)
@@ -170,7 +170,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void RemovePlayer(InputUser user)
+    private static void RemovePlayer(InputUser user)
     {
         user.UnpairDevicesAndRemoveUser();
         s_players.Remove(user);
