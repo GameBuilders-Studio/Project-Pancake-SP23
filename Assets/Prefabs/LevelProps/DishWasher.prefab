@@ -86,6 +86,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: _size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
+      propertyPath: _count
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
@@ -168,6 +172,14 @@ PrefabInstance:
     - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926517116837820515, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
+      propertyPath: _dishStack
+      value: 
+      objectReference: {fileID: 6282607622163304413}
+    - target: {fileID: 8926517116837820515, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
+      propertyPath: _maxDishWashTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}

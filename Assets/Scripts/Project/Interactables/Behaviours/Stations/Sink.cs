@@ -1,7 +1,7 @@
 using UnityEngine;
 using CustomAttributes;
 
-public class DishWasher : StationController, IUsable
+public class Sink : StationController, IUsable
 {
     private float _dishWashTime;
     [SerializeField]

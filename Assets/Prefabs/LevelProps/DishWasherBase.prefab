@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 3105630587809780605}
   - component: {fileID: 6724278394014653120}
   - component: {fileID: 1177871955971841851}
-  - component: {fileID: -3483069033535477172}
+  - component: {fileID: 8926517116837820515}
   m_Layer: 0
   m_Name: DishWasherBase
   m_TagString: Untagged
@@ -152,7 +152,7 @@ MonoBehaviour:
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
-  _controller: {fileID: -3483069033535477172}
+  _controller: {fileID: 8926517116837820515}
 --- !u!114 &3105630587809780605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,17 +186,17 @@ MonoBehaviour:
   - {fileID: 4134685410734081310}
   - {fileID: 3105630587809780605}
   - {fileID: 1177871955971841851}
-  - {fileID: -3483069033535477172}
-  - {fileID: -3483069033535477172}
+  - {fileID: 8926517116837820515}
+  - {fileID: 8926517116837820515}
   _interfaces:
   - {fileID: 4134685410734081310}
   - {fileID: 4134685410734081310}
-  - {fileID: -3483069033535477172}
+  - {fileID: 8926517116837820515}
   _behaviourTypes:
   - typeId: Station, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - typeId: DishWasher, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Sink, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: StationController, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _interfaceTypes:
   - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -222,7 +222,7 @@ MonoBehaviour:
   _isBurning: 0
   _fireHealth: 0
   _collider: {fileID: 1126139912628277123}
---- !u!114 &-3483069033535477172
+--- !u!114 &8926517116837820515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,12 +231,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1126139912628277122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fbade940b02fb44bae7c4645b70d134, type: 3}
+  m_Script: {fileID: 11500000, guid: 3751d74689582d14fb330a8c1586be57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Collection: {fileID: 6724278394014653120}
   _dirtyDishCount: 0
-  _maxDishWashTime: 1
+  _maxDishWashTime: 3
   _currentDishWashTime: 0
   _dishStack: {fileID: 0}
 --- !u!1 &1865062751841588484
