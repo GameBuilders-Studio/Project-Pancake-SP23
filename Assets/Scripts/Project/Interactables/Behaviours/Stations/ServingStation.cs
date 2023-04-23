@@ -14,6 +14,10 @@ public class ServingStation : StationController
         Debug.Log("Called OnItemPlaced");
         Destroy(item.gameObject);
         //Spawn a new Dish on dish stack
+        if(_dishStack == null){
+            Debug.LogWarning("DishStack is null, not spawning dish");
+            return;
+        }
         StartCoroutine(SpawnDish());
 
     }
