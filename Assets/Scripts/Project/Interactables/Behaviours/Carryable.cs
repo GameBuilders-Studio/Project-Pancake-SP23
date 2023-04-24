@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using CustomAttributes;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody), typeof(Selectable))]
 public class Carryable : InteractionBehaviour, IHasCarryable
@@ -25,18 +25,27 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     [ReadOnly, Required]
     private Collider _collider;
 
-    private bool _isFlying = false;
-
     private List<Collider> _ignoredColliders = new();
-
+    private bool _isFlying = false;
     private float _currentThrowTime = 0.0f;
     private float _throwHeight;
     private Vector3 _throwDirection;
+    private Tweener _currentTweener;
+
+    private static readonly Dictionary<GameObject, Carryable> s_instances = new();
+
+    public Tweener CurrentTweener
+    {
+        get => _currentTweener;
+        set
+        {
+            _currentTweener.Kill(true);
+            _currentTweener = value;
+        }
+    }
 
     public Rigidbody Rigidbody => _rigidbody;
-
     public bool CanThrow => _throwSettings != null && _throwSettings.IsThrowable;
-
     public bool IsFlying => _isFlying;
     public bool PhysicsEnabled => !_rigidbody.isKinematic;
 
@@ -49,16 +58,27 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     void Awake()
     {
-        EnablePhysicsAndSelection();
+        EnablePhysics();
+        EnableSelection();
     }
     
     void FixedUpdate()
     {
         var gravity = Physics.gravity * _gravityScale;
-        Rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        _rigidbody.AddForce(gravity, ForceMode.Acceleration);
 
         if (!_isFlying) { return; }
         ThrowUpdate();
+    }
+
+    void OnEnable()
+    {
+        s_instances.Add(gameObject, this);
+    }
+
+    void OnDisable()
+    {
+        s_instances.Remove(gameObject);
     }
 
     void OnCollisionStay()
@@ -69,18 +89,23 @@ public class Carryable : InteractionBehaviour, IHasCarryable
 
     public void OnPickUp()
     {
+        _currentTweener.Kill();
         _isFlying = false;
-        DisablePhysicsAndSelection();
+        DisablePhysics();
+        DisableSelection();
     }
 
     public void OnPlace()
     {
-        DisablePhysicsAndSelection();
+        DisablePhysics();
+        DisableSelection();
     }
 
     public void OnDrop()
     {
-        EnablePhysicsAndSelection();
+        transform.parent = null;
+        EnablePhysics();
+        EnableSelection();
     }
 
     public void OnThrow(Vector3 direction, float footHeight, Collider colliderToIgnore = null)
@@ -95,8 +120,8 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         throwTarget.y = footHeight;
         Debug.DrawRay(throwTarget, Vector3.up, Color.red, 3.0f);
         
-        Rigidbody.isKinematic = false;
-        Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        _rigidbody.isKinematic = false;
+        _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
         if (colliderToIgnore != null)
         {
@@ -110,7 +135,8 @@ public class Carryable : InteractionBehaviour, IHasCarryable
     {
         _isFlying = false;
         _currentThrowTime = 0.0f;
-        EnablePhysicsAndSelection();
+        EnablePhysics();
+        EnableSelection();
         ClearIgnoredCollisions();
     }
 
@@ -120,6 +146,28 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         _ignoredColliders.Add(other);
     }
 
+    public void EnablePhysics()
+    {
+        _rigidbody.isKinematic = false;
+        _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+
+    public void DisablePhysics()
+    {
+        _rigidbody.isKinematic = true;
+        _rigidbody.interpolation = RigidbodyInterpolation.None;
+    }
+
+    public void EnableSelection()
+    {
+        _selectable.SetSelectState(SelectState.Default);
+    }
+
+    public void DisableSelection()
+    {
+        _selectable.SetSelectState(SelectState.Disabled);
+    }
+
     private void ClearIgnoredCollisions()
     {
         foreach (Collider collider in _ignoredColliders)
@@ -127,20 +175,6 @@ public class Carryable : InteractionBehaviour, IHasCarryable
             Physics.IgnoreCollision(collider, _collider, ignore: false);
         }
         _ignoredColliders.Clear();
-    }
-    
-    private void EnablePhysicsAndSelection()
-    {
-        Rigidbody.isKinematic = false;
-        Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-        _selectable.SetSelectState(SelectState.Default);
-    }
-
-    private void DisablePhysicsAndSelection()
-    {
-        Rigidbody.isKinematic = true;
-        Rigidbody.interpolation = RigidbodyInterpolation.None;
-        _selectable.SetSelectState(SelectState.Disabled);
     }
 
     private void ThrowUpdate()
@@ -160,18 +194,23 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         
         Vector3 velocity = (_throwDirection * horizontalDelta) + (Vector3.up * verticalDelta);
 
-        Rigidbody.velocity = velocity / Time.deltaTime;
+        _rigidbody.velocity = velocity / Time.deltaTime;
     
         if (Mathf.Approximately(currentProgress, 1.0f))
         {
             CancelThrow();
         }
 
-        Debug.DrawRay(Rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
+        Debug.DrawRay(_rigidbody.position, Vector3.up * 0.5f, Color.blue, 3.0f);
     }
 
     public Carryable PopCarryable()
     {
         return this;
+    }
+
+    public static bool TryGetCarryable(GameObject go, out Carryable carryable)
+    {
+        return s_instances.TryGetValue(go, out carryable);
     }
 }
