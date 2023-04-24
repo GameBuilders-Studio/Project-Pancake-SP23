@@ -17,6 +17,7 @@ public class RespawnManager : MonoBehaviour
 
     private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
     private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
+    private List<DishStack> _dishStacksInScene = new(); //Used to help us add the dishes to the dishStack when one is full
 
     void Awake()
     {
@@ -39,6 +40,15 @@ public class RespawnManager : MonoBehaviour
             Station station1 = obj1.GetComponent<Station>();
             tablesInScene.Add(station1);
         }
+
+        //Make a list of all the DishStaks in the scene
+        Object[] dishStacks = GameObject.FindObjectsOfType(typeof(DishStack));
+        foreach (DishStack dishStack in dishStacks)
+        {
+            _dishStacksInScene.Add(dishStack);
+        }
+        Debug.Log("DishStacks in Scene" + _dishStacksInScene.Count);
+
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -77,6 +87,22 @@ public class RespawnManager : MonoBehaviour
             //When there all the stoves are occupied and the object can't go back onto the stove
             openTables(carryable);
         }
+
+        //Plate plate = other.GetComponent<Plate>();
+        if (other.tag == "Plate" /*plate != null <--ADD LATER*/)
+        {
+            foreach (DishStack dishStack in _dishStacksInScene)
+            {
+                if (!dishStack.IsFull())
+                {
+                    //Increase the count of DishStacks for the openDistacks 
+                    dishStack.Count++;
+
+                    return;
+                }
+            }
+        }
+
     }
 
     private void openTables(Carryable carryable)
