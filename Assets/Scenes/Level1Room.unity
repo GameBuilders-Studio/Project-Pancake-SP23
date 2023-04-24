@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2847,7 +2847,7 @@ Transform:
   m_GameObject: {fileID: 149699121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 75103933}
@@ -3047,7 +3047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13
+      value: 9.73
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3433,7 +3433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13
+      value: 9.73
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3669,7 +3669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13
+      value: 9.73
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7401,7 +7401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8081038934005665726, guid: 8db0dcf4fe462914a8de9a495a85dabe, type: 3}
       propertyPath: _forceSpawn
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8081038934005665726, guid: 8db0dcf4fe462914a8de9a495a85dabe, type: 3}
       propertyPath: _spawnPoints.Array.size
@@ -7649,7 +7649,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13
+      value: 9.73
       objectReference: {fileID: 0}
     - target: {fileID: 7637576967148274917, guid: dc52566960c727e49a9053f2770092f6, type: 3}
       propertyPath: m_LocalRotation.w
