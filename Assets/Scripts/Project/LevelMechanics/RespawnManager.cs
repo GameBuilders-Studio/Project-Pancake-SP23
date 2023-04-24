@@ -8,20 +8,17 @@ public class RespawnManager : MonoBehaviour
     [SerializeField]
     [Required]
     [Tooltip("The point where the player will respawn to")]
-    private Transform respawnPoint;
+    private Transform _respawnPoint;
 
     [SerializeField]
     [Required]
     [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
-    private Transform PotRespawnPoint;
+    private Transform _potRespawnPoint;
 
+    private List<Station> _stovesInScene = new(); //Make an array storing all the stoves that are in the scene
+    private List<Station> _tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
     [SerializeField]
-    [Required]
-    private DishStack _dishStack;
-    private List<Station> stovesInScene = new(); //Make an array storing all the stoves that are in the scene
-    private List<Station> tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
-    [SerializeField]
-    private List<Station> dishStacksInScene = new(); //Used to help us add the dishes to the dishStack when one is full
+    private List<DishStack> _dishStacksInScene = new(); //Used to help us add the dishes to the dishStack when one is full
     void Awake()
     {
         //Helps initialize the amount of stoves that are in the scene
@@ -33,7 +30,7 @@ public class RespawnManager : MonoBehaviour
             {
                 Debug.LogError("Every Stove should have Station component!");
             }
-            stovesInScene.Add(station);
+            _stovesInScene.Add(station);
         }
 
         //make a list of all the Tables in the scene
@@ -41,17 +38,16 @@ public class RespawnManager : MonoBehaviour
         foreach (Counter obj1 in counters)
         {
             Station station1 = obj1.GetComponent<Station>();
-            tablesInScene.Add(station1);
+            _tablesInScene.Add(station1);
         }
 
         //Make a list of all the DishStaks in the scene
         Object[] dishStacks = GameObject.FindObjectsOfType(typeof(DishStack));
-        foreach (DishStack obj2 in dishStacks)
+        foreach (DishStack dishStack in dishStacks)
         {
-            Station station2 = obj2.GetComponent<Station>();
-            dishStacksInScene.Add(station2);
+            _dishStacksInScene.Add(dishStack);
         }
-        Debug.Log("DishStacks in Scene" + dishStacksInScene.Count);
+        Debug.Log("DishStacks in Scene" + _dishStacksInScene.Count);
     }
 
     //When the player or pot hits the death trigger, this function will be used
@@ -77,7 +73,7 @@ public class RespawnManager : MonoBehaviour
                 Debug.LogError("Objects with Pot tag should have Carryable component");
             }
             //We will iterate through each of the stoves in the scene
-            foreach (Station stoves in stovesInScene)
+            foreach (Station stoves in _stovesInScene)
             {
                 //if a stove is not occupied, put the pot on that empty stove
                 if (stoves.PlacedItem == null) //EMPTY
@@ -92,17 +88,15 @@ public class RespawnManager : MonoBehaviour
         }
 
         //plate plate = other.GetComponent<Plate>();
-        if(other.tag == "Plate" /*plate != null <--ADD LATER*/)
+        if (other.tag == "Plate" /*plate != null <--ADD LATER*/)
         {
-            Debug.Log("Plate touched death trigger");
-            foreach (Station dishStacks in dishStacksInScene)
+            foreach (DishStack dishStack in _dishStacksInScene)
             {
-                //Check is the DishStack is full or not
-                //If it is full, then move to the next dishStack and check that
-                if (!(dishStacks.IsFull()))
+                if (!dishStack.IsFull())
                 {
                     //Increase the count of DishStacks for the openDistacks 
-                    _dishStack.Count++;
+                    dishStack.Count++;
+
                     return;
                 }
             }
@@ -111,7 +105,7 @@ public class RespawnManager : MonoBehaviour
 
     private void openTables(Carryable carryable)
     {
-        foreach (Station tables in tablesInScene)
+        foreach (Station tables in _tablesInScene)
         {
             //if a stove is not occupied, put the pot on that empty stove
             if (tables.PlacedItem == null) //EMPTY
@@ -121,13 +115,13 @@ public class RespawnManager : MonoBehaviour
                 return;
             }
         }
-        carryable.transform.position = PotRespawnPoint.transform.position; //This will probably never happen
+        carryable.transform.position = _potRespawnPoint.transform.position; //This will probably never happen
     }
 
     //Used as a timer so the Player must wait 5 seconds to respawn
     IEnumerator RespawnTime(GameObject player)
     {
         yield return new WaitForSeconds(5); //wait 5 seconds to respawn the character
-        player.transform.position = respawnPoint.transform.position; //Set them to the respawnPoint
+        player.transform.position = _respawnPoint.transform.position; //Set them to the respawnPoint
     }
 }

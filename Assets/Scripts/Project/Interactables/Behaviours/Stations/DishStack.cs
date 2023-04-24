@@ -8,18 +8,30 @@ public class DishStack : StationController
     private int _size = 3;
     [SerializeField]
     private int _count = 0;
-    public int Count{
+    public int Count
+    {
         get => _count;
-        set => _count = value;
+        set
+        {
+            if (value > _size)
+            {
+                _count = _size;
+            }
+            else
+            {
+                _count = value;
+            }
+        }
     }
-    private void Awake() {
+    private void Awake()
+    {
         _count = _size;
     }
     public override void ItemRemoved(ref Carryable item)
     {
         if (item == null)
         {
-            if(_count <= 0) return;
+            if (_count <= 0) return;
             var ingredientGo = Instantiate(_dishPrefab, transform.position, transform.rotation);
             item = ingredientGo.GetComponent<Carryable>();
             _count--;
@@ -30,11 +42,11 @@ public class DishStack : StationController
     //When we are full, we are gonna move plate to open DishStack
     public bool IsFull()
     {
-        if(_count == _size && _size != 0) //This means we are full, we are gonna move plate to open DishStack
+        if (_count == _size) //This means we are full, we are gonna move plate to open DishStack
         {                                 //the _size != 0 is to avoid the dishStack thats conected to dishWasher
             return true;
         }
         return false; //Meaning that the dishstack can allow a plate, WE WANT THIS
     }
-    
+
 }
