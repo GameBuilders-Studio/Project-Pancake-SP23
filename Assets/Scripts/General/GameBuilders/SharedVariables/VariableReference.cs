@@ -4,12 +4,6 @@ using UnityEngine.Events;
 
 namespace GameBuilders.Variables
 {
-    /// <summary>
-    /// A class that references a SharedVariable. Use this to read SharedVariable values.
-    /// </summary>
-    /// <remarks>
-    /// For testing purposes, the returned value can be overridden in the inspector.
-    /// </remarks>
     public abstract class VariableReference 
     {
         public event UnityAction OnValueChanged;
