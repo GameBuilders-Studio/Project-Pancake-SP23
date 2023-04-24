@@ -11,6 +11,8 @@ namespace GameBuilders.Variables
     {
         public T value;
 
+        public const string AssetMenuPrefix = "GameBuilders/Variables/";
+
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [Tooltip("Whether this variable can be modified at runtime.")]
         public bool readOnly = false;

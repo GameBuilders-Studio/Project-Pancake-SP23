@@ -3,7 +3,7 @@ using UnityEngine;
 namespace GameBuilders.Variables
 {
     /// <inheritdoc/>
-    [CreateAssetMenu(menuName = "Variables/StringVariable")]
+    [CreateAssetMenu(menuName = AssetMenuPrefix + "StringVariable")]
     public class StringVariable : SharedVariable<string>
     {
         
