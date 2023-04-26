@@ -12,8 +12,6 @@ public class DishStack : StationController
     private GameObject _visualDishPrefab;
     [SerializeField]
     private Transform _visualDishSpawnTransform;
-    [SerializeField]
-    private int changeNum = 0;
     public int Count
     {
         get => _count;
