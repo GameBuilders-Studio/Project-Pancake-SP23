@@ -12,7 +12,7 @@ namespace GameBuilders.Events
         public UnityEvent Response;
 
         [Tooltip("Whether to disable this event listener after the event is invoked.")]
-        public bool TriggerOnce = false;
+        public bool DisableAfterEventReceived = false;
 
         private void OnEnable()
         {
@@ -28,7 +28,7 @@ namespace GameBuilders.Events
         {
             Response?.Invoke();
 
-            if (TriggerOnce)
+            if (DisableAfterEventReceived)
             {
                 enabled = false;
             }

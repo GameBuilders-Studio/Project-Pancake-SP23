@@ -162,11 +162,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitAtPoint: {fileID: 1484678555}
+  exitVelocityMultiplier: 1
   exitPortal: {fileID: 0}
-  exitSpeedMultiplier: 1
   teleportableLayers:
     serializedVersion: 2
     m_Bits: 640
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  teleportCooldown: 0.5
 --- !u!1 &4477725009480133504
 GameObject:
   m_ObjectHideFlags: 0

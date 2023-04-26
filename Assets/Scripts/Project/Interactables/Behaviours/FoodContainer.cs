@@ -113,7 +113,10 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
         _ingredientModels.Clear();
         Ingredients.Clear();
+
         _tooltip.ClearIngredients();
+
+        OnIngredientsChanged();
     }
 
     public Ingredient PopIngredient()

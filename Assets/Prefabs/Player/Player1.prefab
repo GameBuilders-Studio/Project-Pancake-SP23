@@ -66,7 +66,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -85,11 +85,11 @@ MonoBehaviour:
   _planeConstraint: 0
   _rootTransform: {fileID: 5752312646552794228}
   _rootTransformOffset: {x: 0, y: 0, z: 0}
-  _radius: 0.5
+  _radius: 0.4
   _height: 2
   _slopeLimit: 45
   _stepOffset: 0.45
-  _perchOffset: 0.5
+  _perchOffset: 0
   _perchAdditionalHeight: 0.4
   _slopeLimitOverride: 1
   _useFlatTop: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: 0
   CurrentControlScheme: 
-  _useAnyDevice: 1
+  _useAnyDevice: 0
 --- !u!1 &2287863128714254491
 GameObject:
   m_ObjectHideFlags: 0
