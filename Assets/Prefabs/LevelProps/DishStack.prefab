@@ -357,12 +357,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collection: {fileID: 3213388492890014731}
-  _dishPrefab: {fileID: 9059498309148403140, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
-  _size: 3
+  Station: {fileID: 3213388492890014729}
+  _isClean: 0
+  _cleanPlatePrefab: {fileID: 9059498309148403140, guid: 41257b6f34bd28a49910b4c4e363d659, type: 3}
+  _dirtyPlatePrefab: {fileID: 7605582599296834493, guid: 92583dac69bc4d94abb350e55af91f63, type: 3}
+  _maxPlates: 3
   _count: 3
-  _visualDishPrefab: {fileID: 9088445388420704564, guid: 83e87c7a70cefaf4c87a552e00f3c2da, type: 3}
+  _cleanVisualDishPrefab: {fileID: 9059498309148403140, guid: dabf0e078ebd69e4fbbbf363f7640055, type: 3}
+  _dirtyVisualDishPrefab: {fileID: 9059498309148403140, guid: 5155a343b66321e429c19d5b0db5be99, type: 3}
   _visualDishSpawnTransform: {fileID: 7484189779902540337}
-  changeNum: 0
 --- !u!114 &3213388492890014723
 MonoBehaviour:
   m_ObjectHideFlags: 0

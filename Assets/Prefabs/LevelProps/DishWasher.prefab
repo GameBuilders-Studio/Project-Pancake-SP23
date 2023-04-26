@@ -92,9 +92,13 @@ PrefabInstance:
       propertyPath: _count
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
+      propertyPath: _isClean
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_Name
-      value: DishStack
+      value: CleanDishStack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
