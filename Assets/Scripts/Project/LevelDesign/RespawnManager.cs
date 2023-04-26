@@ -96,8 +96,8 @@ public class RespawnManager : MonoBehaviour
                 if (!dishStack.IsFull())
                 {
                     //Increase the count of DishStacks for the openDistacks 
-                    dishStack.Count++;
-
+                    dishStack.Count++; 
+                    Destroy(other.gameObject);
                     return;
                 }
             }
