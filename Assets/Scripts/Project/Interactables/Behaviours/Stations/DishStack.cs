@@ -8,9 +8,54 @@ public class DishStack : StationController
     private int _maxPlates = 3;
     [SerializeField]
     private int _count = 0;
+    [SerializeField]
+    private GameObject _visualDishPrefab;
+    [SerializeField]
+    private Transform _visualDishSpawnTransform;
+    public int Count
+    {
+        get => _count;
+        set
+        {
+            //clamp the count
+            _count=Mathf.Clamp(value, 0, _maxPlates);
+            //change the prefab to a different one
+            for(int i = 0; i < _count; i++){
+                _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
+            }
+            for(int i = _count; i < _maxPlates; i++){
+                _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    //You can't place anything except dish on a dish stack
+    public override bool ValidateItem(Carryable item)
+    {
+        //if count is full, you can't place anything including dish
+        if(Count >= _maxPlates) return false;
+        FoodContainer dish;
+        if (item.TryGetBehaviour(out dish))
+        {
+            Destroy(dish.gameObject);
+            Count++;
+            return true;
+        }
+        return false;
+    }
+
     private void Awake()
     {
-        _count = _maxPlates;
+        for (int i = 0; i < _maxPlates; i++)
+        {
+            var ingredientGo = Instantiate(_visualDishPrefab, _visualDishSpawnTransform.position + new Vector3(0, 0.15f * i, 0), _visualDishSpawnTransform.rotation);
+            ingredientGo.transform.parent = _visualDishSpawnTransform;
+            ingredientGo.SetActive(false);
+        }
+        for (int i = 0; i < _count; i++)
+        {
+            _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
+        }
     }
     public override void ItemRemoved(ref Carryable item)
     {
@@ -19,7 +64,7 @@ public class DishStack : StationController
             if (_count <= 0) return;
             var ingredientGo = Instantiate(_dishPrefab, transform.position, transform.rotation);
             item = ingredientGo.GetComponent<Carryable>();
-            _count--;
+            Count--;
         }
     }
 
@@ -32,16 +77,5 @@ public class DishStack : StationController
             return true;
         }
         return false; //Meaning that the dishstack can allow a plate, WE WANT THIS
-    }
-
-    public void AddPlates(int count)
-    {
-        if (count <= 0) { return; }
-
-        _count += count;
-        if (_count > _maxPlates)
-        {
-            _count = _maxPlates;
-        }
     }
 }
