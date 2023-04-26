@@ -35,13 +35,13 @@ public class Sink : StationController, IUsable
 
     public override bool ValidateItem(Carryable item)
     {
-        return item.HasBehaviour<DirtyDish>();
+        return item.HasBehaviour<DirtyPlate>();
     }
 
     public override void ItemPlaced(ref Carryable item)
     {
 
-        DirtyDish _dirtyDish;
+        DirtyPlate _dirtyDish;
         _ingredientExists = item.TryGetBehaviour(out _dirtyDish);
         if (_ingredientExists)
         {

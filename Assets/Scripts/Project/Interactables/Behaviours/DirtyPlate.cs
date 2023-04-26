@@ -2,7 +2,7 @@ using UnityEngine;
 using CustomAttributes;
 
 
-public class DirtyDish : InteractionBehaviour
+public class DirtyPlate : InteractionBehaviour
 {
     [SerializeField]
     private int _count = 0;

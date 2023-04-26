@@ -3,13 +3,20 @@ using UnityEngine;
 public class DishStack : StationController
 {
     [SerializeField]
-    private GameObject _dishPrefab;
+    [Tooltip("Dish stack can only hold clean or dirty plates, not both")]
+    private bool _isClean = false;
+    [SerializeField]
+    private GameObject _cleanPlatePrefab;
+    [SerializeField]
+    private GameObject _dirtyPlatePrefab;
     [SerializeField]
     private int _maxPlates = 3;
     [SerializeField]
     private int _count = 0;
     [SerializeField]
-    private GameObject _visualDishPrefab;
+    private GameObject _cleanVisualDishPrefab;
+    [SerializeField]
+    private GameObject _dirtyVisualDishPrefab;
     [SerializeField]
     private Transform _visualDishSpawnTransform;
     public int Count
@@ -18,22 +25,24 @@ public class DishStack : StationController
         set
         {
             //clamp the count
-            _count=Mathf.Clamp(value, 0, _maxPlates);
+            _count = Mathf.Clamp(value, 0, _maxPlates);
             //change the prefab to a different one
-            for(int i = 0; i < _count; i++){
+            for (int i = 0; i < _count; i++)
+            {
                 _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
             }
-            for(int i = _count; i < _maxPlates; i++){
+            for (int i = _count; i < _maxPlates; i++)
+            {
                 _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(false);
             }
         }
     }
 
-    //You can't place anything except dish on a dish stack
+    //You can't place anything except dish on a dish stackx
     public override bool ValidateItem(Carryable item)
     {
         //if count is full, you can't place anything including dish
-        if(Count >= _maxPlates) return false;
+        if (Count >= _maxPlates) return false;
         FoodContainer dish;
         if (item.TryGetBehaviour(out dish))
         {
@@ -46,11 +55,12 @@ public class DishStack : StationController
 
     private void Awake()
     {
+        GameObject visualDishPrefab = _isClean ? _cleanVisualDishPrefab : _dirtyVisualDishPrefab;
         for (int i = 0; i < _maxPlates; i++)
         {
-            var ingredientGo = Instantiate(_visualDishPrefab, _visualDishSpawnTransform.position + new Vector3(0, 0.15f * i, 0), _visualDishSpawnTransform.rotation);
-            ingredientGo.transform.parent = _visualDishSpawnTransform;
-            ingredientGo.SetActive(false);
+            GameObject ingredientGO = Instantiate(visualDishPrefab, _visualDishSpawnTransform.position + new Vector3(0, 0.15f * i, 0), _visualDishSpawnTransform.rotation);
+            ingredientGO.transform.parent = _visualDishSpawnTransform;
+            ingredientGO.SetActive(false);
         }
         for (int i = 0; i < _count; i++)
         {
@@ -62,9 +72,20 @@ public class DishStack : StationController
         if (item == null)
         {
             if (_count <= 0) return;
-            var ingredientGo = Instantiate(_dishPrefab, transform.position, transform.rotation);
-            item = ingredientGo.GetComponent<Carryable>();
-            Count--;
+            if (_isClean)
+            {
+                var ingredientGo = Instantiate(_cleanPlatePrefab, transform.position, transform.rotation);
+                item = ingredientGo.GetComponent<Carryable>();
+                Count--;
+            }
+            else
+            {
+                var ingredientGO = Instantiate(_dirtyPlatePrefab, transform.position, transform.rotation);
+                DirtyPlate dirtyPlate = ingredientGO.GetComponent<DirtyPlate>();
+                dirtyPlate.Count = Count;
+                Count = 0;
+                item = ingredientGO.GetComponent<Carryable>();
+            }
         }
     }
 
