@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using CustomAttributes;
 public class ServingStation : StationController
 {
-    [SerializeField, Required] private OrderSystem _orderSystem;
-    [SerializeField] [Required]
+    [SerializeField] [Required] 
+    private OrderSystem _orderSystem;
+    [SerializeField] [Required] 
     private DishStack _dishStack;
     [SerializeField]
     [Tooltip("Time delayed to spawn a new dish after submitting a dish")]
