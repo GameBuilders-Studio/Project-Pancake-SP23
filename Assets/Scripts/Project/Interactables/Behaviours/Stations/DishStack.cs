@@ -1,24 +1,43 @@
 using UnityEngine;
-
+using CustomAttributes;
 public class DishStack : StationController
 {
+    [Header("Settings")]
+
     [SerializeField]
     [Tooltip("Dish stack can only hold clean or dirty plates, not both")]
     private bool _isClean = false;
-    [SerializeField]
-    private GameObject _cleanPlatePrefab;
-    [SerializeField]
-    private GameObject _dirtyPlatePrefab;
+
     [SerializeField]
     private int _maxPlates = 3;
+
     [SerializeField]
     private int _count = 0;
+
+    [Header("Dependencies")]
+
     [SerializeField]
+    [Required]
+    private GameObject _cleanPlatePrefab;
+
+    [SerializeField]
+    [Required]
+    private GameObject _dirtyPlatePrefab;
+
+    [SerializeField]
+    [Required]
     private GameObject _cleanVisualDishPrefab;
+
     [SerializeField]
+    [Required]
     private GameObject _dirtyVisualDishPrefab;
+
     [SerializeField]
+    [Required]
     private Transform _visualDishSpawnTransform;
+
+
+
     public int Count
     {
         get => _count;
@@ -55,6 +74,7 @@ public class DishStack : StationController
 
     private void Awake()
     {
+        // Instatiate the visual dishes based on the count and isClean
         GameObject visualDishPrefab = _isClean ? _cleanVisualDishPrefab : _dirtyVisualDishPrefab;
         for (int i = 0; i < _maxPlates; i++)
         {
@@ -62,6 +82,8 @@ public class DishStack : StationController
             ingredientGO.transform.parent = _visualDishSpawnTransform;
             ingredientGO.SetActive(false);
         }
+
+        // Show the correct number of visual dishes
         for (int i = 0; i < _count; i++)
         {
             _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
@@ -74,12 +96,14 @@ public class DishStack : StationController
             if (_count <= 0) return;
             if (_isClean)
             {
+                // Clean plates are carried one at a time
                 var ingredientGo = Instantiate(_cleanPlatePrefab, transform.position, transform.rotation);
                 item = ingredientGo.GetComponent<Carryable>();
                 Count--;
             }
             else
             {
+                // Dirty plates are carried in stacks for player to move it to the sink
                 var ingredientGO = Instantiate(_dirtyPlatePrefab, transform.position, transform.rotation);
                 DirtyPlate dirtyPlate = ingredientGO.GetComponent<DirtyPlate>();
                 dirtyPlate.Count = Count;
