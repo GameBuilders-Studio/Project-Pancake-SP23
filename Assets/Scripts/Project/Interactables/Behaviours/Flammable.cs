@@ -30,7 +30,7 @@ public class Flammable : InteractionBehaviour
     [ReadOnly, Required]
     private Collider _collider;
 
-    public static readonly Dictionary<GameObject, Flammable> Instances = new();
+    private static readonly Dictionary<GameObject, Flammable> s_instances = new();
 
     private float _maxFireHealth = 1.0f;
     private float _spreadTimer = 0.0f;
@@ -47,12 +47,12 @@ public class Flammable : InteractionBehaviour
 
     void OnEnable()
     {
-        Instances.Add(gameObject, this);
+        s_instances.Add(gameObject, this);
     }
 
     void OnDisable()
     {
-        Instances.Remove(gameObject);
+        s_instances.Remove(gameObject);
         if (_isBurning) { Destroy(_fireEffect); }
     }
 
@@ -106,7 +106,7 @@ public class Flammable : InteractionBehaviour
 
     public static bool TryGetFlammable(GameObject go, out Flammable flammable)
     {
-        return Instances.TryGetValue(go, out flammable);
+        return s_instances.TryGetValue(go, out flammable);
     }
 
     [Button]
@@ -138,7 +138,7 @@ public class Flammable : InteractionBehaviour
 
             if (collider == _collider) { continue; }
 
-            if (Instances.TryGetValue(collider.gameObject, out Flammable flammable))
+            if (s_instances.TryGetValue(collider.gameObject, out Flammable flammable))
             {
                 flammable.TryIgnite();
             }

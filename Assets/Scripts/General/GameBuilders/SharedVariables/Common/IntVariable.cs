@@ -3,7 +3,7 @@ using UnityEngine;
 namespace GameBuilders.Variables
 {
     /// <inheritdoc/>
-    [CreateAssetMenu(menuName = "Variables/IntVariable")]
+    [CreateAssetMenu(menuName = AssetMenuPrefix + "IntVariable")]
     public class IntVariable : SharedVariable<int>
     {
         

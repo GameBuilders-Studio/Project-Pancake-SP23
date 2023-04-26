@@ -9,6 +9,8 @@ public class JoinSceneLogic : MonoBehaviour
     [SerializeField, Required] private SceneLoader _sceneLoader = null;
     public void OnFinish()
     {
+        InputManager.DisablePairing();
+        
         // Check if there is at least one player 
         int playerCount = 0;
         foreach (PlayerJoinPanel panel in _playerJoinPanels)
