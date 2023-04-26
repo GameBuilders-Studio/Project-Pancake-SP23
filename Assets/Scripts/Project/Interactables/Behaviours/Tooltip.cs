@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using CustomAttributes;
 public class Tooltip : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _target;
+
+    [SerializeField, Required] private Transform _target;
     [SerializeField] private Vector3 _offset;
+    [SerializeField, Required] private GameObject _ingredientIconPrefab;
     [SerializeField, Required] private GameObject _itemsPanel;
-
-
+    private Camera _camera;
     private void Awake()
     {
         _camera = Camera.main;
@@ -22,8 +22,8 @@ public class Tooltip : MonoBehaviour
 
     public void AddIngredient(IngredientSO ingredient)
     {
-        GameObject spriteObject = new();
-        Image spriteImage = spriteObject.AddComponent<Image>();
+        GameObject spriteObject = Instantiate(_ingredientIconPrefab);
+        Image spriteImage = spriteObject.GetComponent<Image>();
         spriteImage.sprite = ingredient.icon;
 
         spriteObject.transform.SetParent(_itemsPanel.transform, false);
