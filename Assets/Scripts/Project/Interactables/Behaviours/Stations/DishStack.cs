@@ -5,7 +5,7 @@ public class DishStack : StationController
     [SerializeField]
     private GameObject _dishPrefab;
     [SerializeField]
-    private int _size = 3;
+    private int _maxSize = 3;
     [SerializeField]
     private int _count = 0;
     [SerializeField]
@@ -19,37 +19,42 @@ public class DishStack : StationController
         get => _count;
         set
         {
-            changeNum = value - _count;
-            _count = value;
-            if (_count > _size) _count = _size;
+            //clamp the count
+            _count=Mathf.Clamp(value, 0, _maxSize);
             //change the prefab to a different one
-            if (changeNum > 0)
-            {
-                for (int i = 0; i < changeNum; i++)
-                {
-                    
-                    var ingredientGo = Instantiate(_visualDishPrefab, _visualDishSpawnTransform.position + new Vector3(0, 0.15f * (i+_visualDishSpawnTransform.childCount), 0), _visualDishSpawnTransform.rotation);
-                    ingredientGo.transform.parent = _visualDishSpawnTransform;
-                }
+            for(int i = 0; i < _count; i++){
+                _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
             }
-            else if (changeNum < 0)
-            {
-                for (int i = 0; i < -changeNum; i++)
-                {
-                    if (_visualDishSpawnTransform.childCount > 0)
-                    {
-                        Destroy(_visualDishSpawnTransform.GetChild(_visualDishSpawnTransform.childCount - 1).gameObject);
-                    }
-                }
+            for(int i = _count; i < _maxSize; i++){
+                _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(false);
             }
         }
     }
+
+    //You can't place anything except dish on a dish stack
+    public override bool ValidateItem(Carryable item)
+    {
+        FoodContainer dish;
+        if (item.TryGetBehaviour(out dish))
+        {
+            Destroy(dish.gameObject);
+            Count++;
+            return true;
+        }
+        return false;
+    }
+
     private void Awake()
     {
-        for (int i = 0; i < _count; i++)
+        for (int i = 0; i < _maxSize; i++)
         {
             var ingredientGo = Instantiate(_visualDishPrefab, _visualDishSpawnTransform.position + new Vector3(0, 0.15f * i, 0), _visualDishSpawnTransform.rotation);
             ingredientGo.transform.parent = _visualDishSpawnTransform;
+            ingredientGo.SetActive(false);
+        }
+        for (int i = 0; i < _count; i++)
+        {
+            _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
         }
     }
     public override void ItemRemoved(ref Carryable item)

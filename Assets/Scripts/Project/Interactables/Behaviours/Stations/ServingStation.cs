@@ -8,10 +8,11 @@ public class ServingStation : StationController
     [SerializeField] [Required]
     private DishStack _dishStack;
     [SerializeField]
+    [Tooltip("Time delayed to spawn a new dish after submitting a dish")]
     private float _spawnTime = 2.0f;
     public override void ItemPlaced(ref Carryable item)
     {
-        Debug.Log("Called OnItemPlaced");
+        //Debug.Log("Called OnItemPlaced");
         Destroy(item.gameObject);
         //Spawn a new Dish on dish stack
         if(_dishStack == null){
