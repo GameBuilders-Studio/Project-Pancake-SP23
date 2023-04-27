@@ -30,9 +30,9 @@ public class PlayerInteraction : MonoBehaviour
     private float _selectAngleRange;
 
     [SerializeField]
-    [Tooltip("The minimum score required to highlight a selectable")]
-    [Range(0f, 2f)]
-    private float _minimumSelectScore;
+    [Tooltip("Angle range in front of player to check for carryables.")]
+    [Range(0.01f, 180f)]
+    private float _carryableAngleRange;
 
     [SerializeField]
     private bool _isCarrying = false;
@@ -287,6 +287,8 @@ public class PlayerInteraction : MonoBehaviour
         Selectable bestSelectable = null;
         float minAngle = Mathf.Infinity;
 
+        bool skipAllExceptCarryable = false;
+
         foreach (var item in Nearby)
         {
             if (!item.IsSelectable) { continue; }
@@ -295,12 +297,27 @@ public class PlayerInteraction : MonoBehaviour
             float angle = Angle2D(transform.forward, item.transform.position - transform.position);
             if (angle > _selectAngleRange) { continue; }
 
-            if (_isCarrying && item.HasBehaviour<Carryable>())
+            if (_isCarrying)
             {
-                // ignore carryable unless the held item can be combined with it
-                if (!(_heldItem.HasBehaviour<IngredientProp>() && item.HasBehaviour<FoodContainer>()))
+                if (item.HasBehaviour<Carryable>())
                 {
-                    continue;
+                    // ignore this item unless the held item can be combined with it
+                    if (!(_heldItem.HasBehaviour<IngredientProp>() && item.HasBehaviour<FoodContainer>()))
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                // prefer carryables
+                if (item.HasBehaviour<Carryable>())
+                {
+                    if (!skipAllExceptCarryable && angle < _carryableAngleRange)
+                    {
+                        skipAllExceptCarryable = true;
+                        minAngle = Mathf.Infinity;
+                    }
                 }
             }
 
@@ -315,9 +332,6 @@ public class PlayerInteraction : MonoBehaviour
                     continue;
                 }
             }
-
-            float angleScore = (_selectAngleRange - angle) / _selectAngleRange;
-            float score = angleScore;
 
             if (angle < minAngle && Mathf.Abs(angle - minAngle) > AngleEpsilon)
             {
