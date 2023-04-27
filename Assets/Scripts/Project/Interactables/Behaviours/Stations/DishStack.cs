@@ -2,19 +2,20 @@ using UnityEngine;
 using CustomAttributes;
 public class DishStack : StationController
 {
-    [Header("Settings")]
-
     [SerializeField]
-    [Tooltip("Dish stack can only hold clean or dirty plates, not both")]
+    [Tooltip("Whether this dish stack holds clean or dirty plates")]
     private bool _isClean = false;
 
     [SerializeField]
     private int _maxPlates = 3;
 
     [SerializeField]
-    private int _count = 0;
+    private int _plateCount = 0;
 
-    [Header("Dependencies")]
+    [Space(15f)]
+    [SerializeField]
+    [Required]
+    private Transform _visualDishSpawnTransform;
 
     [SerializeField]
     [Required]
@@ -24,6 +25,7 @@ public class DishStack : StationController
     [Required]
     private GameObject _dirtyPlatePrefab;
 
+    [Space(15f)]
     [SerializeField]
     [Required]
     private GameObject _cleanVisualDishPrefab;
@@ -32,25 +34,19 @@ public class DishStack : StationController
     [Required]
     private GameObject _dirtyVisualDishPrefab;
 
-    [SerializeField]
-    [Required]
-    private Transform _visualDishSpawnTransform;
-
-
-
     public int Count
     {
-        get => _count;
+        get => _plateCount;
         set
         {
             //clamp the count
-            _count = Mathf.Clamp(value, 0, _maxPlates);
+            _plateCount = Mathf.Clamp(value, 0, _maxPlates);
             //change the prefab to a different one
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _plateCount; i++)
             {
                 _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
             }
-            for (int i = _count; i < _maxPlates; i++)
+            for (int i = _plateCount; i < _maxPlates; i++)
             {
                 _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(false);
             }
@@ -84,7 +80,7 @@ public class DishStack : StationController
         }
 
         // Show the correct number of visual dishes
-        for (int i = 0; i < _count; i++)
+        for (int i = 0; i < _plateCount; i++)
         {
             _visualDishSpawnTransform.GetChild(i).gameObject.SetActive(true);
         }
@@ -93,7 +89,7 @@ public class DishStack : StationController
     {
         if (item == null)
         {
-            if (_count <= 0) return;
+            if (_plateCount <= 0) return;
             if (_isClean)
             {
                 // Clean plates are carried one at a time
@@ -113,10 +109,15 @@ public class DishStack : StationController
         }
     }
 
+    public override bool HasItem() 
+    {
+        return _plateCount > 0;
+    }
+
     //Will call this in RespawnManaer 
     //When we are full, we are gonna move plate to open DishStack
     public bool IsFull()
     {
-        return _count >= _maxPlates;
+        return _plateCount >= _maxPlates;
     }
 }

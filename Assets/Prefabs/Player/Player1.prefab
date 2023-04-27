@@ -190,7 +190,9 @@ MonoBehaviour:
   _heldItem: {fileID: 0}
   _carryPivot: {fileID: 8535102853265519827}
   _catchTrigger: {fileID: 3120754633071527459}
-  _selectAngleRange: 65
+  _selectAngleRange: 155
+  _minimumSelectScore: 0.35
+  _isCarrying: 0
 --- !u!114 &437684384809171815
 MonoBehaviour:
   m_ObjectHideFlags: 0

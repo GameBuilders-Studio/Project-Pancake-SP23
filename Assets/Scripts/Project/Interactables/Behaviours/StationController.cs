@@ -14,6 +14,8 @@ public class StationController : InteractionBehaviour
 
     public virtual void ItemRemoved(ref Carryable carryable) {}
 
+    public virtual bool HasItem() => false;
+
     public virtual void PositionItem(ref Carryable item, Transform pivot)
     {
         var go = item.gameObject;

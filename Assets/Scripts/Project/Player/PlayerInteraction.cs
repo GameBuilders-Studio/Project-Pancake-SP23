@@ -3,6 +3,7 @@ using UnityEngine;
 using EasyCharacterMovement;
 using CustomAttributes;
 
+[SelectionBase]
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField]
@@ -25,15 +26,20 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Angle range in front of player to check for selectables.")]
-    [Range(0f, 180f)]
+    [Range(0.01f, 180f)]
     private float _selectAngleRange;
+
+    [SerializeField]
+    [Tooltip("The minimum score required to highlight a selectable")]
+    [Range(0f, 2f)]
+    private float _minimumSelectScore;
+
+    [SerializeField]
+    private bool _isCarrying = false;
 
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
     private IUsable _lastUsed;
-
-    [SerializeField]
-    private bool _isCarrying = false;
 
     public bool IsCarrying => _isCarrying;
 
@@ -75,11 +81,6 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (IsCarrying)
-        {
-            DepenetrateHeldItem();
-        }
-
         var selectable = GetBestSelectable();
 
         // deselect previous target
@@ -238,7 +239,7 @@ public class PlayerInteraction : MonoBehaviour
 
         _heldItem.transform.parent = null;
 
-        if (_heldItem.TryGetInterface(out IUsable usable))
+        if (_heldItem.TryGetInterface(out IUsableWhileCarried usable))
         {
             usable.OnUseEnd();
         }
@@ -269,7 +270,7 @@ public class PlayerInteraction : MonoBehaviour
 
     // TODO: move to separate class
     /// <summary>
-    /// Chooses the best selectable based on the player's current position and rotation
+    /// Chooses the best selectable with various heuristics, including player position and rotation.
     /// </summary>
     private Selectable GetBestSelectable()
     {
@@ -281,107 +282,46 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         Selectable bestSelectable = null;
-        float minAngle = Mathf.Infinity;
-
-        bool carryableExists = false;
-        bool usableExists = false;
-
-        bool emptyStationExists = false;
-        bool foodContainerExists = false;
+        float bestScore = -1.0f;
 
         foreach (var item in Nearby)
         {
             if (!item.IsSelectable) { continue; }
 
+            // first, check if the item is in front of the player
             float angle = Angle2D(transform.forward, item.transform.position - transform.position);
             if (angle > _selectAngleRange) { continue; }
 
-            // if not carrying anything, prefer:
-            // a) loose Carryables and Stations
-            // b) IUsable
-
-            if (!_isCarrying)
+            if (_isCarrying && item.HasBehaviour<Carryable>())
             {
-                if (item.HasBehaviour<Carryable>() || (item.TryGetBehaviour(out Station station) && station.HasItem))
-                {
-                    if (!carryableExists)
-                    {
-                        minAngle = Mathf.Infinity;
-                    }
-                    carryableExists = true;
-                }
-                else if (carryableExists)
-                {
-                    continue;
-                }
-
-                if (item.HasInterface<IUsable>())
-                {
-                    if (!usableExists)
-                    {
-                        minAngle = Mathf.Infinity;
-                    }
-                    usableExists = true;
-                }
-                else if (usableExists)
+                // ignore carryable unless the held item can be combined with it
+                if (!(_heldItem.HasBehaviour<IngredientProp>() && item.HasBehaviour<FoodContainer>()))
                 {
                     continue;
                 }
             }
 
-            // if carrying an ingredient, prefer:
-            // a) food containers
-
-            // if carrying a non-ingredient, prefer:
-            // b) empty Stations
-
-            if (_isCarrying)
+            if (item.HasBehaviour<Station>())
             {
-                if (_heldItem.HasBehaviour<IngredientProp>())
+                // check adjacency
+                bool isNearbyX = Mathf.Abs(transform.position.x - item.transform.position.x) < 0.65f;
+                bool isNearbyZ = Mathf.Abs(transform.position.z - item.transform.position.z) < 0.65f;
+                if (!(isNearbyX ^ isNearbyZ))
                 {
-                    if (item.HasBehaviour<FoodContainer>())
-                    {
-                        if (!foodContainerExists)
-                        {
-                            minAngle = Mathf.Infinity;
-                        }
-                        foodContainerExists = true;
-                    }
-                    else if (foodContainerExists)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    if (item.TryGetBehaviour(out Station station) && !station.HasItem)
-                    {
-                        if (!emptyStationExists)
-                        {
-                            minAngle = Mathf.Infinity;
-                        }
-                        emptyStationExists = true;
-                    }
-                    else if (emptyStationExists)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
             }
 
-            // use angle as the tie-breaker
-            if (angle < minAngle)
+            float angleScore = (_selectAngleRange - angle) / _selectAngleRange;
+            float score = angleScore;
+
+            if (score > bestScore && Mathf.Abs(score - bestScore) > 0.1f)
             {
-                minAngle = angle;
+                bestScore = score;
                 bestSelectable = item;
             }
         }
 
         return bestSelectable;
-    }
-
-    private void DepenetrateHeldItem()
-    {
-        // use _character to resolve collision between _heldItem and walls
     }
 }

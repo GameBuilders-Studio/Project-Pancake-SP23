@@ -80,12 +80,13 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
+        if (!_controller.ValidateItem(carryable))
+        {
+            return false; 
+        }
+
         if (!HasItem)
         {
-            if (!_controller.ValidateItem(carryable))
-            {
-                return false; 
-            }
             PlaceItem(carryable);
             return true;
         }
