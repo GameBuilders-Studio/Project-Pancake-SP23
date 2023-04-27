@@ -43,6 +43,9 @@ public class PlayerInteraction : MonoBehaviour
 
     public bool IsCarrying => _isCarrying;
 
+    private const float StationAdjacencyThreshold = 0.65f;
+    private const float AngleEpsilon = 15f;
+
     public List<Selectable> Nearby
     {
         get => _nearby;
@@ -282,7 +285,7 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         Selectable bestSelectable = null;
-        float bestScore = -1.0f;
+        float minAngle = Mathf.Infinity;
 
         foreach (var item in Nearby)
         {
@@ -303,9 +306,10 @@ public class PlayerInteraction : MonoBehaviour
 
             if (item.HasBehaviour<Station>())
             {
-                // check adjacency
-                bool isNearbyX = Mathf.Abs(transform.position.x - item.transform.position.x) < 0.65f;
-                bool isNearbyZ = Mathf.Abs(transform.position.z - item.transform.position.z) < 0.65f;
+                // check if the player is adjacent to the station
+                bool isNearbyX = Mathf.Abs(transform.position.x - item.transform.position.x) < StationAdjacencyThreshold;
+                bool isNearbyZ = Mathf.Abs(transform.position.z - item.transform.position.z) < StationAdjacencyThreshold;
+
                 if (!(isNearbyX ^ isNearbyZ))
                 {
                     continue;
@@ -315,9 +319,9 @@ public class PlayerInteraction : MonoBehaviour
             float angleScore = (_selectAngleRange - angle) / _selectAngleRange;
             float score = angleScore;
 
-            if (score > bestScore && Mathf.Abs(score - bestScore) > 0.1f)
+            if (angle < minAngle && Mathf.Abs(angle - minAngle) > AngleEpsilon)
             {
-                bestScore = score;
+                minAngle = angle;
                 bestSelectable = item;
             }
         }
