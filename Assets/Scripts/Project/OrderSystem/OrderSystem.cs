@@ -54,8 +54,9 @@ public class OrderSystem : MonoBehaviour
             Debug.LogError("Index out of range");
             return null;
         }
-
+    
         Order temp = _currentOrders[index];
+        isFirst(index); //Checking if it is the first element in the array
         _currentOrders.Remove(temp); //Remove from current orders list
         _orderUI.RemoveOrder(temp); //Remove from order UI
 
@@ -73,9 +74,14 @@ public class OrderSystem : MonoBehaviour
         return _currentOrders[index];
     }
 
-    public void isFirst()
+    public bool isFirst(int index)
     {
-        
+        if(_currentOrders[0] = GetOrder(index))
+        {
+            Debug.Log("Is first Element");
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
