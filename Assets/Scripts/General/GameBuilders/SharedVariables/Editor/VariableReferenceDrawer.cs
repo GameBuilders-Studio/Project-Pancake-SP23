@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace GameBuilders.Variables.Editor
 {
     [CustomPropertyDrawer(typeof(VariableReference), true)]
@@ -112,3 +113,4 @@ namespace GameBuilders.Variables.Editor
     }
 
 }
+#endif

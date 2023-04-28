@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1126139912628277125}
   - component: {fileID: 1126139912628277124}
   - component: {fileID: 1126139912628277123}
+  - component: {fileID: -1605651248899485353}
   m_Layer: 0
-  m_Name: Dish-Washing(1)
+  m_Name: Dish-Washing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126139912628277122}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -98,6 +99,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1605651248899485353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _behaviours: []
+  _interfaces: []
+  _behaviourTypes: []
+  _interfaceTypes: []
+  NoDuplicates: 1
 --- !u!1001 &8705249343835183942
 PrefabInstance:
   m_ObjectHideFlags: 0

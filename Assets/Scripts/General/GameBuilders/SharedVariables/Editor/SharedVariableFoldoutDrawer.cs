@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-
+#if UNITY_EDITOR
 namespace GameBuilders.Variables.Editor
 {
     /// <summary>
@@ -332,3 +332,4 @@ namespace GameBuilders.Variables.Editor
         }
     }
 }
+#endif
