@@ -14,18 +14,18 @@ public class CuttingBoard : StationController, IUsable
     private bool _interacting = false;
     private bool _ingredientExists = false;
     private IngredientProp _ingredient;
-    public UnityEvent choppedEvent;
+    public UnityAction choppedEvent;
     bool IUsable.Enabled
     {
         get => _ingredientExists && !_ingredient.ProgressComplete;
     }
     private void Awake()
     {
-        choppedEvent += Chop;
+        choppedEvent+= Chop;
     }
     void Update()
     {
-        if (_interacting) { choppedEvent.Invoke};
+        if (_interacting) { choppedEvent.Invoke(); }
     }
 
     public void OnUseStart() => _interacting = true;
