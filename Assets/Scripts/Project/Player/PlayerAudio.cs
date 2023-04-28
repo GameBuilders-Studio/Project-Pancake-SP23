@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomAttributes;
 
 public class PlayerAudio : MonoBehaviour
 {
     [SerializeField]
+    [Required]
     private AudioSource _audioSource;
 
     [SerializeField]
+    [Required]
     private PlayerInteraction _playerInteraction;
 
     void OnValidate()
@@ -31,8 +34,8 @@ public class PlayerAudio : MonoBehaviour
     }
 
     private void OnDash()
-    { 
-        // _audioSource.PlayOneShot()
+    {
+        // _audioSource.PlayOneShot(myclip);
     }
 
     private void OnPickUp()
