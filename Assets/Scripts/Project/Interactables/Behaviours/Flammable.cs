@@ -10,7 +10,8 @@ public class Flammable : InteractionBehaviour
     private FlammableData _settings;
 
     [SerializeField]
-    [Required, Tooltip("The transform to spawn the fire prefab at.")]
+    [Tooltip("The transform to spawn the fire prefab at.")]
+    [Required]
     private Transform _firePivot;
 
     [SerializeField]
@@ -29,7 +30,7 @@ public class Flammable : InteractionBehaviour
     [ReadOnly, Required]
     private Collider _collider;
 
-    public static readonly Dictionary<GameObject, Flammable> Instances = new();
+    private static readonly Dictionary<GameObject, Flammable> s_instances = new();
 
     private float _maxFireHealth = 1.0f;
     private float _spreadTimer = 0.0f;
@@ -46,19 +47,19 @@ public class Flammable : InteractionBehaviour
 
     void OnEnable()
     {
-        Instances.Add(gameObject, this);
+        s_instances.Add(gameObject, this);
     }
 
     void OnDisable()
     {
-        Instances.Remove(gameObject);
+        s_instances.Remove(gameObject);
         if (_isBurning) { Destroy(_fireEffect); }
     }
 
     void Start()
     {
         _maxFireHealth = _settings.FireInitialHealth;
-        if (_isBurning) { Ignite(); }
+        if (_isBurning) { SpawnFireFX(); }
     }
 
     void Update()
@@ -91,24 +92,6 @@ public class Flammable : InteractionBehaviour
         return false;
     }
 
-    public void IgniteNeighbors()
-    {
-        // TODO: use layermask to filter non-flammable results
-        int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
-
-        for (int i = 0; i < neighborCount; i++)
-        {
-            var collider = _overlapResults[i];
-
-            if (collider == _collider) { continue; }
-
-            if (Instances.TryGetValue(collider.gameObject, out Flammable flammable))
-            {
-                flammable.TryIgnite();
-            }
-        }
-    }
-
     public void DamageFire(float fireDamage)
     {
         if (!_isBurning) { return; }
@@ -121,20 +104,62 @@ public class Flammable : InteractionBehaviour
         }
     }
 
+    public static bool TryGetFlammable(GameObject go, out Flammable flammable)
+    {
+        return s_instances.TryGetValue(go, out flammable);
+    }
+
+    [Button]
     private void Ignite()
     {
         _isBurning = true;
         _spreadTimer = _settings.SpreadIntervalSeconds;
         _fireHealth = _settings.FireInitialHealth;
-        _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
-        _fireEffect.transform.localScale *= _fireEffectScale;
+        SpawnFireFX();
     }
 
+    [Button]
     private void Extinguish()
     {
         _isBurning = false;
         _fireHealth = 0.0f;
         _spreadTimer = 0.0f;
+        ReleaseFireFX();
+    }
+
+    private void IgniteNeighbors()
+    {
+        // TODO: use layermask to filter non-flammable results
+        int neighborCount = Physics.OverlapSphereNonAlloc(transform.position, _settings.SpreadRadius, _overlapResults);
+
+        for (int i = 0; i < neighborCount; i++)
+        {
+            var collider = _overlapResults[i];
+
+            if (collider == _collider) { continue; }
+
+            if (s_instances.TryGetValue(collider.gameObject, out Flammable flammable))
+            {
+                flammable.TryIgnite();
+            }
+        }
+    }
+
+    // TODO: use object pooling
+    private void SpawnFireFX()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
+        _fireEffect = Instantiate(_settings.FirePrefab, _firePivot.position, Quaternion.identity);
+        _fireEffect.transform.localScale *= _fireEffectScale;
+    }
+
+    private void ReleaseFireFX()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { return; }
+#endif
         Destroy(_fireEffect);
     }
 }

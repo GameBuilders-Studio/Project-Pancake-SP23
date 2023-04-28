@@ -45,7 +45,6 @@ public class PlayerInputHandler : MonoBehaviour
             if (InputManager.GetInputActionsByIndex(PlayerIndex, out _actions))
             {
                 _isManaged = true;
-                CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
                 OnActionsAssigned();
             }
 
@@ -83,9 +82,20 @@ public class PlayerInputHandler : MonoBehaviour
         _actions.UI.SetCallbacks(instance);
     }
 
+    public void SetCallbacks(PlayerInputActions.IInGameUIActionActions instance)
+    {
+        if (_actions == null)
+        {
+            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
+            return;
+        }
+        _actions.InGameUIAction.SetCallbacks(instance);
+    }
+
     private void OnActionsAssigned()
     {
         Debug.Log($"Assigned input to Player {PlayerIndex}");
+        CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
         InputActionsAssigned?.Invoke();
     }
 

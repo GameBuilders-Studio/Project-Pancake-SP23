@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CustomAttributes;
 using UnityEngine;
 
 public class FoodContainer : InteractionBehaviour, ICombinable
@@ -9,11 +10,16 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField]
     private List<Ingredient> _ingredients = new();
 
+    [SerializeField, Required]
+    private Transform _ingredientModelParent;
+
     public int Count => _ingredients.Count;
     public int Capacity => _containerSettings.Capacity;
 
     public bool IsFull => _ingredients.Count == Capacity;
     public bool IsEmpty => _ingredients.Count == 0;
+
+    private Dictionary<Ingredient, GameObject> _ingredientModels = new(); // Stores the models for each ingredient currently in the container
 
     public List<Ingredient> Ingredients
     {
@@ -48,17 +54,23 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
             return false;
         }
-        
+
         return false;
     }
 
-    public bool TryAddIngredientProp(IngredientProp ingredient)
+    public bool TryAddIngredientProp(IngredientProp ingredientProp)
     {
-        if (!ValidateIngredient(ingredient.Data)) { return false; }
+        if (!ValidateIngredient(ingredientProp.Ingredient)) { return false; }
 
-        AddIngredient(ingredient.Data);
-        Destroy(ingredient.gameObject);
-        
+        Ingredient ingredient = ingredientProp.Ingredient;
+        AddIngredient(ingredient);
+        // Instantiate a model for the ingredient and display it in the container
+        GameObject ingredientModel = Instantiate(ingredient.Data.platedModels[ingredient.State], _ingredientModelParent);
+        _ingredientModels.Add(ingredient, ingredientModel);
+        // Position the model in the container
+        ingredientModel.transform.localPosition = Vector3.zero;
+        Destroy(ingredientProp.gameObject);
+
         return true;
     }
 
@@ -68,14 +80,21 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     public bool TryTransferIngredients(FoodContainer other)
     {
         if (Count >= Capacity) { return false; }
-        
+
         if (!ValidateTransfer(other)) { return false; }
-        
+
         bool didTransfer = false;
 
         while (Count < Capacity && other.Count > 0)
         {
-            AddIngredient(other.PopIngredient());
+            // Move the model from the other container to this container   
+            Ingredient otherIngredient = other.PopIngredient();
+            // Add the model to this container
+            GameObject ingredientModel = Instantiate(otherIngredient.Data.platedModels[otherIngredient.State], _ingredientModelParent);
+            _ingredientModels.Add(otherIngredient, ingredientModel);
+            // Position the model in the container
+            ingredientModel.transform.localPosition = Vector3.zero;
+            AddIngredient(otherIngredient);
             didTransfer = true;
         }
 
@@ -84,19 +103,43 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     public void ClearIngredients()
     {
+        // Destroy all ingredient models
+        foreach (GameObject ingredientModel in _ingredientModels.Values)
+        {
+            Destroy(ingredientModel);
+        }
+        _ingredientModels.Clear();
         Ingredients.Clear();
+        OnIngredientsChanged();
     }
 
     public Ingredient PopIngredient()
     {
         Ingredient ingredient = Ingredients[Count - 1];
+        // Remove the model from this container
+        GameObject ingredientModel = _ingredientModels[ingredient];
+        _ingredientModels.Remove(ingredient);
+        Destroy(ingredientModel);
+        // Remove the ingredient from the container
         Ingredients.RemoveAt(Count - 1);
         return ingredient;
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
-        return _containerSettings.IsIngredientAllowed(ingredient);
+        // if the ingredient is not allowed in this container or is not complete, return false
+        if (!_containerSettings.IsIngredientAllowed(ingredient) || !ingredient.ProgressComplete)
+        {
+            return false;
+        }
+
+        // If the ingredient does not have a plated model for its current state, return false
+        if (!ingredient.Data.platedModels.ContainsKey(ingredient.State))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -115,6 +158,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     protected virtual void OnIngredientsChanged()
     {
         // modify visuals
+
+
     }
 
     private void AddIngredient(Ingredient ingredient)

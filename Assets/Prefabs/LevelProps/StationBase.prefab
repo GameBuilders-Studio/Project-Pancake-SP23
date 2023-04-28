@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807fa7d1f6cc7804dafc5c4d2bacbb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 6724278394014653120}
+  Collection: {fileID: 6724278394014653120}
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 6724278394014653120}
+  Collection: {fileID: 6724278394014653120}
   _nearbyTrigger: {fileID: 5436622889255518100}
   _highlightBehaviour: {fileID: 195078305573947851}
   _highlightOnHover: 1
@@ -181,30 +181,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Behaviours:
+  _behaviours:
   - {fileID: 4134685410734081310}
   - {fileID: 3105630587809780605}
   - {fileID: 1177871955971841851}
-  Interfaces:
-  - ICombinable
-  - IHasCarryable
-  _typeToBehaviourSerialized:
-    m_keys:
-    - typeId: Station, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 4134685410734081310}
-    - {fileID: 3105630587809780605}
-    - {fileID: 1177871955971841851}
-  _typeToInterfaceSerialized:
-    m_keys:
-    - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 4134685410734081310}
-    - {fileID: 4134685410734081310}
-  _noDuplicates: 1
+  _interfaces:
+  - {fileID: 4134685410734081310}
+  - {fileID: 4134685410734081310}
+  _behaviourTypes:
+  - typeId: Station, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _interfaceTypes:
+  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  NoDuplicates: 1
 --- !u!114 &1177871955971841851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ba308627a7435478c4ce87f0ba9b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 6724278394014653120}
+  Collection: {fileID: 6724278394014653120}
   _settings: {fileID: 11400000, guid: fc67363a84186a44fb84a3e31c3033f0, type: 2}
   _firePivot: {fileID: 3371915549144759701}
   _fireEffectScale: 1
@@ -268,7 +259,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.7, y: 1.3, z: 2.7}
+  m_Size: {x: 2.55, y: 1.3, z: 2.55}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5436622889255518100
 MonoBehaviour:

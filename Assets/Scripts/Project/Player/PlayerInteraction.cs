@@ -3,35 +3,48 @@ using UnityEngine;
 using EasyCharacterMovement;
 using CustomAttributes;
 
+[SelectionBase]
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField]
+    [Tooltip("A managed list of nearby game objects with the Selectable component")]
     private List<Selectable> _nearby;
 
     [SerializeField]
+    [Tooltip("The item currently being held by this player.")]
     private Carryable _heldItem = null;
 
-    [Tooltip("Transform to place carried items in")]
     [SerializeField]
+    [Tooltip("Transform to place carried items in.")]
     [Required]
     private Transform _carryPivot;
 
     [SerializeField]
+    [Tooltip("The ProxyTrigger used to detect and automatically catch thrown items.")]
     [Required]
     private ProxyTrigger _catchTrigger;
 
-    [Tooltip("Angle range in front of player to check for selectables")]
-    [Range(0f, 180f)]
     [SerializeField]
+    [Tooltip("Angle range in front of player to check for selectables.")]
+    [Range(0.01f, 180f)]
     private float _selectAngleRange;
+
+    [SerializeField]
+    [Tooltip("Angle range in front of player to check for carryables.")]
+    [Range(0.01f, 180f)]
+    private float _carryableAngleRange;
+
+    [SerializeField]
+    private bool _isCarrying = false;
 
     private CharacterMovement _character;
     private Selectable _hoverTarget = null;
     private IUsable _lastUsed;
 
-    private bool _isCarrying = false;
-
     public bool IsCarrying => _isCarrying;
+
+    private const float StationAdjacencyThreshold = 0.65f;
+    private const float AngleEpsilon = 15f;
 
     public List<Selectable> Nearby
     {
@@ -71,11 +84,6 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (IsCarrying)
-        {
-            DepenetrateHeldItem();
-        }
-
         var selectable = GetBestSelectable();
 
         // deselect previous target
@@ -92,6 +100,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             HoverTarget = null;
+
             // stop interacting if nothing is selected
             if (_lastUsed != null)
             {
@@ -149,16 +158,14 @@ public class PlayerInteraction : MonoBehaviour
             if (combinable.TryCombineWith(_heldItem))
             {
                 ReleaseItem();
-                return;
             }
+            return;
         }
-
-        DropItem();
     }
 
     public void PickUpItem(Carryable item)
     {
-        if (IsCarrying)
+        if (_isCarrying)
         {
             Debug.LogError("Tried to pick up item while already carrying one");
             return;
@@ -178,37 +185,68 @@ public class PlayerInteraction : MonoBehaviour
         go.transform.localRotation = Quaternion.identity;
     }
 
-    public void OnUseStart()
+    /// <summary>
+    /// Returns true if the player is allowed to turn in place while using.
+    /// </summary>
+    public bool OnUseStart()
     {
-        if (HoverTarget == null) { return; }
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
+        {
+            if (!heldUsable.Enabled) { return true; }
+            heldUsable.OnUseStart();
+            return true;
+        }
 
-        if (IsCarrying) { return; }
+        if (HoverTarget == null) { return false; }
 
         if (HoverTarget.TryGetInterface(out IUsable usable))
         {
-            if (!usable.Enabled) { return; }
+            if (!usable.Enabled) { return false; }
             usable.OnUseStart();
             _lastUsed = usable;
         }
+
+        return false;
     }
 
     public void OnUseEnd()
     {
+        if (_isCarrying && _heldItem.TryGetInterface(out IUsableWhileCarried heldUsable))
+        {
+            heldUsable.OnUseEnd();
+            return;
+        }
+
         if (_lastUsed != null)
         {
             _lastUsed.OnUseEnd();
             _lastUsed = null;
         }
-        else if (IsCarrying && _heldItem.CanThrow)
+        else if (_isCarrying && _heldItem.CanThrow)
         {
             ThrowItem();
+        }
+    }
+
+    public void TryDropItem()
+    {
+        if (IsCarrying)
+        {
+            DropItem();
         }
     }
 
     private void DropItem()
     {
         _heldItem.OnDrop();
+
         _heldItem.transform.parent = null;
+
+        if (_heldItem.TryGetInterface(out IUsableWhileCarried usable))
+        {
+            usable.OnUseEnd();
+        }
+
         ReleaseItem();
     }
 
@@ -235,7 +273,7 @@ public class PlayerInteraction : MonoBehaviour
 
     // TODO: move to separate class
     /// <summary>
-    /// Chooses the best selectable based on the player's current position and rotation
+    /// Chooses the best selectable with various heuristics, including player position and rotation.
     /// </summary>
     private Selectable GetBestSelectable()
     {
@@ -248,44 +286,60 @@ public class PlayerInteraction : MonoBehaviour
 
         Selectable bestSelectable = null;
         float minAngle = Mathf.Infinity;
-        float bestScore = -1.0f;
 
-        foreach (var nearby in Nearby)
+        bool skipAllExceptCarryable = false;
+
+        foreach (var item in Nearby)
         {
-            if (!nearby.IsSelectable) { continue; }
+            if (!item.IsSelectable) { continue; }
 
-            float angle = Angle2D(transform.forward, nearby.transform.position - transform.position);
+            // first, check if the item is in front of the player
+            float angle = Angle2D(transform.forward, item.transform.position - transform.position);
             if (angle > _selectAngleRange) { continue; }
 
-            float score = 0.0f;
-
-            // if not carrying anything, prefer:
-            // a) IUsable
-            // b) IHasCarryable
-
-            // // if carrying, prefer:
-            // // a) Stations
-            // // b) ICombinable
-
-            // angle is the tie-breaker
-            if (angle < minAngle)
+            if (_isCarrying)
             {
-                minAngle = angle;
-                score += Mathf.Min(1 - (angle / _selectAngleRange), 0.999f);
+                if (item.HasBehaviour<Carryable>())
+                {
+                    // ignore this item unless the held item can be combined with it
+                    if (!(_heldItem.HasBehaviour<IngredientProp>() && item.HasBehaviour<FoodContainer>()))
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                // prefer carryables
+                if (item.HasBehaviour<Carryable>())
+                {
+                    if (!skipAllExceptCarryable && angle < _carryableAngleRange)
+                    {
+                        skipAllExceptCarryable = true;
+                        minAngle = Mathf.Infinity;
+                    }
+                }
             }
 
-            if (score > bestScore)
+            if (item.HasBehaviour<Station>())
             {
-                bestScore = score;
-                bestSelectable = nearby;
+                // check if the player is adjacent to the station
+                bool isNearbyX = Mathf.Abs(transform.position.x - item.transform.position.x) < StationAdjacencyThreshold;
+                bool isNearbyZ = Mathf.Abs(transform.position.z - item.transform.position.z) < StationAdjacencyThreshold;
+
+                if (!(isNearbyX ^ isNearbyZ))
+                {
+                    continue;
+                }
+            }
+
+            if (angle < minAngle && Mathf.Abs(angle - minAngle) > AngleEpsilon)
+            {
+                minAngle = angle;
+                bestSelectable = item;
             }
         }
 
         return bestSelectable;
-    }
-
-    private void DepenetrateHeldItem()
-    {
-        // use _character to resolve collision between _heldItem and walls
     }
 }

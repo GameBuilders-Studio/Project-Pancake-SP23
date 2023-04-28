@@ -28,6 +28,7 @@ namespace CustomAttributes.Editor
             }
 
             var curveRangeAttribute = (CurveRangeAttribute)attribute;
+
             var curveRanges = new Rect(
                 curveRangeAttribute.Min.x,
                 curveRangeAttribute.Min.y,

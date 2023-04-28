@@ -15,7 +15,7 @@ public class Selectable : InteractionBehaviour
 
     [SerializeField]
     private HighlightBehaviour _highlightBehaviour;
-    
+
     [SerializeField]
     private bool _highlightOnHover = true;
 
@@ -33,13 +33,13 @@ public class Selectable : InteractionBehaviour
 
     void OnValidate()
     {
-        if (_nearbyTrigger == null) 
+        if (_nearbyTrigger == null)
         {
-            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume"); 
+            _nearbyTrigger = ProxyTrigger.FindByName(gameObject, "NearbyVolume");
         }
-        if (_highlightBehaviour == null) 
+        if (_highlightBehaviour == null)
         {
-            _highlightBehaviour = GetComponent<HighlightBehaviour>(); 
+            _highlightBehaviour = GetComponent<HighlightBehaviour>();
         }
     }
 
@@ -53,7 +53,7 @@ public class Selectable : InteractionBehaviour
     {
         _nearbyTrigger.Enter -= OnProxyTriggerEnter;
         _nearbyTrigger.Exit -= OnProxyTriggerExit;
-        
+
         foreach (var managedList in NearbyObjects.Values)
         {
             managedList.Remove(this);
@@ -72,7 +72,7 @@ public class Selectable : InteractionBehaviour
     {
         NearbyObjects.Remove(gameObject);
     }
-    
+
     public void SetSelectState(SelectState state)
     {
         if (state == SelectState.Default)

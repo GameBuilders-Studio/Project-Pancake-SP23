@@ -21,8 +21,10 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     public Carryable PlacedItem
     {
         get => _placedItem;
-        protected set => _placedItem = value;
+        set => _placedItem = value;
     }
+
+    public bool HasItem => _placedItem != null;
 
     void OnValidate()
     {
@@ -36,8 +38,13 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
             _controller = GetComponent<StationController>();
         }
 
-        if (_placedItem == null) { return; }
-        CenterObject(_placedItem);
+        if (_controller != null)
+        {
+            _controller.Station = this;
+            if (_placedItem == null) { return; }
+            CenterObject(_placedItem);
+        }
+        
     }
 
     void OnEnable()
@@ -60,9 +67,9 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
     public Carryable PopCarryable()
     {
-        var item = PlacedItem;
+        var item = _placedItem;
         _controller.ItemRemoved(ref item);
-        PlacedItem = null;
+        _placedItem = null;
         return item;
     }
 
@@ -73,17 +80,18 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
     {
         if (!other.TryGetBehaviour(out Carryable carryable)) { return false; }
 
-        if (_placedItem == null)
+        if (!_controller.ValidateItem(carryable))
         {
-            if (!_controller.ValidateItem(carryable))
-            {
-                return false; 
-            }
+            return false; 
+        }
+
+        if (!HasItem)
+        {
             PlaceItem(carryable);
             return true;
         }
 
-        if (PlacedItem.TryGetInterface(out ICombinable combinable))
+        if (_placedItem.TryGetInterface(out ICombinable combinable))
         {
             return combinable.TryCombineWith(other);
         }
@@ -102,13 +110,27 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
     public void PlaceItem(Carryable item)
     {
-        _placedItem = item;
-
         item.OnPlace();
 
-        CenterObject(item);
-        
+        _controller.PositionItem(ref item, _itemHolderPivot);
+
         _controller.ItemPlaced(ref item);
+
+        _placedItem = item;
+    }
+
+    /// <summary>
+    /// Returns true if the item can be caught by the Station
+    /// </summary>
+    private void TryCatchItem(Collider other)
+    {
+        if (!Carryable.TryGetCarryable(other.gameObject, out Carryable item)) { return; }
+
+        if (!item.PhysicsEnabled) { return; }
+
+        item.CancelThrow();
+
+        TryCombineWith(item);
     }
 
     private void CenterObject(Carryable item)
@@ -117,19 +139,5 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
         go.transform.SetParent(_itemHolderPivot);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
-    }
-
-    /// <summary>
-    /// Returns true if the item can be caught by the Station
-    /// </summary>
-    private void TryCatchItem(Collider other)
-    {
-        if (!other.TryGetComponent(out Carryable item)) { return; }
-
-        if (!item.PhysicsEnabled) { return; }
-
-        item.CancelThrow();
-
-        TryCombineWith(item);
     }
 }

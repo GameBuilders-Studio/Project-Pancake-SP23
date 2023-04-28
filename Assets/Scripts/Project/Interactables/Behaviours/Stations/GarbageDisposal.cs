@@ -14,6 +14,7 @@ public class GarbageDisposal : StationController
             container.ClearIngredients();
             return false;
         }
-        return true;
+
+        return item.HasBehaviour<IngredientProp>();
     }
 }

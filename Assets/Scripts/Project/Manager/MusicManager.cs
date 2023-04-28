@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using GameBuilders.Singleton;
 
 [System.Serializable]
 public class MusicDictionary : SerializableDictionary<string, AudioClip> { }
