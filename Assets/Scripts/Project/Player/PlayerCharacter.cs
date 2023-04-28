@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using EasyCharacterMovement;
 
-
 [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
 public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControlsActions
 {

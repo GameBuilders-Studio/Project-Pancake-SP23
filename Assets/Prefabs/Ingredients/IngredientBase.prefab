@@ -57,7 +57,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7605582599296834493
 GameObject:
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafb0a07717de5c499a25933f2bf802a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 446099049515487953}
+  Collection: {fileID: 446099049515487953}
   _nearbyTrigger: {fileID: 7605582599255157724}
   _highlightBehaviour: {fileID: 1055438650720953735}
   _highlightOnHover: 1
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 446099049515487953}
+  Collection: {fileID: 446099049515487953}
   _throwSettings: {fileID: 11400000, guid: b190fc41700cdff4d93a2f993db2b0ab, type: 2}
   _gravityScale: 2.5
   _selectable: {fileID: 3111386382994811259}
@@ -255,29 +255,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Behaviours:
+  _behaviours:
   - {fileID: 3111386382994811259}
   - {fileID: 3857198461237242431}
   - {fileID: 4778439782488913873}
-  Interfaces:
-  - IHasCarryable
-  _typeToBehaviourSerialized:
-    m_keys:
-    - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: CubeIngredient, Ingredients, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - typeId: IngredientProp, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 3111386382994811259}
-    - {fileID: 3857198461237242431}
-    - {fileID: 4778439782488913873}
-    - {fileID: 4778439782488913873}
-  _typeToInterfaceSerialized:
-    m_keys:
-    - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_values:
-    - {fileID: 3857198461237242431}
-  _noDuplicates: 1
+  - {fileID: 4778439782488913873}
+  _interfaces:
+  - {fileID: 3857198461237242431}
+  _behaviourTypes:
+  - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: CubeIngredient, Ingredients, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IngredientProp, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _interfaceTypes:
+  - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  NoDuplicates: 1
 --- !u!114 &4778439782488913873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,11 +282,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20500767bf3dc445a81427ffab04d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entity: {fileID: 446099049515487953}
+  Collection: {fileID: 446099049515487953}
   _progressIndicator: 0
-  _ingredientData:
+  _ingredient:
     Data: {fileID: 0}
-    State: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
+    State: {fileID: 0}
     Progress: 0
+  _stateToModel:
+    m_keys: []
+    m_values: []
   _startColor: {r: 0, g: 0, b: 0, a: 0}
   _endColor: {r: 0.88034004, g: 0.4481132, b: 1, a: 0}
