@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.Events;
 public class CuttingBoard : StationController, IUsable
 {
     [SerializeField]
@@ -14,15 +14,18 @@ public class CuttingBoard : StationController, IUsable
     private bool _interacting = false;
     private bool _ingredientExists = false;
     private IngredientProp _ingredient;
-
+    public UnityEvent choppedEvent;
     bool IUsable.Enabled
     {
         get => _ingredientExists && !_ingredient.ProgressComplete;
     }
-
+    private void Awake()
+    {
+        choppedEvent += Chop;
+    }
     void Update()
     {
-        if (_interacting) { Chop(); }
+        if (_interacting) { choppedEvent.Invoke};
     }
 
     public void OnUseStart() => _interacting = true;
@@ -57,4 +60,5 @@ public class CuttingBoard : StationController, IUsable
         _ingredient.SetState(_targetIngredientState);
         _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
     }
+    
 }
