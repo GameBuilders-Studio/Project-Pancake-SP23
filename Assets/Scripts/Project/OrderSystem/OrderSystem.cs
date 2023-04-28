@@ -73,6 +73,11 @@ public class OrderSystem : MonoBehaviour
         return _currentOrders[index];
     }
 
+    public void isFirst()
+    {
+        
+    }
+
     /// <summary>
     /// Checks for a matching order with the the highest priority (lowest time remaining) from the orders list and removes it.
     /// Returns true if a matching order is found, false otherwise.
