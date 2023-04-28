@@ -22,8 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Wood
   m_Shader: {fileID: -6465566751694194690, guid: babdd80ad3d0618488b106fc75f2ac2d, type: 3}
-  m_ValidKeywords:
-  - _SPECULAR_SETUP
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -134,20 +133,20 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Height_Scale: 0
+    - _Height_Scale: 0.05
     - _Hue_Offset: 0
     - _Mask_Threshold: 1.08
     - _Max_Fill_Clamp: 0.38
     - _Metallic: 0
     - _Noise_Speed: 1.24
-    - _Normal_Scale: 0
+    - _Normal_Scale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius_Exponent: 1
     - _ReceiveShadows: 1
-    - _Saturation: 1.488
+    - _Saturation: 1.375
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -157,7 +156,7 @@ Material:
     - _UV_Scale: 1
     - _Use_Highlight_Shader: 0
     - _Value_Offset: 0
-    - _WorkflowMode: 0
+    - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0

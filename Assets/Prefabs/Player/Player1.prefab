@@ -191,6 +191,7 @@ MonoBehaviour:
   _carryPivot: {fileID: 8535102853265519827}
   _catchTrigger: {fileID: 3120754633071527459}
   _selectAngleRange: 65
+  _isCarrying: 0
 --- !u!114 &437684384809171815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,10 +477,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6652725513331149018, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ffb8bf017f5cb643a13fc3c931d1cfd, type: 2}
+    - target: {fileID: -6652725513331149018, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 44e49305828769e4aa787616a99a6e63, type: 2}
+    - target: {fileID: -4157524182732408741, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ffb8bf017f5cb643a13fc3c931d1cfd, type: 2}
+    - target: {fileID: -4157524182732408741, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b9c77a0f608713e48aff370bc41c811d, type: 2}
     - target: {fileID: 919132149155446097, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
       propertyPath: m_Name
       value: ladybug
       objectReference: {fileID: 0}
+    - target: {fileID: 7826791052257336528, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b95afa6b8d895045b0a2f7be7851f05, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1f6dc100c555b4aa92f12c974b4258, type: 3}
 --- !u!4 &691674572775639278 stripped
