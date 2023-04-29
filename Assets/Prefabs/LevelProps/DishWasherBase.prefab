@@ -18,8 +18,9 @@ GameObject:
   - component: {fileID: 3105630587809780605}
   - component: {fileID: 6724278394014653120}
   - component: {fileID: 1177871955971841851}
+  - component: {fileID: 8926517116837820515}
   m_Layer: 0
-  m_Name: StationBase
+  m_Name: DishWasherBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +72,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0a8e4212a188db4449577658b48d06a1, type: 2}
+  - {fileID: 2100000, guid: f1aa143a8bb3c344c87c7cb6fccdf1bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +152,7 @@ MonoBehaviour:
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
-  _controller: {fileID: 0}
+  _controller: {fileID: 8926517116837820515}
 --- !u!114 &3105630587809780605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,16 +186,22 @@ MonoBehaviour:
   - {fileID: 4134685410734081310}
   - {fileID: 3105630587809780605}
   - {fileID: 1177871955971841851}
+  - {fileID: 8926517116837820515}
+  - {fileID: 8926517116837820515}
   _interfaces:
   - {fileID: 4134685410734081310}
   - {fileID: 4134685410734081310}
+  - {fileID: 8926517116837820515}
   _behaviourTypes:
   - typeId: Station, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: Sink, NewAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: StationController, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _interfaceTypes:
   - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: IUsable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   NoDuplicates: 1
 --- !u!114 &1177871955971841851
 MonoBehaviour:
@@ -215,6 +222,23 @@ MonoBehaviour:
   _isBurning: 0
   _fireHealth: 0
   _collider: {fileID: 1126139912628277123}
+--- !u!114 &8926517116837820515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3751d74689582d14fb330a8c1586be57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Collection: {fileID: 6724278394014653120}
+  _dirtyDishCount: 0
+  _maxDishWashTime: 3
+  _currentDishWashTime: 0
+  _dishStack: {fileID: 0}
 --- !u!1 &1865062751841588484
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +283,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.55, y: 1.3, z: 2.55}
+  m_Size: {x: 2.7, y: 1.3, z: 2.7}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5436622889255518100
 MonoBehaviour:

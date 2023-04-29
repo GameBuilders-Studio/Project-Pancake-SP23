@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace GameBuilders.Events
 {
     [CustomEditor(typeof(GameEvent), true)]
@@ -45,3 +46,4 @@ namespace GameBuilders.Events
         }
     }
 }
+#endif
