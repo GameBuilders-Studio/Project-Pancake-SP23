@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using EasyCharacterMovement;
 using CustomAttributes;
 
@@ -42,6 +43,10 @@ public class PlayerInteraction : MonoBehaviour
     private IUsable _lastUsed;
 
     public bool IsCarrying => _isCarrying;
+
+    public event UnityAction DashEvent;
+    public event UnityAction PickUpItemEvent;
+    public event UnityAction PlaceItemEvent;
 
     private const float StationAdjacencyThreshold = 0.65f;
     private const float AngleEpsilon = 15f;
@@ -158,6 +163,7 @@ public class PlayerInteraction : MonoBehaviour
             if (combinable.TryCombineWith(_heldItem))
             {
                 ReleaseItem();
+                PlaceItemEvent?.Invoke();
             }
             return;
         }
@@ -183,6 +189,8 @@ public class PlayerInteraction : MonoBehaviour
         go.transform.parent = _carryPivot;
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
+
+        PickUpItemEvent?.Invoke();
     }
 
     /// <summary>
@@ -226,6 +234,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             ThrowItem();
         }
+    }
+
+    public void OnDash()
+    {
+        DashEvent?.Invoke();
     }
 
     public void TryDropItem()

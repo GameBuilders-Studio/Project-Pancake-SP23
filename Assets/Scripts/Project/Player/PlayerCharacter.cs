@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using EasyCharacterMovement;
 
 [RequireComponent(typeof(CharacterMovement), typeof(PlayerInteraction))]
@@ -500,7 +501,7 @@ public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControls
         if (context.started || context.performed)
         {
             BeginDash();
-        } 
+        }
     }
 
     public void OnPickUp(InputAction.CallbackContext context)
@@ -1304,6 +1305,8 @@ public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControls
             SetRotation(Quaternion.LookRotation(GetMovementDirection().normalized, GetUpVector()));
 
         SetMovementMode(MovementMode.Dash);
+
+        _playerInteraction.OnDash();
     }
 
     /// <summary>
