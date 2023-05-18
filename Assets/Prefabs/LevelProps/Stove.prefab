@@ -12,12 +12,24 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.582649
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.483
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bc9f51d2f25ae1e7689b922bcf8db0ee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -216,6 +228,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7f01747f149e04db60f3942c51e7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4660176406963723286 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+  m_PrefabInstance: {fileID: 8776706128838990088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8533694510245877386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807fa7d1f6cc7804dafc5c4d2bacbb66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5968524227652635253 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3105630587809780605, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
@@ -245,6 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collection: {fileID: 2638106814761321416}
+  Station: {fileID: 4660176406963723286}
   _cookTimePerIngredient: 5
   _overcookTime: 10
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
