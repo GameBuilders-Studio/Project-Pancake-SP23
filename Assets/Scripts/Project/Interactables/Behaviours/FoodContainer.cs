@@ -28,7 +28,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         GameObject tooltipObject = Instantiate(Resources.Load<GameObject>("TooltipUI"));
         _tooltip = tooltipObject.GetComponent<Tooltip>();
-        Debug.Log("here, creating tooltip");
+        _tooltip._target = gameObject.transform;
         Transform transform = GameObject.Find("Canvas").transform;
         if (transform == null)
         {
@@ -38,6 +38,12 @@ public class FoodContainer : InteractionBehaviour, ICombinable
             tooltipObject.transform.SetParent(transform, false);
         }
     }
+
+    public void OnDestroy()
+    {
+        Destroy(_tooltip.gameObject);
+    }
+
     public List<Ingredient> Ingredients
     {
         get => _ingredients;

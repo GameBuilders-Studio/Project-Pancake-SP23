@@ -4,7 +4,7 @@ using CustomAttributes;
 public class Tooltip : MonoBehaviour
 {
 
-    [SerializeField, Required] private Transform _target;
+    [SerializeField, Required] public Transform _target;
     [SerializeField] private Vector3 _offset;
     [SerializeField, Required] private GameObject _ingredientIconPrefab;
     [SerializeField, Required] private GameObject _itemsPanel;
@@ -16,6 +16,10 @@ public class Tooltip : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (_target == null)
+        {
+            return;
+        }
         Vector3 position = _camera.WorldToScreenPoint(_target.position + _offset);
         transform.position = position;
     }
