@@ -39,11 +39,6 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
     }
 
-    public void OnDestroy()
-    {
-        Destroy(_tooltip.gameObject);
-    }
-
     public List<Ingredient> Ingredients
     {
         get => _ingredients;
