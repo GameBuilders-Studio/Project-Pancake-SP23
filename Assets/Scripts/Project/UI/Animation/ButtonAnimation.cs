@@ -4,9 +4,12 @@ using DG.Tweening;
 
 public class ButtonAnimation : MonoBehaviour
 {
-    public Button button;
-    public Vector3 biggerScale = new Vector3(1.2f, 1.2f, 1.2f);
-    public float duration = 1f;
+    [SerializeField]
+    private Button button;
+    [SerializeField]
+    private Vector3 biggerScale = new Vector3(1.2f, 1.2f, 1.2f);
+    [SerializeField]
+    private float duration = 1f;
 
     private Tweener tweener;
 
