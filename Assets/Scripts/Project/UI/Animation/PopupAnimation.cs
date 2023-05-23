@@ -3,9 +3,12 @@ using DG.Tweening;
 
 public class PopupAnimation : MonoBehaviour
 {
-    public RectTransform panel;
-    public float animationDuration = 0.5f;
-    public float scale;
+    [SerializeField]
+    private RectTransform panel;
+    [SerializeField]
+    private float animationDuration = 0.5f;
+    [SerializeField]
+    private float scale;
     void Start()
     {
         // Assume the panel is initially invisible (scaled down to zero)

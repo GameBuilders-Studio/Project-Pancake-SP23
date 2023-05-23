@@ -6,7 +6,9 @@ public class TextAnimation : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text textObject;
+    [SerializeField]
     private float animationDuration = 1f;
+    [SerializeField]
     private Vector3 maxScale = new Vector3(1.1f, 1.1f, 1.1f);
 
 
