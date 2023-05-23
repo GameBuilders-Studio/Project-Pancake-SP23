@@ -16,6 +16,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField, Required]
     private Tooltip _tooltip;
 
+    [SerializeField, Required]
+    private GameObject _tooltipPrefab;
     public int Count => _ingredients.Count;
     public int Capacity => _containerSettings.Capacity;
 
@@ -26,16 +28,24 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     public void Start()
     {
-        GameObject tooltipObject = Instantiate(Resources.Load<GameObject>("TooltipUI"));
+        GameObject tooltipObject = Instantiate(_tooltipPrefab);
         _tooltip = tooltipObject.GetComponent<Tooltip>();
-        _tooltip._target = gameObject.transform;
+        _tooltip._target = gameObject.transform; // Set the target of the tooltip to this object
         Transform transform = GameObject.Find("Canvas").transform;
         if (transform == null)
         {
             Debug.LogError("Canvas not found in FoodContainer.cs");
         } else
         {
-            tooltipObject.transform.SetParent(transform, false);
+            tooltipObject.transform.SetParent(transform, false); // Set the parent of the tooltip to the HUD canvas
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_tooltip != null)
+        {
+            Destroy(_tooltip.gameObject);
         }
     }
 
