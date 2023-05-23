@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
@@ -10,27 +12,20 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "New Order Data", menuName = "Order Data")]
 public class OrderData : ScriptableObject
 {
-    [SerializeField]
-    private LevelOrderListDictionary _orders;
-
-    public LevelOrderListDictionary Orders
+    private Dictionary<int, List<Order>> _orders;
+    public Dictionary<int, List<Order>> Orders
     {
         get { return _orders; }
     }
+
+    [SerializeField] private List<GameObject> listOrders;
+
+    public void Initialize()
+    {
+        _orders = new Dictionary<int, List<Order>>
+        {
+            [0] = listOrders.Select(x => x.GetComponent<Order>()).ToList(),
+            [1] = listOrders.Select(x => x.GetComponent<Order>()).ToList()
+        };
+    }
 }
-
-[System.Serializable]
-public class OrderListStorage : SerializableDictionary.Storage<List<Order>> { }
-
-[System.Serializable]
-public class LevelOrderListDictionary : SerializableDictionary<int, List<Order>, OrderListStorage> { }
-
-#if UNITY_EDITOR
-
-[CustomPropertyDrawer(typeof(LevelOrderListDictionary))]
-public class ListSerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer { }
-
-[CustomPropertyDrawer(typeof(OrderListStorage))]
-public class ListStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer { }
-
-#endif

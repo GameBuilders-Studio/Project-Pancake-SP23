@@ -21,10 +21,7 @@ public class OrderSystem : MonoBehaviour
     private void Awake()
     {
         //Load original sequence of orders for the current level
-        foreach (Order order in _orderData.Orders[_currentLevel])
-        {
-            _orderQueue.Enqueue(order);
-        }
+
     }
 
     private void OnEnable()
@@ -40,6 +37,11 @@ public class OrderSystem : MonoBehaviour
 
     private void Start()
     {
+        _orderData.Initialize();
+        foreach (Order order in _orderData.Orders[_currentLevel])
+        {
+            _orderQueue.Enqueue(order);
+        }
         StartCoroutine(StartLevelCoroutine());
     }
     public void AddOrder(Order order)
