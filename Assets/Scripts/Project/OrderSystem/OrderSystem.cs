@@ -37,8 +37,7 @@ public class OrderSystem : MonoBehaviour
 
     private void Start()
     {
-        _orderData.Initialize();
-        foreach (Order order in _orderData.Orders[_currentLevel])
+        foreach (Order order in _orderData.Orders)
         {
             _orderQueue.Enqueue(order);
         }
@@ -169,8 +168,8 @@ public class OrderSystem : MonoBehaviour
             else
             {
                 //If there are no more orders in the original sequence, spawn a random order
-                int randomIndex = Random.Range(0, _orderData.Orders[_currentLevel].Count);
-                Order order = Instantiate(_orderData.Orders[_currentLevel][randomIndex]);
+                int randomIndex = Random.Range(0, _orderData.Orders.Count);
+                Order order = Instantiate(_orderData.Orders[randomIndex]);
                 _currentOrders.Add(order);
                 _orderUI.AddOrder(order);
 
