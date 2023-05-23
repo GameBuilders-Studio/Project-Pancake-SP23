@@ -18,14 +18,15 @@ public class OrderData : ScriptableObject
         get { return _orders; }
     }
 
-    [SerializeField] private List<GameObject> listOrders;
+    [SerializeField] private List<Order> listOrders;
 
     public void Initialize()
     {
         _orders = new Dictionary<int, List<Order>>
         {
-            [0] = listOrders.Select(x => x.GetComponent<Order>()).ToList(),
-            [1] = listOrders.Select(x => x.GetComponent<Order>()).ToList()
+            // this is to preserve compatibility with rest of the code
+            // in practice I intend to set Current Level to always be 0. - Revan
+            [0] = listOrders
         };
     }
 }
