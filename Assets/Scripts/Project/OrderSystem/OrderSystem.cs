@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CustomAttributes;
+using UnityEngine.SceneManagement;
 
 public class OrderSystem : MonoBehaviour
 {
@@ -12,10 +12,17 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _maxConcurrentOrders = 6; //Maximum number of orders that can be displayed at once
     [SerializeField] private int _minConcurrentOrders = 2; //Minimum number of orders that can be displayed at once
     [SerializeField] private float _stageStartDelay = 2.0f; //Delay before the first order spawns
+    [SerializeField] private ScoreUI _scoreUI;
+    [SerializeField] private SceneLoader _sceneLoader;
 
     private Coroutine _orderSpawnCoroutine;
     private List<Order> _currentOrders = new();
     private Queue<Order> _orderQueue = new();
+
+    // this is so that order system main file has absolute control over score generation
+    // this is synced with score UI
+    private int _score;
+
     public List<Order> CurrentOrders { get => _currentOrders; }
 
     private void Awake()
@@ -28,6 +35,7 @@ public class OrderSystem : MonoBehaviour
     {
         EventManager.AddListener("StartingLevel", OnStartLevel);
         EventManager.AddListener("OrderExpired", OnOrderExpired);
+        EventManager.AddListener("TimerEnded", OnFinishLevel);
     }
 
     private void OnDisable()
@@ -101,7 +109,8 @@ public class OrderSystem : MonoBehaviour
             temp.SetOrderComplete();
             temp.DespawnOrder();
 
-            EventManager.Invoke("IncrementingScore");
+            //EventManager.Invoke("IncrementingScore");
+            _score += 1;
             return true;
         }
 
@@ -195,6 +204,18 @@ public class OrderSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(_stageStartDelay);
         EventManager.Invoke("StartingLevel");
+    }
+
+    private void OnFinishLevel()
+    {
+        DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
+        _sceneLoader.LoadScene();
+    }
+
+    private void Update()
+    {
+        // :copium: - Revan
+        _scoreUI.Score = _score;
     }
 
 }

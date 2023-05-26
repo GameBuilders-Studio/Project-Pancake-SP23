@@ -50,6 +50,8 @@ MonoBehaviour:
   _orderSpawnTime: 15
   _maxConcurrentOrders: 6
   _minConcurrentOrders: 2
+  _stageStartDelay: 2
+  _scoreUI: {fileID: 3469424752934669883}
 --- !u!1 &407544748851404908
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +337,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+--- !u!114 &3469424752934669883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3855710908122575752, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+  m_PrefabInstance: {fileID: 407544748805520819}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca4f9020c13dc44a9964fe97b350d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4185200937017289758 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4590067256824484269, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
