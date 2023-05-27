@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,10 @@ public class ScoreUI : MonoBehaviour
 
     public bool GetIsWin() => _score >= ScoreToWin;
 
-    public int Score { get => _score; }
+    public int Score {
+        get => _score;
+        set => _score = value;
+    }
 
     private void Awake()
     {
@@ -42,9 +46,11 @@ public class ScoreUI : MonoBehaviour
     private void OnEnable()
     {
         EventManager.AddListener("StartingLevel", OnStartLevel);
-        EventManager.AddListener("IncrementingScore", OnScoreIncremented);
-        EventManager.AddListener("DecrementingScore", OnScoreDecremented);
-        EventManager.AddListener("TimerEnded", OnTimerEnded);
+
+        // suddenly you don't need those anymore
+        // EventManager.AddListener("IncrementingScore", OnScoreIncremented);
+        // EventManager.AddListener("DecrementingScore", OnScoreDecremented);
+        //EventManager.AddListener("TimerEnded", OnTimerEnded);
     }
 
     private void OnStartLevel()
@@ -55,35 +61,43 @@ public class ScoreUI : MonoBehaviour
         _endScreen.SetActive(false);
     }
 
-    /// <summary>
-    /// Increment score by 1 and update the score text after IncrementingScore event.
-    /// </summary>
-    private void OnScoreIncremented()
+    // /// <summary>
+    // /// Increment score by 1 and update the score text after IncrementingScore event.
+    // /// </summary>
+    // private void OnScoreIncremented()
+    // {
+    //     _score++;
+    //     UpdateScoreText();
+    // }
+    //
+    // /// <summary>
+    // /// Decrement score by 1 and update the score text after IncrementingScore event.
+    // /// </summary>
+    // private void OnScoreDecremented()
+    // {
+    //     if (_score <= 0) return;
+    //     _score--;
+    //     UpdateScoreText();
+    // }
+
+    // private void OnTimerEnded()
+    // {
+    //     _endScreen.SetActive(true);
+    //     if (GetIsWin())
+    //     {
+    //         EventManager.Invoke("Won");
+    //     }
+    //     else { EventManager.Invoke("Lost"); }
+    //
+    //     _canvasGroup.alpha = 0f;
+    // }
+
+    private void Update()
     {
-        _score++;
+        // In the future we might want to change this
+        // to only call when something is triggered
+        // for now this is fine - Revan
         UpdateScoreText();
-    }
-
-    /// <summary>
-    /// Decrement score by 1 and update the score text after IncrementingScore event.
-    /// </summary>
-    private void OnScoreDecremented()
-    {
-        if (_score <= 0) return;
-        _score--;
-        UpdateScoreText();
-    }
-
-    private void OnTimerEnded()
-    {
-        _endScreen.SetActive(true);
-        if (GetIsWin())
-        {
-            EventManager.Invoke("Won");
-        }
-        else { EventManager.Invoke("Lost"); }
-
-        _canvasGroup.alpha = 0f;
     }
 
     private void UpdateScoreText()
