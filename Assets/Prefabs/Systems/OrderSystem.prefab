@@ -52,6 +52,7 @@ MonoBehaviour:
   _minConcurrentOrders: 2
   _stageStartDelay: 2
   _scoreUI: {fileID: 3469424752934669883}
+  _sceneLoader: {fileID: 0}
 --- !u!1 &407544748851404908
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,9 +210,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3079819506013168793, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c580fbfb4bcb9c52faf32cb75ed66dcc, type: 3}
     - target: {fileID: 4590067256824484269, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
-      propertyPath: _slideLeftTime
-      value: 1
+      propertyPath: _spacing
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4590067256824484269, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: _leftPadding
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4590067256824484269, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: _slideUpYPosition
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -227,8 +240,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20
+      value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 5180418269143788307, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a2ec89fb45b6deb6c84a61c61c59845e, type: 3}
     - target: {fileID: 8959779120666044609, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -334,6 +351,10 @@ PrefabInstance:
     - target: {fileID: 8959779122081463575, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959779122081463576, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
