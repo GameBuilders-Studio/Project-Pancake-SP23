@@ -12,8 +12,6 @@ public class Order : MonoBehaviour
 
     [SerializeField] private float _orderDespawnTime = 10f;
 
-    [SerializeField, Required] private TextMeshProUGUI _orderText;
-
     [SerializeField, Required] private ProgressBar _orderProgressBar;
 
     [SerializeField, Required] private Image _panel;
@@ -35,7 +33,6 @@ public class Order : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        SetOrderText();
 
         _orderProgressBar.SetMaxValue(_startTime);
         SetTimer(_startTime);
@@ -127,11 +124,6 @@ public class Order : MonoBehaviour
             yield return null;
         }
         Destroy(gameObject);
-    }
-
-    private void SetOrderText()
-    {
-        _orderText.text = $"Recipe Name: {_recipe.RecipeName}";
     }
 
 }
