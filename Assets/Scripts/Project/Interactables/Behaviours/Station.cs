@@ -44,7 +44,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
             if (_placedItem == null) { return; }
             CenterObject(_placedItem);
         }
-        
+
     }
 
     void OnEnable()
@@ -82,7 +82,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
         if (!_controller.ValidateItem(carryable))
         {
-            return false; 
+            return false;
         }
 
         if (!HasItem)
@@ -105,7 +105,7 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
             }
         }
 
-        return false; 
+        return false;
     }
 
     public void PlaceItem(Carryable item)

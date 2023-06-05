@@ -60,12 +60,16 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     public bool TryAddIngredientProp(IngredientProp ingredientProp)
     {
-        if (!ValidateIngredient(ingredientProp.Ingredient)) { return false; }
-
+        if (!ValidateIngredient(ingredientProp.Ingredient))
+        {
+            Debug.LogError("Ingredient invalidated?");
+            return false;
+        }
+        Debug.LogError("Ingredient valid");
         Ingredient ingredient = ingredientProp.Ingredient;
         AddIngredient(ingredient);
         // Instantiate a model for the ingredient and display it in the container
-        GameObject ingredientModel = Instantiate(ingredient.Data.platedModels[ingredient.State], _ingredientModelParent);
+        GameObject ingredientModel = Instantiate(ingredientProp.StateToModel[ingredient.State], _ingredientModelParent);
         _ingredientModels.Add(ingredient, ingredientModel);
         // Position the model in the container
         ingredientModel.transform.localPosition = Vector3.zero;
@@ -75,7 +79,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     }
 
     /// <summary>
-    /// Transfer ingredients from the given container to this container 
+    /// Transfer ingredients from the given container to this container
     /// </summary>
     public bool TryTransferIngredients(FoodContainer other)
     {
@@ -87,10 +91,15 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         while (Count < Capacity && other.Count > 0)
         {
-            // Move the model from the other container to this container   
-            Ingredient otherIngredient = other.PopIngredient();
-            // Add the model to this container
-            GameObject ingredientModel = Instantiate(otherIngredient.Data.platedModels[otherIngredient.State], _ingredientModelParent);
+            // Move the model from the other container to this container
+            GameObject otherModel;
+            Ingredient otherIngredient;
+            (otherIngredient, otherModel) = other.PopIngredient();
+            // simply duplicate everything under its food anchor
+            // I'm lazy so let's just do this instead of moving the model properly
+            GameObject ingredientModel = Instantiate(otherModel, _ingredientModelParent);
+            Destroy(otherModel);
+
             _ingredientModels.Add(otherIngredient, ingredientModel);
             // Position the model in the container
             ingredientModel.transform.localPosition = Vector3.zero;
@@ -113,28 +122,24 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         OnIngredientsChanged();
     }
 
-    public Ingredient PopIngredient()
+    public (Ingredient, GameObject) PopIngredient()
     {
         Ingredient ingredient = Ingredients[Count - 1];
         // Remove the model from this container
         GameObject ingredientModel = _ingredientModels[ingredient];
         _ingredientModels.Remove(ingredient);
-        Destroy(ingredientModel);
+
         // Remove the ingredient from the container
         Ingredients.RemoveAt(Count - 1);
-        return ingredient;
+
+        //however, don't destroy the model
+        return (ingredient, ingredientModel);
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
         // if the ingredient is not allowed in this container or is not complete, return false
-        if (!_containerSettings.IsIngredientAllowed(ingredient) || !ingredient.ProgressComplete)
-        {
-            return false;
-        }
-
-        // If the ingredient does not have a plated model for its current state, return false
-        if (!ingredient.Data.platedModels.ContainsKey(ingredient.State))
+        if (!_containerSettings.IsIngredientAllowed(ingredient))
         {
             return false;
         }
@@ -147,6 +152,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
+        Debug.Break();
         // validate each ingredient by default
         for (int i = 0; i < other.Count; i++)
         {

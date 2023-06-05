@@ -9,7 +9,6 @@ public class IngredientSO : ScriptableObject
 {
     public Sprite icon;
     public GameObject prefab;
-    public StateToPrefabDictionary platedModels = new();
 }
 
 [Serializable]
