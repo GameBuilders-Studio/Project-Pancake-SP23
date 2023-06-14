@@ -34,6 +34,7 @@ public class Ingredient
         SetProgress(Mathf.Clamp01(Progress + progressDelta));
     }
 
+
     /// <summary>
     ///  Resets progress if state is changed
     /// </summary>

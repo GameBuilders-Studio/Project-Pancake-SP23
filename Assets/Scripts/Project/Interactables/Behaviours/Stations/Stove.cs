@@ -67,6 +67,7 @@ public class Stove : StationController
     // we need to cook jesse
     void Cook(Pot container)
     {
+        Debug.Log("Being cooked");
         _totalProgress = 0.0f;
 
         for (int i = 0; i < container.Count; i++)

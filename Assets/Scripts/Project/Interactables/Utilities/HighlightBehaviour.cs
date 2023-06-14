@@ -1,10 +1,9 @@
 using CustomAttributes;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
 public class HighlightBehaviour : MonoBehaviour
 {
-    [SerializeField, Required]
+    [SerializeField]
     private Renderer _renderer;
 
     protected Material _material;

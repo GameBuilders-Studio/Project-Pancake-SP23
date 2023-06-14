@@ -937,8 +937,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 086471ca33d4b294b87b2cecdd98e4fd, type: 2}
   - {fileID: 11400000, guid: 87b8d609771fb4943b46588342cee428, type: 2}
   HoverPrefabObject: {fileID: 8533694510245877386, guid: 81c168c67c3364637858c8790b793892, type: 3}
-  LocalHoverPosition: {x: 7, y: 3, z: 15}
-  PrevLocalHoverPosition: {x: 7, y: 3, z: 15}
+  LocalHoverPosition: {x: 4, y: 3, z: 11}
+  PrevLocalHoverPosition: {x: 4, y: 3, z: 11}
   SearchedInternalPosition: {x: 0, y: 0, z: 0}
   SearchedInternalNode:
     Layer: {fileID: 0}
@@ -3768,7 +3768,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50
+  field of view: 25
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -3793,14 +3793,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844036120}
-  m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
-  m_LocalPosition: {x: 5.92, y: 12.21, z: 6.225}
+  m_LocalRotation: {x: 0.4031045, y: -0, z: -0, w: 0.915154}
+  m_LocalPosition: {x: 5.92, y: 19.82, z: -6.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 47.545, y: 0, z: 0}
 --- !u!1 &848917680 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: a2bb8edcf2f1445ef9af9acc11fd6c5a, type: 3}

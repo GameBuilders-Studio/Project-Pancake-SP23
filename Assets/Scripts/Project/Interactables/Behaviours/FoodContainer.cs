@@ -83,6 +83,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     public bool TryTransferIngredients(FoodContainer other)
     {
+        Debug.Log("Trying to transfer?");
         if (Count >= Capacity) { return false; }
 
         if (!ValidateTransfer(other)) { return false; }
@@ -152,7 +153,6 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
-        Debug.Break();
         // validate each ingredient by default
         for (int i = 0; i < other.Count; i++)
         {

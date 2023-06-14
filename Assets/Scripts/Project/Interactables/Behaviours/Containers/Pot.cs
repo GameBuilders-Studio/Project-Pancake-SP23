@@ -17,4 +17,5 @@ public class Pot : FoodContainer
         bool showSoup = !IsEmpty;
         _soupVisual.SetActive(showSoup);
     }
+
 }
