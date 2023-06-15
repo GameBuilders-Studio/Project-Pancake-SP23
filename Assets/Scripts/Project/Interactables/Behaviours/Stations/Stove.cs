@@ -67,7 +67,6 @@ public class Stove : StationController
     // we need to cook jesse
     void Cook(Pot container)
     {
-        Debug.Log("Being cooked");
         _totalProgress = 0.0f;
 
         for (int i = 0; i < container.Count; i++)
@@ -95,6 +94,7 @@ public class Stove : StationController
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
             _totalProgress += ingredient.Progress / container.Count;
+            container.SetProgress(_totalProgress);
 
             return;
         }
