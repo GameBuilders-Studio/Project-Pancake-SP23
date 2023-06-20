@@ -250,6 +250,8 @@ public class OrderSystem : MonoBehaviour
     private void OnFinishLevel()
     {
         DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
+        DataCapsule.instance.score = _score;
+        DataCapsule.instance.scoreBarMax = 300;
         _sceneLoader.LoadScene();
     }
 

@@ -3017,6 +3017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastLevel: 
   score: 0
+  scoreBarMax: 0
 --- !u!4 &623140238
 Transform:
   m_ObjectHideFlags: 0
@@ -6577,7 +6578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5090762009230560069, guid: c8fe30963c904da4dbf7a0f3a04f31b7, type: 3}
       propertyPath: TimeDuration
-      value: 1000
+      value: 210
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8fe30963c904da4dbf7a0f3a04f31b7, type: 3}

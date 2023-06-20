@@ -37,5 +37,8 @@ public class DataCapsule : MonoBehaviour
     }
 
     public string lastLevel;
+    // the score that is acquired by the player in the previous level
     public int score;
+    // the score needed to get three stars `
+    public int scoreBarMax;
 }

@@ -62,10 +62,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         if (!ValidateIngredient(ingredientProp.Ingredient))
         {
-            Debug.LogError("Ingredient invalidated?");
             return false;
         }
-        Debug.LogError("Ingredient valid");
         Ingredient ingredient = ingredientProp.Ingredient;
         AddIngredient(ingredient);
         // Instantiate a model for the ingredient and display it in the container
