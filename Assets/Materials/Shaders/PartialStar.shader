@@ -4,11 +4,12 @@ Shader "Unlit/PartialStar"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
+        _BGColor ("BGColor", Color) = (1,1,1,1)
         _Fraction ("Fraction", Float) = 1.0
     }
     SubShader
     {
-        //Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" }
         Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
         Blend SrcAlpha OneMinusSrcAlpha
         LOD 100
@@ -39,6 +40,7 @@ Shader "Unlit/PartialStar"
             float4 _MainTex_ST;
             float _Fraction;
             float4 _Color;
+            float4 _BGColor;
 
             v2f vert (appdata v)
             {
@@ -55,11 +57,11 @@ Shader "Unlit/PartialStar"
                 fixed4 col = float4(0,0,0,0);
                 if (sample.w != 0)
                 {
-                    col = _Color;
+                    col = sample;
                 }
                 if (i.uv.x > _Fraction)
                 {
-                    col.w = 0.0;
+                    col = float4(0,0,0,0);
                 }
                 return col;
             }

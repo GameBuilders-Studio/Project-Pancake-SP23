@@ -16,7 +16,6 @@ public class ScoreUI : MonoBehaviour
     [Tooltip("Score to win the game")]
     [SerializeField] public int ScoreToWin;
 
-    [SerializeField, Required] private GameObject _endScreen;
     private int _score;
 
     private CanvasGroup _canvasGroup;
@@ -58,7 +57,6 @@ public class ScoreUI : MonoBehaviour
         _score = 0;
         UpdateScoreText();
         _canvasGroup.alpha = 1f;
-        _endScreen.SetActive(false);
     }
 
     // /// <summary>
