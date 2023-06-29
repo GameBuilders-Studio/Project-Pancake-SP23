@@ -47,7 +47,10 @@ public class PlayerInteraction : MonoBehaviour
     public event UnityAction DashEvent;
     public event UnityAction PickUpItemEvent;
     public event UnityAction PlaceItemEvent;
-
+    public event UnityAction DropItemEvent;
+    public event UnityAction OnUseStartEvent;
+    public event UnityAction OnUseEndEvent;
+    
     private const float StationAdjacencyThreshold = 0.65f;
     private const float AngleEpsilon = 15f;
 
@@ -61,6 +64,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         get => _hoverTarget;
         private set => _hoverTarget = value;
+    }
+
+    public IUsable LastUsed
+    {
+        get => _lastUsed;
+        private set => _lastUsed = value;
     }
 
     void OnValidate()
@@ -155,6 +164,7 @@ public class PlayerInteraction : MonoBehaviour
         if (HoverTarget == null)
         {
             DropItem();
+            DropItemEvent?.Invoke();
             return;
         }
 
@@ -210,10 +220,11 @@ public class PlayerInteraction : MonoBehaviour
         if (HoverTarget.TryGetInterface(out IUsable usable))
         {
             if (!usable.Enabled) { return false; }
+            LastUsed = usable;
             usable.OnUseStart();
-            _lastUsed = usable;
         }
 
+        OnUseStartEvent?.Invoke();
         return false;
     }
 
@@ -234,6 +245,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             ThrowItem();
         }
+        OnUseEndEvent?.Invoke();
     }
 
     public void OnDash()

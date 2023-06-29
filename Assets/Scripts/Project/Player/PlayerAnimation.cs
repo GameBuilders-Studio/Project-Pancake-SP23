@@ -18,6 +18,9 @@ public class PlayerAnimation : MonoBehaviour
     private void Start() {
         _playerInteraction.PickUpItemEvent += PlayPickUp;
         _playerInteraction.PlaceItemEvent += PlayDrop;
+        _playerInteraction.DropItemEvent += PlayDrop;
+        _playerInteraction.OnUseStartEvent += PlayInteract;
+        _playerInteraction.OnUseEndEvent += StopInteract;
     }
 
     // Update is called once per frame
@@ -30,7 +33,6 @@ public class PlayerAnimation : MonoBehaviour
     private void CheckIfRunning() {
         float speed = (transform.position - _previousPosition).magnitude / Time.deltaTime;
         _previousPosition = transform.position;
-        Debug.Log("Speed: " + speed);
 
         if (speed > _runningSpeedThreshold != _isRunning) { // Check if running state has changed
             _isRunning = speed > _runningSpeedThreshold; 
@@ -43,6 +45,21 @@ public class PlayerAnimation : MonoBehaviour
             _isHolding = _playerInteraction.IsCarrying;
             _animator.SetBool("IsHolding", _isHolding); // Update the state once per change
         }
+    }
+
+    private void PlayInteract() {
+        if(_playerInteraction.HoverTarget != null) {
+            if(_playerInteraction.LastUsed is Sink) {
+                _animator.SetBool("IsWashing", true);
+            } else if(_playerInteraction.LastUsed is CuttingBoard) {
+                _animator.SetBool("IsChopping", true);
+            }
+        }
+    }
+
+    private void StopInteract() {
+        _animator.SetBool("IsWashing", false); 
+        _animator.SetBool("IsChopping", false);
     }
 
     private void PlayPickUp() {
