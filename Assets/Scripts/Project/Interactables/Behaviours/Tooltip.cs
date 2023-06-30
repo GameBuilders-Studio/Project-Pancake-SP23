@@ -4,7 +4,7 @@ using CustomAttributes;
 public class Tooltip : MonoBehaviour
 {
 
-    [SerializeField, Required] public Transform _target;
+    [SerializeField, ReadOnly] public Transform _target;
     [SerializeField] private Vector3 _offset;
     [SerializeField, Required] private GameObject _ingredientIconPrefab;
     [SerializeField, Required] private GameObject _itemsPanel;
