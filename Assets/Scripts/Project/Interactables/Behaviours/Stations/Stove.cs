@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using CustomAttributes;
+using UnityEngine.EventSystems;
 
 public class Stove : StationController
 {
@@ -9,6 +10,8 @@ public class Stove : StationController
 
     [SerializeField]
     private float _overcookTime;
+
+    [SerializeField] private float _flashFinishTime = 4f;
 
     [SerializeField, Required]
     private IngredientStateData _targetIngredientState;
@@ -42,6 +45,10 @@ public class Stove : StationController
     public override void ItemPlaced(ref Carryable item)
     {
         _containerExists = item.TryGetBehaviour(out _container);
+        if (_containerExists)
+        {
+            _container.StartFlashing(_overcookTimeRemaining);
+        }
     }
 
     public override void ItemRemoved(ref Carryable item)
@@ -53,6 +60,10 @@ public class Stove : StationController
         {
             StopCoroutine(_timerCoroutine);
             _timerCoroutine = null;
+            if (_container != null)
+            {
+                _container.StopFlashing();
+            }
         }
     }
 
@@ -78,7 +89,8 @@ public class Stove : StationController
                 ingredient.SetState(_targetIngredientState);
             }
 
-            if (i == container.Count - 1 && ingredient.ProgressComplete && _timerCoroutine == null) // if last ingredient is done cooking, start timer
+            // if last ingredient is done cooking, start overcook (1f-2f)
+            if (i == container.Count - 1 && ingredient.ProgressComplete && _timerCoroutine == null)
             {
                 if (ingredient.State != _targetOvercookedIngredientState) // don't call timer if already overcooked
                 {
@@ -94,6 +106,7 @@ public class Stove : StationController
 
             ingredient.AddProgress(Time.deltaTime / _cookTimePerIngredient);
             _totalProgress += ingredient.Progress / container.Count;
+            container.SetProgress(_totalProgress);
 
             return;
         }
@@ -101,19 +114,19 @@ public class Stove : StationController
 
     void OnCookComplete(Pot container)
     {
-        // Debug.Log("Cook Complete");
         _overcookTimeRemaining = _overcookTime;
-        _timerCoroutine = StartCoroutine(TimerCoroutine(container));
+        _timerCoroutine = StartCoroutine(OverCookCoroutine(container));
     }
 
-    private IEnumerator TimerCoroutine(Pot container)
+    private IEnumerator OverCookCoroutine(Pot container)
     {
+        container.StartFlashing(_overcookTimeRemaining);
         while (_overcookTimeRemaining > 0)
         {
             _overcookTimeRemaining -= Time.deltaTime;
             yield return null;
         }
-        // Debug.Log("Overcooked!");
+
         for (int i = 0; i < container.Count; i++)
         {
             var ingredient = container.Ingredients[i];
@@ -121,5 +134,7 @@ public class Stove : StationController
             ingredient.SetProgress(1.0f);
         }
 
+        container.Overcooked();
     }
+
 }

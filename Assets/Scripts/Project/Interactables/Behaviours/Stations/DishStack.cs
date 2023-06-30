@@ -4,7 +4,7 @@ public class DishStack : StationController
 {
     [SerializeField]
     [Tooltip("Whether this dish stack holds clean or dirty plates")]
-    private bool _isClean = false;
+    private bool _isClean = true;
 
     [SerializeField]
     private int _maxPlates = 3;
@@ -109,12 +109,12 @@ public class DishStack : StationController
         }
     }
 
-    public override bool HasItem() 
+    public override bool HasItem()
     {
         return _plateCount > 0;
     }
 
-    //Will call this in RespawnManaer 
+    //Will call this in RespawnManaer
     //When we are full, we are gonna move plate to open DishStack
     public bool IsFull()
     {

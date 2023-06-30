@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CustomAttributes;
+using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class OrderSystem : MonoBehaviour
 {
@@ -12,25 +14,32 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _maxConcurrentOrders = 6; //Maximum number of orders that can be displayed at once
     [SerializeField] private int _minConcurrentOrders = 2; //Minimum number of orders that can be displayed at once
     [SerializeField] private float _stageStartDelay = 2.0f; //Delay before the first order spawns
+    [SerializeField] private ScoreUI _scoreUI;
+    [SerializeField] private SceneLoader _sceneLoader;
+    [SerializeField] private int _nthOrderConsecutive = 0;
+    [SerializeField] private int _lastSentOutIndex = -1;
 
     private Coroutine _orderSpawnCoroutine;
     private List<Order> _currentOrders = new();
     private Queue<Order> _orderQueue = new();
+
+    // this is so that order system main file has absolute control over score generation
+    // this is synced with score UI
+    private int _score;
+
     public List<Order> CurrentOrders { get => _currentOrders; }
 
     private void Awake()
     {
         //Load original sequence of orders for the current level
-        foreach (Order order in _orderData.Orders[_currentLevel])
-        {
-            _orderQueue.Enqueue(order);
-        }
+
     }
 
     private void OnEnable()
     {
         EventManager.AddListener("StartingLevel", OnStartLevel);
         EventManager.AddListener("OrderExpired", OnOrderExpired);
+        EventManager.AddListener("TimerEnded", OnFinishLevel);
     }
 
     private void OnDisable()
@@ -40,6 +49,10 @@ public class OrderSystem : MonoBehaviour
 
     private void Start()
     {
+        foreach (Order order in _orderData.Orders)
+        {
+            _orderQueue.Enqueue(order);
+        }
         StartCoroutine(StartLevelCoroutine());
     }
     public void AddOrder(Order order)
@@ -100,12 +113,50 @@ public class OrderSystem : MonoBehaviour
             temp.SetOrderComplete();
             temp.DespawnOrder();
 
-            EventManager.Invoke("IncrementingScore");
+            if (orderIndexToRemove >= _lastSentOutIndex)
+            {
+                _nthOrderConsecutive = Math.Min(4, _nthOrderConsecutive + 1);
+            }
+            else
+            {
+                _nthOrderConsecutive = 0;
+            }
+
+            _lastSentOutIndex = orderIndexToRemove;
+
+            //EventManager.Invoke("IncrementingScore");
+
+            _score += CalculateScore(
+                minTimeRemaining,
+                _currentOrders[orderIndexToRemove].GetTimeLimit(),
+                Math.Max(_nthOrderConsecutive, 1),
+                _currentOrders[orderIndexToRemove].RecipeData.baseScore);
+
             return true;
         }
 
+        _lastSentOutIndex = -1;
+        _nthOrderConsecutive = 0;
+
         return false;
 
+    }
+
+    private int CalculateScore(float orderTimeRemaining, float orderTimeLimit, int consecutiveMultiplier, int baseScore)
+    {
+        int tip = 3;
+
+        if (orderTimeRemaining > orderTimeLimit / 3)
+        {
+            tip = 5;
+        }
+
+        if (orderTimeRemaining > orderTimeLimit / 3 * 2)
+        {
+            tip = 8;
+        }
+
+        return tip * consecutiveMultiplier + baseScore;
     }
 
     private void OnStartLevel()
@@ -167,8 +218,8 @@ public class OrderSystem : MonoBehaviour
             else
             {
                 //If there are no more orders in the original sequence, spawn a random order
-                int randomIndex = Random.Range(0, _orderData.Orders[_currentLevel].Count);
-                Order order = Instantiate(_orderData.Orders[_currentLevel][randomIndex]);
+                int randomIndex = Random.Range(0, _orderData.Orders.Count);
+                Order order = Instantiate(_orderData.Orders[randomIndex]);
                 _currentOrders.Add(order);
                 _orderUI.AddOrder(order);
 
@@ -194,6 +245,20 @@ public class OrderSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(_stageStartDelay);
         EventManager.Invoke("StartingLevel");
+    }
+
+    private void OnFinishLevel()
+    {
+        DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
+        DataCapsule.instance.score = _score;
+        DataCapsule.instance.scoreBarMax = 300;
+        _sceneLoader.LoadScene();
+    }
+
+    private void Update()
+    {
+        // :copium: - Revan
+        _scoreUI.Score = _score;
     }
 
 }
