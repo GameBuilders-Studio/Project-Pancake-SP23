@@ -196,7 +196,7 @@ public class PlayerInteraction : MonoBehaviour
 
         var go = item.gameObject;
 
-        go.transform.parent = _carryPivot;
+        go.transform.parent = _carryPivot;  
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
 
@@ -220,6 +220,7 @@ public class PlayerInteraction : MonoBehaviour
         if (HoverTarget.TryGetInterface(out IUsable usable))
         {
             if (!usable.Enabled) { return false; }
+
             LastUsed = usable;
             usable.OnUseStart();
         }

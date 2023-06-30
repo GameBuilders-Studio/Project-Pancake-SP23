@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 6524283212093171945}
   - component: {fileID: 4907141224438807477}
   - component: {fileID: 7289654551436267690}
+  - component: {fileID: 150541962065398153}
   m_Layer: 7
   m_Name: Player 3
   m_TagString: Player
@@ -363,7 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nearby: []
   _heldItem: {fileID: 0}
-  _carryPivot: {fileID: 8535102853265519827, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+  _carryPivot: {fileID: 1534108179190931230}
   _catchTrigger: {fileID: 3120754633071527459, guid: 7431efa6f57670e448350749373a7df2, type: 3}
   _selectAngleRange: 160
   _carryableAngleRange: 60
@@ -383,6 +384,19 @@ MonoBehaviour:
   PlayerIndex: 0
   CurrentControlScheme: 
   _useAnyDevice: 0
+--- !u!114 &150541962065398153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535795959847519178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198f766c39515a94d94b78a101d925d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _runningSpeedThreshold: 0.1
 --- !u!1 &9005201394471809878
 GameObject:
   m_ObjectHideFlags: 0
