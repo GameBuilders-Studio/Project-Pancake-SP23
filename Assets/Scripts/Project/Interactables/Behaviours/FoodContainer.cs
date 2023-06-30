@@ -13,6 +13,11 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField, Required]
     private Transform _ingredientModelParent;
 
+    // Reference to the tooltip instance
+    private Tooltip _tooltip;
+
+    [SerializeField, Required]
+    private GameObject _tooltipPrefab;
     public int Count => _ingredients.Count;
     public int Capacity => _containerSettings.Capacity;
 
@@ -20,6 +25,29 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     public bool IsEmpty => _ingredients.Count == 0;
 
     private Dictionary<Ingredient, GameObject> _ingredientModels = new(); // Stores the models for each ingredient currently in the container
+
+    public void Start()
+    {
+        GameObject tooltipObject = Instantiate(_tooltipPrefab);
+        _tooltip = tooltipObject.GetComponent<Tooltip>();
+        _tooltip._target = gameObject.transform; // Set the target of the tooltip to this object
+        Transform transform = GameObject.Find("Canvas").transform;
+        if (transform == null)
+        {
+            Debug.LogError("Canvas not found in FoodContainer.cs");
+        } else
+        {
+            tooltipObject.transform.SetParent(transform, false); // Set the parent of the tooltip to the HUD canvas
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_tooltip != null)
+        {
+            Destroy(_tooltip.gameObject);
+        }
+    }
 
     public List<Ingredient> Ingredients
     {
@@ -71,6 +99,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         _ingredientModels.Add(ingredient, ingredientModel);
         // Position the model in the container
         ingredientModel.transform.localPosition = Vector3.zero;
+        // Add the ingredient to the tooltip
+        _tooltip.AddIngredient(ingredient.Data);
         Destroy(ingredientProp.gameObject);
 
         return true;
@@ -117,6 +147,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
         _ingredientModels.Clear();
         Ingredients.Clear();
+        _tooltip.ClearIngredients();
         OnIngredientsChanged();
     }
 
