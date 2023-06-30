@@ -13,7 +13,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField, Required]
     private Transform _ingredientModelParent;
 
-    [SerializeField, Required]
+    // Reference to the tooltip instance
     private Tooltip _tooltip;
 
     [SerializeField, Required]
