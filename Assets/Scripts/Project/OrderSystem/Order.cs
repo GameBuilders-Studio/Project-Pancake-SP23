@@ -20,6 +20,11 @@ public class Order : MonoBehaviour
     public bool IsComplete { get; set; }
     public float TimeRemaining { get; private set; }
 
+    public float GetTimeLimit()
+    {
+        return _startTime;
+    }
+
 
     // variable for complete time to use for points?
     public RecipeData RecipeData { get => _recipe; }

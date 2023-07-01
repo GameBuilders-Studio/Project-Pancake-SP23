@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class OrderSystem : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private float _stageStartDelay = 2.0f; //Delay before the first order spawns
     [SerializeField] private ScoreUI _scoreUI;
     [SerializeField] private SceneLoader _sceneLoader;
+    [SerializeField] private int _nthOrderConsecutive = 0;
+    [SerializeField] private int _lastSentOutIndex = -1;
 
     private Coroutine _orderSpawnCoroutine;
     private List<Order> _currentOrders = new();
@@ -109,13 +113,50 @@ public class OrderSystem : MonoBehaviour
             temp.SetOrderComplete();
             temp.DespawnOrder();
 
+            if (orderIndexToRemove >= _lastSentOutIndex)
+            {
+                _nthOrderConsecutive = Math.Min(4, _nthOrderConsecutive + 1);
+            }
+            else
+            {
+                _nthOrderConsecutive = 0;
+            }
+
+            _lastSentOutIndex = orderIndexToRemove;
+
             //EventManager.Invoke("IncrementingScore");
-            _score += 1;
+
+            _score += CalculateScore(
+                minTimeRemaining,
+                _currentOrders[orderIndexToRemove].GetTimeLimit(),
+                Math.Max(_nthOrderConsecutive, 1),
+                _currentOrders[orderIndexToRemove].RecipeData.baseScore);
+
             return true;
         }
 
+        _lastSentOutIndex = -1;
+        _nthOrderConsecutive = 0;
+
         return false;
 
+    }
+
+    private int CalculateScore(float orderTimeRemaining, float orderTimeLimit, int consecutiveMultiplier, int baseScore)
+    {
+        int tip = 3;
+
+        if (orderTimeRemaining > orderTimeLimit / 3)
+        {
+            tip = 5;
+        }
+
+        if (orderTimeRemaining > orderTimeLimit / 3 * 2)
+        {
+            tip = 8;
+        }
+
+        return tip * consecutiveMultiplier + baseScore;
     }
 
     private void OnStartLevel()
@@ -209,6 +250,8 @@ public class OrderSystem : MonoBehaviour
     private void OnFinishLevel()
     {
         DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
+        DataCapsule.instance.score = _score;
+        DataCapsule.instance.scoreBarMax = 300;
         _sceneLoader.LoadScene();
     }
 

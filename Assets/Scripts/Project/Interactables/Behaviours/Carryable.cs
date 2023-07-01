@@ -61,7 +61,7 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         EnablePhysics();
         EnableSelection();
     }
-    
+
     void FixedUpdate()
     {
         var gravity = Physics.gravity * _gravityScale;
@@ -119,7 +119,7 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         var throwTarget = transform.position + _throwDirection * _throwSettings.Distance;
         throwTarget.y = footHeight;
         Debug.DrawRay(throwTarget, Vector3.up, Color.red, 3.0f);
-        
+
         _rigidbody.isKinematic = false;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
@@ -188,14 +188,14 @@ public class Carryable : InteractionBehaviour, IHasCarryable
         _currentThrowTime = Mathf.Clamp(_currentThrowTime, 0.0f, throwDuration);
 
         float currentProgress = _currentThrowTime / throwDuration;
-        
+
         float horizontalDelta = _throwSettings.Distance * (currentProgress - previousProgress);
         float verticalDelta = _throwHeight * (trajectory.Evaluate(currentProgress) - trajectory.Evaluate(previousProgress));
-        
+
         Vector3 velocity = (_throwDirection * horizontalDelta) + (Vector3.up * verticalDelta);
 
         _rigidbody.velocity = velocity / Time.deltaTime;
-    
+
         if (Mathf.Approximately(currentProgress, 1.0f))
         {
             CancelThrow();

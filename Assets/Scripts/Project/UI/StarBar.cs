@@ -8,7 +8,7 @@ public class StarBar : MonoBehaviour
 {
     [SerializeField] private List<GameObject> stars;
     private List<Material> _mats;
-    private float _fullFraction = 0.0f;
+    private float _fullFraction = 1f;
     private float _targetFraction = 0.0f;
 
 
@@ -25,7 +25,9 @@ public class StarBar : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SlideProgressCoro(1.0f));
+        var dataCapsule = DataCapsule.instance;
+        //StartCoroutine(SlideProgressCoro((float)dataCapsule.score/dataCapsule.scoreBarMax));
+        StartCoroutine(SlideProgressCoro(1f));
     }
 
     private void Update()
