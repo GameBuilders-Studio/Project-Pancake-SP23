@@ -269,6 +269,10 @@ PrefabInstance:
       propertyPath: _highlightBehaviour
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3894276070090808787, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7605582599296834488, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -327,6 +331,17 @@ PrefabInstance:
     - {fileID: 7605582599296834488, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
     - {fileID: 4778439782488913873, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+--- !u!114 &1681849092394112092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5438489841133763298, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+  m_PrefabInstance: {fileID: 6642322798409674430}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ffd916a7fdd2cc582772a3a1aca78b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3864704719881843971 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7605582599296834493, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
@@ -346,6 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection: {fileID: 6493796884357676143}
   _progressIndicator: 0
+  pgBar: {fileID: 1681849092394112092}
   _ingredient:
     Data: {fileID: 11400000, guid: 6ca195900c1195f42bece6b00e4dd6d1, type: 2}
     State: {fileID: 11400000, guid: 465d6e36915743d42a2627575fd543a3, type: 2}
