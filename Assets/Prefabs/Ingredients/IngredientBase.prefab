@@ -285,6 +285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection: {fileID: 446099049515487953}
   _progressIndicator: 0
+  pgBar: {fileID: 5438489841133763298}
   _ingredient:
     Data: {fileID: 0}
     State: {fileID: 0}
@@ -356,3 +357,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6949146369319188703, guid: c367181e18e1cc24dac37cb4f1a6f5c5, type: 3}
   m_PrefabInstance: {fileID: 6231694072502166796}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5438489841133763298 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2090243140358184942, guid: c367181e18e1cc24dac37cb4f1a6f5c5, type: 3}
+  m_PrefabInstance: {fileID: 6231694072502166796}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ffd916a7fdd2cc582772a3a1aca78b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
