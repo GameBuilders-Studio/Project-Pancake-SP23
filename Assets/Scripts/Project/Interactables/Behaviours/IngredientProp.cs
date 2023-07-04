@@ -12,6 +12,8 @@ public class IngredientProp : InteractionBehaviour
     [ProgressBar("Progress", 1.0f, EColor.Green)]
     public float _progressIndicator = 0.0f;
 
+    [SerializeField] private InGameProgress pgBar;
+
     [SerializeField]
     private Ingredient _ingredient;
 
@@ -48,6 +50,7 @@ public class IngredientProp : InteractionBehaviour
         progress = Mathf.Clamp01(progress);
         _progressIndicator = progress;
         _ingredient.SetProgress(progress);
+        pgBar.SetProgress(progress); 
         OnProgressUpdate(progress);
     }
 
