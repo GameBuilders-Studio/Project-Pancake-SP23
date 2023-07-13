@@ -252,6 +252,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: NoDuplicates
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: _behaviours.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: _behaviours.Array.data[2]
       value: 
       objectReference: {fileID: 1192863211}
@@ -260,9 +268,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1192863211}
     - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: _behaviourTypes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: _behaviourTypes.Array.data[2].typeId
       value: PlanktonBlueIngredient, Ingredients, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 446099049515487953, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+      propertyPath: _behaviourTypes.Array.data[3].typeId
+      value: IngredientProp, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 3111386382994811259, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
       propertyPath: _highlightBehaviour
@@ -329,6 +345,7 @@ PrefabInstance:
     - {fileID: 1055438650720953735, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
     - {fileID: 7605582599296834488, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
     - {fileID: 4778439782488913873, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
+    - {fileID: 2766254829766255063, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 89cece4bb4ffebe499fe143071e9e4c0, type: 3}
 --- !u!114 &1681849092394112092 stripped
 MonoBehaviour:

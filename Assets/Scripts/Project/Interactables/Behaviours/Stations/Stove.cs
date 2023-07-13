@@ -53,7 +53,6 @@ public class Stove : StationController
 
     public override void ItemRemoved(ref Carryable item)
     {
-        _container = null;
         _containerExists = false;
         _cooking = false;
         if (_timerCoroutine != null)
@@ -65,6 +64,7 @@ public class Stove : StationController
                 _container.StopFlashing();
             }
         }
+        _container = null;
     }
 
     public void StartFire()
