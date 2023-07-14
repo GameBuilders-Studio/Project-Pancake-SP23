@@ -8,31 +8,31 @@ public class DataCapsule : MonoBehaviour
     public static DataCapsule instance {
         get
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
                 var newCapsule = new GameObject();
                 newCapsule.gameObject.name = "Capsule";
-                _instance = newCapsule.AddComponent<DataCapsule>();
+                s_instance = newCapsule.AddComponent<DataCapsule>();
             }
 
-            return _instance;
+            return s_instance;
 
         }
-        private set { _instance = value; }
+        private set { s_instance = value; }
     }
 
-    private static DataCapsule _instance;
+    private static DataCapsule s_instance;
 
     private void Awake()
     {
         // someone else has already made another capsule
         // self destruct
-        if (_instance != null)
+        if (s_instance != null)
         {
             Destroy(gameObject);
         }
         // otherwise this is the instance
-        _instance = this;
+        s_instance = this;
         DontDestroyOnLoad(this);
     }
 

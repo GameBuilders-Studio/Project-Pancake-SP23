@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 9059498309148403138}
   - component: {fileID: 9059498309148403164}
   - component: {fileID: 9059498309148403142}
-  - component: {fileID: 9059498309148403165}
+  - component: {fileID: 1535409923922041649}
   - component: {fileID: 9059498309148403167}
   - component: {fileID: 1413373083386298876}
   - component: {fileID: 1780998756161429767}
@@ -102,7 +102,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!114 &9059498309148403165
+--- !u!114 &1535409923922041649
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,14 +111,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9059498309148403140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e4f0b96ea753e04896984a1179ad795, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b72c39df122479fa191a592a0c71b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Collection: {fileID: 7653842725219283576}
   _containerSettings: {fileID: 11400000, guid: ff8daaa160910074c9663b6418f87be9, type: 2}
   _ingredients: []
   _ingredientModelParent: {fileID: 7087563876600141287}
-  _tooltip: {fileID: 0}
   _tooltipPrefab: {fileID: 8466578208796056889, guid: f6667de74eb59cb47b7c1922f1b20044, type: 3}
 --- !u!114 &9059498309148403167
 MonoBehaviour:
@@ -183,13 +182,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviours:
-  - {fileID: 9059498309148403165}
+  - {fileID: 1535409923922041649}
+  - {fileID: 1535409923922041649}
   - {fileID: 1413373083386298876}
   - {fileID: 1780998756161429767}
   _interfaces:
-  - {fileID: 9059498309148403165}
+  - {fileID: 1535409923922041649}
   - {fileID: 1780998756161429767}
   _behaviourTypes:
+  - typeId: Plate, Containers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: FoodContainer, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Carryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
