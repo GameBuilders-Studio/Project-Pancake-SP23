@@ -899,8 +899,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 086471ca33d4b294b87b2cecdd98e4fd, type: 2}
   - {fileID: 11400000, guid: 87b8d609771fb4943b46588342cee428, type: 2}
   HoverPrefabObject: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-  LocalHoverPosition: {x: 8, y: 3, z: 17}
-  PrevLocalHoverPosition: {x: 8, y: 3, z: 17}
+  LocalHoverPosition: {x: -16, y: 3, z: 29}
+  PrevLocalHoverPosition: {x: -16, y: 3, z: 29}
   SearchedInternalPosition: {x: 0, y: 0, z: 0}
   SearchedInternalNode:
     Layer: {fileID: 0}
@@ -3205,6 +3205,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
+      propertyPath: _isClean
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_Name
       value: DishStack
@@ -3230,6 +3234,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &667026812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
+  m_PrefabInstance: {fileID: 667026808}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667026810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1fef424d4feca40924e6eb5dcb8bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &672402671
@@ -5291,7 +5306,7 @@ PrefabInstance:
     - target: {fileID: 2494476314929865971, guid: 70d906f36fc8c4bc081f8ae9e3c070db, type: 3}
       propertyPath: _dishStack
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 667026812}
     - target: {fileID: 2494476314929865971, guid: 70d906f36fc8c4bc081f8ae9e3c070db, type: 3}
       propertyPath: _orderSystem
       value: 
