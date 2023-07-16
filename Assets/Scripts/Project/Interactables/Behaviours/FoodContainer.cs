@@ -201,6 +201,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         var (model, sprite) = ModelMapper.Instance.GetDishModelSprite(currentIngredients);
         _dishModel = Instantiate(model, _ingredientModelParent);
+        _tooltip.ClearIngredients();
+        _tooltip.SetToolTipSprite(sprite);
     }
 
     private void AddIngredient(Ingredient ingredient)
