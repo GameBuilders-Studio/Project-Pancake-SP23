@@ -22,6 +22,10 @@ public class DishModelSpriteRegistry : MonoBehaviour
     public Sprite pastaSprite;
     public GameObject redBluePlankton;
     public Sprite redBluePlanktonSprite;
+    public GameObject redGreenPlankton;
+    public Sprite redGreenPlanktonSprite;
+    public GameObject greenBluePlankton;
+    public Sprite greenBluePlanktonSprite;
     public GameObject redGreenBluePlankton;
     public Sprite redGreenBluePlanktonSprite;
     public GameObject riceSeaweed;
