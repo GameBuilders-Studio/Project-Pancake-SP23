@@ -9,6 +9,12 @@ public class IngredientSO : ScriptableObject
 {
     public Sprite icon;
     public GameObject prefab;
+    public IngredientType type;
+}
+
+public enum IngredientType
+{
+    RedPlankton, GreenPlankton, BluePlankton, Rice, Seaweed, Pasta
 }
 
 [Serializable]
