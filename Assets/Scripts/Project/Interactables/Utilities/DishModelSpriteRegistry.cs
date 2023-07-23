@@ -30,6 +30,10 @@ public class DishModelSpriteRegistry : MonoBehaviour
     public Sprite redGreenBluePlanktonSprite;
     public GameObject riceSeaweed;
     public Sprite riceSeaweedSprite;
+    public GameObject riceRedPlankton;
+    public Sprite riceRedPlanktonSprite;
+    public GameObject riceGreenPlankton;
+    public Sprite riceGreenPlanktonSprite;
     public GameObject redSushi;
     public Sprite redSushiSprite;
     public GameObject greenSushi;
@@ -49,8 +53,13 @@ public class DishModelSpriteRegistry : MonoBehaviour
             { new() { Pasta }, (pasta, pastaSprite) },
             // ^ single ingredient dishes
             { new() { RedPlankton, BluePlankton }, (redBluePlankton, redBluePlanktonSprite) },
+            { new() { RedPlankton, GreenPlankton }, (redGreenPlankton, redGreenPlanktonSprite) },
+            { new() { GreenPlankton, BluePlankton }, (greenBluePlankton, greenBluePlanktonSprite) },
+
             { new() { RedPlankton, GreenPlankton, BluePlankton }, (redGreenBluePlankton, redGreenBluePlanktonSprite) },
             { new() { Rice, Seaweed }, (riceSeaweed, riceSeaweedSprite) },
+            { new() { Rice, GreenPlankton }, (riceSeaweed, riceSeaweedSprite) },
+            { new() { Rice, RedPlankton }, (riceSeaweed, riceSeaweedSprite) },
             { new() { RedPlankton, Seaweed, Rice }, (redSushi, redSushiSprite) },
             { new() { GreenPlankton, Seaweed, Rice }, (greenSushi, greenSushiSprite) },
         };
