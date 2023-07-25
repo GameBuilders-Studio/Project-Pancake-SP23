@@ -4395,6 +4395,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food Source
       objectReference: {fileID: 0}
+    - target: {fileID: 7173727142457994008, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: m_Size.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173727142457994008, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: m_Size.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173727142457994008, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a65760543dc71c1519029944e9b28ec2, type: 3}
+    - target: {fileID: 7173727142457994008, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8147260660728289421, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
+      propertyPath: _ingredientSO
+      value: 
+      objectReference: {fileID: 11400000, guid: f4dc8c2e4cc7628469f1cfa19370e190, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bed9cdd63b0841f98d7eaa91b54bcea, type: 3}
 --- !u!1 &1058472933 stripped

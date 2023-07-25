@@ -50,13 +50,13 @@ public class IngredientProp : InteractionBehaviour
         progress = Mathf.Clamp01(progress);
         _progressIndicator = progress;
         _ingredient.SetProgress(progress);
-        pgBar.SetProgress(progress); 
+        pgBar.SetProgress(progress);
         OnProgressUpdate(progress);
     }
 
     /// <summary>
     /// Resets the progress of the ingredient if the state is changed
-    /// Also makes sure the correct model is active 
+    /// Also makes sure the correct model is active
     /// </summary>
     /// <param name="state"></param>
     public void SetState(IngredientStateData state)
@@ -84,6 +84,11 @@ public class IngredientProp : InteractionBehaviour
     /// </summary>
     private void DisableAllModels()
     {
+        if (_stateToModel == null)
+        {
+            return;
+        }
+
         foreach (var pair in _stateToModel)
         {
             pair.Value.SetActive(false);

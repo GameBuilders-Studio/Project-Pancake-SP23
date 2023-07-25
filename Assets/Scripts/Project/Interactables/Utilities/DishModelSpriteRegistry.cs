@@ -43,6 +43,13 @@ public class DishModelSpriteRegistry : MonoBehaviour
     public GameObject greenSushi;
     public Sprite greenSushiSprite;
 
+    public GameObject pastaBluePlankton;
+    public Sprite pastaBluePlanktonSprite;
+    public GameObject pastaRedPlankton;
+    public Sprite pastaRedPlanktonSprite;
+    public GameObject pastaRedBluePlankton;
+    public Sprite pastaRedBluePlanktonSprite;
+
     public Dictionary<HashSet<IngredientType>, (GameObject, Sprite)> modelMap;
 
     public void Init()
@@ -69,6 +76,9 @@ public class DishModelSpriteRegistry : MonoBehaviour
 
             { new() { RedPlankton, Seaweed, Rice }, (redSushi, redSushiSprite) },
             { new() { GreenPlankton, Seaweed, Rice }, (greenSushi, greenSushiSprite) },
+            { new() { RedPlankton, Pasta }, (pastaRedPlankton, pastaRedPlanktonSprite) },
+            { new() { BluePlankton, Pasta }, (pastaBluePlankton, pastaBluePlanktonSprite) },
+            { new() { RedPlankton, BluePlankton, Pasta }, (pastaRedBluePlankton, pastaRedBluePlanktonSprite) },
         };
     }
 }
