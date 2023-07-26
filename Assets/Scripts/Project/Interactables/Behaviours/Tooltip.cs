@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using CustomAttributes;
@@ -30,6 +31,14 @@ public class Tooltip : MonoBehaviour
         Image spriteImage = spriteObject.GetComponent<Image>();
         spriteImage.sprite = ingredient.icon;
 
+        spriteObject.transform.SetParent(_itemsPanel.transform, false);
+    }
+
+    public void SetToolTipSprite(Sprite sprite)
+    {
+        GameObject spriteObject = Instantiate(_ingredientIconPrefab);
+        Image spriteImage = spriteObject.GetComponent<Image>();
+        spriteImage.sprite = sprite;
         spriteObject.transform.SetParent(_itemsPanel.transform, false);
     }
 

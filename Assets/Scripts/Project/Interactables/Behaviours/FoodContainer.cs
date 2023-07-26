@@ -8,7 +8,9 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     private FoodContainerData _containerSettings;
 
     [SerializeField]
-    private List<Ingredient> _ingredients = new();
+    protected List<Ingredient> _ingredients = new();
+
+    protected HashSet<IngredientType> _ingredientTypes = new();
 
     [SerializeField, Required]
     private Transform _ingredientModelParent;
@@ -26,7 +28,9 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     private Dictionary<Ingredient, GameObject> _ingredientModels = new(); // Stores the models for each ingredient currently in the container
 
-    public void Start()
+    private GameObject _dishModel;
+
+    public virtual void Start()
     {
         GameObject tooltipObject = Instantiate(_tooltipPrefab);
         _tooltip = tooltipObject.GetComponent<Tooltip>();
@@ -86,25 +90,31 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         return false;
     }
 
-    public bool TryAddIngredientProp(IngredientProp ingredientProp)
+    private bool TryAddIngredientProp(IngredientProp ingredientProp)
     {
         if (!ValidateIngredient(ingredientProp.Ingredient))
         {
             return false;
         }
-        Ingredient ingredient = ingredientProp.Ingredient;
-        AddIngredient(ingredient);
-        // Instantiate a model for the ingredient and display it in the container
-        GameObject ingredientModel = Instantiate(ingredientProp.StateToModel[ingredient.State], _ingredientModelParent);
-        _ingredientModels.Add(ingredient, ingredientModel);
-        // Position the model in the container
-        ingredientModel.transform.localPosition = Vector3.zero;
-        // Add the ingredient to the tooltip
-        _tooltip.AddIngredient(ingredient.Data);
+        AddIngredient(ingredientProp.Ingredient);
         Destroy(ingredientProp.gameObject);
 
         return true;
     }
+
+    // protected void AddOneIngredient(IngredientProp ingredientProp)
+    // {
+    //     Ingredient ingredient = ingredientProp.Ingredient;
+    //     AddIngredient(ingredient);
+    //     // Instantiate a model for the ingredient and display it in the container
+    //     GameObject ingredientModel = Instantiate(ingredientProp.StateToModel[ingredient.State], _ingredientModelParent);
+    //     _ingredientModels.Add(ingredient, ingredientModel);
+    //     // Position the model in the container
+    //     ingredientModel.transform.localPosition = Vector3.zero;
+    //     // Add the ingredient to the tooltip
+    //     _tooltip.AddIngredient(ingredient.Data);
+    //     Destroy(ingredientProp.gameObject);
+    // }
 
     /// <summary>
     /// Transfer ingredients from the given container to this container
@@ -115,27 +125,12 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
         if (!ValidateTransfer(other)) { return false; }
 
-        bool didTransfer = false;
-
-        while (Count < Capacity && other.Count > 0)
+        foreach (var otherIngredient in other.Ingredients)
         {
-            // Move the model from the other container to this container
-            GameObject otherModel;
-            Ingredient otherIngredient;
-            (otherIngredient, otherModel) = other.PopIngredient();
-            // simply duplicate everything under its food anchor
-            // I'm lazy so let's just do this instead of moving the model properly
-            GameObject ingredientModel = Instantiate(otherModel, _ingredientModelParent);
-            Destroy(otherModel);
-
-            _ingredientModels.Add(otherIngredient, ingredientModel);
-            // Position the model in the container
-            ingredientModel.transform.localPosition = Vector3.zero;
             AddIngredient(otherIngredient);
-            didTransfer = true;
         }
-
-        return didTransfer;
+        other.ClearIngredients();
+        return true;
     }
 
     public void ClearIngredients()
@@ -148,21 +143,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         _ingredientModels.Clear();
         Ingredients.Clear();
         _tooltip.ClearIngredients();
-        OnIngredientsChanged();
-    }
-
-    public (Ingredient, GameObject) PopIngredient()
-    {
-        Ingredient ingredient = Ingredients[Count - 1];
-        // Remove the model from this container
-        GameObject ingredientModel = _ingredientModels[ingredient];
-        _ingredientModels.Remove(ingredient);
-
-        // Remove the ingredient from the container
-        Ingredients.RemoveAt(Count - 1);
-
-        //however, don't destroy the model
-        return (ingredient, ingredientModel);
+        _ingredientTypes.Clear();
+        OnIngredientsChanged(_ingredientTypes);
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
@@ -181,25 +163,53 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
-        // validate each ingredient by default
-        for (int i = 0; i < other.Count; i++)
+        if (other._ingredientTypes.Overlaps(_ingredientTypes))
         {
-            if (!ValidateIngredient(other.Ingredients[i])) { return false; }
+            return false;
         }
-        return true;
+
+        var unionSet = new HashSet<IngredientType>();
+        unionSet.UnionWith(other._ingredientTypes);
+        unionSet.UnionWith(_ingredientTypes);
+
+        // // validate each ingredient by default
+        // for (int i = 0; i < other.Count; i++)
+        // {
+        //     if (!ValidateIngredient(other.Ingredients[i])) { return false; }
+        // }
+        // return true;
+        return ModelMapper.Instance.DishExist(unionSet);
     }
 
-    protected virtual void OnIngredientsChanged()
+
+    protected virtual void OnIngredientsChanged(HashSet<IngredientType> currentIngredients)
     {
-        // modify visuals
+        foreach (var x in _ingredientModels.Values)
+        {
+            Destroy(x);
+        }
+        _ingredientModels.Clear();
+        if (_dishModel != null)
+        {
+            Destroy(_dishModel);
+        }
 
+        if (currentIngredients.Count == 0)
+        {
+            return;
+        }
 
+        var (model, sprite) = ModelMapper.Instance.GetDishModelSprite(currentIngredients);
+        _dishModel = Instantiate(model, _ingredientModelParent);
+        _tooltip.ClearIngredients();
+        _tooltip.SetToolTipSprite(sprite);
     }
 
     private void AddIngredient(Ingredient ingredient)
     {
         Ingredients.Add(ingredient);
+        _ingredientTypes.Add(ingredient.Data.type);
         Ingredients.Sort((a, b) => b.Progress.CompareTo(a.Progress));
-        OnIngredientsChanged();
+        OnIngredientsChanged(_ingredientTypes);
     }
 }

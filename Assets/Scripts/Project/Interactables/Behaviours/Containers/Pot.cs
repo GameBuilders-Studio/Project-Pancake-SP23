@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Pot : FoodContainer
@@ -27,8 +28,9 @@ public class Pot : FoodContainer
         _soupRenderer = _soupVisual.GetComponent<Renderer>();
     }
 
-    protected override void OnIngredientsChanged()
+    protected override void OnIngredientsChanged(HashSet<IngredientType> ingredientTypes)
     {
+        base.OnIngredientsChanged(ingredientTypes);
         bool showSoup = !IsEmpty;
         _soupVisual.SetActive(showSoup);
     }
