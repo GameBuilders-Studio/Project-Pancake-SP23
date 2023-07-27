@@ -2,6 +2,7 @@ using UnityEngine;
 using CustomAttributes;
 using UnityEditor;
 using System;
+using System.Linq;
 
 /// <summary>
 ///  Handles ingredient object behaviour
@@ -36,7 +37,10 @@ public class IngredientProp : InteractionBehaviour
         if (State != null && _stateToModel.TryGetValue(State, out GameObject model))
         {
             DisableAllModels();
-            model.SetActive(true);
+            if (model != null)
+            {
+                model.SetActive(true);
+            }
         }
     }
 
@@ -84,14 +88,12 @@ public class IngredientProp : InteractionBehaviour
     /// </summary>
     private void DisableAllModels()
     {
-        if (_stateToModel == null)
+        foreach (var pair in _stateToModel.Where(pair => pair.Value != null))
         {
-            return;
-        }
-
-        foreach (var pair in _stateToModel)
-        {
-            pair.Value.SetActive(false);
+            if (pair.Value != null)
+            {
+                pair.Value.SetActive(false);
+            }
         }
     }
 }

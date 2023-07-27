@@ -84,9 +84,9 @@ public class Stove : StationController
         {
             var ingredient = container.Ingredients[i];
 
-            if (ingredient.State != _targetIngredientState && ingredient.State != _targetOvercookedIngredientState) //only transition states if not already cooking or overcooked
+            if (ingredient.State != container.targetCookState && ingredient.State != _targetOvercookedIngredientState) //only transition states if not already cooking or overcooked
             {
-                ingredient.SetState(_targetIngredientState);
+                ingredient.SetState(container.targetCookState );
             }
 
             // if last ingredient is done cooking, start overcook (1f-2f)
