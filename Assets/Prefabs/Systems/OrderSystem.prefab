@@ -53,6 +53,8 @@ MonoBehaviour:
   _stageStartDelay: 2
   _scoreUI: {fileID: 3469424752934669883}
   _sceneLoader: {fileID: 0}
+  _nthOrderConsecutive: 0
+  _lastSentOutIndex: -1
 --- !u!1 &407544748851404908
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +204,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 745433020584994086, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -170
+      objectReference: {fileID: 0}
     - target: {fileID: 2495396573393355477, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -209,6 +215,10 @@ PrefabInstance:
     - target: {fileID: 2495396573393355477, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2730330794960758976, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 3079819506013168793, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_Sprite
@@ -228,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -600
+      value: -625
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_SizeDelta.y
@@ -236,11 +246,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -300
+      value: -287.5
       objectReference: {fileID: 0}
     - target: {fileID: 4590067256824484270, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 40
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4828394096854644470, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
+      propertyPath: TimeDuration
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 5180418269143788307, guid: c80126cecf16a8e4c908ca79fe84d2b2, type: 3}
       propertyPath: m_Sprite

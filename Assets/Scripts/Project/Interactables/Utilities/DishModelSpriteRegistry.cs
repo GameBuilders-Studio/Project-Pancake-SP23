@@ -30,10 +30,25 @@ public class DishModelSpriteRegistry : MonoBehaviour
     public Sprite redGreenBluePlanktonSprite;
     public GameObject riceSeaweed;
     public Sprite riceSeaweedSprite;
+    public GameObject riceRedPlankton;
+    public Sprite riceRedPlanktonSprite;
+    public GameObject riceGreenPlankton;
+    public Sprite riceGreenPlanktonSprite;
+    public GameObject greenPlanktonSeaweed;
+    public Sprite greenPlanktonSeaweedSprite;
+    public GameObject redPlanktonSeaweed;
+    public Sprite redPlanktonSeaweedSprite;
     public GameObject redSushi;
     public Sprite redSushiSprite;
     public GameObject greenSushi;
     public Sprite greenSushiSprite;
+
+    public GameObject pastaBluePlankton;
+    public Sprite pastaBluePlanktonSprite;
+    public GameObject pastaRedPlankton;
+    public Sprite pastaRedPlanktonSprite;
+    public GameObject pastaRedBluePlankton;
+    public Sprite pastaRedBluePlanktonSprite;
 
     public Dictionary<HashSet<IngredientType>, (GameObject, Sprite)> modelMap;
 
@@ -49,10 +64,21 @@ public class DishModelSpriteRegistry : MonoBehaviour
             { new() { Pasta }, (pasta, pastaSprite) },
             // ^ single ingredient dishes
             { new() { RedPlankton, BluePlankton }, (redBluePlankton, redBluePlanktonSprite) },
+            { new() { RedPlankton, GreenPlankton }, (redGreenPlankton, redGreenPlanktonSprite) },
+            { new() { GreenPlankton, BluePlankton }, (greenBluePlankton, greenBluePlanktonSprite) },
+
             { new() { RedPlankton, GreenPlankton, BluePlankton }, (redGreenBluePlankton, redGreenBluePlanktonSprite) },
             { new() { Rice, Seaweed }, (riceSeaweed, riceSeaweedSprite) },
+            { new() { Rice, GreenPlankton }, (riceGreenPlankton, riceGreenPlanktonSprite) },
+            { new() { Rice, RedPlankton }, (riceRedPlankton, riceRedPlanktonSprite) },
+            { new() { Seaweed, RedPlankton }, (redPlanktonSeaweed, redPlanktonSeaweedSprite) },
+            { new() { Seaweed, GreenPlankton }, (greenPlanktonSeaweed, greenPlanktonSeaweedSprite) },
+
             { new() { RedPlankton, Seaweed, Rice }, (redSushi, redSushiSprite) },
             { new() { GreenPlankton, Seaweed, Rice }, (greenSushi, greenSushiSprite) },
+            { new() { RedPlankton, Pasta }, (pastaRedPlankton, pastaRedPlanktonSprite) },
+            { new() { BluePlankton, Pasta }, (pastaBluePlankton, pastaBluePlanktonSprite) },
+            { new() { RedPlankton, BluePlankton, Pasta }, (pastaRedBluePlankton, pastaRedBluePlanktonSprite) },
         };
     }
 }

@@ -16,6 +16,7 @@ public class Pot : FoodContainer
     [SerializeField] private InGameProgress pgBar;
     [SerializeField] private GameObject warningSign;
     [SerializeField] private GameObject checkmark;
+    public IngredientStateData targetCookState;
 
     private float _warningTime = 6f;
     private float _quickWarningTime = 2.5f;

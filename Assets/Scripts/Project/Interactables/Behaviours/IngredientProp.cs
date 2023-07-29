@@ -2,6 +2,7 @@ using UnityEngine;
 using CustomAttributes;
 using UnityEditor;
 using System;
+using System.Linq;
 
 /// <summary>
 ///  Handles ingredient object behaviour
@@ -36,7 +37,10 @@ public class IngredientProp : InteractionBehaviour
         if (State != null && _stateToModel.TryGetValue(State, out GameObject model))
         {
             DisableAllModels();
-            model.SetActive(true);
+            if (model != null)
+            {
+                model.SetActive(true);
+            }
         }
     }
 
@@ -50,13 +54,13 @@ public class IngredientProp : InteractionBehaviour
         progress = Mathf.Clamp01(progress);
         _progressIndicator = progress;
         _ingredient.SetProgress(progress);
-        pgBar.SetProgress(progress); 
+        pgBar.SetProgress(progress);
         OnProgressUpdate(progress);
     }
 
     /// <summary>
     /// Resets the progress of the ingredient if the state is changed
-    /// Also makes sure the correct model is active 
+    /// Also makes sure the correct model is active
     /// </summary>
     /// <param name="state"></param>
     public void SetState(IngredientStateData state)
@@ -84,9 +88,12 @@ public class IngredientProp : InteractionBehaviour
     /// </summary>
     private void DisableAllModels()
     {
-        foreach (var pair in _stateToModel)
+        foreach (var pair in _stateToModel.Where(pair => pair.Value != null))
         {
-            pair.Value.SetActive(false);
+            if (pair.Value != null)
+            {
+                pair.Value.SetActive(false);
+            }
         }
     }
 }
