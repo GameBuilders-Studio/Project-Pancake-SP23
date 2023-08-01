@@ -15,6 +15,10 @@ public class Plate : FoodContainer
 
     protected override bool ValidateIngredient(Ingredient ingredient)
     {
+        // Check if the ingredient is allowed based on its type and progress
+        if(!base.ValidateIngredient(ingredient)) {
+            return false; 
+        }
 
         var existingIngredients = new HashSet<IngredientType>(_ingredientTypes);
         if (!existingIngredients.Add(ingredient.Data.type))
