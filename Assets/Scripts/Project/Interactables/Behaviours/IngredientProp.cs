@@ -23,6 +23,7 @@ public class IngredientProp : InteractionBehaviour
     private StateToModelDictionary _stateToModel;
     public StateToModelDictionary StateToModel => _stateToModel;
 
+    [SerializeField]
     public float Progress => _ingredient.Progress;
     public bool ProgressComplete => _ingredient.ProgressComplete;
 

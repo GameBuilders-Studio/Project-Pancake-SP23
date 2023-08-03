@@ -7,5 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Props/Ingredient State")]
 public class IngredientStateData : ScriptableObject
 {
-
+    [SerializeField]
+    bool _hasProgress = false;
+    public bool HasProgress => _hasProgress;
 }
