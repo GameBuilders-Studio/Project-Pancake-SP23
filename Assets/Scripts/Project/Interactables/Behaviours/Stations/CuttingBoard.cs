@@ -17,7 +17,13 @@ public class CuttingBoard : StationController, IUsable
 
     bool IUsable.Enabled
     {
-        get => _ingredientExists && !_ingredient.ProgressComplete;
+        /* 
+        Chopping station is usable if: 
+        - There is an ingredient on the station
+        - The ingredient is in the correct state to be chopped (most likely 'raw') 
+        - The ingredient is not already chopped completely
+        */
+        get => _ingredientExists && IngredientCanBeChopped();
     }
 
     void Update()
@@ -53,7 +59,7 @@ public class CuttingBoard : StationController, IUsable
     {
         Debug.Log("Chopping");
         // ensure ingredient is in a state that can be chopped
-        if (_ingredient.State != _startIngredientState && _ingredient.State != _targetIngredientState) { return; }
+        if (!IngredientCanBeChopped()) { return; }
 
         // Changes the ingredient state to the target state if it isn't already
         if(_ingredient.State != _targetIngredientState)
@@ -69,5 +75,10 @@ public class CuttingBoard : StationController, IUsable
         
         _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
         
+    }
+
+    bool IngredientCanBeChopped()
+    {
+        return _ingredient.State == _startIngredientState || (_ingredient.State == _targetIngredientState && !_ingredient.ProgressComplete);
     }
 }
