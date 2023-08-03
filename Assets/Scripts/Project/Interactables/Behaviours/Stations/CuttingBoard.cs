@@ -22,7 +22,9 @@ public class CuttingBoard : StationController, IUsable
 
     void Update()
     {
-        if (_interacting) { Chop(); }
+        if (_interacting) { 
+            Debug.Log("Interacting");
+            Chop(); }
     }
 
     public void OnUseStart() => _interacting = true;
@@ -38,6 +40,7 @@ public class CuttingBoard : StationController, IUsable
     public override void ItemPlaced(ref Carryable item)
     {
         _ingredientExists = item.TryGetBehaviour(out _ingredient);
+        Debug.Log("Ingredient exists: " + _ingredientExists); 
     }
 
     public override void ItemRemoved(ref Carryable item)
@@ -48,13 +51,23 @@ public class CuttingBoard : StationController, IUsable
 
     void Chop()
     {
+        Debug.Log("Chopping");
         // ensure ingredient is in a state that can be chopped
         if (_ingredient.State != _startIngredientState && _ingredient.State != _targetIngredientState) { return; }
 
-        // IInteractable.Enabled check ensures _ingredient exists
-        if (_ingredient.ProgressComplete) { return; }
+        // Changes the ingredient state to the target state if it isn't already
+        if(_ingredient.State != _targetIngredientState)
+        {
+            Debug.Log("Changing state");
+            _ingredient.SetState(_targetIngredientState);
+        }
 
-        _ingredient.SetState(_targetIngredientState);
+        // Stop chopping if the ingredient is already chopped
+        if (_ingredient.ProgressComplete) { 
+            Debug.Log("Progress complete");
+            return; }
+        
         _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
+        
     }
 }

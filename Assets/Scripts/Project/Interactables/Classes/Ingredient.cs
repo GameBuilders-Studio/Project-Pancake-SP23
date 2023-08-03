@@ -8,12 +8,10 @@ public class Ingredient
 {
     public IngredientSO Data;
     public IngredientStateData State;
-
-    [SerializeField]
-    [Range(0f, 1f)]
+    [HideInInspector]
     public float Progress = 0.0f;
 
-    public bool ProgressComplete => Mathf.Approximately(Progress, 1.0f);
+    public bool ProgressComplete => !State.HasProgress ||  Mathf.Approximately(Progress, 1.0f);
 
     public Ingredient(IngredientSO data, IngredientStateData state)
     {

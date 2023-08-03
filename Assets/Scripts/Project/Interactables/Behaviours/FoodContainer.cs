@@ -149,8 +149,9 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
     {
+        bool progressComplete = ingredient.ProgressComplete;
         // if the ingredient is not allowed in this container or is not complete, return false
-        if (!_containerSettings.IsIngredientAllowed(ingredient) || ingredient.Progress != 1)
+        if (!_containerSettings.IsIngredientAllowed(ingredient) || !progressComplete)
         {
             return false;
         } 
