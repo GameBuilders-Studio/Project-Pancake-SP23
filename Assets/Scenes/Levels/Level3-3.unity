@@ -7258,14 +7258,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844036120}
-  m_LocalRotation: {x: 0.5934461, y: -0, z: -0, w: 0.8048738}
-  m_LocalPosition: {x: 3.27, y: 15, z: 2.72}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 3.5, y: 12.7, z: -4.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 72.804, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &864227824 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1126139912628277122, guid: a2bb8edcf2f1445ef9af9acc11fd6c5a, type: 3}
@@ -13283,6 +13283,50 @@ PrefabInstance:
     - target: {fileID: 1126139912628277126, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Name
+      value: Time Intensity Multiplier
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Name
+      value: Spin Velocity Strength
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 3.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 8.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Name
+      value: Speed Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Overridden
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.y
+      value: 11.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864376185163812073, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Overridden
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8095015905606660799, guid: d1b75de1cf81a4fcc9d8d2c991306d96, type: 3}
       propertyPath: m_LocalScale.x
