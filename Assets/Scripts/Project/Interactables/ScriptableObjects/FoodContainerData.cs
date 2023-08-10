@@ -6,7 +6,7 @@ using UnityEngine;
 public class FoodContainerData : ScriptableObject
 {
     [SerializeField]
-    public bool AllowAllIngredientTypes; 
+    public bool AllowAllIngredientTypes;
 
     [SerializeField]
     [Min(0)]
@@ -16,12 +16,12 @@ public class FoodContainerData : ScriptableObject
     public List<IngredientStateData> AllowedIngredientStates;
 
     [SerializeField]
-    public List<IngredientType> AllowedIngredientTypes = new(); 
+    public List<IngredientType> AllowedIngredientTypes = new();
 
     public virtual bool IsIngredientAllowed(Ingredient ingredient)
     {
-        bool isTypeAllowed = AllowAllIngredientTypes || AllowedIngredientTypes.Contains(ingredient.Data.type); 
+        bool isTypeAllowed = AllowAllIngredientTypes || AllowedIngredientTypes.Contains(ingredient.Data.type);
         bool isStateAllowed = AllowedIngredientStates.Contains(ingredient.State);
-        return (isTypeAllowed && isStateAllowed); 
+        return (isTypeAllowed && isStateAllowed);
     }
 }
