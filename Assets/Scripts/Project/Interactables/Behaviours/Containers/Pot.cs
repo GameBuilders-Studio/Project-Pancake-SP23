@@ -29,8 +29,9 @@ public class Pot : FoodContainer
         _soupRenderer = _soupVisual.GetComponent<Renderer>();
     }
 
-    protected override void OnIngredientsChanged(HashSet<IngredientType> ingredientTypes)
+    protected override void OnIngredientsChanged(HashSet<(IngredientType, IngredientStateData)> ingredientTypes)
     {
+        Debug.Log("Ingredients Changed!");
         base.OnIngredientsChanged(ingredientTypes);
         bool showSoup = !IsEmpty;
         _soupVisual.SetActive(showSoup);

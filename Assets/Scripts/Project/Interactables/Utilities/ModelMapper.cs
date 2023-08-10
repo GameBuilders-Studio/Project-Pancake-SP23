@@ -42,7 +42,7 @@ public class ModelMapper: MonoBehaviour
 
     // this might be a good place to use scriptable objects...
     // but this will work
-    public (GameObject, Sprite) GetDishModelSprite(HashSet<IngredientType> ingredients)
+    public (GameObject, Sprite) GetDishModelSprite(HashSet<(IngredientType, IngredientStateData)> ingredients)
     {
         InitStatics();
         if (!_dishModelSpriteRegistry.modelMap.ContainsKey(ingredients))
@@ -54,7 +54,7 @@ public class ModelMapper: MonoBehaviour
         return (pair.Item1, pair.Item2);
     }
 
-    public bool DishExist(HashSet<IngredientType> ingredients)
+    public bool DishExist(HashSet<(IngredientType, IngredientStateData)> ingredients)
     {
         InitStatics();
         return _dishModelSpriteRegistry.modelMap.ContainsKey(ingredients);

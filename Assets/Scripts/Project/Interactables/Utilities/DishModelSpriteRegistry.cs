@@ -50,35 +50,46 @@ public class DishModelSpriteRegistry : MonoBehaviour
     public GameObject pastaRedBluePlankton;
     public Sprite pastaRedBluePlanktonSprite;
 
-    public Dictionary<HashSet<IngredientType>, (GameObject, Sprite)> modelMap;
+    public Dictionary<HashSet<(IngredientType, IngredientStateData)>, (GameObject, Sprite)> modelMap;
+
+    // please for the love of god do not use Scriptable Objects like enums ever again - Revan
+    public IngredientStateData normal, cooked, chopped, carbs, fried;
 
     public void Init()
     {
-        modelMap = new Dictionary<HashSet<IngredientType>, (GameObject, Sprite)>(HashSet<IngredientType>.CreateSetComparer())
+        // this is not certainly not the right way to do this
+        // too much repeated information just to accomodate two possible ways the fishes can be presented in dishes
+        // but at this point I just want this to end
+        modelMap = new Dictionary<HashSet<(IngredientType, IngredientStateData)>, (GameObject, Sprite)>(HashSet<(IngredientType, IngredientStateData)>.CreateSetComparer())
         {
-            { new() { RedPlankton }, (redPlankton, redPlanktonSprite) },
-            { new() { BluePlankton }, (bluePlankton, bluePlanktonSprite) },
-            { new() { GreenPlankton }, (greenPlankton, greenPlanktonSprite) },
-            { new() { Rice }, (rice, riceSprite) },
-            { new() { Seaweed }, (seaweed, seaweedSprite) },
-            { new() { Pasta }, (pasta, pastaSprite) },
+            { new() { (RedPlankton,  chopped)}, (redPlankton, redPlanktonSprite) },
+            { new() { (BluePlankton, chopped) }, (bluePlankton, bluePlanktonSprite) },
+            { new() { (GreenPlankton, chopped) }, (greenPlankton, greenPlanktonSprite) },
+            { new() { (RedPlankton,  fried)}, (redPlankton, redPlanktonSprite) },
+            { new() { (BluePlankton, fried) }, (bluePlankton, bluePlanktonSprite) },
+            { new() { (GreenPlankton, fried) }, (greenPlankton, greenPlanktonSprite) },
+            { new() { (Rice, cooked) }, (rice, riceSprite) },
+            { new() { (Rice, carbs) }, (rice, riceSprite) },
+            { new() { (Seaweed, normal) }, (seaweed, seaweedSprite) },
+            { new() { (Pasta, cooked) }, (pasta, pastaSprite) },
+            { new() { (Pasta, carbs) }, (pasta, pastaSprite) },
             // ^ single ingredient dishes
-            { new() { RedPlankton, BluePlankton }, (redBluePlankton, redBluePlanktonSprite) },
-            { new() { RedPlankton, GreenPlankton }, (redGreenPlankton, redGreenPlanktonSprite) },
-            { new() { GreenPlankton, BluePlankton }, (greenBluePlankton, greenBluePlanktonSprite) },
+            { new() { (RedPlankton, chopped), (BluePlankton, chopped) }, (redBluePlankton, redBluePlanktonSprite) },
+            { new() { (RedPlankton, chopped) , (GreenPlankton, chopped) }, (redGreenPlankton, redGreenPlanktonSprite) },
+            { new() { (GreenPlankton, chopped), (BluePlankton, chopped) }, (greenBluePlankton, greenBluePlanktonSprite) },
 
-            { new() { RedPlankton, GreenPlankton, BluePlankton }, (redGreenBluePlankton, redGreenBluePlanktonSprite) },
-            { new() { Rice, Seaweed }, (riceSeaweed, riceSeaweedSprite) },
-            { new() { Rice, GreenPlankton }, (riceGreenPlankton, riceGreenPlanktonSprite) },
-            { new() { Rice, RedPlankton }, (riceRedPlankton, riceRedPlanktonSprite) },
-            { new() { Seaweed, RedPlankton }, (redPlanktonSeaweed, redPlanktonSeaweedSprite) },
-            { new() { Seaweed, GreenPlankton }, (greenPlanktonSeaweed, greenPlanktonSeaweedSprite) },
+            { new() { (RedPlankton, chopped), (GreenPlankton, chopped), (BluePlankton, chopped) }, (redGreenBluePlankton, redGreenBluePlanktonSprite) },
+            { new() { (Rice, cooked), (Seaweed, normal) }, (riceSeaweed, riceSeaweedSprite) },
+            { new() { (Rice, cooked) , (GreenPlankton, chopped) }, (riceGreenPlankton, riceGreenPlanktonSprite) },
+            { new() { (Rice, cooked), (RedPlankton, chopped) }, (riceRedPlankton, riceRedPlanktonSprite) },
+            { new() { (Seaweed, normal), (RedPlankton, chopped) }, (redPlanktonSeaweed, redPlanktonSeaweedSprite) },
+            { new() { (Seaweed, normal), (GreenPlankton, chopped) }, (greenPlanktonSeaweed, greenPlanktonSeaweedSprite) },
 
-            { new() { RedPlankton, Seaweed, Rice }, (redSushi, redSushiSprite) },
-            { new() { GreenPlankton, Seaweed, Rice }, (greenSushi, greenSushiSprite) },
-            { new() { RedPlankton, Pasta }, (pastaRedPlankton, pastaRedPlanktonSprite) },
-            { new() { BluePlankton, Pasta }, (pastaBluePlankton, pastaBluePlanktonSprite) },
-            { new() { RedPlankton, BluePlankton, Pasta }, (pastaRedBluePlankton, pastaRedBluePlanktonSprite) },
+            { new() { (RedPlankton, chopped), (Seaweed, normal), (Rice, cooked) }, (redSushi, redSushiSprite) },
+            { new() { (GreenPlankton, chopped), (Seaweed, normal), (Rice, cooked) }, (greenSushi, greenSushiSprite) },
+            { new() { (RedPlankton, fried), (Pasta, cooked) }, (pastaRedPlankton, pastaRedPlanktonSprite) },
+            { new() { (BluePlankton, fried), (Pasta, cooked) }, (pastaBluePlankton, pastaBluePlanktonSprite) },
+            { new() { (RedPlankton, fried), (BluePlankton, fried), (Pasta, cooked) }, (pastaRedBluePlankton, pastaRedBluePlanktonSprite) },
         };
     }
 }

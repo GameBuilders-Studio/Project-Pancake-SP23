@@ -10,7 +10,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField]
     protected List<Ingredient> _ingredients = new();
 
-    protected HashSet<IngredientType> _ingredientTypes = new();
+    protected HashSet<(IngredientType, IngredientStateData)> _ingredientInformation = new();
 
     [SerializeField, Required]
     private Transform _ingredientModelParent;
@@ -94,8 +94,12 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         if (!ValidateIngredient(ingredientProp.Ingredient))
         {
+            Debug.Log("Ingredient Invalidated");
             return false;
         }
+
+        Debug.Log("Ingredient Validated");
+
         AddIngredient(ingredientProp.Ingredient);
         Destroy(ingredientProp.gameObject);
 
@@ -143,8 +147,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         _ingredientModels.Clear();
         Ingredients.Clear();
         _tooltip.ClearIngredients();
-        _ingredientTypes.Clear();
-        OnIngredientsChanged(_ingredientTypes);
+        _ingredientInformation.Clear();
+        OnIngredientsChanged(_ingredientInformation);
     }
 
     protected virtual bool ValidateIngredient(Ingredient ingredient)
@@ -163,14 +167,14 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
-        if (other._ingredientTypes.Overlaps(_ingredientTypes))
+        if (other._ingredientInformation.Overlaps(_ingredientInformation))
         {
             return false;
         }
 
-        var unionSet = new HashSet<IngredientType>();
-        unionSet.UnionWith(other._ingredientTypes);
-        unionSet.UnionWith(_ingredientTypes);
+        var unionSet = new HashSet<(IngredientType, IngredientStateData)>();
+        unionSet.UnionWith(other._ingredientInformation);
+        unionSet.UnionWith(_ingredientInformation);
 
         // // validate each ingredient by default
         // for (int i = 0; i < other.Count; i++)
@@ -182,7 +186,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     }
 
 
-    protected virtual void OnIngredientsChanged(HashSet<IngredientType> currentIngredients)
+    protected virtual void OnIngredientsChanged(HashSet<(IngredientType, IngredientStateData)> currentIngredients)
     {
         foreach (var x in _ingredientModels.Values)
         {
@@ -208,8 +212,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     private void AddIngredient(Ingredient ingredient)
     {
         Ingredients.Add(ingredient);
-        _ingredientTypes.Add(ingredient.Data.type);
+        _ingredientInformation.Add((ingredient.Data.type, ingredient.State));
         Ingredients.Sort((a, b) => b.Progress.CompareTo(a.Progress));
-        OnIngredientsChanged(_ingredientTypes);
+        OnIngredientsChanged(_ingredientInformation);
     }
 }
