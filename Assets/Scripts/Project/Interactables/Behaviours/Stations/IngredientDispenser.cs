@@ -8,6 +8,12 @@ public class IngredientDispenser : StationController
 
     [SerializeField, Required]
     private SpriteRenderer _iconRenderer;
+    
+    [SerializeField, Required]
+    private Animator _animator;
+
+    [SerializeField, Required]
+    private AudioSource _audioSource;
 
     private void OnValidate()
     {
@@ -20,6 +26,8 @@ public class IngredientDispenser : StationController
         {
             var ingredientGo = Instantiate(_ingredientSO.prefab, transform.position, transform.rotation);
             item = ingredientGo.GetComponent<Carryable>();
+            _animator.Play("Dispense", -1, 0f);
+            _audioSource.Play();
         }
     }
 }

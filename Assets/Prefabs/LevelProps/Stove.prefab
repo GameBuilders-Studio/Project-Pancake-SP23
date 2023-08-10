@@ -140,6 +140,14 @@ PrefabInstance:
       propertyPath: _itemInteractions
       value: 
       objectReference: {fileID: 2638106814761321416}
+    - target: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371915549144759701, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 4134685410734081310, guid: 5b0c7ec0e4e424b3a9ec9f3f4dc966ab, type: 3}
       propertyPath: Owner
       value: 
@@ -271,6 +279,7 @@ MonoBehaviour:
   Station: {fileID: 4660176406963723286}
   _cookTimePerIngredient: 5
   _overcookTime: 10
+  _flashFinishTime: 4
   _targetIngredientState: {fileID: 11400000, guid: 3810401c4c3df2b439fff87d5b774bae, type: 2}
   _targetOvercookedIngredientState: {fileID: 11400000, guid: e751dbbf2b6fad049b579c4d56bd60a6, type: 2}
   _cooking: 0

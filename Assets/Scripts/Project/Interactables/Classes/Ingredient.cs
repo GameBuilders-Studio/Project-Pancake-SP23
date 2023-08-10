@@ -8,11 +8,10 @@ public class Ingredient
 {
     public IngredientSO Data;
     public IngredientStateData State;
-
-    [ProgressBar("Progress", 1.0f, EColor.Green)]
+    [HideInInspector]
     public float Progress = 0.0f;
 
-    public bool ProgressComplete => Mathf.Approximately(Progress, 1.0f);
+    public bool ProgressComplete => !State.HasProgress ||  Mathf.Approximately(Progress, 1.0f);
 
     public Ingredient(IngredientSO data, IngredientStateData state)
     {

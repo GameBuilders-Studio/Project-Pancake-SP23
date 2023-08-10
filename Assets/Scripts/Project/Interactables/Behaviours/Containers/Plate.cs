@@ -17,6 +17,10 @@ public class Plate : FoodContainer
 
     protected override bool ValidateIngredient(Ingredient ingredient)
     {
+        // Check if the ingredient is allowed based on its type and progress
+        if(!base.ValidateIngredient(ingredient)) {
+            return false; 
+        }
 
         if (excludeState.Contains(ingredient.State))
         {

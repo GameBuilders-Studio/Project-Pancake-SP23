@@ -17,12 +17,20 @@ public class CuttingBoard : StationController, IUsable
 
     bool IUsable.Enabled
     {
-        get => _ingredientExists && !_ingredient.ProgressComplete;
+        /* 
+        Chopping station is usable if: 
+        - There is an ingredient on the station
+        - The ingredient is in the correct state to be chopped (most likely 'raw') 
+        - The ingredient is not already chopped completely
+        */
+        get => _ingredientExists && IngredientCanBeChopped();
     }
 
     void Update()
     {
-        if (_interacting) { Chop(); }
+        if (_interacting) { 
+            Debug.Log("Interacting");
+            Chop(); }
     }
 
     public void OnUseStart() => _interacting = true;
@@ -38,6 +46,7 @@ public class CuttingBoard : StationController, IUsable
     public override void ItemPlaced(ref Carryable item)
     {
         _ingredientExists = item.TryGetBehaviour(out _ingredient);
+        Debug.Log("Ingredient exists: " + _ingredientExists); 
     }
 
     public override void ItemRemoved(ref Carryable item)
@@ -48,13 +57,28 @@ public class CuttingBoard : StationController, IUsable
 
     void Chop()
     {
+        Debug.Log("Chopping");
         // ensure ingredient is in a state that can be chopped
-        if (_ingredient.State != _startIngredientState && _ingredient.State != _targetIngredientState) { return; }
+        if (!IngredientCanBeChopped()) { return; }
 
-        // IInteractable.Enabled check ensures _ingredient exists
-        if (_ingredient.ProgressComplete) { return; }
+        // Changes the ingredient state to the target state if it isn't already
+        if(_ingredient.State != _targetIngredientState)
+        {
+            Debug.Log("Changing state");
+            _ingredient.SetState(_targetIngredientState);
+        }
 
-        _ingredient.SetState(_targetIngredientState);
+        // Stop chopping if the ingredient is already chopped
+        if (_ingredient.ProgressComplete) { 
+            Debug.Log("Progress complete");
+            return; }
+        
         _ingredient.AddProgress(Time.deltaTime / _chopTimeSeconds);
+        
+    }
+
+    bool IngredientCanBeChopped()
+    {
+        return _ingredient.State == _startIngredientState || (_ingredient.State == _targetIngredientState && !_ingredient.ProgressComplete);
     }
 }
