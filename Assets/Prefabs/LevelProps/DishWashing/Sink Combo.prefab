@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1126139912628277126}
   m_Layer: 0
-  m_Name: DishWasher
+  m_Name: Sink Combo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_Name
-      value: CleanDishStack
+      value: DishStack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
@@ -143,7 +143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
       propertyPath: m_LocalPosition.z
