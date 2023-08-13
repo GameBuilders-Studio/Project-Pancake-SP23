@@ -64,7 +64,7 @@ MonoBehaviour:
     Rules: []
   - _group: Level Tile Group
     _tileID: -1552717982
-    Default: {fileID: 1126139912628277122, guid: e7d803525a01a49dd8565f45def115f2, type: 3}
+    Default: {fileID: 919132149155446097, guid: 43fa5ad81bdd51b4c9b4f71660456906, type: 3}
     Randoms: []
     Random: 0
     _name: Dishes
@@ -91,15 +91,8 @@ MonoBehaviour:
     _name: Stove
     Rules: []
   - _group: Level Tile Group
-    _tileID: 784190221
-    Default: {fileID: 1126139912628277122, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
-    Randoms: []
-    Random: 0
-    _name: Dish Washer
-    Rules: []
-  - _group: Level Tile Group
     _tileID: 453152254
-    Default: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
+    Default: {fileID: 919132149155446097, guid: 9cd5cfae332acf1499ed24f786150807, type: 3}
     Randoms: []
     Random: 0
     _name: Dish Stack
@@ -144,5 +137,12 @@ MonoBehaviour:
     Default: {fileID: 2372841494469791569, guid: 93deb3b118a550d41b40f5d28f5dcd82, type: 3}
     Randoms: []
     Random: 0
-    _name: New Tile
+    _name: Food Source Green Plankton
+    Rules: []
+  - _group: Level Tile Group
+    _tileID: 967297438
+    Default: {fileID: 1126139912628277122, guid: c5f86571daab25e4c9643b206651e2b1, type: 3}
+    Randoms: []
+    Random: 0
+    _name: Sink Combo
     Rules: []
