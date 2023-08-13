@@ -1322,34 +1322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1875712900}
     m_Modifications:
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _group
-      value: Level Tile Group
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _localRotation.w
-      value: -0.70710677
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _localRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _localRotation.y
-      value: -0.70710677
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _localRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _internalPosition.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014723, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _internalPosition.z
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3213388492890014732, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1394,18 +1366,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _isClean
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _dirtyPlatePrefab
-      value: 
-      objectReference: {fileID: 7605582599296834493, guid: 92583dac69bc4d94abb350e55af91f63, type: 3}
-    - target: {fileID: 3213388492890014733, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
-      propertyPath: _dirtyVisualDishPrefab
-      value: 
-      objectReference: {fileID: 9059498309148403140, guid: 5155a343b66321e429c19d5b0db5be99, type: 3}
     - target: {fileID: 3213388492890014735, guid: 01feceba04037034abd06fb8070b8b0f, type: 3}
       propertyPath: m_Name
       value: DishStack
@@ -6743,6 +6703,10 @@ PrefabInstance:
     - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1535099253906417671, guid: 7431efa6f57670e448350749373a7df2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258605423835962181, guid: 7431efa6f57670e448350749373a7df2, type: 3}
       propertyPath: m_RootOrder
