@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1126139912628277126}
+  - component: {fileID: 281612005}
   m_Layer: 0
   m_Name: Sink Combo
   m_TagString: Untagged
@@ -33,6 +34,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &281612005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126139912628277122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileID: 967297438
+  _ruleID: -1
+  _tileName: Sink Combo
+  _group: Level Tile Group
+  _internalPosition: {x: 13, y: 3, z: 6}
+  _localRotation: {x: -0, y: -0.70710677, z: -0, w: 0.70710677}
+  _isBaked: 0
+  View: {fileID: 1126139912628277122}
 --- !u!1001 &8910496757754694608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,9 +150,13 @@ PrefabInstance:
       propertyPath: _dishStack
       value: 
       objectReference: {fileID: 6282607622163304413}
+    - target: {fileID: 195078305573947851, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
+      propertyPath: _renderer
+      value: 
+      objectReference: {fileID: 4533829090515669776}
     - target: {fileID: 1126139912628277122, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
       propertyPath: m_Name
-      value: DishWasherBase
+      value: Sink
       objectReference: {fileID: 0}
     - target: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
       propertyPath: m_RootOrder
@@ -187,6 +212,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
+--- !u!23 &4533829090515669776 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4789489965813666659, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
+  m_PrefabInstance: {fileID: 8979274094090109043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8303529948136787957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1126139912628277126, guid: 0bc7953f64aceb648811aa9d82ca6770, type: 3}
