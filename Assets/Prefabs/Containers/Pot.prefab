@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5092318316360696853}
   - component: {fileID: 5232946500761208237}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BarForeground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4507978474451674852}
   - component: {fileID: 3377329716862409609}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BarBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8675139720257000830}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BarScaleAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5505531126230924226}
   - component: {fileID: 4863473081302037926}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GreenCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 8642615915156513117}
   - component: {fileID: 2346093074571808296}
   - component: {fileID: 7868610005954899886}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5171,7 +5171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3998905695935967271}
   - component: {fileID: 7163820947329547349}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5219,7 +5219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6168495169858377701}
   - component: {fileID: 5717371991348183525}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: warning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5303,7 +5303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4132867066196961375}
   - component: {fileID: 2268001251286325733}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: accept
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5387,7 +5387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2168865798823369572}
   - component: {fileID: 1451565804652459291}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PotContainerDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5438,7 +5438,7 @@ GameObject:
   - component: {fileID: 7751399862626977936}
   - component: {fileID: 8123427399461746959}
   - component: {fileID: 7562239490191641913}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bubbles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5650,7 +5650,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.96372414, b: 0.8930817, a: 0.8980392}
+      maxColor: {r: 0.899, g: 0.7880123, b: 0.62153083, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
