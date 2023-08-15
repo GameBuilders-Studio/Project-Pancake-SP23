@@ -55,6 +55,7 @@ public class Stove : StationController
     {
         _containerExists = false;
         _cooking = false;
+        _container.DisableCookingVisual();
         if (_timerCoroutine != null)
         {
             StopCoroutine(_timerCoroutine);
@@ -78,6 +79,9 @@ public class Stove : StationController
     // we need to cook jesse
     void Cook(Pot container)
     {
+        if(container.IsEmpty) { return; }
+
+        _container.EnableCookingVisual();
         _totalProgress = 0.0f;
 
         for (int i = 0; i < container.Count; i++)
