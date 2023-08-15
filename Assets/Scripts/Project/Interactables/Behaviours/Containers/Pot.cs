@@ -11,6 +11,18 @@ public class Pot : FoodContainer
 
     private Renderer _soupRenderer;
 
+    [SerializeField]
+    private GameObject _cookingVisual;
+
+    [SerializeField]
+    private ParticleSystem _bubbleParticles;
+
+    [SerializeField]
+    private ParticleSystem _smokeParticles;
+
+    [SerializeField]
+    private Color _smokeColor;
+
     [SerializeField] private Transform foodAnchor;
 
     [SerializeField] private InGameProgress pgBar;
@@ -32,6 +44,7 @@ public class Pot : FoodContainer
     protected override void OnIngredientsChanged(HashSet<(IngredientType, IngredientStateData)> ingredientTypes)
     {
         Debug.Log("Ingredients Changed!");
+        SetOvercookedVisuals(false);
         base.OnIngredientsChanged(ingredientTypes);
         bool showSoup = !IsEmpty;
         _soupVisual.SetActive(showSoup);
@@ -98,11 +111,36 @@ public class Pot : FoodContainer
 
     public void Overcooked()
     {
-        _soupRenderer.material.color = Color.black;
+        SetOvercookedVisuals(true);
         for (int i = 0; i < foodAnchor.childCount; i++)
         {
             foodAnchor.GetChild(i).gameObject.SetActive(false);
         }
         StopFlashing();
+    }
+
+    public void EnableCookingVisual() {
+        if(_cookingVisual.activeSelf == false){
+            _cookingVisual.SetActive(true);
+        }
+    }
+
+    public void DisableCookingVisual() {
+        if(_cookingVisual.activeSelf == true) {
+            _cookingVisual.SetActive(false);
+        }
+    }
+
+    private void SetOvercookedVisuals(bool overcooked) {
+        ParticleSystem.MainModule smokeMainModule = _smokeParticles.main;
+        if(overcooked) {
+            _soupRenderer.material.color = Color.black;
+            _bubbleParticles.Stop();
+            smokeMainModule.startColor = Color.black;
+        } else {
+            _soupRenderer.material.color = Color.white;
+            _bubbleParticles.Play();
+            smokeMainModule.startColor = _smokeColor;
+        }
     }
 }

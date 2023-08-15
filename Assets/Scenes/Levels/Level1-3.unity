@@ -5122,6 +5122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Point Light
       objectReference: {fileID: 0}
+    - target: {fileID: 872342385048680935, guid: 72e3081a078612c49bb8eb2d8c8818ec, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72e3081a078612c49bb8eb2d8c8818ec, type: 3}
 --- !u!4 &1279271430 stripped
@@ -5284,6 +5288,10 @@ PrefabInstance:
     - target: {fileID: 1564734044366283957, guid: 2e43a610b96e74948b16115e8d69f61b, type: 3}
       propertyPath: m_Intensity
       value: 3.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564734044366283957, guid: 2e43a610b96e74948b16115e8d69f61b, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1564734044366283962, guid: 2e43a610b96e74948b16115e8d69f61b, type: 3}
       propertyPath: m_RootOrder

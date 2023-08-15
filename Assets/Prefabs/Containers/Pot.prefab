@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1082056657031721996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.47097513, y: 0, z: 0}
-  m_LocalScale: {x: 0.94270444, y: 0.71716595, z: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.95, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8675139720257000830}
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 50d12d13eaf277f5c8f1f5c1dc48326b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2328553110193643913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.281, z: 0}
+  m_LocalPosition: {x: 0, y: 0.182, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4011616735516715650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.46996513, y: 0, z: 0.006}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -325,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3223382469561757785}
   m_Layer: 0
-  m_Name: 'Cooking Effects '
+  m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -344,8 +344,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8746921328408809326}
-  - {fileID: 7751399862626977936}
-  - {fileID: 8642615915156513117}
+  - {fileID: 8171535479815731581}
   m_Father: {fileID: 9059498309148403138}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -375,12 +374,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4413403749084872654}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1.3520204, y: 2.8382735, z: 2.5995774}
+  m_LocalPosition: {x: 1.3520204, y: 2.8382738, z: 2.5995774}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3223382469561757785}
-  m_RootOrder: 2
+  m_Father: {fileID: 8171535479815731581}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &2346093074571808296
 ParticleSystem:
@@ -5402,7 +5401,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5486643734510936530}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.83, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5454,11 +5453,11 @@ Transform:
   m_GameObject: {fileID: 7549276423801210219}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 1.3592204, y: 2.7550733, z: 2.5995774}
-  m_LocalScale: {x: 0.1658946, y: 0.16589458, z: 0.16589458}
+  m_LocalScale: {x: 0.16589461, y: 0.16589458, z: 0.16589458}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3223382469561757785}
-  m_RootOrder: 1
+  m_Father: {fileID: 8171535479815731581}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &8123427399461746959
 ParticleSystem:
@@ -10239,6 +10238,39 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &8001538576922615469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8171535479815731581}
+  m_Layer: 0
+  m_Name: Cooking Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8171535479815731581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001538576922615469}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7751399862626977936}
+  - {fileID: 8642615915156513117}
+  m_Father: {fileID: 3223382469561757785}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9059498309148403140
 GameObject:
   m_ObjectHideFlags: 0
@@ -10345,7 +10377,11 @@ MonoBehaviour:
   _ingredients: []
   _ingredientModelParent: {fileID: 7553450933082088808}
   _tooltipPrefab: {fileID: 8466578208796056889, guid: f6667de74eb59cb47b7c1922f1b20044, type: 3}
-  _soupVisual: {fileID: 0}
+  _soupVisual: {fileID: 8225998676181915092}
+  _cookingVisual: {fileID: 8001538576922615469}
+  _bubbleParticles: {fileID: 8123427399461746959}
+  _smokeParticles: {fileID: 2346093074571808296}
+  _smokeColor: {r: 1, g: 1, b: 1, a: 0.3254902}
   foodAnchor: {fileID: 7553450933082088808}
   pgBar: {fileID: 7163820947329547349}
   warningSign: {fileID: 5348146331583402612}
@@ -10427,7 +10463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 3194474277733823431}
 --- !u!1 &9059498310111909958
 GameObject:
   m_ObjectHideFlags: 0
@@ -10564,6 +10600,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ea8ff1b3839fe224ea15afc642589e73, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c9cbdcb44f35654cb66976579c54c85, type: 3}
+--- !u!23 &3194474277733823431 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7202271454713460447, guid: 9c9cbdcb44f35654cb66976579c54c85, type: 3}
+  m_PrefabInstance: {fileID: 5739440615265125656}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4857131121397135433 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c9cbdcb44f35654cb66976579c54c85, type: 3}
@@ -10659,8 +10700,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soup
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 902438a04e47e8748ab7f77aff5f4ab4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 902438a04e47e8748ab7f77aff5f4ab4, type: 3}
+--- !u!1 &8225998676181915092 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 902438a04e47e8748ab7f77aff5f4ab4, type: 3}
+  m_PrefabInstance: {fileID: 9145113092490078341}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8746921328408809326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 902438a04e47e8748ab7f77aff5f4ab4, type: 3}
