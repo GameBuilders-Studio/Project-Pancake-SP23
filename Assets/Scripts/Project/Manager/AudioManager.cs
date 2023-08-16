@@ -13,7 +13,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public const string MASTER_VOLUME_KEY = "MasterVolume";
     public const string MUSIC_VOLUME_KEY = "MusicVolume";
-    public const string SFX_VOLUME_KEY = "SFXVolume";
+    public const string SFX_VOLUME_KEY = "SfxVolume";
 
     private void Awake() {
         // Load in audio settings
