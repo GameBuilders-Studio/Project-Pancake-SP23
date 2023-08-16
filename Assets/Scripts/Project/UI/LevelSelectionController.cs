@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using CustomAttributes;
+using TMPro;
 
 public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIActions
 {
@@ -57,9 +58,9 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
         foreach (var scene in _scenes)
         {
             var button = Instantiate(_buttonPrefab, _buttonParent);
-            button.GetComponentInChildren<Text>().text = index.ToString();
+            button.GetComponentInChildren<TextMeshProUGUI>().text = index.ToString();
             button.GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(scene));
-            _buttons.Add(button);
+            _buttons.Add(button);   
             index++;
         }
     }
