@@ -23,6 +23,10 @@ public class RespawnManager : MonoBehaviour
     [Tooltip("The point where the dirty plate will respawn to if there are no stoves or counters available")]
     private DishStack _dirtyDishStack;
 
+    [SerializeField] 
+    [Tooltip("The amount of time it takes for the player to respawn")]
+    private float _respawnTime = 3f;
+
     private List<Station> _stovesInScene = new(); //Make an array storing all the stoves that are in the scene
     private List<Station> _tablesInScene = new(); //Used to place when we have to put our extra pots and pans on table     
 
