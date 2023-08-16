@@ -8,9 +8,7 @@ public class JoinSceneLogic : MonoBehaviour
     [SerializeField] private List<PlayerJoinPanel> _playerJoinPanels = new List<PlayerJoinPanel>();
     [SerializeField, Required] private SceneLoader _sceneLoader = null;
     public void OnFinish()
-    {
-        InputManager.DisablePairing();
-        
+    {   
         // Check if there is at least one player 
         int playerCount = 0;
         foreach (PlayerJoinPanel panel in _playerJoinPanels)
@@ -38,6 +36,8 @@ public class JoinSceneLogic : MonoBehaviour
         }
 
         // Start the game
+        Debug.Log("Loading scene"); 
+        InputManager.DisablePairing();
         _sceneLoader.LoadScene();
     }
 }
