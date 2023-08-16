@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 52e8d08e4ed45754d9661dec7289f13e, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1026,12 +1026,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4402477877977643016, guid: 66f07d58e5c3b9840917d571e26bbf3e, type: 3}
       propertyPath: m_Cameras.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402477877977643016, guid: 66f07d58e5c3b9840917d571e26bbf3e, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4402477877977643016, guid: 66f07d58e5c3b9840917d571e26bbf3e, type: 3}
       propertyPath: m_Cameras.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 409869643}
     - target: {fileID: 4402477877977643018, guid: 66f07d58e5c3b9840917d571e26bbf3e, type: 3}
       propertyPath: orthographic
       value: 0
