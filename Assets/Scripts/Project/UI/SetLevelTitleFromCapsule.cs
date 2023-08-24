@@ -8,7 +8,7 @@ public class SetLevelTitleFromCapsule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<TMP_Text>().text = DataCapsule.instance.lastLevel;
+        GetComponent<TMP_Text>().text = DataCapsule.Instance.lastLevel;
     }
 
 }

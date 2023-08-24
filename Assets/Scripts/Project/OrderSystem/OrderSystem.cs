@@ -249,9 +249,10 @@ public class OrderSystem : MonoBehaviour
 
     private void OnFinishLevel()
     {
-        DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
-        DataCapsule.instance.score = _score;
-        DataCapsule.instance.scoreBarMax = 300;
+        Debug.Log("Level Finished");
+        DataCapsule.Instance.lastLevel = SceneManager.GetActiveScene().name;
+        DataCapsule.Instance.score = _score;
+        DataCapsule.Instance.scoreBarMax = 300;
         _sceneLoader.LoadScene();
     }
 

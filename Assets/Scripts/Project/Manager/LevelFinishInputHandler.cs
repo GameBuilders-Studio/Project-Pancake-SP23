@@ -15,7 +15,7 @@ public class LevelFinishInputHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            _sceneLoader.LoadSceneString(DataCapsule.instance.lastLevel);
+            _sceneLoader.LoadSceneString(DataCapsule.Instance.lastLevel);
         }
     }
 }

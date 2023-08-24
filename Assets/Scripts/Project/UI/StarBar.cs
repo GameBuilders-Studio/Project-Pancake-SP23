@@ -25,8 +25,6 @@ public class StarBar : MonoBehaviour
 
     private void Start()
     {
-        var dataCapsule = DataCapsule.instance;
-        //StartCoroutine(SlideProgressCoro((float)dataCapsule.score/dataCapsule.scoreBarMax));
         StartCoroutine(SlideProgressCoro(1f));
     }
 
