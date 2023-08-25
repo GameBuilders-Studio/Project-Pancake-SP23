@@ -18,6 +18,7 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private SceneLoader _sceneLoader;
     [SerializeField] private int _nthOrderConsecutive = 0;
     [SerializeField] private int _lastSentOutIndex = -1;
+    [SerializeField] private int _deductionPerMissedOrder = 10;
 
     private Coroutine _orderSpawnCoroutine;
     private List<Order> _currentOrders = new();
@@ -156,6 +157,9 @@ public class OrderSystem : MonoBehaviour
             tip = 8;
         }
 
+        DataCapsule.Instance.bonusScore += tip * consecutiveMultiplier;
+        DataCapsule.Instance.baseScore += baseScore;
+
         return tip * consecutiveMultiplier + baseScore;
     }
 
@@ -237,6 +241,7 @@ public class OrderSystem : MonoBehaviour
             {
                 Order temp = RemoveOrder(i);
                 temp.DespawnOrder();
+                DataCapsule.Instance.scoreDeduction += _deductionPerMissedOrder;
             }
         }
     }
@@ -249,9 +254,10 @@ public class OrderSystem : MonoBehaviour
 
     private void OnFinishLevel()
     {
-        DataCapsule.instance.lastLevel = SceneManager.GetActiveScene().name;
-        DataCapsule.instance.score = _score;
-        DataCapsule.instance.scoreBarMax = 300;
+        Debug.Log("Level Finished");
+        DataCapsule.Instance.lastLevel = SceneManager.GetActiveScene().name;
+        DataCapsule.Instance.scoreBarMax = _orderData.ScoreMax;
+        DataCapsule.Instance.totalScore = DataCapsule.Instance.baseScore + DataCapsule.Instance.bonusScore - DataCapsule.Instance.scoreDeduction;
         _sceneLoader.LoadScene();
     }
 

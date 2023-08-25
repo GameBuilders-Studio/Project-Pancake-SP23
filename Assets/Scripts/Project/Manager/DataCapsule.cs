@@ -1,44 +1,20 @@
 using UnityEngine;
+using GameBuilders.Singleton;
 
 // This class exists solely to transport data from one level to another
 // scripts have almost singleton-like access by finding by type
 
-public class DataCapsule : MonoBehaviour
+public class DataCapsule : Singleton<DataCapsule>
 {
-    public static DataCapsule instance {
-        get
-        {
-            if (s_instance == null)
-            {
-                var newCapsule = new GameObject();
-                newCapsule.gameObject.name = "Capsule";
-                s_instance = newCapsule.AddComponent<DataCapsule>();
-            }
-
-            return s_instance;
-
-        }
-        private set { s_instance = value; }
-    }
-
-    private static DataCapsule s_instance;
-
-    private void Awake()
-    {
-        // someone else has already made another capsule
-        // self destruct
-        if (s_instance != null)
-        {
-            Destroy(gameObject);
-        }
-        // otherwise this is the instance
-        s_instance = this;
-        DontDestroyOnLoad(this);
-    }
-
     public string lastLevel;
     // the score that is acquired by the player in the previous level
-    public int score;
+    public int baseScore;
     // the score needed to get three stars `
     public int scoreBarMax;
+    // Score from finishing order early
+    public int bonusScore; 
+    // Score deducted from missing orders
+    public int scoreDeduction;
+    // Total score for the level
+    public int totalScore;
 }
