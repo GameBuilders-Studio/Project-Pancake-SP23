@@ -10,7 +10,16 @@ public class LevelEndData : MonoBehaviour
     private TextMeshProUGUI _levelNameText;
 
     [SerializeField]
-    private TextMeshProUGUI _scoreText; 
+    private TextMeshProUGUI _baseScoreText; 
+
+    [SerializeField]
+    private TextMeshProUGUI _bonusScoreText; 
+
+    [SerializeField]
+    private TextMeshProUGUI _scoreDeductionText; 
+
+    [SerializeField]
+    private TextMeshProUGUI _totalScoreText;
 
     [SerializeField]
     private StarBar _starBar;
@@ -18,8 +27,11 @@ public class LevelEndData : MonoBehaviour
     private void Start()
     {
         _levelNameText.text = DataCapsule.Instance.lastLevel;
-        _scoreText.text = DataCapsule.Instance.score.ToString();
-        _starBar.SetTargetFraction((float) DataCapsule.Instance.score / DataCapsule.Instance.scoreBarMax);
+        _baseScoreText.text = DataCapsule.Instance.baseScore.ToString();
+        _bonusScoreText.text = DataCapsule.Instance.bonusScore.ToString();
+        _scoreDeductionText.text = "-" + DataCapsule.Instance.scoreDeduction.ToString();
+        _totalScoreText.text = DataCapsule.Instance.totalScore.ToString();
+        _starBar.SetTargetFraction((float) DataCapsule.Instance.totalScore / DataCapsule.Instance.scoreBarMax);
         _starBar.PlayStarAnimation();
     }
 }
