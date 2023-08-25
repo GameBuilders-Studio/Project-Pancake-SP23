@@ -8,7 +8,13 @@ public class DataCapsule : Singleton<DataCapsule>
 {
     public string lastLevel;
     // the score that is acquired by the player in the previous level
-    public int score;
+    public int baseScore;
     // the score needed to get three stars `
     public int scoreBarMax;
+    // Score from finishing order early
+    public int bonusScore; 
+    // Score deducted from missing orders
+    public int scoreDeduction;
+    // Total score for the level
+    public int totalScore;
 }
