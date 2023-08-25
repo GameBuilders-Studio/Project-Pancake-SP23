@@ -29,7 +29,7 @@ public class LevelEndData : MonoBehaviour
         _levelNameText.text = DataCapsule.Instance.lastLevel;
         _baseScoreText.text = DataCapsule.Instance.baseScore.ToString();
         _bonusScoreText.text = DataCapsule.Instance.bonusScore.ToString();
-        _scoreDeductionText.text = "-" + DataCapsule.Instance.scoreDeduction.ToString();
+        _scoreDeductionText.text = "- " + DataCapsule.Instance.scoreDeduction.ToString();
         _totalScoreText.text = DataCapsule.Instance.totalScore.ToString();
         _starBar.SetTargetFraction((float) DataCapsule.Instance.totalScore / DataCapsule.Instance.scoreBarMax);
         _starBar.PlayStarAnimation();
