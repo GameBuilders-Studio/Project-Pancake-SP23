@@ -56,6 +56,8 @@ public class DishStack : StationController
     //You can't place anything except dish on a dish stackx
     public override bool ValidateItem(Carryable item)
     {
+        return false;
+
         //if count is full, you can't place anything including dish
         if (Count >= _maxPlates) return false;
         FoodContainer dish;
