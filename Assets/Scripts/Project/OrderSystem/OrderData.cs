@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.EditorTools;
 
 //<summary>
 //This scriptable object is a serializable dictionary used to store the Orders sequence for each level
