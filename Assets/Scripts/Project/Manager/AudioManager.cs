@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using CustomAttributes;
 using GameBuilders.Singleton;
 using UnityEngine;
@@ -16,6 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     public const string SFX_VOLUME_KEY = "SfxVolume";
 
     private void Awake() {
+        Debug.Log("AudioManager Awake");
         // Load in audio settings
         _audioMixer.SetFloat(MASTER_VOLUME_KEY, PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 0));
         _audioMixer.SetFloat(MUSIC_VOLUME_KEY, PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 0));
