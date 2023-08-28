@@ -368,6 +368,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a876a2997281454980fab3263f681b8, type: 3}
+--- !u!1 &31780910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3055206153637014489, guid: 2a876a2997281454980fab3263f681b8, type: 3}
+  m_PrefabInstance: {fileID: 31780909}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &44508361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1853,6 +1858,10 @@ PrefabInstance:
       propertyPath: _potRespawnPoint
       value: 
       objectReference: {fileID: 734022002}
+    - target: {fileID: 4720656955957212338, guid: 68d7568182847b54eada7b8bfdd74df7, type: 3}
+      propertyPath: _respawnPointParent
+      value: 
+      objectReference: {fileID: 31780910}
     - target: {fileID: 4720656955957212340, guid: 68d7568182847b54eada7b8bfdd74df7, type: 3}
       propertyPath: m_Name
       value: RespawnManager

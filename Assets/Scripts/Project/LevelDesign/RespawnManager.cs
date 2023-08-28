@@ -9,7 +9,7 @@ public class RespawnManager : MonoBehaviour
     
     [SerializeField][Required]
     [Tooltip("The point where the player will respawn to")]
-    private Transform _respawnPoint;
+    private GameObject _respawnPointParent;
 
     [SerializeField] [Required]
     [Tooltip("The point where the pot will respawn to if there are no stoves or counters available")]
@@ -135,6 +135,17 @@ public class RespawnManager : MonoBehaviour
     IEnumerator RespawnTime(GameObject player)
     {
         yield return new WaitForSeconds(5); //wait 5 seconds to respawn the character
-        player.transform.position = _respawnPoint.transform.position; //Set them to the respawnPoint
+        PlayerSpawnPoint[] playerSpawnPoints = _respawnPointParent.GetComponentsInChildren<PlayerSpawnPoint>();
+        Debug.Log(playerSpawnPoints.Length);
+        PlayerCharacter playerCharacter = player.GetComponent<PlayerCharacter>();
+        PlayerSpawnPoint playerSpawnPoint = null;
+        foreach (PlayerSpawnPoint spawnPoint in playerSpawnPoints)
+        {
+            if (spawnPoint.ManagedPlayer == playerCharacter)
+            {
+                playerSpawnPoint = spawnPoint;
+            }
+        }
+        player.transform.position = playerSpawnPoint.transform.position; //Set them to the respawnPoint
     }
 }   
