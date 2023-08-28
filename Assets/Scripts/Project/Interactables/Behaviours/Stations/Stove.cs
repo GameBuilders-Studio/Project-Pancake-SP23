@@ -43,11 +43,15 @@ public class Stove : StationController
         if(!_containerExists) { 
             return item.HasBehaviour<Pot>();
         } else {
-            return _container.TryCombineWith(item); 
+            if (item.TryGetBehaviour(out IngredientProp ingredientProp))
+            {
+                return _container.ValidateIngredient(ingredientProp.Ingredient);
+            }
+            return false; 
         }
     }
 
-    public override void ItemPlaced(ref Carryable item)
+    public override void ItemPlaced(ref Carryable item) 
     {
         _containerExists = item.TryGetBehaviour(out _container);
         if (_containerExists)

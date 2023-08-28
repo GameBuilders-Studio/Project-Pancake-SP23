@@ -155,7 +155,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         OnIngredientsChanged(_ingredientInformation);
     }
 
-    protected virtual bool ValidateIngredient(Ingredient ingredient)
+    public virtual bool ValidateIngredient(Ingredient ingredient)
     {
         bool progressComplete = ingredient.ProgressComplete;
         // if the ingredient is not allowed in this container or is not complete, return false
@@ -209,7 +209,7 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
 
         var (model, sprite) = ModelMapper.Instance.GetDishModelSprite(currentIngredients);
-        
+
         if(_spawnDishModel){
             _dishModel = Instantiate(model, _ingredientModelParent);
         }
