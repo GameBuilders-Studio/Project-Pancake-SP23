@@ -39,7 +39,12 @@ public class Stove : StationController
 
     public override bool ValidateItem(Carryable item)
     {
-        return item.HasBehaviour<Pot>();
+        // If there is nothing, only pot can be placed
+        if(!_containerExists) { 
+            return item.HasBehaviour<Pot>();
+        } else {
+            return _container.TryCombineWith(item); 
+        }
     }
 
     public override void ItemPlaced(ref Carryable item)

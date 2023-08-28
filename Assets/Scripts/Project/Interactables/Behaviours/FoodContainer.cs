@@ -7,6 +7,10 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     [SerializeField]
     private FoodContainerData _containerSettings;
 
+    [Tooltip("If true, model for ingredients will be spawned when the container is not empty")]
+    [SerializeField]
+    private bool _spawnDishModel = true;
+
     [SerializeField]
     protected List<Ingredient> _ingredients = new();
 
@@ -205,7 +209,10 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         }
 
         var (model, sprite) = ModelMapper.Instance.GetDishModelSprite(currentIngredients);
-        _dishModel = Instantiate(model, _ingredientModelParent);
+        
+        if(_spawnDishModel){
+            _dishModel = Instantiate(model, _ingredientModelParent);
+        }
         _tooltip.ClearIngredients();
         _tooltip.SetToolTipSprite(sprite);
     }

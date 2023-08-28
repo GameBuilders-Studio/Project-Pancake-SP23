@@ -71,7 +71,7 @@ public class DishModelSpriteRegistry : MonoBehaviour
             { new() { (BluePlankton, fried) }, (bluePlankton, bluePlanktonSprite) },
             { new() { (GreenPlankton, fried) }, (greenPlankton, greenPlanktonSprite) },
             { new() { (Rice, cooked) }, (rice, riceSprite) },
-            { new() { (Rice, raw) }, (rice, riceSprite) },
+            { new() { (Rice, carbs) }, (rice, riceSprite) },
             { new() { (Seaweed, rawEdible) }, (seaweed, seaweedSprite) },
             { new() { (Pasta, cooked) }, (pasta, pastaSprite) },
             { new() { (Pasta, carbs) }, (pasta, pastaSprite) },
