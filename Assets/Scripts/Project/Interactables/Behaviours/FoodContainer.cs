@@ -98,11 +98,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         if (!ValidateIngredient(ingredientProp.Ingredient))
         {
-            Debug.Log("Ingredient Invalidated");
             return false;
         }
-
-        Debug.Log("Ingredient Validated");
 
         AddIngredient(ingredientProp.Ingredient);
         Destroy(ingredientProp.gameObject);
@@ -131,7 +128,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     {
         if (Count >= Capacity) { return false; }
 
-        if (!ValidateTransfer(other)) { return false; }
+        if (!ValidateTransfer(other)) { 
+            return false; }
 
         foreach (var otherIngredient in other.Ingredients)
         {
@@ -168,6 +166,29 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     }
 
     /// <summary>
+    /// Sets the state of the given ingredient to the given state. If the ingredient is not in the container, nothing happens.
+    /// </summary>
+    /// <param name="ingredient"> The ingredient to change the state of </param>
+    /// <param name="state"> The target state </param>
+    public void SetIngredientState(Ingredient ingredient, IngredientStateData state)
+    {
+        if (Ingredients.Contains(ingredient)) // Check if the ingredient is in the container
+        {
+            // Find the tuple that has the same ingredient type and remove it to avoid duplicates 
+            _ingredientInformation.RemoveWhere(x => x.Item1 == ingredient.Data.type);
+
+            // Change the state of the ingredient
+            ingredient.SetState(state);
+
+            // Update the ingredient information by adding the new tuple
+            _ingredientInformation.Add((ingredient.Data.type, state));
+
+            // Call OnIngredientsChanged to update the dish model and sprite
+            OnIngredientsChanged(_ingredientInformation);
+        }
+    }
+
+    /// <summary>
     /// Returns true if ingredient transfer from another container to this container is allowed
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
@@ -181,12 +202,6 @@ public class FoodContainer : InteractionBehaviour, ICombinable
         unionSet.UnionWith(other._ingredientInformation);
         unionSet.UnionWith(_ingredientInformation);
 
-        // // validate each ingredient by default
-        // for (int i = 0; i < other.Count; i++)
-        // {
-        //     if (!ValidateIngredient(other.Ingredients[i])) { return false; }
-        // }
-        // return true;
         return ModelMapper.Instance.DishExist(unionSet);
     }
 
