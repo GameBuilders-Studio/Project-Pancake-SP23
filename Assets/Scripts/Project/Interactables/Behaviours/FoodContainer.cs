@@ -96,6 +96,8 @@ public class FoodContainer : InteractionBehaviour, ICombinable
 
     private bool TryAddIngredientProp(IngredientProp ingredientProp)
     {
+        if(IsFull) { return false; }
+        
         if (!ValidateIngredient(ingredientProp.Ingredient))
         {
             return false;
