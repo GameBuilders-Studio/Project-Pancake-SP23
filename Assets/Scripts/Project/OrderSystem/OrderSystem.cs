@@ -165,6 +165,7 @@ public class OrderSystem : MonoBehaviour
 
     private void OnStartLevel()
     {
+        DataCapsule.Instance.ResetScores();
         while (_currentOrders.Count < _minConcurrentOrders - 1)
         {
             SpawnOrder();
