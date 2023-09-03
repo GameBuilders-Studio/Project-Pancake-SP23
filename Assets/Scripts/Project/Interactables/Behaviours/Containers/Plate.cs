@@ -15,7 +15,7 @@ public class Plate : FoodContainer
         _modelMapper = ModelMapper.Instance;
     }
 
-    protected override bool ValidateIngredient(Ingredient ingredient)
+    public override bool ValidateIngredient(Ingredient ingredient)
     {
         // Check if the ingredient is allowed based on its type and progress
         if(!base.ValidateIngredient(ingredient)) {

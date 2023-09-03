@@ -57,17 +57,6 @@ public class DishStack : StationController
     public override bool ValidateItem(Carryable item)
     {
         return false;
-
-        //if count is full, you can't place anything including dish
-        if (Count >= _maxPlates) return false;
-        FoodContainer dish;
-        if (item.TryGetBehaviour(out dish))
-        {
-            Destroy(dish.gameObject);
-            Count++;
-            return true;
-        }
-        return false;
     }
 
     private void Awake()
