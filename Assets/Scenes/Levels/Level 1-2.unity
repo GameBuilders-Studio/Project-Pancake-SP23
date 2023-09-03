@@ -259,63 +259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04309525ffc43d4594a3116dea8b6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &11295344
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1253438342}
-    m_Modifications:
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247023, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2520581503706247027, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-      propertyPath: m_Name
-      value: FireExtinguisher
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
 --- !u!1 &19499606 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5994231006242103802, guid: c5c71061c261fcd438296d802639730e, type: 3}
@@ -5908,11 +5851,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8233811900157907949, guid: c5c71061c261fcd438296d802639730e, type: 3}
   m_PrefabInstance: {fileID: 1226203435}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1253438342 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8233811900157907949, guid: c5c71061c261fcd438296d802639730e, type: 3}
-  m_PrefabInstance: {fileID: 1660501523}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1279422177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8099,7 +8037,7 @@ PrefabInstance:
     - target: {fileID: 7344888747607190374, guid: c5c71061c261fcd438296d802639730e, type: 3}
       propertyPath: _placedItem
       value: 
-      objectReference: {fileID: 1760330117}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5c71061c261fcd438296d802639730e, type: 3}
 --- !u!1001 &1678880346
@@ -8469,17 +8407,6 @@ MonoBehaviour:
   _localRotation: {x: 0, y: 0, z: 0, w: 1}
   _isBaked: 0
   View: {fileID: 1755080174}
---- !u!114 &1760330117 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2520581503706247017, guid: 7bb3c70cace11ec41882b07655233c46, type: 3}
-  m_PrefabInstance: {fileID: 11295344}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7199f2d5826c79b4a971abc6541f9d5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1765248821
 GameObject:
   m_ObjectHideFlags: 0
