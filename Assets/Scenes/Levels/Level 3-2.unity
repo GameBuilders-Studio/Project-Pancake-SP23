@@ -373,6 +373,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3055206153637014489, guid: 2a876a2997281454980fab3263f681b8, type: 3}
   m_PrefabInstance: {fileID: 31780909}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &31780911 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6177154831772687224, guid: 2a876a2997281454980fab3263f681b8, type: 3}
+  m_PrefabInstance: {fileID: 31780909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356a11474be32874cbb13dac10705f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &44508361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3214,6 +3225,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1174217220}
     m_Modifications:
+    - target: {fileID: 2494476314929865971, guid: 70d906f36fc8c4bc081f8ae9e3c070db, type: 3}
+      propertyPath: _dishStack
+      value: 
+      objectReference: {fileID: 528965089}
+    - target: {fileID: 2494476314929865971, guid: 70d906f36fc8c4bc081f8ae9e3c070db, type: 3}
+      propertyPath: _orderSystem
+      value: 
+      objectReference: {fileID: 31780911}
     - target: {fileID: 4525811035774613993, guid: 70d906f36fc8c4bc081f8ae9e3c070db, type: 3}
       propertyPath: m_RootOrder
       value: 0
