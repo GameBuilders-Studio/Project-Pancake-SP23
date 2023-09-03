@@ -5,6 +5,9 @@ using CustomAttributes;
 public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 {
     [SerializeField]
+    private bool _canPlace; 
+
+    [SerializeField]
     private ProxyTrigger _catchTrigger;
 
     [SerializeField]
@@ -110,6 +113,8 @@ public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 
     public void PlaceItem(Carryable item)
     {
+        if(!_canPlace) {return;}
+        
         item.OnPlace();
 
         _controller.PositionItem(ref item, _itemHolderPivot);
