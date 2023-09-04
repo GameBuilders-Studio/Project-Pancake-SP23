@@ -40,8 +40,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1126139912628277126}
-  - component: {fileID: 1126139912628277125}
-  - component: {fileID: 1126139912628277124}
   - component: {fileID: 1126139912628277123}
   - component: {fileID: 1878720293347786259}
   - component: {fileID: 1334374413}
@@ -61,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 1126139912628277122}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.47, y: 0.88, z: -2.912087}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.75, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8937866538807668635}
@@ -71,56 +69,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1126139912628277125
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126139912628277122}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1126139912628277124
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126139912628277122}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a2aa873ee5c91c34eaede495f3291eed, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1126139912628277123
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -249,25 +197,120 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 2.5
+        m_Name: Spin Velocity Strength
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Time Intensity Multiplier
+        m_Overridden: 1
+      - m_Value: 10
+        m_Name: Emission Distance Exponent
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: Frequency
+        m_Overridden: 1
+      - m_Value: 6.28
+        m_Name: Torus Arc Range
+        m_Overridden: 1
+      - m_Value: 0.2
+        m_Name: Drag
+        m_Overridden: 0
+      - m_Value: 0.795
+        m_Name: Roughness
+        m_Overridden: 0
+      - m_Value: 2
+        m_Name: Lacunarity
+        m_Overridden: 0
+      - m_Value: 0.42
+        m_Name: Drag Minimum
+        m_Overridden: 0
+      - m_Value: 6.8
+        m_Name: Drag Distance Exponent
+        m_Overridden: 0
     m_Vector2f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 1}
+        m_Name: Speed Range
+        m_Overridden: 1
+      - m_Value: {x: 1.32, y: 11.3}
+        m_Name: Emission Range
+        m_Overridden: 0
+      - m_Value: {x: 0.2, y: 3.59}
+        m_Name: Mass Range
+        m_Overridden: 0
+      - m_Value: {x: 0.32, y: 0.71}
+        m_Name: Lifetime Range
+        m_Overridden: 0
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: Portal Shape (Torus)_transform_scale
+        m_Overridden: 0
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Portal Shape (Torus)_transform_angles
+        m_Overridden: 0
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Portal Shape (Torus)_transform_position
+        m_Overridden: 0
     m_Vector4f:
       m_Array: []
     m_Uint:
-      m_Array: []
+      m_Array:
+      - m_Value: 2
+        m_Name: Octaves
+        m_Overridden: 0
+      - m_Value: 1882
+        m_Name: Particle Spawn Rate
+        m_Overridden: 1
     m_Int:
       m_Array: []
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.46196878
+            value: 2.7681136
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1.0698713
+            value: 4.456228
+            inSlope: 0.5975494
+            outSlope: 0.5975494
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: X Scale Speed Curve
+        m_Overridden: 0
     m_Gradient:
       m_Array: []
     m_NamedObject:
-      m_Array: []
+      m_Array:
+      - m_Value: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+        m_Name: Velocity Mesh
+        m_Overridden: 0
     m_Bool:
       m_Array: []
 --- !u!73398921 &3709481812655763796
