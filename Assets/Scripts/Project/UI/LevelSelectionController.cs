@@ -116,13 +116,13 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
         _buttons[SelectedIndex].GetComponent<Button>().onClick.Invoke();
         _isSubmit = true;
     }
-    void PlayerInputActions.IUIActions.OnCancel(InputAction.CallbackContext context)
-    {
-        if(_isCancel) return;
-        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
-        SelectedIndex = 0;
-        _exitButton.GetComponent<Button>().onClick.Invoke();
-        _isCancel = true;
+    // void PlayerInputActions.IUIActions.OnCancel(InputAction.CallbackContext context)
+    // {
+    //     if(_isCancel) return;
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
+    //     SelectedIndex = 0;
+    //     _exitButton.GetComponent<Button>().onClick.Invoke();
+    //     _isCancel = true;
 
-    }
+    // }
 }

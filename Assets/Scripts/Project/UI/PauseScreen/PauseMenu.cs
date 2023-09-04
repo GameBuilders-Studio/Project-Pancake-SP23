@@ -13,7 +13,7 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
     private bool isPaused = false;
     private PlayerInputHandler[] _playerInputHandlers;
 
-    private void OnEnable() {
+    private void Start() {
         _playerInputHandlers = FindObjectsOfType<PlayerInputHandler>();
         pauseMenu.SetActive(false);
         Debug.Log("PlayerInputHandlers: " + _playerInputHandlers.Length);
