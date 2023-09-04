@@ -11,7 +11,13 @@ public class PlayerAudio : MonoBehaviour
 
     [SerializeField]
     [Required]
+    private AudioClip _chopClip;
+    
     private PlayerInteraction _playerInteraction;
+
+    private void Awake() {
+        _playerInteraction = GetComponentInParent<PlayerInteraction>();
+    }
 
     void OnValidate()
     {
@@ -43,4 +49,9 @@ public class PlayerAudio : MonoBehaviour
 
     private void OnPlace()
     { }
+
+    private void OnChop()
+    { 
+        _audioSource.PlayOneShot(_chopClip);
+    }
 }

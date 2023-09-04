@@ -34,7 +34,6 @@ public class Plate : FoodContainer
             Debug.Log("Rejected because cannot be added to the hashset");
             return false;
         }
-        Debug.Log("Rejected because dish not exist");
         
         return ModelMapper.Instance.DishExist(existingIngredients);
     }

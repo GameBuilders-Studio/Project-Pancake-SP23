@@ -29,7 +29,7 @@ public class CuttingBoard : StationController, IUsable
     void Update()
     {
         if (_interacting) { 
-            Debug.Log("Interacting");
+            // Debug.Log("Interacting");
             Chop(); }
     }
 
@@ -57,7 +57,7 @@ public class CuttingBoard : StationController, IUsable
 
     void Chop()
     {
-        Debug.Log("Chopping");
+        // Debug.Log("Chopping");
         // ensure ingredient is in a state that can be chopped
         if (!IngredientCanBeChopped()) { return; }
 
