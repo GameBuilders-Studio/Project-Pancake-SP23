@@ -5,7 +5,7 @@ using CustomAttributes;
 public class Station : InteractionBehaviour, ICombinable, IHasCarryable
 {
     [SerializeField]
-    private bool _canPlace; 
+    private bool _canPlace = true; 
 
     [SerializeField]
     private ProxyTrigger _catchTrigger;

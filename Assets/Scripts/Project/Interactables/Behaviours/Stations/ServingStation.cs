@@ -20,6 +20,7 @@ public class ServingStation : StationController
             Debug.LogWarning("DishStack is null, not spawning dish");
             return;
         }
+        Debug.Log("Start spawning dish coroutine");
         StartCoroutine(SpawnDish());
 
     }
@@ -53,7 +54,9 @@ public class ServingStation : StationController
 
     IEnumerator SpawnDish()
     {
+        Debug.Log("Spawning dish");
         yield return new WaitForSeconds(_spawnTime);
         _dishStack.Count++;
+        Debug.Log("DishStack Count: " + _dishStack.Count);
     }
 }
