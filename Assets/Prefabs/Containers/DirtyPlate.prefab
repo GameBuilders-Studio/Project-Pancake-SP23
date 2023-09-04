@@ -68,14 +68,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7605582599296834490}
-  - component: {fileID: 7605582599296834495}
   - component: {fileID: 7605582599296834494}
   - component: {fileID: 7605582599296834486}
   - component: {fileID: 3111386382994811259}
   - component: {fileID: 3857198461237242431}
-  - component: {fileID: 1055438650720953735}
   - component: {fileID: 446099049515487953}
   - component: {fileID: 6099115614746478476}
+  - component: {fileID: 3178347222998019975}
   m_Layer: 9
   m_Name: DirtyPlate
   m_TagString: Untagged
@@ -100,19 +99,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7605582599296834495
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7605582599296834493}
-  m_Material: {fileID: 13400000, guid: b5ad4425ab837c34fa3bfb154b7bdde4, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7605582599296834494
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -158,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection: {fileID: 446099049515487953}
   _nearbyTrigger: {fileID: 7605582599255157724}
-  _highlightBehaviour: {fileID: 1055438650720953735}
+  _highlightBehaviour: {fileID: 0}
   _highlightOnHover: 1
   _isSelectable: 1
 --- !u!114 &3857198461237242431
@@ -178,20 +164,7 @@ MonoBehaviour:
   _gravityScale: 2.5
   _selectable: {fileID: 3111386382994811259}
   _rigidbody: {fileID: 7605582599296834494}
-  _collider: {fileID: 7605582599296834495}
---- !u!114 &1055438650720953735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7605582599296834493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d92f7e5bbb12a4781eecbe0b406e60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
+  _collider: {fileID: 3178347222998019975}
 --- !u!114 &446099049515487953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +204,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection: {fileID: 446099049515487953}
   _count: 1
+--- !u!65 &3178347222998019975
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605582599296834493}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0990951, y: 0.19273221, z: 1.0990949}
+  m_Center: {x: 0.009909391, y: 0.022474706, z: -0.009909391}
 --- !u!1001 &8457013673781333609
 PrefabInstance:
   m_ObjectHideFlags: 0

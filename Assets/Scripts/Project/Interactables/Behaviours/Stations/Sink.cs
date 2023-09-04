@@ -1,5 +1,6 @@
 using UnityEngine;
 using CustomAttributes;
+using System.Collections.Generic;
 
 public class Sink : StationController, IUsable
 {
@@ -10,8 +11,13 @@ public class Sink : StationController, IUsable
     private float _maxDishWashTime;
     [SerializeField] [ProgressBar("Dish Washing", "_maxDishWashTime", EColor.Orange)]
     private float _currentDishWashTime;
-    [SerializeField] [Required]
-    private DishStack _dishStack; //a dish stack to add the washed dishes to
+    [Required]
+    [SerializeField] private DishStack _dishStack; //a dish stack to add the washed dishes to
+    [Required]
+    [SerializeField] private List<GameObject> _dirtyDishVisuals = new List<GameObject>(); 
+
+    [Required]
+    [SerializeField] private InGameProgress pgBar;
 
     private bool _interacting = false;
     private bool _ingredientExists = false;
@@ -45,9 +51,10 @@ public class Sink : StationController, IUsable
         _ingredientExists = item.TryGetBehaviour(out _dirtyDish);
         if (_ingredientExists)
         {
-            _dirtyDishCount = _dirtyDish.Count;
+            _dirtyDishCount += _dirtyDish.Count;
             Destroy(_dirtyDish.gameObject); // destroy dirty dish
         }
+        UpdateVisuals();
     }
 
     public override void ItemRemoved(ref Carryable item)
@@ -67,8 +74,16 @@ public class Sink : StationController, IUsable
             _currentDishWashTime = 0;
             _dirtyDishCount--;
             _dishStack.Count++;
+            UpdateVisuals();
         }
 
-        _currentDishWashTime += Time.deltaTime / _maxDishWashTime;
+        _currentDishWashTime += Time.deltaTime;
+        pgBar.SetProgress(Mathf.Min(1f, _currentDishWashTime / _maxDishWashTime));
+    }
+
+    private void UpdateVisuals() {
+        for(int i = 0; i < _dirtyDishVisuals.Count; i++) {
+            _dirtyDishVisuals[i].SetActive(i < _dirtyDishCount);
+        }
     }
 }
