@@ -17,4 +17,12 @@ public class DataCapsule : Singleton<DataCapsule>
     public int scoreDeduction;
     // Total score for the level
     public int totalScore;
+
+    public void ResetScores()
+    {
+        baseScore = 0;
+        bonusScore = 0;
+        scoreDeduction = 0;
+        totalScore = 0;
+    }
 }

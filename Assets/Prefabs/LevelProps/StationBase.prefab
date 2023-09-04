@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collection: {fileID: 6724278394014653120}
+  _canPlace: 1
   _catchTrigger: {fileID: 5095539762669133214}
   _itemHolderPivot: {fileID: 3371915549144759701}
   _placedItem: {fileID: 0}
@@ -193,8 +194,8 @@ MonoBehaviour:
   - typeId: Selectable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: Flammable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _interfaceTypes:
-  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - typeId: IHasCarryable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - typeId: ICombinable, Interactables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   NoDuplicates: 1
 --- !u!114 &1177871955971841851
 MonoBehaviour:
