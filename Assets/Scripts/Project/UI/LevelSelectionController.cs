@@ -80,15 +80,15 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
         _playerInputHandler.DeviceLost -= OnPlayerLost;
     }
 
-    private void OnPlayerJoin()
+    private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
         //Debug.Log("Player joined");
-        _playerInputHandler.SetCallbacksUI(this);
+        inputHandler.SetCallbacksUI(this);
     }
 
-    private void OnPlayerLost()
+    private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
-        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
+        inputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
         //Debug.Log("Player lost");
     }
 

@@ -38,7 +38,7 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     void Awake()
     {
-        OnPlayerLost();
+        OnPlayerLost(_playerInputHandler);
     }
 
     void OnEnable()
@@ -55,17 +55,17 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
         _playerInputHandler.DeviceLost -= OnPlayerLost;
     }
 
-    private void OnPlayerJoin()
+    private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
         _playerJoined = true;
         _playerVisual.SetActive(true);
-        _playerInputHandler.SetCallbacksUI(this);
+        inputHandler.SetCallbacksUI(this);
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
         _readyUpText = _playerInputHandler.CurrentControlScheme == "Gamepad" ? _readyUpTextGamepad : _readyUpTextKeyboard;
         _buttonPrompt.text = _readyUpText;
     }
 
-    private void OnPlayerLost()
+    private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
         _playerJoined = false;
         _playerVisual.SetActive(false);
