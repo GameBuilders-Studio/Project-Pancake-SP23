@@ -92,23 +92,23 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
         // Debug.Log("Player lost");
     }
 
-    void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
-    {
-        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
-        var direction = context.ReadValue<Vector2>();
-        if (direction.x > 0)
-        {
-            SelectedIndex--;
+    // void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
+    // {
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
+    //     var direction = context.ReadValue<Vector2>();
+    //     if (direction.x > 0)
+    //     {
+    //         SelectedIndex--;
 
-        }
-        else if (direction.x < 0)
-        {
-            SelectedIndex++;
-        }
-        _buttons[SelectedIndex].GetComponent<Image>().color = _selectedColor;
-        //Debug.Log("direction: " + direction.x + " " + direction.y);
+    //     }
+    //     else if (direction.x < 0)
+    //     {
+    //         SelectedIndex++;
+    //     }
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = _selectedColor;
+    //     //Debug.Log("direction: " + direction.x + " " + direction.y);
 
-    }
+    // }
     void PlayerInputActions.IUIActions.OnSubmit(InputAction.CallbackContext context)
     {
         //Prevent multiple inputs
