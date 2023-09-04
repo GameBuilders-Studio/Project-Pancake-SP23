@@ -57,9 +57,10 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
+        Debug.Log($"Player {_playerInputHandler.PlayerIndex} joined!");
         _playerJoined = true;
         _playerVisual.SetActive(true);
-        inputHandler.SetCallbacksUI(this);
+        _playerInputHandler.SetCallbacksUI(this);
         _title.text = $"Player {_playerInputHandler.PlayerIndex}";
         _readyUpText = _playerInputHandler.CurrentControlScheme == "Gamepad" ? _readyUpTextGamepad : _readyUpTextKeyboard;
         _buttonPrompt.text = _readyUpText;
