@@ -1,3 +1,4 @@
+using Codice.Client.Common.GameUI;
 using CustomAttributes;
 using GameBuilders.Singleton;
 using UnityEngine;
@@ -14,10 +15,16 @@ public class AudioManager : Singleton<AudioManager>
     public const string SFX_VOLUME_KEY = "SfxVolume";
 
     private void Awake() {
-        Debug.Log("AudioManager Awake");
-        // Load in audio settings
-        _audioMixer.SetFloat(MASTER_VOLUME_KEY, PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 0));
-        _audioMixer.SetFloat(MUSIC_VOLUME_KEY, PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 0));
-        _audioMixer.SetFloat(SFX_VOLUME_KEY, PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 0));
+        LoadVolume();
+    }
+
+    private void LoadVolume() {
+        float masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1f);
+        float musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 1f);
+        float sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);
+
+        _audioMixer.SetFloat(MASTER_VOLUME_KEY, Mathf.Log10(masterVolume) * 20);
+        _audioMixer.SetFloat(MUSIC_VOLUME_KEY, Mathf.Log10(musicVolume) * 20);
+        _audioMixer.SetFloat(SFX_VOLUME_KEY, Mathf.Log10(sfxVolume) * 20);
     }
 }
