@@ -39,7 +39,7 @@ public class PlayerInputHandler : MonoBehaviour
         InputManager.DeviceReassigned -= OnDeviceReassigned;
     }
 
-    void Start()
+    void Update()
     {
         if (!HasActions)
         {

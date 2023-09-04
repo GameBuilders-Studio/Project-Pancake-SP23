@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private bool _forceSpawn = false;
 
-    void Start()
+    void Awake()
     {
         FindAllSpawnPoints();
         if (_forceSpawn)

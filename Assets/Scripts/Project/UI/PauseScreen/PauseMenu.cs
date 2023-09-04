@@ -13,19 +13,14 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
     private bool isPaused = false;
     private PlayerInputHandler[] _playerInputHandlers;
 
-    private void Awake() {
+    private void OnEnable() {
         _playerInputHandlers = FindObjectsOfType<PlayerInputHandler>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
         pauseMenu.SetActive(false);
-    }
+        Debug.Log("PlayerInputHandlers: " + _playerInputHandlers.Length);
 
-    void OnEnable()
-    {
-        foreach (var playerInputHandler in _playerInputHandlers)
+        foreach(var playerInputHandler in _playerInputHandlers)
         {
+            Debug.Log("Assigning callbacks to playerInputHandler: " + playerInputHandler.PlayerIndex);
             playerInputHandler.InputActionsAssigned += OnPlayerJoin;
             playerInputHandler.DeviceReassigned += OnPlayerJoin;
             playerInputHandler.DeviceLost += OnPlayerLost;
@@ -44,6 +39,7 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
 
     private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
+        Debug.Log("Pause Menu - OnPlayerJoin Invoked");
         inputHandler.SetCallbacks(this);
     }
 

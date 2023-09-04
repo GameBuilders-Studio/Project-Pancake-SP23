@@ -74,7 +74,7 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
 
     void OnDisable()
     {
-        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
+        // _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
         _playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
         _playerInputHandler.DeviceReassigned -= OnPlayerJoin;
         _playerInputHandler.DeviceLost -= OnPlayerLost;
@@ -89,7 +89,7 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
     private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
         inputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
-        //Debug.Log("Player lost");
+        // Debug.Log("Player lost");
     }
 
     void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
