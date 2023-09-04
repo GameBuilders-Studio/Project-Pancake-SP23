@@ -22,9 +22,10 @@ public class PlayerInputHandler : MonoBehaviour
     public bool HasActions => _actions != null;
     public Vector2 MoveInput => _moveInput;
     
-    public event UnityAction InputActionsAssigned;
-    public event UnityAction DeviceLost;
-    public event UnityAction DeviceReassigned;
+    public delegate void PlayerInputHandlerEvent(PlayerInputHandler sender);
+    public event PlayerInputHandlerEvent InputActionsAssigned;
+    public event PlayerInputHandlerEvent DeviceLost;
+    public event PlayerInputHandlerEvent DeviceReassigned;
 
     void OnEnable()
     {
@@ -69,6 +70,8 @@ public class PlayerInputHandler : MonoBehaviour
             Debug.LogWarning("No input actions associated with this PlayerInputHandler");
             return;
         }
+
+        Debug.Log("Setting PlayerControls callbacks for player input handler: " + name);
         _actions.PlayerControls.SetCallbacks(instance);
     }
 
@@ -89,6 +92,7 @@ public class PlayerInputHandler : MonoBehaviour
             Debug.LogWarning("No input actions associated with this PlayerInputHandler");
             return;
         }
+        Debug.Log("Setting InGameUIActions callbacks for player input handler: " + name);
         _actions.InGameUIAction.SetCallbacks(instance);
     }
 
@@ -96,16 +100,16 @@ public class PlayerInputHandler : MonoBehaviour
     {
         Debug.Log($"Assigned input to Player {PlayerIndex}");
         CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
-        InputActionsAssigned?.Invoke();
+        InputActionsAssigned?.Invoke(this);
     }
 
     private void OnDeviceLost(int playerIndex, InputUser user)
     {
-        DeviceLost?.Invoke();
+        DeviceLost?.Invoke(this);
     }
 
     private void OnDeviceReassigned(int playerIndex, InputUser user)
     {
-        DeviceReassigned?.Invoke();
+        DeviceReassigned?.Invoke(this);
     }
 }

@@ -38,7 +38,7 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
 
     void Awake()
     {
-        OnPlayerLost();
+        OnPlayerLost(_playerInputHandler);
     }
 
     void OnEnable()
@@ -55,8 +55,9 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
         _playerInputHandler.DeviceLost -= OnPlayerLost;
     }
 
-    private void OnPlayerJoin()
+    private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
+        Debug.Log($"Player {_playerInputHandler.PlayerIndex} joined!");
         _playerJoined = true;
         _playerVisual.SetActive(true);
         _playerInputHandler.SetCallbacksUI(this);
@@ -65,7 +66,7 @@ public class PlayerJoinPanel : MonoBehaviour, PlayerInputActions.IUIActions
         _buttonPrompt.text = _readyUpText;
     }
 
-    private void OnPlayerLost()
+    private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
         _playerJoined = false;
         _playerVisual.SetActive(false);

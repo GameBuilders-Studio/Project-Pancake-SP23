@@ -1467,9 +1467,9 @@ public class PlayerCharacter : MonoBehaviour, PlayerInputActions.IPlayerControls
     /// <summary>
     /// Subscribe to PlayerInputHandler callbacks
     /// </summary>
-    protected virtual void InitPlayerInput()
+    protected virtual void InitPlayerInput(PlayerInputHandler input)
     {
-        _input.SetCallbacks(this);
+        input.SetCallbacks(this);
     }
 
     /// <summary>
