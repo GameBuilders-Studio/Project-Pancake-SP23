@@ -74,41 +74,41 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
 
     void OnDisable()
     {
-        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
+        // _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
         _playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
         _playerInputHandler.DeviceReassigned -= OnPlayerJoin;
         _playerInputHandler.DeviceLost -= OnPlayerLost;
     }
 
-    private void OnPlayerJoin()
+    private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
         //Debug.Log("Player joined");
-        _playerInputHandler.SetCallbacksUI(this);
+        inputHandler.SetCallbacksUI(this);
     }
 
-    private void OnPlayerLost()
+    private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
-        _playerInputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
-        //Debug.Log("Player lost");
+        inputHandler.SetCallbacksUI(null as PlayerInputActions.IUIActions);
+        // Debug.Log("Player lost");
     }
 
-    void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
-    {
-        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
-        var direction = context.ReadValue<Vector2>();
-        if (direction.x > 0)
-        {
-            SelectedIndex--;
+    // void PlayerInputActions.IUIActions.OnNavigate(InputAction.CallbackContext context)
+    // {
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
+    //     var direction = context.ReadValue<Vector2>();
+    //     if (direction.x > 0)
+    //     {
+    //         SelectedIndex--;
 
-        }
-        else if (direction.x < 0)
-        {
-            SelectedIndex++;
-        }
-        _buttons[SelectedIndex].GetComponent<Image>().color = _selectedColor;
-        //Debug.Log("direction: " + direction.x + " " + direction.y);
+    //     }
+    //     else if (direction.x < 0)
+    //     {
+    //         SelectedIndex++;
+    //     }
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = _selectedColor;
+    //     //Debug.Log("direction: " + direction.x + " " + direction.y);
 
-    }
+    // }
     void PlayerInputActions.IUIActions.OnSubmit(InputAction.CallbackContext context)
     {
         //Prevent multiple inputs
@@ -116,13 +116,13 @@ public class LevelSelectionController : MonoBehaviour, PlayerInputActions.IUIAct
         _buttons[SelectedIndex].GetComponent<Button>().onClick.Invoke();
         _isSubmit = true;
     }
-    void PlayerInputActions.IUIActions.OnCancel(InputAction.CallbackContext context)
-    {
-        if(_isCancel) return;
-        _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
-        SelectedIndex = 0;
-        _exitButton.GetComponent<Button>().onClick.Invoke();
-        _isCancel = true;
+    // void PlayerInputActions.IUIActions.OnCancel(InputAction.CallbackContext context)
+    // {
+    //     if(_isCancel) return;
+    //     _buttons[SelectedIndex].GetComponent<Image>().color = Color.white;
+    //     SelectedIndex = 0;
+    //     _exitButton.GetComponent<Button>().onClick.Invoke();
+    //     _isCancel = true;
 
-    }
+    // }
 }

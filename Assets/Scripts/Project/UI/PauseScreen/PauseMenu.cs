@@ -11,42 +11,42 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
 {
     public GameObject pauseMenu;
     private bool isPaused = false;
+    private PlayerInputHandler[] _playerInputHandlers;
 
-    [SerializeField]
-    [Required]
-    private PlayerInputHandler _playerInputHandler;
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
+        _playerInputHandlers = FindObjectsOfType<PlayerInputHandler>();
         pauseMenu.SetActive(false);
+        Debug.Log("PlayerInputHandlers: " + _playerInputHandlers.Length);
 
-    }
-
-    void OnEnable()
-    {
-        _playerInputHandler.InputActionsAssigned += OnPlayerJoin;
-        _playerInputHandler.DeviceReassigned += OnPlayerJoin;
-        _playerInputHandler.DeviceLost += OnPlayerLost;
+        foreach(var playerInputHandler in _playerInputHandlers)
+        {
+            Debug.Log("Assigning callbacks to playerInputHandler: " + playerInputHandler.PlayerIndex);
+            playerInputHandler.InputActionsAssigned += OnPlayerJoin;
+            playerInputHandler.DeviceReassigned += OnPlayerJoin;
+            playerInputHandler.DeviceLost += OnPlayerLost;
+        }
     }
 
     void OnDisable()
     {
-        _playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
-        _playerInputHandler.DeviceReassigned -= OnPlayerJoin;
-        _playerInputHandler.DeviceLost -= OnPlayerLost;
+        foreach (var playerInputHandler in _playerInputHandlers)
+        {
+            playerInputHandler.InputActionsAssigned -= OnPlayerJoin;
+            playerInputHandler.DeviceReassigned -= OnPlayerJoin;
+            playerInputHandler.DeviceLost -= OnPlayerLost;
+        }
     }
 
-    private void OnPlayerJoin()
+    private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
-        _playerInputHandler.SetCallbacks(this);
+        Debug.Log("Pause Menu - OnPlayerJoin Invoked");
+        inputHandler.SetCallbacks(this);
     }
 
-    private void OnPlayerLost()
+    private void OnPlayerLost(PlayerInputHandler inputHandler)
     {
-        _playerInputHandler.SetCallbacks(null as PlayerInputActions.IInGameUIActionActions);
+        inputHandler.SetCallbacks(null as PlayerInputActions.IInGameUIActionActions);
     }
-
 
     public void PauseGame()
     {
@@ -87,6 +87,7 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
 
     public void OnPause(InputAction.CallbackContext context)
     {
+        // Debug.Log("Pause button pressed");
         if (context.performed)
         {
             if (isPaused)
