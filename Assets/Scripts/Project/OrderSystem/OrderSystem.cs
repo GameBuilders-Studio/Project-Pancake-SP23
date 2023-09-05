@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using UnityEngine.Events;
 
 public class OrderSystem : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _nthOrderConsecutive = 0;
     [SerializeField] private int _lastSentOutIndex = -1;
     [SerializeField] private int _deductionPerMissedOrder = 10;
+
+    public UnityEvent onOrderSuccess;
 
     private Coroutine _orderSpawnCoroutine;
     private List<Order> _currentOrders = new();
@@ -133,6 +136,7 @@ public class OrderSystem : MonoBehaviour
                 Math.Max(_nthOrderConsecutive, 1),
                 _currentOrders[orderIndexToRemove].RecipeData.baseScore);
 
+            onOrderSuccess.Invoke();
             return true;
         }
 
