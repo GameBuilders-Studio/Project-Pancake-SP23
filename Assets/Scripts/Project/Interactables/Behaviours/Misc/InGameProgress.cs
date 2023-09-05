@@ -1,35 +1,61 @@
 
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameProgress : MonoBehaviour
 {
-    [SerializeField] private Transform progressAnchor;
-    [SerializeField] private GameObject progressBG;
+    [Header("References")]
+    [SerializeField] private Image _border;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private Image _fill;
+    [SerializeField] public GameObject WarningSign;
+    [SerializeField] public GameObject Checkmark;
+
+    [Header("Visuals Settings")]
+    [SerializeField] private Vector3 _offset;
+
+
+    private Transform _target;
+    private Camera _camera;
+
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
 
     private void Start()
     {
         SetProgress(0f);
     }
 
-    public void SetProgress(float pg)
+    private void LateUpdate()
+    {
+        if (_target == null)
+        {
+            return;
+        }
+        Vector3 position = _camera.WorldToScreenPoint(_target.position + _offset);
+        transform.position = position;
+    }
+
+    public void SetProgress(float value)
     {
         // after all, why shouldn't I
         // why shouldn't I write the most inefficient code known to humankind
-        if (pg <= 0.01f || pg >= 0.99f)
+        if (value <= 0.01f || value >= 0.99f)
         {
-            progressAnchor.gameObject.SetActive(false);
-            progressBG.SetActive(false);
+            // Disable progress bar
+            _border.gameObject.SetActive(false);
+            _slider.gameObject.SetActive(false);
+            _fill.gameObject.SetActive(false);
         }
         else
         {
-            progressAnchor.gameObject.SetActive(true);
-            progressBG.SetActive(true);
+            // Enable Progress Bar 
+            _border.gameObject.SetActive(true);
+            _slider.gameObject.SetActive(true);
+            _fill.gameObject.SetActive(true);
         }
-        progressAnchor.localScale = new Vector3(
-            pg,
-            progressAnchor.localScale.y,
-            progressAnchor.localScale.z
-            );
+        _slider.value = value;
     }
 }
