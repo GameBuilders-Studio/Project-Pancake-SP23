@@ -16,8 +16,8 @@ public class Sink : StationController, IUsable
     [Required]
     [SerializeField] private List<GameObject> _dirtyDishVisuals = new List<GameObject>(); 
 
-    [Required]
-    [SerializeField] private InGameProgress pgBar;
+    [SerializeField] private GameObject _progressBarPrefab;
+    private InGameProgress _progressBar;
 
     private bool _interacting = false;
     private bool _ingredientExists = false;
@@ -78,7 +78,7 @@ public class Sink : StationController, IUsable
         }
 
         _currentDishWashTime += Time.deltaTime;
-        pgBar.SetProgress(Mathf.Min(1f, _currentDishWashTime / _maxDishWashTime));
+        _progressBar.SetProgress(Mathf.Min(1f, _currentDishWashTime / _maxDishWashTime));
     }
 
     private void UpdateVisuals() {
