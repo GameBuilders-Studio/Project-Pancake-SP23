@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CustomAttributes;
 
 public class Pot : FoodContainer
 {
     [Header("Ingredient State Data")]
-    [SerializeField, Required]
+    [SerializeField]
     private IngredientStateData _overCookedState;
 
-    [SerializeField, Required]
+    [SerializeField]
     private IngredientStateData _cookedState;
 
     [Header("Cooking Settings")]
@@ -43,12 +42,11 @@ public class Pot : FoodContainer
 
     [Header("References")]
     [SerializeField] private Transform foodAnchor;
-    [SerializeField] private InGameProgress pgBar;
+    [SerializeField] private GameObject _progressBarPrefab;
+    private InGameProgress _progressBar;
 
 
     [Header("Flashing Icon Settings")]
-    [SerializeField, Required] private GameObject warningSign;
-    [SerializeField, Required] private GameObject checkmark;
 
     [Tooltip("When overcook time remaining is less than this, show slow warning sign")]
     [SerializeField] private float _warningTime = 6f;
@@ -98,7 +96,7 @@ public class Pot : FoodContainer
             {
                 _totalProgress = 1f;
             }
-            pgBar.SetProgress(_totalProgress);
+            _progressBar.SetProgress(_totalProgress);
         }
     }
 
@@ -106,6 +104,20 @@ public class Pot : FoodContainer
     {
         _soupVisual.SetActive(false);
         _soupRenderer = _soupVisual.GetComponent<Renderer>();
+    }
+
+    public override void Start() {
+        GameObject progressBarObject = Instantiate(_progressBarPrefab);
+        _progressBar = progressBarObject.GetComponent<InGameProgress>();
+        _progressBar.SetTarget(gameObject.transform); // Set the target of the tooltip to this object
+        Transform transform = GameObject.Find("Canvas").transform;
+        if (transform == null)
+        {
+            Debug.LogError("Canvas not found in FoodContainer.cs");
+        } else
+        {
+            progressBarObject.transform.SetParent(transform, false); // Set the parent of the tooltip to the HUD canvas
+        }
     }
 
     private void Update()
@@ -244,8 +256,8 @@ public class Pot : FoodContainer
     }
 
     private void StopFlashingIcon() {
-        warningSign.SetActive(false);
-        checkmark.SetActive(false);
+        _progressBar.WarningSign.SetActive(false);
+        _progressBar.Checkmark.SetActive(false);
 
         if(_currentFlashingType != FlashingType.None) {
             StopCoroutine(_flashingCoroutine);
@@ -259,8 +271,8 @@ public class Pot : FoodContainer
     /// <param name="flashingType"></param>
     private void SetFlashingCoroutine(FlashingType flashingType){
         // Make sure all icons are off, cause we only want one to be on at a time
-        warningSign.SetActive(false); 
-        checkmark.SetActive(false);
+        _progressBar.WarningSign.SetActive(false); 
+        _progressBar.Checkmark.SetActive(false);
 
         // Don't do anything if it is already flashing the correct icon
         if(_currentFlashingType != flashingType) {
@@ -271,13 +283,13 @@ public class Pot : FoodContainer
             _currentFlashingType = flashingType;
             switch(flashingType) {
                 case FlashingType.CheckMark:
-                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(checkmark, _slowFreq));
+                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(_progressBar.Checkmark, _slowFreq));
                     break;
                 case FlashingType.WarningSlow:
-                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(warningSign, _slowFreq));
+                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(_progressBar.WarningSign, _slowFreq));
                     break;
                 case FlashingType.WarningQuick:
-                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(warningSign, _quickFreq));
+                    _flashingCoroutine = StartCoroutine(FlashingIconCoro(_progressBar.WarningSign, _quickFreq));
                     break;
                 case FlashingType.None:
                     break;

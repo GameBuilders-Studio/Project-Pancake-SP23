@@ -58,4 +58,9 @@ public class InGameProgress : MonoBehaviour
         }
         _slider.value = value;
     }
+
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+    }
 }
