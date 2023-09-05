@@ -26,6 +26,19 @@ public class Sink : StationController, IUsable
     {
         get => _ingredientExists && _dirtyDishCount > 0;
     }
+    private void Start() {
+        GameObject progressBarObject = Instantiate(_progressBarPrefab);
+        _progressBar = progressBarObject.GetComponentInChildren<InGameProgress>();
+        _progressBar.SetTarget(gameObject.transform); // Set the target of the tooltip to this object
+        Transform transform = GameObject.Find("Canvas").transform;
+        if (transform == null)
+        {
+            Debug.LogError("Canvas not found in FoodContainer.cs");
+        } else
+        {
+            progressBarObject.transform.SetParent(transform, false); // Set the parent of the tooltip to the HUD canvas
+        }
+    }
 
     void Update()
     {
