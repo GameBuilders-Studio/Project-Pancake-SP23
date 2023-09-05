@@ -107,8 +107,9 @@ public class Pot : FoodContainer
     }
 
     public override void Start() {
+        base.Start();
         GameObject progressBarObject = Instantiate(_progressBarPrefab);
-        _progressBar = progressBarObject.GetComponent<InGameProgress>();
+        _progressBar = progressBarObject.GetComponentInChildren<InGameProgress>();
         _progressBar.SetTarget(gameObject.transform); // Set the target of the tooltip to this object
         Transform transform = GameObject.Find("Canvas").transform;
         if (transform == null)

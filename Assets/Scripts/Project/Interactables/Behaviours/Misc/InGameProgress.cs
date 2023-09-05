@@ -46,14 +46,14 @@ public class InGameProgress : MonoBehaviour
         {
             // Disable progress bar
             _border.gameObject.SetActive(false);
-            _slider.gameObject.SetActive(false);
+            // _slider.gameObject.SetActive(false);
             _fill.gameObject.SetActive(false);
         }
         else
         {
             // Enable Progress Bar 
             _border.gameObject.SetActive(true);
-            _slider.gameObject.SetActive(true);
+            // _slider.gameObject.SetActive(true);
             _fill.gameObject.SetActive(true);
         }
         _slider.value = value;

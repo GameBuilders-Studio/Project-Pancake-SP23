@@ -16,11 +16,9 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
     private void Start() {
         _playerInputHandlers = FindObjectsOfType<PlayerInputHandler>();
         pauseMenu.SetActive(false);
-        Debug.Log("PlayerInputHandlers: " + _playerInputHandlers.Length);
 
         foreach(var playerInputHandler in _playerInputHandlers)
         {
-            Debug.Log("Assigning callbacks to playerInputHandler: " + playerInputHandler.PlayerIndex);
             playerInputHandler.InputActionsAssigned += OnPlayerJoin;
             playerInputHandler.DeviceReassigned += OnPlayerJoin;
             playerInputHandler.DeviceLost += OnPlayerLost;
@@ -39,7 +37,6 @@ public class PauseMenu : MonoBehaviour, PlayerInputActions.IInGameUIActionAction
 
     private void OnPlayerJoin(PlayerInputHandler inputHandler)
     {
-        Debug.Log("Pause Menu - OnPlayerJoin Invoked");
         inputHandler.SetCallbacks(this);
     }
 

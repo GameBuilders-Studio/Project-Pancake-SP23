@@ -13,7 +13,8 @@ public class IngredientProp : InteractionBehaviour
     [ProgressBar("Progress", 1.0f, EColor.Green)]
     public float _progressIndicator = 0.0f;
 
-    [SerializeField] private InGameProgress pgBar;
+    [SerializeField] private GameObject _progressBarPrefab;
+    private InGameProgress _progressBar;
 
     [SerializeField]
     private Ingredient _ingredient;
@@ -29,6 +30,24 @@ public class IngredientProp : InteractionBehaviour
 
     public IngredientStateData State => _ingredient.State;
     public Ingredient Ingredient => _ingredient;
+
+    private void Start() {
+        GameObject progressBarObject = Instantiate(_progressBarPrefab);
+        _progressBar = progressBarObject.GetComponentInChildren<InGameProgress>();
+        if(_progressBar == null)
+        {
+            Debug.LogError("InGameProgress component not found in FoodContainer.cs");
+        }
+        _progressBar.SetTarget(gameObject.transform); // Set the target of the tooltip to this object
+        Transform transform = GameObject.Find("Canvas").transform;
+        if (transform == null)
+        {
+            Debug.LogError("Canvas not found in FoodContainer.cs");
+        } else
+        {
+            progressBarObject.transform.SetParent(transform, false); // Set the parent of the tooltip to the HUD canvas
+        }
+    }
 
     /// <summary>
     /// Makes sure the correct model is active when the state is changed in the inspector
@@ -55,7 +74,7 @@ public class IngredientProp : InteractionBehaviour
         progress = Mathf.Clamp01(progress);
         _progressIndicator = progress;
         _ingredient.SetProgress(progress);
-        pgBar.SetProgress(progress);
+        _progressBar.SetProgress(progress);
         OnProgressUpdate(progress);
     }
 

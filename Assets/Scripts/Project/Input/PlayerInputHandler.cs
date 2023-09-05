@@ -51,7 +51,6 @@ public class PlayerInputHandler : MonoBehaviour
 
             if (!_isManaged && !_loggedUnmanagedWarning)
             {
-                Debug.Log($"No actions assigned to Player {PlayerIndex}! For testing, set \"Use Any Device\" to true.");
                 _loggedUnmanagedWarning = true;
             }
 
@@ -67,11 +66,9 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_actions == null)
         {
-            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
             return;
         }
 
-        Debug.Log("Setting PlayerControls callbacks for player input handler: " + name);
         _actions.PlayerControls.SetCallbacks(instance);
     }
 
@@ -79,7 +76,6 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_actions == null)
         {
-            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
             return;
         }
         _actions.UI.SetCallbacks(instance);
@@ -89,16 +85,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_actions == null)
         {
-            Debug.LogWarning("No input actions associated with this PlayerInputHandler");
             return;
         }
-        Debug.Log("Setting InGameUIActions callbacks for player input handler: " + name);
         _actions.InGameUIAction.SetCallbacks(instance);
     }
 
     private void OnActionsAssigned()
     {
-        Debug.Log($"Assigned input to Player {PlayerIndex}");
         CurrentControlScheme = InputManager.GetControlSchemeByIndex(PlayerIndex);
         InputActionsAssigned?.Invoke(this);
     }
