@@ -10569,9 +10569,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection: {fileID: 4406467074838959325}
   _containerSettings: {fileID: 11400000, guid: 4847306782002f148afc2c55a4a99484, type: 2}
+  _spawnDishModel: 1
   _ingredients: []
   _ingredientModelParent: {fileID: 7553450933082088808}
   _tooltipPrefab: {fileID: 8466578208796056889, guid: f6667de74eb59cb47b7c1922f1b20044, type: 3}
+  _overCookedState: {fileID: 11400000, guid: e751dbbf2b6fad049b579c4d56bd60a6, type: 2}
+  _cookedState: {fileID: 11400000, guid: 93083a66120ddf173a49d0f28572877f, type: 2}
+  _overcookTime: 10
+  _cookTimePerIngredient: 5
   _soupVisual: {fileID: 4443864481735585332}
   _cookingVisual: {fileID: 366006820509637769}
   _bubbleParticles: {fileID: 1363088137050799051}
@@ -10581,7 +10586,10 @@ MonoBehaviour:
   pgBar: {fileID: 7163820947329547349}
   warningSign: {fileID: 5348146331583402612}
   checkmark: {fileID: 5377201928480841427}
-  targetCookState: {fileID: 11400000, guid: 93083a66120ddf173a49d0f28572877f, type: 2}
+  _warningTime: 6
+  _quickWarningTime: 2.5
+  _slowFreq: 0.7
+  _quickFreq: 0.1
 --- !u!114 &1413373083386298876
 MonoBehaviour:
   m_ObjectHideFlags: 0
