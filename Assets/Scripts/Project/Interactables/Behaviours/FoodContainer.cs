@@ -195,6 +195,14 @@ public class FoodContainer : InteractionBehaviour, ICombinable
     /// </summary>
     protected virtual bool ValidateTransfer(FoodContainer other)
     {
+        foreach (var otherIngredient in other.Ingredients)
+        {
+            if (!ValidateIngredient(otherIngredient))
+            {
+                return false;
+            }
+        }
+
         if (other._ingredientInformation.Overlaps(_ingredientInformation))
         {
             return false;
