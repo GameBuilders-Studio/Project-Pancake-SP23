@@ -8,6 +8,7 @@ public class InGameProgress : MonoBehaviour
     [SerializeField] private Image _border;
     [SerializeField] private Slider _slider;
     [SerializeField] private Image _fill;
+    [SerializeField] private Image _background;
     [SerializeField] public GameObject WarningSign;
     [SerializeField] public GameObject Checkmark;
 
@@ -46,15 +47,15 @@ public class InGameProgress : MonoBehaviour
         {
             // Disable progress bar
             _border.gameObject.SetActive(false);
-            // _slider.gameObject.SetActive(false);
             _fill.gameObject.SetActive(false);
+            _background.gameObject.SetActive(false);
         }
         else
         {
             // Enable Progress Bar 
             _border.gameObject.SetActive(true);
-            // _slider.gameObject.SetActive(true);
             _fill.gameObject.SetActive(true);
+            _background.gameObject.SetActive(true);
         }
         _slider.value = value;
     }
