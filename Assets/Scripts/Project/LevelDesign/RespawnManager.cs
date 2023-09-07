@@ -134,7 +134,7 @@ public class RespawnManager : MonoBehaviour
     //Used as a timer so the Player must wait 5 seconds to respawn
     IEnumerator RespawnTime(GameObject player)
     {
-        yield return new WaitForSeconds(5); //wait 5 seconds to respawn the character
+        yield return new WaitForSeconds(_respawnTime); //wait 5 seconds to respawn the character
         PlayerSpawnPoint[] playerSpawnPoints = _respawnPointParent.GetComponentsInChildren<PlayerSpawnPoint>();
         Debug.Log(playerSpawnPoints.Length);
         PlayerCharacter playerCharacter = player.GetComponent<PlayerCharacter>();
