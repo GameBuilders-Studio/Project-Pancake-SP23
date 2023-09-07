@@ -9,7 +9,7 @@ using UnityEditor.VersionControl;
 #endif
 
 // Author: JohannesMP (2018-08-12)
-//
+// 
 // A wrapper that provides the means to safely serialize Scene Asset References.
 //
 // Internally we serialize an Object to the SceneAsset which only exists at editor time.
@@ -30,7 +30,7 @@ using UnityEditor.VersionControl;
 /// <summary>
 /// A wrapper that provides the means to safely serialize Scene Asset References.
 /// </summary>
-[Serializable]
+[Serializable] 
 public class SceneReference : ISerializationCallbackReceiver
 {
 #if UNITY_EDITOR
