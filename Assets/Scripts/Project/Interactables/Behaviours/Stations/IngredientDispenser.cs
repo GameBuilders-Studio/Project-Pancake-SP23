@@ -12,7 +12,7 @@ public class IngredientDispenser : StationController
     [SerializeField, Required]
     private Animator _animator;
 
-    [SerializeField, Required]
+    [SerializeField, Required] 
     private AudioSource _audioSource;
 
     private void OnValidate()
