@@ -12,7 +12,7 @@ namespace Autotiles3D
     public class Autotiles3D_Settings : ScriptableObject
     {
         private static Autotiles3D_Settings _settings;
-        public const string SettingsPath = "Assets/ThirdParty/Autotiles3D/Content/Autotiles3D_Settings.asset";
+        public const string SettingsPath = "Assets/beetle-bistro-thirdparty/Autotiles3D/Content/Autotiles3D_Settings.asset";
 
         [FormerlySerializedAs("UseUndoAPI")]
         [SerializeField]
